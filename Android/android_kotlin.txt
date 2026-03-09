@@ -1,0 +1,17 @@
+# Android with Kotlin
+# Format: Front[TAB]Back
+
+What is a data class in Kotlin?	A class declared with `data class` that automatically generates `equals()`, `hashCode()`, `toString()`, `copy()`, and `componentN()` functions based on constructor properties.
+What is a Kotlin coroutine?	A concurrency design pattern (library-level, not OS threads) that allows writing asynchronous code sequentially using `suspend` functions.
+What is a `suspend` function?	A function that can be paused and resumed without blocking a thread. It can only be called from a coroutine or another suspend function.
+What is `viewModelScope`?	A `CoroutineScope` tied to a ViewModel's lifecycle; coroutines launched in it are automatically cancelled when the ViewModel is cleared.
+What is the difference between `launch` and `async` in coroutines?	`launch` starts a coroutine and returns a `Job` (fire-and-forget); `async` starts a coroutine and returns a `Deferred` whose result is obtained with `await()`.
+What is a Kotlin extension function?	A function added to an existing class without inheriting it or modifying its source: `fun String.shout() = this.uppercase() + "!"`.
+What is a sealed class in Kotlin?	A class that restricts subclassing to a fixed set of types defined in the same file. Useful for representing a closed set of states (e.g., UI states, network results).
+What is `Flow` in Kotlin?	A cold asynchronous data stream that emits values sequentially and can be collected from a coroutine. Cold means it starts executing only when collected.
+What is the difference between `Flow` and `SharedFlow`/`StateFlow`?	`Flow` is cold (starts on each collection); `SharedFlow` and `StateFlow` are hot (emit regardless of collectors). `StateFlow` always holds a current value.
+What is Kotlin's `let` scope function?	Executes a block of code on a non-null object and returns the lambda result. Often used for null checks: `value?.let { useIt(it) }`.
+What is `object` in Kotlin?	Declares a singleton: a class with exactly one instance created lazily on first access. Also used for companion objects and anonymous objects.
+What is `lateinit var`?	A modifier for a non-null var property that is initialized after declaration (not in the constructor). Accessing it before initialization throws an exception.
+What is `by lazy`?	A property delegate that initializes the property on first access and caches the result. Thread-safe by default.
+What is a companion object?	An object declared inside a class with `companion object`, giving access to static-like members tied to the class rather than to instances.

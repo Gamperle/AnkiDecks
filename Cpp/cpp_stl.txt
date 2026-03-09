@@ -1,0 +1,18 @@
+# C++ STL (Standard Template Library)
+# Format: Front[TAB]Back
+
+What are the four main components of the STL?	Containers, Iterators, Algorithms, and Function Objects (functors).
+What is the difference between `std::vector` and `std::deque`?	`vector` is a contiguous dynamic array (fast random access, amortized O(1) push_back); `deque` allows efficient O(1) insertions at both ends but lacks pointer/iterator stability.
+What is `std::map` vs `std::unordered_map`?	`map` stores keys in sorted order using a red-black tree (O(log n)); `unordered_map` uses a hash table (O(1) average) with no ordering.
+What is `std::set` vs `std::unordered_set`?	`set` stores unique, sorted elements in a tree (O(log n)); `unordered_set` uses a hash table for O(1) average lookup with no ordering.
+What is `std::stack`?	A container adaptor providing LIFO (Last-In, First-Out) access. By default backed by `deque`.
+What is `std::queue`?	A container adaptor providing FIFO (First-In, First-Out) access. By default backed by `deque`.
+What is `std::priority_queue`?	A container adaptor providing constant-time access to the largest element (max-heap by default). Backed by `vector`.
+What does `std::sort` require of its range?	Random-access iterators (e.g., from `vector` or `deque`). Average O(n log n) complexity (introsort).
+What is `std::find`?	A linear O(n) algorithm that returns an iterator to the first element satisfying an equality condition in a range.
+What is `std::for_each`?	An algorithm that applies a function or lambda to each element in a range. Returns the function object.
+What is an iterator?	An abstraction that generalizes pointers, providing a uniform way to traverse elements of any container.
+What are the five iterator categories?	Input, Output, Forward, Bidirectional, Random-Access (C++17 adds Contiguous).
+What is `std::back_inserter`?	An output iterator adaptor that calls `push_back` on the container for each assigned value, used with algorithms like `std::copy`.
+What is `std::transform`?	An algorithm that applies a function to a range of elements and writes the results to another range.
+What is `std::accumulate`?	An algorithm from `<numeric>` that computes the accumulated result (e.g., sum) of a range, starting from an initial value.

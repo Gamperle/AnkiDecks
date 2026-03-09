@@ -1,0 +1,18 @@
+# Java Concurrency
+# Format: Front[TAB]Back
+
+What is a thread in Java?	The smallest unit of execution within a process. Created by extending `Thread` or implementing `Runnable`.
+What is the difference between `Runnable` and `Callable`?	`Runnable.run()` returns void and cannot throw checked exceptions; `Callable.call()` returns a value and can throw checked exceptions.
+What does `synchronized` do?	Acquires an intrinsic lock (monitor) on an object, ensuring that only one thread at a time can execute the synchronized block or method.
+What is a `volatile` variable?	A variable whose reads and writes are always done directly to main memory, preventing CPU cache inconsistency across threads.
+What is a race condition?	A bug that occurs when the outcome depends on the timing/interleaving of multiple threads accessing shared data without proper synchronization.
+What is a deadlock?	A situation where two or more threads are each waiting for a lock held by the other, causing all of them to block indefinitely.
+What is `ExecutorService`?	A higher-level replacement for managing threads directly; it maintains a pool of threads and executes submitted tasks asynchronously.
+What is `Future`?	Represents the result of an asynchronous computation. `get()` blocks until the result is available.
+What is `CompletableFuture`?	An extension of `Future` that supports composable asynchronous pipelines with callbacks like `thenApply`, `thenCompose`, and `exceptionally`.
+What is `AtomicInteger`?	A class in `java.util.concurrent.atomic` that provides atomic (lock-free, thread-safe) operations on an integer value.
+What is a `CountDownLatch`?	A synchronization aid that allows one or more threads to wait until a set of operations in other threads completes (countdown reaches zero).
+What is a `Semaphore`?	A synchronization construct that controls access to a shared resource by maintaining a count of available permits.
+What is the difference between `wait()` and `sleep()`?	`wait()` releases the intrinsic lock and suspends until `notify()` or `notifyAll()`; `sleep()` pauses the thread but does NOT release any locks.
+What is `ThreadLocal`?	A class that provides thread-local variables; each thread holds its own independent copy of the variable.
+What is the happens-before relationship?	A guarantee in the Java Memory Model that all actions before a write are visible to a thread that subsequently reads that value.

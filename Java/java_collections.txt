@@ -1,0 +1,16 @@
+# Java Collections
+# Format: Front[TAB]Back
+
+What is the root interface of the Java collections framework?	`Collection<E>` (and `Map<K,V>` for key-value stores, which does not extend Collection).
+What is the difference between `ArrayList` and `LinkedList`?	`ArrayList` uses a dynamic array (fast random access, slow insertions/deletions in the middle); `LinkedList` uses a doubly-linked list (fast insertions/deletions, slow random access).
+What is the difference between `HashSet`, `LinkedHashSet`, and `TreeSet`?	`HashSet`: unordered, O(1) ops; `LinkedHashSet`: insertion-ordered, O(1) ops; `TreeSet`: sorted (natural/Comparator order), O(log n) ops.
+What is the difference between `HashMap` and `TreeMap`?	`HashMap`: unordered, O(1) average; `TreeMap`: sorted by key, O(log n); both are not thread-safe.
+What is `ConcurrentHashMap`?	A thread-safe `Map` implementation that allows concurrent reads and segmented writes without locking the entire map.
+What does `Collections.unmodifiableList()` return?	A read-only view of the given list; any modification attempt throws `UnsupportedOperationException`.
+What is the difference between `Iterator` and `ListIterator`?	`Iterator` is forward-only; `ListIterator` supports bidirectional traversal and element modification.
+What is a `PriorityQueue` in Java?	An unbounded queue based on a min-heap; elements are ordered by natural ordering or a Comparator, with the smallest element at the head.
+What is the difference between `List.of()` and `Arrays.asList()`?	`List.of()` returns an immutable list; `Arrays.asList()` returns a fixed-size list backed by the array (supports `set`, but not `add`/`remove`).
+What is a `Deque`?	A double-ended queue that supports element insertion and removal at both ends. `ArrayDeque` is a common implementation.
+What does the `Comparable` interface define?	A natural ordering for objects of a class via the `compareTo()` method.
+What does the `Comparator` interface define?	An external ordering strategy for objects, passed to sorting methods or sorted collections, via the `compare()` method.
+What is the time complexity of `HashMap.get()` on average?	O(1) average, O(n) worst case (all keys hash to the same bucket).
