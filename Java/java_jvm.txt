@@ -1,0 +1,18 @@
+# Java JVM Internals
+# Format: Front[TAB]Back
+
+What are the main memory areas of the JVM?	Heap, Method Area (Metaspace in Java 8+), JVM Stack (per thread), Native Method Stack, Program Counter Register.
+What is the Heap in the JVM?	The runtime data area shared among all threads where objects and arrays are allocated. It is the primary target of garbage collection.
+What is the Stack in the JVM?	A per-thread memory area that stores stack frames for each method call, holding local variables, operand stack, and return values.
+What is the Metaspace (Java 8+)?	The replacement for the old PermGen; stores class metadata in native memory rather than the heap, growing automatically.
+What is Just-In-Time (JIT) compilation?	The JVM compiles frequently executed bytecode (hot spots) into native machine code at runtime to improve performance.
+What is garbage collection?	The automatic process by which the JVM reclaims heap memory occupied by objects that are no longer reachable.
+What is the difference between Minor GC and Major GC?	Minor GC collects the Young Generation (Eden + Survivor spaces); Major (or Full) GC collects the Old Generation (Tenured space), usually more expensive.
+What is the Young Generation?	The heap region where newly created objects are allocated. It consists of Eden space and two Survivor spaces.
+What is the Old Generation?	The heap region where long-lived objects (that survived multiple Minor GCs) are promoted. Collected less frequently but with greater cost.
+What is the G1 Garbage Collector?	A region-based, server-style GC (default since Java 9) that divides the heap into equal-sized regions and aims for predictable pause times.
+What is a ClassLoader?	A component that loads class files into the JVM at runtime. The three built-in loaders are Bootstrap, Extension (Platform), and Application ClassLoader.
+What is bytecode?	The intermediate, platform-independent instruction set that Java source code compiles into; it is executed or JIT-compiled by the JVM.
+What is the difference between `-Xms` and `-Xmx` JVM flags?	`-Xms` sets the initial heap size; `-Xmx` sets the maximum heap size.
+What is a memory leak in Java?	A situation where objects are no longer needed but are still referenced (e.g., in a static collection), preventing GC from reclaiming the memory.
+What is `finalize()`?	A method called by the GC before reclaiming an object's memory. Deprecated since Java 9; use `Cleaner` or try-with-resources instead.

@@ -1,0 +1,17 @@
+# C++ OOP
+# Format: Front[TAB]Back
+
+What is RAII?	Resource Acquisition Is Initialization – a C++ idiom where resource lifetime is tied to object lifetime: resources are acquired in the constructor and released in the destructor.
+What is a virtual function?	A member function declared with `virtual` that can be overridden in a derived class; the correct override is called at runtime via dynamic dispatch through the vtable.
+What is a pure virtual function?	A virtual function declared with `= 0` that has no implementation in the base class, making the class abstract and forcing derived classes to provide an implementation.
+What is the vtable?	A per-class table of function pointers used by the compiler to implement dynamic dispatch for virtual functions.
+What is a destructor?	A special member function with the name `~ClassName()` that is called when an object is destroyed. It performs cleanup such as releasing resources.
+Why should a base class destructor be virtual?	To ensure the derived class destructor is called when a derived object is deleted through a base class pointer, preventing resource leaks.
+What is the Rule of Three?	If a class defines any of the following, it should define all three: destructor, copy constructor, copy assignment operator.
+What is the Rule of Five (C++11)?	Extends the Rule of Three to include the move constructor and move assignment operator.
+What is multiple inheritance in C++?	A class can inherit from more than one base class. It can cause the diamond problem, which is resolved with virtual inheritance.
+What is the diamond problem?	When a class inherits from two classes that both inherit from the same base class, causing ambiguity. Solved with `virtual` base class inheritance.
+What does `override` specifier do (C++11)?	Explicitly declares that a virtual function overrides a base-class virtual function. The compiler emits an error if no matching virtual function exists in a base class.
+What does `final` specifier do on a class or virtual function?	Prevents the class from being further subclassed, or the virtual function from being overridden in derived classes.
+What is a copy constructor?	A constructor that creates a new object as a copy of an existing object: `ClassName(const ClassName& other)`.
+What is a move constructor (C++11)?	A constructor that transfers resources from a temporary (rvalue) object: `ClassName(ClassName&& other) noexcept`.

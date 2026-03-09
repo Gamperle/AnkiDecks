@@ -1,0 +1,14 @@
+# Anki export files (binary packages)
+*.apkg
+*.colpkg
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Editor directories
+.idea/
+.vscode/
+*.swp

@@ -1,0 +1,18 @@
+# Android Architecture
+# Format: Front[TAB]Back
+
+What is MVVM in Android?	Model-View-ViewModel: the View observes the ViewModel for state changes; the ViewModel holds UI logic and calls the Model (repository) for data.
+What is the Repository pattern in Android?	An abstraction layer between the ViewModel and data sources (network, database). It decides whether to fetch from cache or remote.
+What is Clean Architecture?	A layered architecture with Presentation, Domain (use cases + entities), and Data layers. Dependencies point inward; the domain layer has no Android dependencies.
+What is a Use Case (Interactor)?	A class in the domain layer that encapsulates a single business operation. It coordinates data flow between the ViewModel and repositories.
+What is Dependency Injection (DI)?	A design pattern where objects receive their dependencies from an external source rather than creating them, improving testability and modularity.
+What is Hilt?	A DI library for Android built on Dagger that generates boilerplate automatically. Annotate with `@HiltAndroidApp`, `@AndroidEntryPoint`, `@Inject`, etc.
+What is a `@Module` in Hilt/Dagger?	A class annotated with `@Module` that provides dependencies (via `@Provides` or `@Binds` methods) that cannot be constructor-injected.
+What is the Single Responsibility Principle in Android architecture?	Each class/layer should have one reason to change: Activities manage UI only, ViewModels manage UI state, Repositories manage data access.
+What is the difference between `@Singleton` and `@ViewModelScoped` in Hilt?	`@Singleton` creates one instance for the whole app lifetime; `@ViewModelScoped` creates one instance per ViewModel instance.
+What is a sealed class used for in Android architecture?	To represent a closed set of UI states or network results (e.g., `Loading`, `Success`, `Error`), making exhaustive `when` expressions possible.
+What is the MVI (Model-View-Intent) pattern?	A unidirectional data flow architecture where user Intents trigger state reductions in the Model, and the View renders the resulting immutable state.
+What is the difference between Configuration-safe state and ephemeral state?	Configuration-safe state survives screen rotation (stored in ViewModel or saved state); ephemeral state is transient UI state (e.g., scroll position, stored in `rememberSaveable`).
+What is `SavedStateHandle`?	A key-value map in a ViewModel that survives both configuration changes and process death, injected automatically by Hilt/ViewModel.
+What is the role of `@HiltAndroidApp`?	Annotation placed on the `Application` class to trigger Hilt's code generation and set up the application-level dependency container.
+What is a `NavGraph` in the Navigation component?	An XML (or Kotlin DSL) resource that defines all destinations (fragments/activities) and the actions (edges) connecting them.

@@ -1,0 +1,18 @@
+# C++ Memory Management
+# Format: Front[TAB]Back
+
+What is the difference between stack and heap memory in C++?	Stack memory is automatically managed (LIFO), fixed size per thread, fast; heap memory is manually managed (or via smart pointers), flexible size, slightly slower.
+What does `new` do in C++?	Allocates memory on the heap for an object, calls its constructor, and returns a typed pointer to it.
+What does `delete` do in C++?	Calls the destructor on the pointed-to object and then releases the heap memory. Must match the corresponding `new`.
+What is a memory leak?	Failure to `delete` heap-allocated memory that is no longer needed, causing the process to consume ever-growing amounts of memory.
+What is a dangling pointer?	A pointer that still holds the address of memory that has already been freed/deleted, leading to undefined behavior on access.
+What is a double-free bug?	Calling `delete` on the same pointer twice, causing undefined behavior (typically heap corruption or crash).
+What is `std::unique_ptr`?	A smart pointer that provides exclusive ownership of a heap-allocated object. It automatically calls `delete` when it goes out of scope.
+What is `std::shared_ptr`?	A smart pointer with shared ownership via reference counting. The managed object is deleted when the last owning `shared_ptr` is destroyed.
+What is `std::weak_ptr`?	A non-owning observer of an object managed by `shared_ptr`. Does not affect the reference count; must be promoted to `shared_ptr` before use.
+How do you create a `unique_ptr` safely?	Use `std::make_unique<T>(args...)` (C++14) to avoid raw `new` and ensure exception safety.
+How do you create a `shared_ptr` safely?	Use `std::make_shared<T>(args...)` to allocate the object and control block in a single allocation.
+What is a reference cycle with `shared_ptr`?	When two objects hold `shared_ptr`s to each other, neither reference count reaches zero and the objects are never freed. Break with `weak_ptr`.
+What is placement new?	`new (ptr) T(args)` constructs an object at a pre-allocated memory address without allocating new memory.
+What is RAII in the context of memory management?	Resources (including heap memory) are acquired in a constructor and released in the destructor, so resource lifetime matches object lifetime automatically.
+What is an allocator in C++?	A class that encapsulates memory allocation/deallocation strategies for STL containers, allowing custom memory pools or arenas.

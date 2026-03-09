@@ -1,0 +1,18 @@
+# Android UI
+# Format: Front[TAB]Back
+
+What is a View in Android?	The basic building block of UI components. It represents a rectangular area on screen and handles drawing and event handling.
+What is a ViewGroup?	A subclass of View that acts as a container for other Views (children). Layouts like LinearLayout and ConstraintLayout are ViewGroups.
+What is ConstraintLayout?	A flat, flexible ViewGroup that positions views using constraints relative to each other or to the parent, reducing nested layouts.
+What is RecyclerView?	A flexible, efficient view for displaying large datasets as scrollable lists or grids. It recycles views that scroll off-screen.
+What is a ViewHolder pattern?	A pattern used with RecyclerView where a `ViewHolder` caches references to child views, avoiding repeated `findViewById` calls for each item.
+What is a LayoutManager in RecyclerView?	The component responsible for measuring and positioning item views within RecyclerView. Common types: `LinearLayoutManager`, `GridLayoutManager`, `StaggeredGridLayoutManager`.
+What is a DiffUtil?	A utility class that computes the difference between two lists and outputs update operations, enabling efficient RecyclerView updates.
+What is the difference between `match_parent` and `wrap_content`?	`match_parent` makes the view as large as its parent; `wrap_content` makes the view just large enough to fit its content.
+What is a CoordinatorLayout?	A FrameLayout subclass designed for coordinating interactions between child views (e.g., Snackbar above a FAB, collapsing toolbar).
+What is a BottomNavigationView?	A Material Design component that provides navigation between three to five top-level destinations at the bottom of the screen.
+What is Jetpack Compose?	Android's modern declarative UI toolkit where UI is defined as Kotlin composable functions that describe what the UI should look like for a given state.
+What is a `@Composable` function?	A Kotlin function annotated with `@Composable` that can emit UI elements. It can be called only from other composable functions or lambdas.
+What is the difference between `Column`, `Row`, and `Box` in Compose?	`Column` stacks children vertically; `Row` places them horizontally; `Box` layers children on top of each other.
+What is `remember` in Jetpack Compose?	A composable that caches a value across recompositions; without it the value would be reinitialized on every recomposition.
+What is `mutableStateOf` in Jetpack Compose?	Creates a `MutableState` holder; reading it in a composable registers the composable as an observer, triggering recomposition when the value changes.

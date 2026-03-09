@@ -1,0 +1,16 @@
+# C++ Basics
+# Format: Front[TAB]Back
+
+What is the difference between a pointer and a reference in C++?	A pointer holds the address of a variable and can be null or reassigned; a reference is an alias for an existing variable, cannot be null, and cannot be rebound.
+What does `const` mean on a pointer declaration `const int* p`?	The data pointed to is constant (cannot be modified through `p`), but the pointer itself can point to a different address.
+What does `int* const p` mean?	The pointer itself is constant (cannot point to a different address), but the data it points to can be modified.
+What is undefined behavior (UB)?	Code whose behavior is not defined by the C++ standard; the compiler is free to generate any result, including crashes, wrong output, or silent data corruption.
+What is the difference between `struct` and `class` in C++?	The only difference is default member access: `struct` defaults to `public`; `class` defaults to `private`.
+What is a header guard?	A preprocessor pattern (`#ifndef / #define / #endif`) that prevents a header file from being included more than once in the same translation unit.
+What is a translation unit?	A single source file (`.cpp`) after preprocessing (all `#include`s have been substituted). Each translation unit is compiled independently.
+What does `inline` mean for a function?	It suggests to the compiler to substitute the function body at the call site instead of generating a function call. It also allows the definition to appear in multiple translation units.
+What is the difference between `++i` and `i++`?	`++i` (pre-increment) increments and returns the new value; `i++` (post-increment) returns the old value and then increments.
+What is a nullptr in C++11?	A type-safe null pointer constant of type `std::nullptr_t`, replacing the old `NULL` macro.
+What is the One Definition Rule (ODR)?	Each function, variable, class, or template may be defined only once across all translation units (with an exception for inline functions and templates in headers).
+What is a forward declaration?	Declaring a class or function before its full definition, allowing it to be used as a pointer/reference type without including the full header.
+What is the difference between `delete` and `delete[]`?	`delete` frees a single object; `delete[]` frees an array allocated with `new[]`. Mixing them is undefined behavior.

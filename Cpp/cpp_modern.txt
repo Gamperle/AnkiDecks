@@ -1,0 +1,18 @@
+# C++ Modern Features (C++11/14/17/20)
+# Format: Front[TAB]Back
+
+What does `auto` do in C++11?	Instructs the compiler to deduce the type of a variable from its initializer, reducing verbosity.
+What is a lambda expression?	An anonymous function object defined inline: `[capture](params) -> return_type { body }`.
+What is `std::unique_ptr`?	A smart pointer that owns an object exclusively and deletes it when the pointer goes out of scope. It cannot be copied, only moved.
+What is `std::shared_ptr`?	A smart pointer with shared ownership using reference counting; the object is deleted when the last `shared_ptr` owning it is destroyed.
+What is `std::weak_ptr`?	A non-owning smart pointer that holds a weak reference to an object managed by `shared_ptr`, preventing reference cycles.
+What is move semantics?	A C++11 feature that allows resources to be transferred (moved) from a temporary object instead of copied, improving performance.
+What is an rvalue reference?	A reference declared with `&&` that binds to rvalues (temporaries), enabling move semantics and perfect forwarding.
+What is `std::move`?	A cast to an rvalue reference (`static_cast<T&&>`), indicating that an object's resources may be moved rather than copied.
+What is `std::forward`?	A utility for perfect forwarding in template functions; it preserves the value category (lvalue or rvalue) of the original argument.
+What is a range-based for loop?	`for (auto& elem : container)` – iterates over all elements of a range/container without needing explicit iterators or indices.
+What is `constexpr`?	Specifies that the value of a variable or the result of a function can be evaluated at compile time.
+What is `nullptr` (C++11)?	A type-safe null pointer literal of type `std::nullptr_t`, replacing `NULL` or `0`.
+What is structured bindings (C++17)?	`auto [a, b] = pair;` – binds names directly to the members of a tuple, pair, or aggregate.
+What is `std::optional` (C++17)?	A wrapper that may or may not contain a value, replacing nullable pointer patterns for value types.
+What is `std::variant` (C++17)?	A type-safe union that can hold one of a fixed set of types at a time.

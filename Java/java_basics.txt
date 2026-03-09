@@ -1,0 +1,18 @@
+# Java Basics
+# Format: Front[TAB]Back
+
+What is the difference between `==` and `.equals()` in Java?	`==` compares object references (memory addresses); `.equals()` compares object content/values.
+What are the 8 primitive types in Java?	byte, short, int, long, float, double, char, boolean
+What is autoboxing in Java?	Automatic conversion between a primitive type and its corresponding wrapper class (e.g., int → Integer).
+What is the default value of an int field in a class?	0
+What is the default value of a boolean field in a class?	false
+What is the default value of an object reference field in a class?	null
+What does the `final` keyword mean on a variable?	The variable can only be assigned once; its reference cannot be changed after initialization.
+What does the `static` keyword mean on a method?	The method belongs to the class itself, not to any instance; it can be called without creating an object.
+What is a varargs parameter?	A method parameter that accepts a variable number of arguments, declared with `...` (e.g., `void log(String... msgs)`).
+What is the difference between `break` and `continue`?	`break` exits the enclosing loop entirely; `continue` skips the rest of the current iteration and moves to the next.
+What is a ternary operator?	A shorthand for if-else: `condition ? valueIfTrue : valueIfFalse`
+What is string interning in Java?	The process of storing only one copy of each distinct string value in the string pool, allowing reference comparison with `==`.
+What is the `instanceof` operator?	A keyword that tests whether an object is an instance of a given class or interface, returning a boolean.
+What does `System.out.println()` do?	Prints the given argument to standard output followed by a newline character.
+What is the difference between `int` and `Integer`?	`int` is a primitive type; `Integer` is its wrapper class (an object) that can be null and used in collections.
