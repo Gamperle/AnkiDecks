@@ -1,0 +1,140 @@
+# AOSP (Android Open Source Project) — Intermediate
+# Format: Front[TAB]Back
+
+# ==========================================
+# 2.4 System Services & Framework
+# ==========================================
+
+What is SystemServer in Android?	The process started by Zygote that hosts most core system services (AMS, WMS, PMS, PowerManagerService, etc.). It bootstraps in a defined order — boot, core, and other services.
+What is the boot sequence of system services in SystemServer?	SystemServer.run() calls startBootstrapServices() (AMS, PMS, PowerManager), startCoreServices() (BatteryService, UsageStatsService), then startOtherServices() (WindowManager, InputManager, etc.)
+What does ActivityManagerService (AMS) do?	Manages the lifecycle of Activities and processes — starts/stops Activities, manages the back stack, handles process priorities, OOM adjustments, and broadcasts
+How does AMS manage processes?	AMS assigns oom_adj_score values to processes based on their importance (foreground, visible, service, cached, empty). The Low Memory Killer Daemon uses these scores to decide which processes to kill.
+What does WindowManagerService (WMS) do?	Manages the window hierarchy — determines z-ordering of windows, handles window transitions/animations, dispatches input events to the correct window, and coordinates with SurfaceFlinger
+What does PackageManagerService (PMS) do?	Scans and installs packages, resolves Intents to the correct component, manages permissions (grant/revoke), handles package verification, and maintains the package database
+How does PMS resolve implicit Intents?	PMS matches the Intent's action, category, and data against all declared IntentFilters across installed packages. It returns the best match or presents a chooser dialog for multiple matches.
+What does PowerManagerService manage?	Wake locks, screen power state, Doze mode (deep idle), App Standby, battery saver policies, and coordinating power-related decisions with the battery/display HALs
+What is InputManagerService?	The system service that handles the input event pipeline — reads from input devices via EventHub, creates InputReader events, dispatches them via InputDispatcher to the focused window through WMS
+What is SurfaceFlinger?	The system service that composites all visible surfaces (from apps, status bar, navigation bar) into the final frame buffer that gets sent to the display hardware
+How does SurfaceFlinger relate to the Hardware Composer (HWC)?	SurfaceFlinger passes layers to HWC, which decides how to composite them. HWC can use hardware overlays (more efficient) for some layers. Remaining layers are composited via GPU (client composition).
+What is AudioFlinger?	The native audio mixing daemon that receives audio data from multiple sources, mixes them, applies effects, and routes the mixed output to the audio HAL for playback
+What is AudioPolicyService?	The service that decides audio routing (which output device for each stream), manages audio focus, and enforces audio policies (like muting during phone calls)
+What is MediaCodec in Android?	A low-level API for accessing hardware/software codecs for media encoding and decoding. It uses a producer/consumer buffer model with input/output Surface or ByteBuffer.
+What is the Stagefright/Codec2 framework?	The native media framework in Android that manages codec instances, buffer allocation, and media pipeline lifecycle. Codec2 (C2) is the newer version replacing Stagefright.
+What does ConnectivityService do?	Manages network connectivity — tracks available networks (Wi-Fi, cellular, VPN), satisfies NetworkRequests from apps, handles network scoring, and coordinates with NetworkAgents
+What is the role of ServiceManager in Android?	The central registry for Binder services. System services register themselves with ServiceManager, and clients look them up by name to obtain Binder references.
+How do apps obtain references to system services?	By calling Context.getSystemService() which internally queries ServiceManager for the Binder handle, then wraps it in a Manager class (e.g., ActivityManager, WindowManager)
+
+# ==========================================
+# 2.5 Binder IPC In Depth
+# ==========================================
+
+What are the four key components of the Binder architecture?	Client (calls remote methods), Server (implements the service), ServiceManager (registry of services), and the Binder kernel driver (handles data transfer between processes)
+How does an AIDL interface get compiled?	The AIDL compiler generates a Stub class (server-side, implements onTransact to deserialize and dispatch) and a Proxy class (client-side, serializes arguments and calls transact)
+What is a Binder transaction?	A single IPC call where the client sends a Parcel (serialized data) through the Binder driver to the server. The driver copies data between process address spaces and wakes the receiving thread.
+What is a Parcel in Binder IPC?	A container for marshalling/unmarshalling data across process boundaries. It holds primitive types, Parcelable objects, file descriptors, and Binder references.
+What is a death recipient in Binder?	An IBinder.DeathRecipient callback registered by a client to be notified when the remote Binder service's process dies, enabling cleanup of references
+How does the Binder thread pool work?	Each process that receives Binder calls maintains a pool of threads (default max 15) that handle incoming transactions. The kernel driver dispatches incoming requests to available threads.
+What is the difference between synchronous and one-way Binder calls?	Synchronous calls block the caller until the server returns. One-way calls (oneway keyword in AIDL) are fire-and-forget — the caller returns immediately without waiting for the server.
+What are the three Binder device nodes introduced by Treble?	/dev/binder (framework IPC), /dev/hwbinder (HAL IPC between framework and vendor), /dev/vndbinder (vendor-to-vendor IPC). Treble separates these to enforce boundaries.
+What is the maximum Binder transaction buffer size?	1 MB per process. All concurrent transactions share this buffer. Exceeding it throws TransactionTooLargeException. Avoid passing large data through Binder — use shared memory or file descriptors instead.
+
+# ==========================================
+# 2.6 Hardware Abstraction Layer (HAL)
+# ==========================================
+
+What is the purpose of a HAL in Android?	To separate the Android framework from hardware-specific vendor implementations, allowing the framework to be updated independently while vendor code remains stable
+What was the legacy HAL architecture?	C-based structs (hw_module_t, hw_device_t) loaded as shared libraries (.so) via dlopen(). Tightly coupled — framework and HAL ran in the same process.
+What is HIDL (HAL Interface Definition Language)?	An interface definition language introduced with Treble for defining strongly-typed HAL interfaces that communicate via Binder IPC between the framework and vendor partitions
+What is the difference between passthrough and binderized HIDL HALs?	Passthrough HALs load the implementation into the caller's process (dlopen, same as legacy). Binderized HALs run in a separate process and communicate via hwbinder IPC — required for proper Treble separation.
+What are AIDL HALs and why are they replacing HIDL?	AIDL HALs (Android 11+) use stable AIDL instead of HIDL for HAL definitions. AIDL is already used for framework IPC, so using it for HALs unifies the tooling and reduces complexity.
+What is the VINTF (Vendor Interface) manifest?	An XML file (/vendor/etc/vintf/manifest.xml) that declares which HAL interfaces and versions the vendor implementation provides
+What is the VINTF compatibility matrix?	An XML file on the system side that declares which HAL interfaces and versions the framework requires. The system compares it against the vendor manifest to verify compatibility.
+Name five common HALs in Android.	Camera HAL (camera image processing), Audio HAL (audio I/O), Gralloc HAL (graphics buffer allocation), Sensors HAL (accelerometer, gyroscope), Power HAL (CPU/GPU power hints)
+How does HAL versioning work?	HAL interfaces have major.minor versions. Minor version increments add methods (backward-compatible). Major version increments indicate breaking changes. Interface hashes ensure exact matching.
+
+# ==========================================
+# 2.7 Init, Properties & SELinux
+# ==========================================
+
+What is the init.rc language used for?	Defining the startup behavior of an Android system — declaring services (daemons to start), triggers (conditions to react to), actions (commands to execute), and imports (include other .rc files)
+Give an example of a service definition in init.rc.	service surfaceflinger /system/bin/surfaceflinger\n    class core animation\n    user system\n    group graphics\n    onrestart restart zygote
+What is a trigger in init.rc?	A condition that causes actions to execute. Examples: on boot (after system boot), on property:sys.boot_completed=1 (when a property changes), on fs (after filesystem mount)
+What are system properties in Android?	Key-value pairs that store system and app configuration, accessible from Java (SystemProperties), native (property_get/set), and shell (getprop/setprop)
+What is the difference between ro.*, persist.*, and sys.* properties?	ro.* (read-only, set once at boot, cannot be changed). persist.* (survive reboots, stored on disk). sys.* (volatile, reset on reboot, used for runtime state).
+What is the property service in Android?	A service in init that manages system properties — handles get/set requests, enforces SELinux access controls, stores persistent properties to /data/property/persistent_properties
+What are property triggers?	Mechanisms where changing a system property triggers actions in init.rc. Example: on property:vold.decrypt=trigger_restart_framework restarts framework services after decryption.
+What is SELinux and why does Android use it?	Security-Enhanced Linux — a Mandatory Access Control (MAC) system that confines every process to a security domain with explicit allow rules. Android uses it to limit damage from compromised apps or services.
+What is the difference between enforcing and permissive SELinux modes?	Enforcing: denials are logged AND blocked. Permissive: denials are logged but NOT blocked (for debugging). Android ships in enforcing mode.
+What is an SELinux domain transition?	When a process changes from one security context (domain) to another, typically when exec-ing a new binary. Controlled by type_transition and domain_auto_trans rules.
+What are file_contexts, property_contexts, and service_contexts?	Mapping files that assign SELinux labels — file_contexts labels filesystem paths, property_contexts labels system properties, service_contexts labels Binder services
+What is the syntax of an SELinux allow rule?	allow source_domain target_type:object_class { permissions }; Example: allow system_app app_data_file:file { read write };
+What is a neverallow rule in SELinux?	A compile-time assertion that verifies no allow rule grants the specified permission. Used to enforce security invariants (e.g., neverallow untrusted_app kernel:process { transition })
+How do you debug SELinux denials?	Check dmesg or logcat for "avc: denied" messages. Use audit2allow to generate candidate allow rules. Test in permissive mode first, then switch to enforcing.
+What is the difference between MAC and DAC?	DAC (Discretionary Access Control) — resource owner sets permissions (Unix file permissions). MAC (Mandatory Access Control) — system policy enforces access rules regardless of owner. Android uses both; SELinux provides MAC.
+
+# ==========================================
+# 2.8 Android Runtime (ART)
+# ==========================================
+
+What is ART and how does it differ from Dalvik?	ART (Android Runtime) replaced Dalvik in Android 5.0. ART uses Ahead-Of-Time (AOT) compilation during install and Just-In-Time (JIT) at runtime. Dalvik used only JIT. ART produces faster code with profile-guided optimization.
+What is AOT compilation in ART?	Ahead-Of-Time compilation — converting DEX bytecode to native machine code at install time (or cloud compilation), so the app runs native code directly instead of interpreting
+What is profile-guided optimization (PGO) in ART?	ART collects runtime profiles of frequently executed methods (hot code), then uses these profiles to guide AOT compilation — compiling only hot paths, reducing install time and storage while optimizing performance
+What is a DEX file?	Dalvik Executable — the compiled bytecode format for Android. Java/Kotlin source is compiled to .class files then converted to .dex files optimized for ART's register-based architecture.
+What are ODEX and VDEX files?	ODEX (Optimized DEX) contains AOT-compiled native code. VDEX (Verified DEX) contains the verified original DEX code and verification metadata, speeding up re-verification.
+What are ART class images?	Pre-initialized class data stored in .art files. They contain pre-verified and pre-resolved class metadata loaded directly into memory at startup, avoiding repeated class initialization.
+What is Zygote in Android?	The parent process for all app processes. It preloads common framework classes and resources, then forks to create new app processes. Forking is fast and shares memory via copy-on-write.
+What is App Zygote?	An app-specific Zygote (Android 10+) that can preload app-specific code and resources, then fork isolated processes. Used by WebView to create renderer processes.
+How does the Zygote fork model save memory?	All forked processes share the same pre-loaded classes and resources in memory via copy-on-write (COW) pages. Only pages modified by the child process are duplicated.
+What is PathClassLoader vs DexClassLoader?	PathClassLoader loads DEX files from the default app path (standard app loading). DexClassLoader can load DEX from arbitrary paths (used for plugin/dynamic loading, custom class loading).
+What is InMemoryDexClassLoader?	A class loader that loads DEX bytecode directly from a ByteBuffer in memory without writing to disk. Used for dynamic code loading where file access is restricted.
+What is JVMTI in Android?	Java Virtual Machine Tool Interface — a debugging/profiling API that ART supports, allowing tools (Android Studio profiler, debuggers) to inspect and manipulate the runtime, set breakpoints, and profile memory/CPU.
+
+# ==========================================
+# 2.9 Graphics & Display Pipeline
+# ==========================================
+
+How does SurfaceFlinger compose the final display frame?	SurfaceFlinger receives buffers from all visible windows, passes them to Hardware Composer (HWC) which assigns layers to hardware overlays or GPU composition, then the final frame is sent to the display controller
+What is the BufferQueue in Android graphics?	A producer-consumer queue that passes graphics buffers between components. The producer (app, camera) fills buffers, the consumer (SurfaceFlinger, video encoder) processes them. Decouples production from consumption.
+What is triple buffering?	Using three buffers: one displayed, one being composited by SurfaceFlinger, one being rendered by the app. This reduces frame drops by ensuring the app always has a buffer to render into.
+What is EGL in Android?	An API that mediates between rendering APIs (OpenGL ES, Vulkan) and the native windowing system. It manages rendering contexts, surfaces, and buffer swap.
+What is the difference between OpenGL ES and Vulkan on Android?	OpenGL ES: higher-level, easier to use, driver manages state. Vulkan: low-level, explicit GPU control, multi-threaded command submission, lower driver overhead, better for high-performance apps.
+What is Gralloc HAL?	The Graphics Allocator HAL that allocates graphics buffers with specific properties (size, format, usage flags). It abstracts hardware-specific memory allocation (contiguous, tiled, etc.).
+What is Hardware Composer (HWC)?	A HAL that determines how to composite SurfaceFlinger's layers. HWC assigns layers to hardware overlay planes (zero-copy, power-efficient) or marks them for GPU composition.
+What is the difference between client and hardware composition?	Hardware composition: HWC composites layers directly in display hardware (efficient, no GPU). Client (GPU) composition: SurfaceFlinger renders layers with OpenGL/Vulkan (flexible, uses GPU power).
+What is VSYNC and how does Choreographer use it?	VSYNC is a hardware signal marking the start of a display refresh cycle. Choreographer aligns app rendering, input, and animation with VSYNC to ensure smooth frame delivery.
+What causes jank in Android rendering?	Jank occurs when a frame misses its VSYNC deadline (e.g., > 16.6ms for 60fps). Causes include main thread blocking, GPU overdraw, excessive layout/measure passes, or GC pauses.
+What is a virtual display in Android?	A display target that renders to a Surface/BufferQueue instead of physical hardware. Used for screen recording, Miracast/WFD (Wi-Fi Display), Presentation API, and testing.
+
+# ==========================================
+# 2.10 Networking & Connectivity Internals
+# ==========================================
+
+What is netd in Android?	The network daemon that manages network configuration — sets up iptables/nftables rules, configures interfaces, manages DNS resolution, NAT, tethering, and firewall rules
+What is ConnectivityService?	The system service that manages network connectivity, tracks available networks (Wi-Fi, cellular, Ethernet, VPN), evaluates network quality, and satisfies NetworkRequests from apps
+What is a NetworkAgent?	A class that represents a network to ConnectivityService. Each network type (Wi-Fi, cellular) has a NetworkAgent that reports network capabilities, score, and lifecycle events.
+What is a NetworkRequest?	An object that apps use to express their network requirements (capabilities like INTERNET, NOT_METERED, transport type). ConnectivityService matches requests to the best available NetworkAgent.
+How does VpnService work in Android?	The app creates a TUN interface via VpnService.Builder, intercepts all or selected traffic, processes packets (encrypt/tunnel), and forwards them to a VPN server. Requires user consent.
+What is wpa_supplicant in Android's Wi-Fi stack?	A daemon that manages Wi-Fi authentication and association — handles WPA/WPA2/WPA3 handshakes, EAP methods, and communicates with the Wi-Fi driver
+What is the Fluoride Bluetooth stack?	Android's Bluetooth stack (system/bt) that implements Bluetooth Classic and BLE protocols, including GATT (Generic Attribute Profile), L2CAP, HCI (Host Controller Interface), and profiles like A2DP, HFP, LE Audio
+What is HCI in the Bluetooth stack?	Host Controller Interface — the standard interface between the Bluetooth host software (Fluoride) and the Bluetooth controller hardware. Carries commands, events, and data.
+What is RILD in the telephony stack?	Radio Interface Layer Daemon — mediates between the telephony framework and the cellular modem hardware. It translates framework requests into modem-specific commands.
+What is HCE (Host Card Emulation)?	A feature that allows an Android device to emulate an NFC card using software (without a secure element), enabling payment, access control, and loyalty card applications
+
+# ==========================================
+# 2.11 Security Internals
+# ==========================================
+
+How does Android isolate apps from each other?	Each app runs under a unique Linux UID in its own process with a private data directory. SELinux further confines each app to its assigned domain, preventing unauthorized access to other apps' data.
+What are AID_ definitions?	Android ID constants (defined in android_filesystem_config.h) that map system users/groups to fixed UIDs/GIDs (e.g., AID_SYSTEM=1000, AID_RADIO=1001, AID_ROOT=0)
+What is Verified Boot (AVB) in Android?	Android Verified Boot ensures the integrity of software running on the device by verifying the entire boot chain — bootloader, kernel, system, and vendor images — using cryptographic signatures
+What is dm-verity?	A Linux kernel feature used by AVB that verifies the integrity of a block device (partition) at the block level using a hash tree. If any block is modified, the read will return an error.
+What is vbmeta in AVB?	A signed metadata structure that contains hash digests and public keys for verifying partition images. It forms the root of trust for the verification chain.
+What is rollback protection in AVB?	A mechanism that prevents downgrading to an older (potentially vulnerable) OS version by storing a rollback index in tamper-proof storage and comparing it during boot
+What is KeyMint (replacing Keymaster) HAL?	The HAL that implements cryptographic key management in the TEE. It handles key generation, import, usage, attestation, and enforces key usage constraints (auth-bound, time-bound).
+What is Gatekeeper HAL?	A HAL that verifies user credentials (PIN, pattern, password) in the TEE. It enforces throttling on failed attempts and issues hardware auth tokens upon successful verification.
+What is Weaver HAL?	A HAL that stores low-entropy secrets (like lock screen credentials) in dedicated tamper-resistant hardware (secure element), protecting against brute-force attacks even with physical access
+What is File-Based Encryption (FBE)?	Encryption where each file is encrypted with a different key. Android supports CE (Credential Encrypted, unlocked after user authenticates) and DE (Device Encrypted, available at boot before unlock).
+What is the difference between CE and DE storage?	CE (Credential Encrypted) storage is only accessible after the user unlocks the device. DE (Device Encrypted) storage is accessible at boot (for features like alarms, accessibility, Direct Boot).
+What is the DRM framework in Android?	MediaDrm API provides access to DRM scheme plugins (like Widevine) for decrypting protected media content. Widevine L1 uses hardware-based decryption; L3 is software-only.
+What is seccomp in Android app sandboxing?	Secure Computing mode — a Linux kernel feature that restricts which system calls a process can make. Android applies seccomp-bpf filters to app processes to limit their kernel attack surface.
+How does scoped storage enforce app data isolation?	Apps can only access their own app-specific directories without permissions. Accessing shared media requires MediaStore APIs. Accessing arbitrary files requires the Storage Access Framework (SAF). No raw filesystem access.

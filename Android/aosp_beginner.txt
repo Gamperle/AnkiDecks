@@ -1,0 +1,61 @@
+# AOSP (Android Open Source Project) — Beginner
+# Format: Front[TAB]Back
+
+# ==========================================
+# 2.1 AOSP Overview & Architecture
+# ==========================================
+
+What are the layers of the Android system architecture from bottom to top?	Linux Kernel → Hardware Abstraction Layer (HAL) → Native Libraries + Android Runtime (ART) → Java API Framework → System Apps + User Apps
+What is AOSP?	The Android Open Source Project — the open-source codebase of the Android operating system, maintained by Google, that anyone can download, build, and modify
+How does AOSP relate to manufacturer forks like Samsung One UI or Xiaomi MIUI?	Manufacturers take AOSP as a base and add their own custom UI, features, drivers, and proprietary apps on top. The core OS is AOSP; OEM modifications are proprietary.
+What are Google Play Services (GMS)?	Closed-source Google services (Maps, Auth, Push, Play Store, etc.) that run on top of AOSP. They are not part of AOSP and require a license from Google to include.
+What is the difference between AOSP and GMS?	AOSP is the open-source OS. GMS (Google Mobile Services) is a proprietary suite of Google apps and APIs layered on top. Devices can run AOSP without GMS (e.g., Amazon Fire, Chinese ROMs).
+What open-source license covers most of Android's userspace code?	Apache License 2.0 — allows modification and distribution without requiring source code release of modifications
+What license covers the Linux kernel used by Android?	GPL v2 — requires that any distributed modifications to the kernel source code also be released under GPL v2
+What is an API level in Android?	An integer that represents the framework API revision offered by a version of the Android platform. Each Android release increments the API level (e.g., Android 14 = API 34).
+What is Project Treble and why is it important?	Treble (Android 8.0) separated the vendor implementation from the Android OS framework, allowing the OS to be updated independently of hardware-specific code, improving update speed for manufacturers
+What is a Generic System Image (GSI)?	A system image built from AOSP that can run on any Treble-compliant device. Used for testing and CTS compliance — proves the HAL/vendor split is correct.
+What is a Generic Kernel Image (GKI)?	A Google-maintained kernel image with a stable Kernel Module Interface (KMI), so vendor modules can work across kernel updates without recompilation
+What is the difference between system apps, privileged apps, and third-party apps?	System apps reside in /system/app (limited extra permissions). Privileged apps reside in /system/priv-app (can access signature|privileged permissions). Third-party apps are user-installed in /data/app.
+Name the main Android partitions and their purposes.	boot (kernel+ramdisk), system (Android framework), vendor (hardware-specific code), userdata (user apps+data), recovery (recovery OS), product (OEM customizations), odm (ODM-specific vendor code)
+What is the system partition?	Contains the Android framework, system apps, and core libraries. Read-only at runtime. Updated via system or OTA updates.
+What is the vendor partition?	Contains hardware-specific binaries, HAL implementations, and vendor libraries. Separated from system by Treble so the framework can be updated independently.
+What is the purpose of the product partition?	Stores OEM product-specific customizations (apps, overlays, configs) separate from system and vendor, enabling different product bundles from the same base image
+
+# ==========================================
+# 2.2 AOSP Build System Basics
+# ==========================================
+
+What is the repo tool in AOSP?	A Git repository management tool (built by Google) that manages multiple Git repositories. It uses a manifest XML file to define which repos to clone and at what revisions.
+What does 'repo init' do?	Initializes a repo client in the current directory by downloading the manifest repository from a specified URL and branch (e.g., repo init -u https://android.googlesource.com/platform/manifest -b main)
+What does 'repo sync' do?	Downloads/updates all source repositories defined in the manifest. Equivalent to running git fetch + git checkout on every project listed in the manifest.
+What is local_manifests in AOSP?	A directory (.repo/local_manifests/) where you can place additional manifest XML files to add, remove, or override projects without modifying the default manifest
+What is a lunch target?	A build configuration specifier in the format product-variant (e.g., aosp_arm64-userdebug) that selects the product to build and the build type (user, userdebug, eng)
+What are the three AOSP build types and their key differences?	user: production, limited debug, no root. userdebug: like user but with root access and debug capabilities. eng: full debug, extra tools, slower, relaxed security. Use userdebug for development.
+Why should you use userdebug over eng for development?	userdebug closely matches a production build but adds adb root access and other debugging features. eng includes too many debug tools and performance overhead, making it unrepresentative of real behavior.
+What build system does AOSP use?	Soong — a build system that reads Android.bp (Blueprint) files and generates Ninja build files. It replaced the legacy Make-based system (Android.mk).
+What is the difference between Android.bp and Android.mk?	Android.bp is the Soong format (JSON-like, declarative). Android.mk is the legacy GNU Make format (imperative). AOSP is migrating from .mk to .bp; both currently coexist.
+What does the 'm' build command do?	Builds the entire AOSP tree from the root. Equivalent to 'make' but using the Soong/Ninja build system.
+What is the difference between mm, mmm, and mma?	mm: build modules in the current directory. mmm: build modules in a specified directory. mma: build modules in the current directory and all their dependencies.
+What does envsetup.sh do?	A shell script sourced at the start of an AOSP build session (source build/envsetup.sh). It defines build helper functions like lunch, m, mm, mmm, croot, godir.
+What is a device tree in AOSP?	A set of configuration files (in device/<vendor>/<device>/) that define how to build AOSP for a specific hardware device: kernel config, partitions, HALs, init scripts, etc.
+What is the out/ directory in AOSP?	The build output directory. out/target/product/<device>/ contains the built system images (system.img, vendor.img, boot.img, etc.), while out/host/ contains host tools.
+
+# ==========================================
+# 2.3 Android Linux Kernel
+# ==========================================
+
+What Android-specific patches does the Android kernel have compared to mainline Linux?	Binder IPC driver, ashmem (anonymous shared memory, being replaced by memfd), ION/DMA-BUF heaps (memory allocation), wakelocks (power management), and fuse/eBPF filesystem enhancements
+What is the Binder kernel driver?	A Linux kernel driver (/dev/binder) that implements Android's primary IPC mechanism. It handles transaction passing, reference counting, death notifications, and shared memory mapping between processes.
+What is ashmem in Android?	Anonymous Shared Memory — an Android-specific kernel feature for sharing memory regions between processes without file backing. Being deprecated in favor of standard memfd_create.
+What is the purpose of ION / DMA-BUF heaps in Android?	They allocate large contiguous memory buffers for multimedia (camera, GPU, video codecs) that can be shared between processes and hardware devices without copying
+What is a defconfig in Android kernel building?	A default configuration file (arch/<arch>/configs/<name>_defconfig) that specifies the initial kernel configuration options for a specific device or platform
+What is merge_config in kernel building?	A script that merges multiple kernel configuration fragments into a single .config file, allowing modular composition of kernel features (e.g., base config + debug config + GKI config)
+What is a Device Tree (DT) in the Linux kernel context?	A data structure that describes the hardware layout of a system (CPUs, memory, buses, peripherals) so the kernel can configure itself without hardcoded board information
+What is the difference between DTB and DTO?	DTB (Device Tree Blob) is the compiled binary of the base Device Tree. DTO (Device Tree Overlay) is a compiled overlay that patches/extends the base DTB at boot time.
+Why are Device Tree Overlays used in Android?	They allow the SoC vendor to provide a base DTB and the device manufacturer to provide overlays for device-specific hardware (display, sensors, buttons) without modifying the base DT
+What are kernel modules (.ko files) in Android?	Loadable kernel modules that extend kernel functionality at runtime without recompiling the entire kernel. Critical for GKI where vendor drivers are loaded as modules.
+What is the boot image structure on Android?	A boot image (boot.img) contains a header (version-specific), the kernel image (compressed), and a ramdisk (containing init, fstab, and early boot files). The header version determines the layout format.
+What are the stages of init on Android?	First-stage init: runs from the ramdisk, mounts critical partitions (system, vendor), sets up SELinux. Second-stage init: runs from /system, parses init.rc files, starts services and daemons.
+What does first-stage init do?	Mounts critical partitions, initializes SELinux (loading policy), creates device nodes (/dev), and transitions to second-stage init by exec'ing /system/bin/init
+What does second-stage init do?	Parses init.rc and imported .rc files, starts system services (zygote, servicemanager, surfaceflinger), sets system properties, and monitors services for crashes (restart policies)

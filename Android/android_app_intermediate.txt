@@ -1,0 +1,127 @@
+# Android App Development — Intermediate
+# Format: Front[TAB]Back
+
+# ==========================================
+# 1.7 Jetpack Compose
+# ==========================================
+
+What is Jetpack Compose?	Android's modern, fully declarative UI toolkit where UI is built using Kotlin functions annotated with @Composable, replacing XML layouts
+What is a @Composable function?	A Kotlin function annotated with @Composable that describes a piece of UI. The Compose compiler transforms it into code that builds and updates the UI tree.
+What is recomposition in Jetpack Compose?	The process of calling @Composable functions again when their inputs (state) change, so the UI reflects the latest data. Only composables that read changed state are re-executed.
+What is smart recomposition?	Compose's ability to skip recomposing composables whose inputs have not changed, improving performance by only updating what's necessary
+What is state hoisting in Compose?	A pattern where state is moved up to a caller composable and passed down as parameters, making the child composable stateless and reusable. The child receives the state value and event callbacks.
+What does remember do in Compose?	remember stores a value across recompositions within the same composition. Without it, the value would be reset every time the composable recomposes.
+What is the difference between remember and rememberSaveable?	remember survives recompositions but not configuration changes or process death. rememberSaveable also survives configuration changes and process death (saves to Bundle).
+What does mutableStateOf do in Compose?	Creates a MutableState<T> object that Compose observes — when the value changes, any composables reading it will automatically recompose
+How does Modifier ordering affect composable behavior?	Modifiers are applied in order from first to last. For example, padding before background adds padding outside the background, while background before padding adds padding inside the background area.
+How do you create a custom Modifier in Compose?	By defining an extension function on Modifier that chains composed {}, drawBehind {}, layout {}, or other Modifier factory functions
+What is the difference between LazyColumn and Column?	Column lays out all children at once regardless of visibility. LazyColumn only composes and lays out visible items (like RecyclerView), making it efficient for long scrollable lists.
+What is LazyVerticalGrid?	A Compose component that displays items in a vertically scrollable grid with configurable column count (GridCells.Fixed or GridCells.Adaptive)
+What is Scaffold in Material 3 Compose?	A top-level layout composable that provides slots for TopAppBar, BottomAppBar, FloatingActionButton, Drawer, and SnackbarHost, handling their coordination
+What is LaunchedEffect in Compose?	A side-effect composable that launches a coroutine when it enters composition and cancels it when it leaves. Takes key parameters — the coroutine restarts when keys change.
+What is DisposableEffect in Compose?	A side-effect composable for effects that require cleanup. Provides an onDispose block that runs when the composable leaves composition or when keys change.
+What is SideEffect in Compose?	A side-effect composable that runs after every successful recomposition. Used to publish Compose state to non-Compose code (no cleanup, no suspend).
+What is rememberCoroutineScope in Compose?	Returns a CoroutineScope bound to the composable's lifecycle, useful for launching coroutines from event handlers (e.g., button clicks) where LaunchedEffect is not appropriate
+What does derivedStateOf do?	Creates a State object that only updates when the result of its calculation changes, even if the inputs change frequently. Avoids unnecessary recompositions for derived values.
+What does snapshotFlow do?	Converts Compose State reads into a Kotlin Flow, emitting values whenever the read state changes. Useful for bridging Compose state to Flow-based APIs.
+What is produceState?	A composable that launches a coroutine scoped to the composition and returns a State object. Useful for converting non-Compose observable data (Flow, LiveData, callbacks) into Compose State.
+What is CompositionLocal in Compose?	A mechanism to pass data implicitly down the composition tree without explicitly passing it through every composable parameter. Created with compositionLocalOf or staticCompositionLocalOf.
+When should you use staticCompositionLocalOf vs compositionLocalOf?	Use staticCompositionLocalOf for values that rarely change (expensive recomposition of entire subtree on change). Use compositionLocalOf for values that change frequently (only invalidates readers).
+How does navigation work in Jetpack Compose?	Using Navigation Compose: NavHost defines the navigation graph, NavController manages navigation, and composable() defines destinations with routes (string-based or type-safe)
+What are type-safe routes in Navigation Compose?	Using Kotlin serializable classes/objects as route definitions instead of string-based routes, providing compile-time safety for arguments and destination names (Navigation 2.8+)
+What is AnimatedVisibility in Compose?	A composable that animates the appearance and disappearance of its content with configurable enter/exit transitions (fadeIn, slideIn, expandIn, etc.)
+What is the difference between animateAsState and updateTransition?	animateAsState animates a single value between states. updateTransition can coordinate multiple animations simultaneously when transitioning between states.
+What is AndroidView in Compose?	A composable that allows embedding a traditional Android View inside a Compose layout, used for interop with legacy View-based components (e.g., MapView, AdView)
+What is ComposeView?	An Android View that hosts Compose content, enabling you to embed Compose UI inside existing View-based layouts (Fragment XML, RecyclerView items)
+What makes a type "stable" in Compose and why does it matter?	A stable type has immutable public properties or notifies Compose of changes via MutableState. Compose can skip recomposition of composables when stable parameters haven't changed. Annotate with @Stable or @Immutable.
+What is the Compose semantics system?	A tree of semantic properties attached to composables that describes their meaning for accessibility services and UI testing. Used by TalkBack and ComposeTestRule.
+
+# ==========================================
+# 1.8 Advanced Jetpack Libraries
+# ==========================================
+
+What is SavedStateHandle in ViewModel?	A key-value map that survives process death, allowing ViewModels to save and restore state. It is automatically saved to a Bundle and restored when the process is recreated.
+Why is SavedStateHandle important beyond onSaveInstanceState?	ViewModel normally only survives configuration changes. SavedStateHandle extends survival to process death, ensuring critical state (navigation args, user input) is preserved.
+How do you create a ViewModel with constructor parameters (besides Hilt)?	By creating a ViewModelProvider.Factory that instantiates the ViewModel with the required parameters, or using the viewModelFactory DSL (Lifecycle 2.5+)
+What is repeatOnLifecycle and when should you use it?	A suspend function that restarts a block of code when the lifecycle reaches a specified state (e.g., STARTED) and cancels it when it drops below. Used to safely collect Flows in Activities/Fragments.
+What is the difference between LifecycleOwner and LifecycleObserver?	LifecycleOwner (Activity, Fragment) has a Lifecycle. LifecycleObserver observes lifecycle events from a LifecycleOwner to perform actions at specific lifecycle states.
+What is a PagingSource in Paging 3?	A class that defines how to load pages of data from a single source (network or database). Implements the load() function which returns LoadResult.Page or LoadResult.Error.
+What is a RemoteMediator in Paging 3?	A class that handles loading data from a remote source and storing it in a local database (Room). It coordinates between the network and the local PagingSource for offline-first pagination.
+What are LoadStates in Paging 3?	Objects representing the loading state (Loading, NotLoading, Error) for three positions: refresh (initial load), prepend (loading before), and append (loading after)
+What are the three main use cases in CameraX?	Preview (viewfinder), ImageCapture (taking photos), and ImageAnalysis (real-time frame processing, e.g., barcode scanning, ML inference)
+How is CameraX lifecycle-aware?	CameraX binds to a LifecycleOwner — it automatically opens the camera on STARTED and releases it on STOPPED, preventing resource leaks
+What is Media3 (ExoPlayer)?	The Jetpack media playback library (successor to standalone ExoPlayer) providing MediaSession, Player API, streaming support (HLS, DASH), DRM, and notification integration
+What is the App Startup library?	A Jetpack library that provides a way to initialize components at app startup efficiently, replacing multiple ContentProviders with a single mechanism and supporting lazy initialization
+What is the difference between Macrobenchmark and Microbenchmark?	Microbenchmark measures small code units (function execution time) in-process. Macrobenchmark measures app-level metrics (startup time, scroll jank, animations) from a separate test APK.
+What is a Baseline Profile?	A list of methods/classes that should be AOT-compiled at install time, improving app startup and runtime performance by avoiding JIT compilation for critical code paths
+What is the SplashScreen API?	A Jetpack / platform API (Android 12+) that standardizes the app splash screen with an icon animation, background color, and exit animation, replacing custom splash screen Activities
+
+# ==========================================
+# 1.9 Architecture Patterns
+# ==========================================
+
+Describe the MVVM pattern in Android.	Model holds data, View (Activity/Fragment/Compose) observes and displays, ViewModel holds UI state and business logic, exposes data via StateFlow/LiveData. View observes ViewModel; ViewModel doesn't reference View.
+What is MVI (Model-View-Intent) and how does it differ from MVVM?	MVI uses unidirectional data flow: View sends Intents (user actions) → ViewModel processes them and updates a single immutable ViewState → View renders the state. This makes state management more predictable than MVVM.
+What are the three layers in Clean Architecture for Android?	Presentation (UI + ViewModel), Domain (use cases, business logic, pure Kotlin — no Android dependencies), Data (repositories, data sources, API/DB implementations)
+What is a Use Case (Interactor) in Clean Architecture?	A class in the Domain layer that encapsulates a single business operation (e.g., GetUserProfileUseCase). It depends only on repository interfaces, keeping business logic independent of frameworks.
+What is the Repository pattern?	A pattern where the Repository acts as a single source of truth, abstracting data sources (network, database, cache) behind a clean API. The ViewModel interacts only with the Repository.
+What does "offline-first" mean in the Repository pattern?	The local database is the single source of truth. Data is loaded from the database and displayed immediately, while the Repository fetches fresh data from the network in the background to update the DB.
+What annotations set up Hilt in an Android app?	@HiltAndroidApp on Application, @AndroidEntryPoint on Activity/Fragment, @Inject on constructor for injectable classes, @Module + @InstallIn for providing dependencies
+What is the difference between @Provides and @Binds in Hilt?	@Provides creates instances in a @Module method (for third-party classes you can't annotate). @Binds maps an interface to its implementation (more efficient, abstract method).
+What do Hilt scopes control?	The lifetime of a provided dependency. @Singleton lives with the app, @ViewModelScoped lives with the ViewModel, @ActivityScoped lives with the Activity, etc.
+What is @Qualifier in Hilt?	An annotation used to distinguish between multiple bindings of the same type. For example, two different OkHttpClient instances can be qualified with @Named("auth") and @Named("default").
+What is @EntryPoint in Hilt?	An interface annotated with @EntryPoint that allows accessing Hilt-provided dependencies from classes that Hilt doesn't directly inject (e.g., ContentProvider, custom non-standard entry points)
+What is Kotlin Multiplatform (KMP) and how does it relate to Android architecture?	KMP allows sharing Kotlin code across Android, iOS, and other platforms. Architecture-wise, the shared module typically contains the Domain and Data layers, while platform-specific code handles UI.
+What is modularization in Android and why use it?	Splitting an app into multiple Gradle modules (feature, core, library) to improve build times (parallel compilation, cached modules), enforce boundaries, enable code reuse, and improve team scalability
+What are the typical module types in a modularized Android app?	app (entry point), feature modules (UI + ViewModel), core modules (shared utilities, networking, database), domain module (use cases), and data modules (repositories, data sources)
+
+# ==========================================
+# 1.10 Testing
+# ==========================================
+
+What is the difference between JUnit 4 and JUnit 5 on Android?	JUnit 5 has better assertion APIs, nested tests, parameterized tests, and lifecycle callbacks (@BeforeEach). Requires the android-junit5 plugin. JUnit 4 is still the default in many projects.
+What is MockK and why is it popular for Android Kotlin testing?	MockK is a mocking framework built for Kotlin, supporting coroutines, extension functions, top-level functions, and DSL-style mock definitions (every { }, verify { })
+What is the difference between Mockito and MockK?	Mockito is Java-first and has issues with Kotlin final classes (requires mockito-kotlin). MockK is Kotlin-native, supports suspend functions, extension functions, and has a cleaner Kotlin DSL.
+What is Robolectric?	A framework that runs Android unit tests on the JVM by providing shadow implementations of Android SDK classes, enabling fast testing without a device or emulator
+What are the three main components of an Espresso test?	ViewMatcher (find the view: onView(withId(...))), ViewAction (perform action: .perform(click())), ViewAssertion (verify result: .check(matches(isDisplayed())))
+What is an IdlingResource in Espresso?	A mechanism that tells Espresso to wait for an async operation (network call, animation) to complete before proceeding with assertions, ensuring test synchronization
+What is UI Automator and how does it differ from Espresso?	UI Automator can interact with any app on the device (cross-app testing, system UI). Espresso only tests within your own app but provides deeper view hierarchy access and auto-synchronization.
+How do you test Compose UI?	Use createComposeRule() or createAndroidComposeRule(), set content, then find nodes with onNodeWithText/onNodeWithTag and assert with assertIsDisplayed, performClick, etc.
+What is Turbine?	A testing library for Kotlin Flows that provides a simple API to collect and assert emissions, errors, and completion using awaitItem(), awaitError(), awaitComplete()
+What is @HiltAndroidTest?	An annotation for instrumented or Robolectric tests that sets up Hilt dependency injection. Combined with @UninstallModules to replace production modules with test modules.
+What is the difference between a fake and a mock?	A fake is a working implementation with shortcuts (e.g., in-memory database). A mock is a configured object that records interactions for verification. Fakes test behavior; mocks test interactions.
+What is TestDispatcher in coroutine testing?	A CoroutineDispatcher for tests that gives you control over virtual time. StandardTestDispatcher queues coroutines (you advance manually). UnconfinedTestDispatcher executes eagerly.
+What does runTest do?	A coroutine test builder that runs a test in a TestScope with a TestDispatcher, automatically advancing time and failing on uncaught exceptions
+
+# ==========================================
+# 1.11 Build System & Tooling
+# ==========================================
+
+What is the difference between build.gradle and build.gradle.kts?	build.gradle uses Groovy DSL. build.gradle.kts uses Kotlin DSL, providing type-safe configurations, IDE autocompletion, and refactoring support.
+What are build variants in Android?	Combinations of buildTypes (debug, release) and productFlavors that generate different versions of your app (e.g., freeDebug, paidRelease)
+What are productFlavors used for?	To create different versions of an app from the same codebase — e.g., free vs paid, mock vs production, or different branding/client versions
+What is the difference between APK and AAB (Android App Bundle)?	APK is a self-contained installable package. AAB is a publishing format where Google Play generates optimized APKs per device configuration (screen density, ABI, language), reducing download size.
+What does R8 do in Android builds?	R8 is the code shrinker, optimizer, and obfuscator. It removes unused code (tree-shaking), optimizes bytecode, and renames classes/methods to short names, reducing APK size and making reverse engineering harder.
+What is the difference between R8 and ProGuard?	R8 is Google's replacement for ProGuard, built into AGP. It's faster, produces smaller output, and supports desugaring. It uses ProGuard-compatible rules but has its own optimizations.
+What does @Keep do in R8/ProGuard?	Prevents the annotated class, method, or field from being removed or renamed during shrinking/obfuscation
+What are consumer ProGuard rules?	ProGuard/R8 rules bundled inside a library (AAR) via consumerProguardFiles. They are automatically included when the app consuming the library is minified, ensuring the library works correctly.
+What is a Gradle Version Catalog (libs.versions.toml)?	A centralized file in gradle/ that declares all dependency versions, libraries, bundles, and plugins in one place, enabling consistent version management across modules
+What is the Gradle configuration cache?	A feature that caches the result of the configuration phase, so subsequent builds skip re-evaluating build scripts when nothing has changed, significantly improving build times
+What is Android Lint?	A static analysis tool that checks Android project source files for potential bugs, performance issues, security vulnerabilities, accessibility problems, and best practice violations
+How do you create a custom Lint rule?	By extending Detector, implementing a Scanner interface (e.g., UastScanner), registering issues in an IssueRegistry, and packaging it as a lint check module
+
+# ==========================================
+# 1.12 Background Processing & IPC
+# ==========================================
+
+What are the three types of Android Services?	Foreground service (visible notification, user-aware work), Background service (no UI, restricted since Android 8), Bound service (client-server interface via onBind)
+What is the foreground service type requirement (Android 14+)?	Apps targeting Android 14+ must declare a foregroundServiceType in the manifest (e.g., camera, location, mediaPlayback, dataSync) and hold the corresponding permission
+When should you use WorkManager vs a foreground service?	WorkManager for deferrable, guaranteed background work (even across restarts). Foreground service for ongoing user-initiated tasks that need immediate execution with a visible notification.
+What is the difference between JobScheduler and WorkManager?	JobScheduler is a platform API with limited features. WorkManager wraps JobScheduler (API 23+), adding chaining, constraints, retries, and backward compatibility. Prefer WorkManager.
+What is the difference between exact and inexact alarms in AlarmManager?	Exact alarms fire at the precise time (requires SCHEDULE_EXACT_ALARM permission on Android 12+). Inexact alarms may be batched by the system for battery optimization.
+What is a BroadcastReceiver and how is it registered?	A component that receives system or app broadcast intents. Register statically in manifest (limited since Android 8) or dynamically via Context.registerReceiver() for runtime events.
+What is the difference between LocalBroadcastManager and system broadcasts?	LocalBroadcastManager sends broadcasts only within the app process (faster, secure, no IPC). System broadcasts cross process boundaries. Note: LocalBroadcastManager is deprecated — use LiveData, Flow, or EventBus instead.
+What is AIDL (Android Interface Definition Language)?	A language for defining IPC interfaces between processes. The AIDL compiler generates Stub (server) and Proxy (client) classes based on the interface definition.
+How does Binder IPC work at a high level?	The client calls a method on the Proxy, which serializes arguments into a Parcel, sends it to the kernel Binder driver, which delivers it to the server's Stub.onTransact() for deserialization and execution.
+What is Parcelable and how does it differ from Serializable?	Parcelable is Android's high-performance serialization for IPC via Binder. It requires explicit marshalling code but is much faster than Java Serializable, which uses reflection.
+What is the Messenger pattern for IPC?	A simplified IPC mechanism using a Handler on the server side and a Messenger that clients can send Messages to. Simpler than AIDL but limited to one-way, serialized message delivery.

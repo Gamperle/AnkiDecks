@@ -1,0 +1,74 @@
+# Android App Development — Pro
+# Format: Front[TAB]Back
+
+# ==========================================
+# 1.13 Performance & Optimization
+# ==========================================
+
+What is Perfetto and how does it improve over Systrace?	Perfetto is a system-wide tracing tool that captures CPU scheduling, GPU rendering, Binder calls, and custom app trace points. It offers SQL-based analysis (Trace Processor), longer traces, and a modern web-based UI — replacing Systrace.
+What is the difference between cold, warm, and hot app start?	Cold start: process not running, full initialization. Warm start: process exists but Activity is recreated (onCreate). Hot start: Activity exists in memory, just brought to foreground (onResume). Cold is slowest.
+How do Baseline Profiles improve app performance?	They provide a list of critical code paths that are AOT-compiled at install time (via cloud profiles or embedded in AAB), reducing JIT compilation at runtime and improving startup and scroll performance by up to 30-40%.
+How do you generate a Baseline Profile?	Using the Macrobenchmark library: write a BaselineProfileGenerator instrumented test that exercises critical user journeys, then run it to produce a baseline-prof.txt included in the APK/AAB.
+What is R8 full mode and how does it differ from compatibility mode?	R8 full mode applies more aggressive optimizations: assumes classes are not reflectively accessed (unless kept), removes more dead code, and can inline across module boundaries. Compatibility mode preserves ProGuard semantics.
+How does LeakCanary detect memory leaks?	LeakCanary watches destroyed Activities and Fragments using WeakReferences and a ReferenceQueue. If an object isn't GC'd within a threshold, it dumps the heap and analyzes the reference chain to find the leak.
+What is inBitmap reuse?	A BitmapFactory.Options flag that tells the decoder to reuse an existing Bitmap's memory allocation for a new decode operation, reducing garbage collection pressure from repeated Bitmap loading
+What is the RenderThread in Android?	A separate thread (introduced in Android 5.0) dedicated to executing GPU rendering commands. It offloads drawing operations from the UI thread, enabling smoother animations and reducing jank.
+How do you detect GPU overdraw?	Enable "Debug GPU Overdraw" in Developer Options. Areas drawn once appear in their true color; increasing overdraw levels are shown in blue (1x), green (2x), pink (3x), red (4x+).
+What is StrictMode?	A development tool that detects accidental disk/network operations on the main thread (ThreadPolicy) and leaked objects like unclosed Cursors or Activities (VmPolicy). Violations can log, flash, or crash.
+What causes an ANR (Application Not Responding)?	The main thread is blocked for more than 5 seconds (input/touch event) or a BroadcastReceiver doesn't finish within 10 seconds. In Android 14+, background ANRs are also reported.
+How do you analyze ANR traces?	Examine /data/anr/traces.txt (via adb bugreport) — it contains thread dumps of all threads at the time of ANR. Look for the main thread's stack trace to find the blocking operation.
+What is a hardware layer and when should you use one?	A hardware layer (View.LAYER_TYPE_HARDWARE) renders a View subtree into an off-screen GPU texture. Useful during animations — the texture can be transformed (translate, alpha, scale) without re-rendering, but costs GPU memory.
+
+# ==========================================
+# 1.14 Advanced Kotlin & Coroutines
+# ==========================================
+
+How does the Kotlin compiler transform a suspend function?	It uses CPS (Continuation Passing Style) — the compiler adds a Continuation parameter and transforms the function body into a state machine where each suspension point is a state transition.
+What is a Continuation in Kotlin coroutines?	An interface with resumeWith(Result<T>) that represents the "rest of the computation" after a suspension point. The compiler generates Continuation implementations as state machines.
+What is CoroutineContext and what does it contain?	A map-like collection of Element instances: Job (lifecycle), CoroutineDispatcher (thread), CoroutineExceptionHandler (error handling), CoroutineName (debugging). Elements are combined with the + operator.
+What is the difference between Dispatchers.Main and Dispatchers.Main.immediate?	Dispatchers.Main always dispatches to the main thread queue. Dispatchers.Main.immediate executes immediately if already on the main thread, avoiding an unnecessary dispatch and reducing latency.
+What is structured concurrency?	A design principle where coroutines form a parent-child hierarchy. If a parent is cancelled, all children are cancelled. If a child fails, the parent (and siblings) are cancelled — ensuring no orphaned coroutines.
+What is a SupervisorJob and when should you use it?	A Job where child failure does not cancel the parent or siblings. Use it when children are independent tasks (e.g., viewModelScope uses SupervisorJob so one failing coroutine doesn't cancel others).
+How does CoroutineExceptionHandler work?	It's an optional CoroutineContext element that catches uncaught exceptions in coroutines launched with launch (not async). It only works at the root scope level — not for child coroutines.
+What is the difference between a Channel and a Flow?	Channels are hot — they produce values regardless of receivers, supporting multiple producers and single consumer. Flows are cold — they don't produce values until collected, and each collector gets its own stream.
+What are fan-in and fan-out patterns with Channels?	Fan-out: one Channel, multiple coroutines consuming from it (load balancing). Fan-in: multiple coroutines sending to one Channel (aggregation).
+What is the actor coroutine pattern?	A pattern using a coroutine with a Channel inbox to process messages sequentially, providing safe mutable state access without locks. Implemented via actor { } builder (now marked as obsolete API).
+What is backpressure in Flows and how do you handle it?	When a collector is slower than the emitter, backpressure occurs. Handle with buffer() (concurrent emission/collection), conflate() (drop intermediate), or collectLatest() (cancel slow collection on new emission).
+What is the difference between callbackFlow and channelFlow?	callbackFlow bridges callback-based APIs to Flow (e.g., listeners, Firebase), must use awaitClose for cleanup. channelFlow is for concurrent flow emissions from multiple coroutines.
+What is KSP (Kotlin Symbol Processing)?	A Kotlin compiler plugin API for annotation processing that is faster than KAPT because it works directly with Kotlin symbols instead of generating Java stubs first. Room, Moshi, and Hilt support KSP.
+Why is KSP preferred over KAPT?	KSP is up to 2x faster (no Java stub generation), understands Kotlin-specific features (nullability, extensions, inline classes), and reduces build times significantly in multi-module projects
+What does the Compose compiler plugin do?	It transforms @Composable functions into code that manages the slot table (Compose's internal data structure), enables smart recomposition, tracks state reads, and generates code for skipping unchanged composables.
+
+# ==========================================
+# 1.15 Advanced Security
+# ==========================================
+
+What is the Android Keystore and what protection does it offer?	A system facility that stores cryptographic keys inside a hardware-backed container (TEE or StrongBox) so they cannot be extracted. Keys never leave the secure hardware during crypto operations.
+What is the difference between TEE and StrongBox for key storage?	TEE (Trusted Execution Environment) runs on the main processor in a secure world (ARM TrustZone). StrongBox is a dedicated secure element chip (separate hardware), offering stronger physical attack resistance.
+What is key attestation in Android?	A mechanism where the Keystore generates a certificate chain that cryptographically proves a key was generated in secure hardware on a specific device, verified by a remote server against Google's root certificate.
+What is BiometricPrompt?	A Jetpack API for authenticating users with biometrics (fingerprint, face, iris) that provides a consistent system UI across devices and supports Class 2 (weak) and Class 3 (strong) biometric authenticators.
+What is the difference between Class 2 and Class 3 biometrics?	Class 3 (Strong) biometrics have < 7% SAR/IAR and can unlock CryptoObjects for cryptographic operations. Class 2 (Weak) biometrics have looser requirements and cannot be used with CryptoObjects.
+What is a CryptoObject in BiometricPrompt?	A wrapper around cryptographic operations (Cipher, Signature, Mac) that requires biometric authentication to unlock the key. Ensures the crypto operation is only performed when the user is biometrically verified.
+What is the Network Security Config?	An XML configuration (network_security_config.xml) that customizes TLS settings per-domain: certificate pinning, cleartext traffic, custom CA certificates, and debug overrides — without modifying app code
+How does certificate pinning work in Network Security Config?	You specify pin-set entries with SHA-256 hashes of certificates in the trust chain. The app only trusts connections where the server certificate chain matches at least one pin. Include a backup pin for rotation.
+What is the Play Integrity API (replacement for SafetyNet)?	A Google API that provides device attestation verdicts: device integrity (genuine, rooted, or emulator), app integrity (real or tampered), and account licensing — used to verify the app runs in a trustworthy environment
+What are the OWASP Mobile Top 10 risks?	M1: Improper Credential Usage, M2: Inadequate Supply Chain Security, M3: Insecure Authentication/Authorization, M4: Insufficient Input/Output Validation, M5: Insecure Communication, M6: Inadequate Privacy Controls, M7: Insufficient Binary Protections, M8: Security Misconfiguration, M9: Insecure Data Storage, M10: Insufficient Cryptography
+How can an attacker bypass SSL pinning on Android?	Using tools like Frida or Objection to hook the TrustManager or OkHttp's CertificatePinner at runtime, replacing them with permissive implementations that accept any certificate
+What tools are commonly used to reverse-engineer Android APKs?	jadx (DEX → Java decompiler), apktool (resource + smali extraction), dex2jar, Ghidra (native code analysis), and Frida (dynamic instrumentation of running apps)
+How effective is R8 obfuscation against determined attackers?	R8 obfuscation (renaming) makes reverse engineering harder but is not a strong protection. Determined attackers can deobfuscate using control flow analysis. Combine with string encryption, native code, and server-side logic for defense in depth.
+
+# ==========================================
+# 1.16 Gradle Plugin Development & Build Internals
+# ==========================================
+
+Where can you define a custom Gradle plugin?	In buildSrc/ (available to all modules, rebuilt every time), in an included build (composite build, cached), or as a standalone Gradle plugin project published as a dependency
+What is a Gradle Task and what is @TaskAction?	A Task is a unit of work in a Gradle build (e.g., compile, copy). @TaskAction annotates the method that contains the task's execution logic.
+What are incremental tasks in Gradle?	Tasks that track which input files changed and only process those files, avoiding reprocessing unchanged inputs. Requires declaring @InputFiles, @OutputDirectory, and implementing InputChanges.
+What are up-to-date checks in Gradle?	Gradle compares task input and output fingerprints between builds. If nothing changed, the task is marked UP-TO-DATE and skipped, saving build time.
+What replaced the Transform API in AGP 7+?	AsmClassVisitorFactory — a more efficient bytecode transformation API where you register ASM ClassVisitor implementations that AGP applies during the dexing pipeline
+What is the AGP Variant API?	An API that lets plugins customize per-variant (debug/release/flavor) build configuration: modify sources, add generated sources, manipulate artifacts (APK, manifest, resources), and register custom tasks.
+What is the AGP Artifacts API?	An API for accessing and transforming build artifacts (manifests, classes, resources, APKs) in a type-safe way. Plugins can use get(), transform(), and append() operations on artifact types.
+What is UAST in Android Lint?	Universal Abstract Syntax Tree — a language-agnostic AST representation used by Lint to analyze both Java and Kotlin source code with the same visitor, simplifying custom lint check development
+What is PSI in the context of custom Lint rules?	Program Structure Interface — IntelliJ's lower-level syntax tree. Lint uses PSI under UAST for language-specific analysis. UAST is preferred for most checks; PSI for language-specific edge cases.
+What is the role of IssueRegistry in custom Lint?	IssueRegistry is the entry point for a custom Lint library. It lists all Issues (rules) provided by the library and is registered via META-INF/services or Gradle.
+Why migrate from KAPT to KSP for annotation processing?	KAPT generates Java stubs for every Kotlin file before running annotation processors — slow and memory-intensive. KSP operates directly on Kotlin symbols, is up to 2x faster, and preserves Kotlin information.

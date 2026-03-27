@@ -1,0 +1,80 @@
+# AOSP (Android Open Source Project) — Pro
+# Format: Front[TAB]Back
+
+# ==========================================
+# 2.12 AOSP Customization & Porting
+# ==========================================
+
+What are the key files needed to port AOSP to a new device?	BoardConfig.mk (hardware config: partition sizes, arch, kernel), device.mk (packages, overlays), AndroidProducts.mk (lunch targets), vendorsetup.sh (lunch registration), plus kernel sources and HAL implementations
+What is BoardConfig.mk?	A makefile that defines board-level hardware configuration — target architecture, partition sizes, bootloader type, kernel paths, SELinux policy paths, and hardware feature flags
+What does inherit-product do in device makefiles?	Inherits (includes) product configuration from a parent makefile. For example, $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk) pulls in the standard AOSP base product config.
+How do you add a new AIDL system service to AOSP?	Define the AIDL interface, implement the Stub in a Java/Kotlin service class, register it with ServiceManager in SystemServer, create a Manager wrapper, add SELinux policies for the new service context.
+How do you register a custom system service with ServiceManager?	In SystemServer, call ServiceManager.addService("my_service", new MyServiceImpl()), then define a service_contexts entry and allow rules in SELinux policy
+How do you implement a custom HAL?	Define the HAL interface in AIDL (or HIDL), implement the server in C++, create an init.rc service entry, add VINTF manifest entries, write SELinux policies for the HAL domain, and build with Android.bp.
+What is a native daemon in AOSP?	A C/C++ background process that runs as a system service (e.g., surfaceflinger, audioserver, netd). Defined in init.rc with service entries, started at boot.
+How do you integrate a native daemon with init?	Write an init .rc file with a service entry specifying the binary path, user/group, SELinux domain (seclabel), class, restart policy, and any socket/file permissions needed.
+What is RRO (Runtime Resource Overlay)?	A mechanism to replace resources (strings, drawables, layouts) of a target app/framework at runtime using overlay APKs, without modifying the target's source code
+What is the difference between static and runtime resource overlays?	Static overlays are baked into the system image and always active. Runtime overlays (RRO) can be enabled/disabled dynamically using OverlayManagerService.
+How do you customize the System UI in AOSP?	Modify packages/apps/SystemUI — customize StatusBar, NavigationBar, LockScreen, QuickSettings, and Launcher. SystemUI uses a plugin architecture for modular customization.
+What is the SystemUI plugin architecture?	An extensibility mechanism where SystemUI loads plugins dynamically at runtime via ExtensionController. Plugins can override or extend UI elements without modifying SystemUI source.
+How does the A/B OTA update system work?	The device has two slots (A and B) for system/vendor partitions. OTA applies updates to the inactive slot while the device runs normally. On reboot, the bootloader switches to the updated slot. Rollback is possible by switching back.
+What is virtual A/B?	A storage-efficient variant of A/B updates that uses snapshots (dm-snapshot) instead of full duplicate partitions. It writes delta changes to userdata and merges them after reboot.
+What is update_engine?	The native daemon that handles OTA payload application — downloads/reads the payload, verifies signatures, applies file/block differences to the inactive slot, and verifies the result
+
+# ==========================================
+# 2.13 Build System Deep Dive
+# ==========================================
+
+How does Soong work internally?	Soong reads Android.bp files (Blueprint format), resolves dependencies, generates Ninja build files, and then Ninja executes the actual build. Soong replaces the Make-based build system.
+What are namespaces in Soong?	A scoping mechanism that prevents module name collisions across different parts of the source tree. Each namespace has its own set of module names.
+What is a genrule in Soong?	A module type that runs a custom command to generate source files or other outputs from inputs. Used for code generation, preprocessing, or custom build steps.
+What is the difference between cc_library, cc_library_shared, and cc_library_static?	cc_library builds both shared and static versions. cc_library_shared builds only a .so. cc_library_static builds only a .a. Choose based on whether the library should be linked statically or dynamically.
+What is PRODUCT_PACKAGES?	A make variable that lists packages (APKs, native binaries, libraries) to include in the built system image. Adding a module here causes it to be built and installed.
+What is PRODUCT_COPY_FILES?	A make variable that copies files from the source tree to specific locations in the build output. Format: source_path:destination_path. Used for config files, firmware, etc.
+What is the mixed build approach with Bazel + Soong?	Google is migrating AOSP's build from Soong to Bazel. During the transition, mixed builds allow some modules to be built by Bazel while others use Soong, with inter-build-system dependencies.
+What is VNDK (Vendor Native Development Kit)?	A set of system libraries that the vendor partition is allowed to use, defined to maintain a stable interface between system and vendor. VNDK libraries are versioned and snapshotted.
+What is the difference between VNDK, VNDK-SP, and LLNDK?	VNDK: vendor-available system libraries. VNDK-SP (Same-Process): VNDK libraries loaded into vendor processes (same process as framework, e.g., OpenGL). LLNDK: low-level NDK (liblog, libc, libm) available to everyone.
+What is a vendor snapshot?	A prebuilt snapshot of VNDK libraries at a specific Android version, allowing the vendor partition to be built against a fixed interface without needing the full framework source
+
+# ==========================================
+# 2.14 APEX & Mainline Modules
+# ==========================================
+
+What is APEX (Android Pony EXpress)?	A container format for installing and updating modular system components (like native libraries, framework JARs, and HALs) independently via the Play Store or OTA, without a full system update
+Name five Mainline modules delivered via APEX.	ART (runtime), Conscrypt (TLS), Media codecs, DNS resolver, NetworkStack, tethering, Wi-Fi, Bluetooth, NNAPI (Neural Networks), CellBroadcast, DocumentsUI
+What is inside an APEX file?	An apex_manifest.pb (metadata), a payload disk image (ext4 or f2fs) containing the files, an fs_metadata file, and a v4 APK signing signature for verification
+How does APEX activation work?	apexd (APEX daemon) verifies the APEX signature, mounts the payload image via loop device, and bind-mounts the contents to the expected filesystem paths (e.g., /apex/com.android.art/)
+What is the difference between flattened and compressed APEX?	Flattened APEX: files extracted directly to filesystem (no loop mount, used on devices without loop device support). Compressed APEX: payload is compressed (zlib/deflate), decompressed at activation time.
+What is apexd?	The APEX daemon that manages APEX lifecycle — scans for APEXes, verifies signatures, activates (mounts) them at boot, handles updates and rollbacks
+How does APEX enforce module boundaries?	Each APEX module exposes stable APIs via APEX stubs — header-only libraries that define the public interface. Internal symbols are hidden, preventing vendor code from depending on unstable internals.
+
+# ==========================================
+# 2.15 Debugging & Tracing AOSP
+# ==========================================
+
+What are the logcat log buffers?	main (app logs), system (system framework logs), crash (crash dumps), events (binary event logs), kernel (kernel messages). Access specific buffers with logcat -b <buffer>.
+What are the logcat log levels?	Verbose (V), Debug (D), Info (I), Warn (W), Error (E), Fatal/Assert (F/A). Filter with logcat *:W to show only Warning and above.
+What does 'adb shell dumpsys' do?	Calls the dump() method on a system service's Binder, outputting its current state. Example: dumpsys activity (AMS state), dumpsys battery, dumpsys window (WMS state), dumpsys meminfo.
+What is Perfetto in the AOSP context?	A system-wide tracing infrastructure that captures kernel ftrace events, atrace categories, custom user-space trace points, and hardware counters. Analysis via SQL queries on the Trace Processor.
+What is ftrace and how does atrace relate to it?	ftrace is the Linux kernel trace framework. atrace is Android's wrapper that enables specific ftrace categories (sched, gfx, input, etc.) and adds userspace tracing via ATRACE macros.
+What is Simpleperf?	Android's CPU profiling tool (similar to Linux perf) that uses hardware PMU counters. Produces call graphs, flame charts, and per-function CPU samples for both Java and native code.
+What is a tombstone in Android?	A crash dump file generated when a native process crashes (SIGSEGV, SIGABRT). Contains register state, stack trace, memory maps, and backtrace. Stored in /data/tombstones/.
+How do you remotely debug native code in AOSP?	Use gdbserver or lldb-server on the device, forward ports via adb, and attach GDB/LLDB from the host. Android Studio also supports native debugging via LLDB.
+What does bugreport/bugreportz contain?	A comprehensive device state capture: logcat dumps (all buffers), dumpsys of all services, dmesg, proc filesystem state, ANR traces, battery stats, running processes, and more — zipped for analysis.
+
+# ==========================================
+# 2.16 Kernel & Low-Level
+# ==========================================
+
+What is GKI and why was it introduced?	Generic Kernel Image — a Google-maintained common kernel that separates core kernel functionality from vendor modules via a stable KMI. This allows kernel updates independent of vendor drivers.
+What is KMI (Kernel Module Interface)?	A set of exported kernel symbols with a stable ABI that vendor modules can depend on. Google monitors KMI stability — breaking changes are not allowed within a KMI generation (e.g., android14-6.1).
+How is KMI stability monitored?	Using ABI monitoring tools that compare the list of exported symbols and their type signatures. Patches that break KMI symbols are rejected from the GKI branch.
+What is eBPF and how is it used on Android?	Extended Berkeley Packet Filter — programs running in the kernel VM for network traffic monitoring, per-UID data usage tracking, power stats collection, and CPU frequency tracking. Used by netd and system health HAL.
+What are cgroups in Android?	Linux control groups used to limit, isolate, and prioritize resource usage (CPU, memory, I/O) for groups of processes. Android uses cgroups for process scheduling and memory management.
+What is LMKD (Low Memory Killer Daemon)?	A userspace daemon that monitors memory pressure via PSI (Pressure Stall Information) or vmpressure and kills processes based on their oom_adj_score to free memory, replacing the kernel-side LMK.
+What is oom_adj_score?	A priority value (-1000 to 1000) assigned to each process by AMS. Lower score = higher priority (foreground = 0, cached = 900+). LMKD kills highest-score processes first when memory is low.
+How did Android migrate from ION to DMA-BUF heaps?	ION was an Android-specific kernel memory allocator. The migration replaced ION with the mainline Linux DMA-BUF heap framework, which provides the same functionality through standard Linux APIs.
+What replaced ashmem in modern Android?	memfd_create — a standard Linux system call that creates anonymous file descriptors for shared memory. Unlike ashmem, memfd is part of mainline Linux.
+What is binderfs?	A filesystem (/dev/binderfs/) for dynamically creating Binder device nodes, replacing the static /dev/binder devices. Used to support multiple Binder domains in containers and virtualization.
+What is seccomp-bpf in the Android kernel?	Secure computing with BPF filters — a kernel feature that restricts which system calls a process can make. Android applies seccomp-bpf policies to app processes to minimize kernel attack surface.
+What is IMA (Integrity Measurement Architecture)?	A kernel security feature that measures file integrity by computing and verifying hashes of files before they are loaded/executed. Used for verified execution and supply chain integrity.

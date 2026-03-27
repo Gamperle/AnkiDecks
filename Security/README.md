@@ -528,25 +528,12 @@ Comprehensive security topics for coding, web development, and embedded developm
 
 ---
 
-## Deck File Plan
+## Deck Files
 
-Each topic section above will become one or more `.txt` Anki deck files in this folder using the `Front[TAB]Back` format. Files will be organized by domain:
+All security questions are organized into three level-based deck files covering every topic section above:
 
-| Domain | Planned Files |
-|---|---|
-| Fundamentals | `security_fundamentals.txt` |
-| TLS & Transport | `tls_basics.txt`, `tls_intermediate.txt`, `tls_advanced.txt` |
-| Cryptography | `crypto_basics.txt`, `crypto_advanced.txt` |
-| Web Security | `web_security_fundamentals.txt`, `web_security_advanced.txt`, `web_security_pro.txt` |
-| Auth & Identity | `auth_fundamentals.txt`, `auth_advanced.txt` |
-| API Security | `api_security.txt` |
-| Network & Infra | `network_security.txt`, `cloud_security.txt` |
-| Memory & Process Security | `memory_security_basics.txt`, `memory_security_intermediate.txt`, `memory_exploitation_advanced.txt` |
-| Secure Coding | `secure_coding.txt`, `secure_sdlc.txt` |
-| Embedded | `embedded_security_basics.txt`, `embedded_security_advanced.txt`, `embedded_security_pro.txt` |
-| Unix / Linux | `unix_security_basics.txt`, `unix_security_intermediate.txt`, `unix_security_advanced.txt` |
-| Java Security | `java_security_basics.txt`, `java_security_intermediate.txt`, `java_security_advanced.txt` |
-| Android Security | `android_security_basics.txt`, `android_security_intermediate.txt`, `android_security_advanced.txt` |
-| Automotive Security | `automotive_security_basics.txt`, `automotive_security_intermediate.txt`, `automotive_security_advanced.txt` |
-| Offensive (for defenders) | `offensive_concepts.txt` |
-| Architecture | `security_architecture.txt` |
+| Level | File | Topics Covered |
+|---|---|---|
+| Beginner | `security_beginner.txt` | Security Fundamentals, Auth Basics, TLS Basics, Web Security Fundamentals, Memory Basics, Secure Coding, Unix Basics, Java Basics, Android Basics, Automotive Basics, Embedded Basics |
+| Intermediate | `security_intermediate.txt` | TLS In Depth, Cryptography, Web App Security, Auth & Sessions, API Security, Network & Infra, Memory In Depth, SDL, Unix In Depth, Java In Depth, Android In Depth, Automotive In Depth, Embedded Intermediate |
+| Pro | `security_pro.txt` | Advanced TLS & Protocols, Advanced Crypto, Advanced Web, Advanced Auth & Identity, Memory Exploitation, Unix Advanced, Java Advanced, Android Advanced, Automotive Advanced, Offensive Security, Architecture & Design, Embedded & Hardware, Cloud & Infra |

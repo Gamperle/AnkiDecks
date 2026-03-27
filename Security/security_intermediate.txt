@@ -1,0 +1,198 @@
+# Security Intermediate Questions
+# Format: Front[TAB]Back
+
+# === TLS & Transport Security (In Depth) ===
+
+Describe the TLS 1.2 handshake step by step.	1. ClientHello (supported cipher suites, random). 2. ServerHello (chosen cipher suite, random), Certificate, ServerKeyExchange (if ECDHE/DHE), ServerHelloDone. 3. ClientKeyExchange (premaster secret or DH public key), ChangeCipherSpec, Finished. 4. Server ChangeCipherSpec, Finished. Two round trips total.
+How does the TLS 1.3 handshake differ from TLS 1.2?	TLS 1.3 completes in 1-RTT (one round trip). The ClientHello includes key shares. TLS 1.3 removed static RSA key exchange, CBC cipher suites, and compression. Only 5 cipher suites remain. 0-RTT resumption is supported for returning clients.
+What is 0-RTT in TLS 1.3?	Zero Round Trip Time resumption — a returning client can send encrypted application data in the very first message, before the handshake completes. Risk: 0-RTT data is vulnerable to replay attacks.
+What are the components of a TLS cipher suite name?	Key exchange (e.g., ECDHE), authentication (e.g., RSA), bulk encryption (e.g., AES_128_GCM), and hash/PRF (e.g., SHA256). Example: `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`.
+What cipher suites does TLS 1.3 support?	Only 5: `TLS_AES_128_GCM_SHA256`, `TLS_AES_256_GCM_SHA384`, `TLS_CHACHA20_POLY1305_SHA256`, `TLS_AES_128_CCM_SHA256`, `TLS_AES_128_CCM_8_SHA256`. Key exchange is always ECDHE or DHE (negotiated separately).
+What is ALPN (Application-Layer Protocol Negotiation)?	A TLS extension where client and server negotiate the application protocol (e.g., `h2` for HTTP/2, `http/1.1`) during the TLS handshake. Required for HTTP/2 over TLS.
+How does ALPN work during the TLS handshake?	The client sends a list of supported protocols in the ClientHello. The server selects one and includes it in the ServerHello (TLS 1.2) or EncryptedExtensions (TLS 1.3).
+What is SNI (Server Name Indication)?	A TLS extension where the client specifies the target hostname in the ClientHello, allowing the server to present the correct certificate when hosting multiple domains on one IP.
+What privacy concern does SNI have?	The SNI hostname is sent in plaintext in TLS 1.2/1.3 ClientHello, revealing which site the user is visiting even though the traffic is encrypted. Encrypted Client Hello (ECH) addresses this.
+What is HSTS and why is the preload list important?	HSTS tells browsers to always use HTTPS. But the first visit could still be HTTP. The HSTS preload list is hardcoded in browsers so that HTTPS is enforced from the very first connection.
+What is a certificate chain and how is it validated?	A chain of trust: Leaf cert (server) → Intermediate CA(s) → Root CA. The browser validates each signature up the chain until reaching a trusted root in its trust store.
+What is certificate pinning?	Hardcoding the expected certificate or public key (hash) in the client, so it only accepts that specific certificate, not just any CA-signed cert. Prevents rogue CAs from issuing fraudulent certs.
+Why was HPKP deprecated?	HTTP Public Key Pinning was too risky — if the pinned key was lost/rotated, the site became permanently inaccessible. Misconfiguration could cause denial of service. Certificate Transparency replaced it.
+What is OCSP stapling?	Instead of the browser querying the CA's OCSP server to check certificate revocation, the web server fetches and caches the OCSP response and includes ("staples") it in the TLS handshake. Improves privacy and performance.
+What is the difference between DHE and ECDHE?	Both provide ephemeral key exchange for forward secrecy. DHE uses classical Diffie-Hellman (large integers); ECDHE uses elliptic curves — smaller keys, faster computation, same security level.
+What is Perfect Forward Secrecy (PFS)?	If the server's long-term private key is compromised, past session keys remain secure because each session used unique ephemeral keys. Requires ECDHE or DHE key exchange.
+What is mTLS (mutual TLS)?	Both client and server present certificates and verify each other's identity. Used for service-to-service communication, API authentication, and zero-trust architectures.
+Where should TLS be terminated?	At the load balancer/reverse proxy (simplifies cert management, offloads crypto) or at the application (end-to-end encryption). Choice depends on trust model and compliance requirements.
+Name three tools for testing TLS configuration.	SSL Labs (web scanner, grades A–F), testssl.sh (CLI scanner, checks protocols/ciphers/vulnerabilities), `openssl s_client` (manual connection testing, cert inspection).
+What is a protocol downgrade attack?	An attacker forces a client/server to use an older, weaker TLS version by manipulating the handshake. Mitigated by TLS_FALLBACK_SCSV (TLS 1.2) and anti-downgrade sentinels (TLS 1.3).
+
+# === Cryptography ===
+
+What is the key difference between symmetric and asymmetric encryption?	Symmetric uses one shared secret key for encrypt/decrypt (AES) — fast. Asymmetric uses a key pair (public encrypts, private decrypts, or vice versa for signing) — slow but solves key distribution.
+What is AES-GCM and why is it preferred?	AES in Galois/Counter Mode — provides both encryption and authentication (AEAD). Prevents tampering without needing a separate HMAC. Parallelizable and fast.
+Why is AES-CBC less desirable than AES-GCM?	CBC requires a separate MAC for integrity (encrypt-then-MAC), is not parallelizable, and is vulnerable to padding oracle attacks if not implemented correctly.
+What is the difference between RSA-OAEP and PKCS#1 v1.5 padding?	OAEP (Optimal Asymmetric Encryption Padding) is provably secure and resistant to chosen-ciphertext attacks. PKCS#1 v1.5 is vulnerable to Bleichenbacher's attack. Always use OAEP.
+What is Elliptic Curve Cryptography (ECC)?	Asymmetric cryptography based on elliptic curve discrete logarithm. Provides equivalent security to RSA with much smaller key sizes (256-bit ECC ≈ 3072-bit RSA).
+What is collision resistance in hash functions?	It should be computationally infeasible to find two different inputs that produce the same hash output. SHA-256 and SHA-3 provide collision resistance; MD5 and SHA-1 do not.
+What is an HMAC and when do you use it?	Hash-based Message Authentication Code — combines a secret key with a hash function to verify both integrity and authenticity of a message. Used in API authentication, JWT signing, etc.
+What is a Key Derivation Function (KDF)?	A function that derives cryptographic keys from a password or other input. Designed to be slow (costly) to resist brute-force attacks. Examples: PBKDF2, bcrypt, scrypt, Argon2.
+Why is Argon2 considered the best KDF for passwords?	Argon2 (winner of the Password Hashing Competition) is resistant to GPU and ASIC attacks because it's memory-hard (requires configurable amounts of RAM). Has Argon2id variant that resists both side-channel and GPU attacks.
+How do digital signatures work?	The signer hashes the message and encrypts the hash with their private key. The verifier decrypts with the signer's public key and compares hashes. Proves authenticity and integrity.
+What is PKI (Public Key Infrastructure)?	A system for creating, distributing, and revoking digital certificates. Includes CAs, registration authorities, certificate revocation lists, and trust hierarchies that bind public keys to identities.
+What is the difference between a CSPRNG and a PRNG?	A CSPRNG (Cryptographically Secure Pseudo-Random Number Generator) produces output that is computationally indistinguishable from true randomness. A standard PRNG (e.g., `Random`) is predictable if the seed is known.
+
+# === Web Application Security (Advanced) ===
+
+What is Server-Side Request Forgery (SSRF)?	An attack where the server is tricked into making requests to internal/unintended resources (internal APIs, cloud metadata like `169.254.169.254`, localhost services).
+How do you mitigate SSRF?	Allowlist permitted URLs/domains, block requests to internal IPs (10.x, 172.16.x, 192.168.x, 127.x, 169.254.x), use network segmentation, and disable unnecessary URL schemes (file://, gopher://).
+What is XML External Entity (XXE) injection?	An attack against XML parsers that process external entity references. An attacker can read server files (`file:///etc/passwd`), perform SSRF, or cause denial of service.
+How do you prevent XXE?	Disable external entity processing in the XML parser. In Java: `factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)`. Use JSON instead of XML when possible.
+What is an Insecure Direct Object Reference (IDOR)?	An access control vulnerability where attackers can access other users' resources by manipulating identifiers (e.g., changing `?user_id=123` to `?user_id=124` in the URL).
+How do you prevent IDOR?	Always verify server-side that the authenticated user is authorized to access the requested resource. Use indirect references (UUIDs) and access control checks on every request.
+What are file upload vulnerabilities?	Attacks where malicious files (web shells, malware, polyglots) are uploaded and then executed on the server, or used to overwrite existing files.
+How do you secure file uploads?	Validate file type by content (magic bytes), not just extension. Store uploads outside the web root. Rename files. Set restrictive permissions. Scan for malware.
+What is path traversal?	An attack using `../` sequences in file paths to access files outside the intended directory. Example: `GET /download?file=../../../etc/passwd`.
+What is HTTP request smuggling?	An attack exploiting differences in how front-end and back-end servers parse HTTP request boundaries (Content-Length vs. Transfer-Encoding), allowing request injection.
+What is clickjacking?	An attack where a transparent iframe is overlaid on a legitimate page, tricking users into clicking hidden buttons/links on the attacker's page. Prevented by X-Frame-Options or CSP `frame-ancestors`.
+What is Subresource Integrity (SRI)?	An HTML attribute (`integrity="sha384-..."`) on `<script>` and `<link>` tags that verifies the fetched resource matches an expected hash, preventing CDN compromise attacks.
+What are CORS misconfigurations that lead to vulnerabilities?	Reflecting the `Origin` header in `Access-Control-Allow-Origin`, using `Access-Control-Allow-Credentials: true` with a wildcard origin, or trusting `null` origin. These allow cross-origin data theft.
+What is an open redirect vulnerability?	A vulnerability where a URL parameter controls the redirect destination: `/redirect?url=https://evil.com`. Attackers use it for phishing — the legitimate domain appears in the link.
+What is mass assignment?	When an API/framework automatically binds request parameters to object fields. An attacker can set fields they shouldn't (e.g., `isAdmin=true`) if the server doesn't filter/allowlist fields.
+
+# === Authentication & Session Security (Advanced) ===
+
+What are the three parts of a JWT?	Header (algorithm + type), Payload (claims — user data, expiration), Signature (HMAC or RSA/EC signature of header.payload). Encoded as `base64url(header).base64url(payload).signature`.
+What is the JWT `alg:none` attack?	An attacker changes the JWT header algorithm to `"alg":"none"` and removes the signature. Vulnerable libraries accept the unsigned token as valid.
+What is a JWT key confusion attack?	When a server configured for RS256 (asymmetric) is tricked into using HS256 (symmetric) with the public key as the HMAC secret. The attacker, knowing the public key, can forge valid tokens.
+Where should JWTs be stored in a browser?	Prefer HttpOnly, Secure, SameSite cookies (immune to XSS). Avoid localStorage (accessible to XSS). In-memory storage is most secure but lost on page refresh.
+What is a session fixation attack?	An attacker sets a known session ID on a victim (via URL, cookie injection). When the victim logs in, the attacker already knows the session ID and can hijack the session. Mitigation: regenerate session ID on login.
+What is credential stuffing?	Automated attacks using breached username/password pairs from other sites. Exploits password reuse. Mitigate with MFA, rate limiting, CAPTCHA, and breached password checking.
+What is password spraying?	Trying a few common passwords against many accounts (avoiding lockout thresholds). Harder to detect than brute-force. Mitigate with MFA and monitoring for distributed failed logins.
+How do you prevent account enumeration?	Return the same response for "user exists, wrong password" and "user doesn't exist." Use consistent timing. Don't reveal whether an email is registered.
+What is session fixation and how is it prevented?	An attack where the attacker sets the session ID before the user authenticates. Prevented by always regenerating the session ID after successful login.
+What is WebAuthn / FIDO2?	A passwordless authentication standard using public-key cryptography with hardware authenticators (security keys, device biometrics). Resistant to phishing, credential stuffing, and MitM attacks.
+What is refresh token rotation?	Issuing a new refresh token each time one is used, and invalidating the old one. If a stolen refresh token is used, the legitimate user's next use triggers revocation of all tokens (detecting theft).
+What are the main SAML attack vectors?	XML signature wrapping (moving signed elements), XXE in SAML assertions, CSRF in SAML flows, signature exclusion, and comment injection to manipulate NameID.
+
+# === API Security ===
+
+Name five REST API security best practices.	1. Use HTTPS exclusively. 2. Authenticate every request (OAuth 2.0, API keys). 3. Validate and sanitize all input. 4. Implement rate limiting. 5. Return minimal error information.
+What is the difference between API keys and OAuth 2.0?	API keys are simple shared secrets — no scope, no expiration, no user context. OAuth 2.0 provides delegated authorization with scoped tokens, short-lived access tokens, and refresh token flows.
+What are GraphQL-specific security risks?	Introspection exposes the full schema. Deep/nested queries cause DoS. Batching allows brute-forcing (e.g., login mutations). No built-in rate limiting per query complexity.
+How do you secure GraphQL?	Disable introspection in production. Set query depth and complexity limits. Implement per-operation rate limiting. Use query allowlisting (persisted queries). Validate input.
+What is rate limiting and why is it important for APIs?	Restricting the number of requests a client can make in a time window. Prevents brute-force attacks, DDoS, and abuse. Implement with token bucket or sliding window algorithms.
+What is JSON Schema validation in API security?	Defining the exact structure, types, and constraints of expected request bodies. Invalid requests are rejected before processing, preventing injection and unexpected behavior.
+How does gRPC handle security?	gRPC runs over HTTP/2 and supports TLS natively. Authentication can use mTLS, token-based (OAuth), or custom interceptors. Protocol Buffers provide schema validation.
+
+# === Network & Infrastructure Security ===
+
+What is network segmentation and why does it help security?	Dividing a network into isolated zones (DMZ, internal, management). If one zone is compromised, segmentation limits lateral movement to other zones.
+What is DNS spoofing and how does DNSSEC prevent it?	DNS spoofing (cache poisoning) replaces legitimate DNS responses with malicious ones, redirecting users. DNSSEC adds cryptographic signatures to DNS records, allowing response verification.
+What security measures should you apply to SSH?	Disable password authentication (use key-based only), disable root login, use non-standard ports, implement fail2ban for brute-force protection, allow only specific users (`AllowUsers`).
+What is container image scanning?	Analyzing container images for known vulnerabilities in packages and libraries, misconfigurations, and secrets. Tools: Trivy, Grype, Snyk Container.
+What are Kubernetes RBAC and network policies?	RBAC (Role-Based Access Control) limits who can do what in the cluster. Network policies control pod-to-pod communication, implementing micro-segmentation.
+What is the principle of least privilege in cloud IAM?	Grant only the minimum permissions needed. Use specific resource policies instead of `*`. Avoid broad admin roles. Regularly audit and remove unused permissions.
+What is encryption at rest and why is it important?	Encrypting stored data (databases, disks, backups) so that if physical media is stolen or backups are leaked, the data remains protected without the decryption key.
+What is Infrastructure as Code (IaC) security scanning?	Analyzing Terraform, CloudFormation, or Kubernetes manifests for security issues: open security groups, unencrypted storage, public S3 buckets. Tools: tfsec, checkov, kics.
+
+# === Memory & Process Security (In Depth) ===
+
+Describe the process memory layout from low to high addresses.	Text (code) → Data (initialized globals) → BSS (uninitialized globals) → Heap (grows upward, dynamic allocation) → ... → Stack (grows downward, function calls and local variables) → Kernel space.
+How does a stack-based buffer overflow exploit work?	The attacker overflows a local buffer on the stack to overwrite the saved return address. When the function returns, execution jumps to attacker-controlled code (shellcode or ROP gadget).
+How do stack canaries prevent buffer overflow exploits?	A random value (canary) is placed between the buffer and the return address. Before returning, the function checks if the canary was modified. If changed, the program aborts.
+How does ASLR work and what are its limitations?	ASLR randomizes base addresses of stack, heap, and libraries on each execution. Limitations: low entropy on 32-bit (brute-forceable), information leaks can reveal addresses, some regions may not be randomized.
+What is PIE (Position-Independent Executable) and why does ASLR need it?	PIE compiles the main executable with position-independent code, allowing ASLR to randomize its base address. Without PIE, the main binary is loaded at a fixed address, weakening ASLR.
+What is a format string vulnerability?	Using user-controlled input as the format string in `printf`-family functions. The attacker uses `%x` to read stack memory and `%n` to write to arbitrary addresses.
+How can integer overflow lead to a buffer overflow?	If size calculations overflow (e.g., `n * sizeof(int)` wraps to a small value), a small buffer is allocated but a large amount of data is written to it.
+What is heap spraying?	An exploitation technique that fills large areas of heap memory with copies of shellcode/payloads. Combined with other bugs, it increases the probability that execution lands on attacker-controlled data.
+What is a double-free vulnerability?	Freeing the same memory block twice corrupts the heap allocator's metadata. An attacker can manipulate this to overwrite arbitrary memory, leading to code execution.
+What is a type confusion attack?	Treating an object as a different type than it actually is due to casting errors. The attacker crafts data that, when interpreted as the wrong type, gives control over function pointers or data.
+How does Rust prevent memory bugs at compile time?	Through the ownership system (each value has one owner), borrow checker (prevents dangling references), and lifetimes. Use-after-free and data races are caught at compile time.
+What is AddressSanitizer (ASan)?	A compile-time instrumentation tool that detects memory errors at runtime: buffer overflows, use-after-free, double-free, stack corruption. Adds ~2x overhead. Use during testing/CI.
+What is the difference between virtual memory and physical memory?	Virtual memory is per-process, provides isolation through page tables mapped by the MMU to physical RAM. Each process sees its own address space; it can't access another process's pages.
+How do you protect secrets in memory?	Zero/overwrite buffers immediately after use. Use `mlock()` to prevent swapping to disk. Disable core dumps. Use language features like `char[]` instead of `String` for passwords.
+What is RELRO and why does it matter?	Relocation Read-Only — a linker protection that makes the GOT (Global Offset Table) read-only after startup, preventing overwrite attacks on function pointers. Full RELRO resolves all symbols at load time.
+
+# === Secure Development Lifecycle ===
+
+What is DAST (Dynamic Application Security Testing)?	Testing a running application by fuzzing endpoints, injecting payloads, and scanning for vulnerabilities from the outside. Tools: OWASP ZAP, Burp Suite. Complements SAST.
+What is Software Composition Analysis (SCA)?	Identifying open-source libraries in a project and checking them against vulnerability databases. Detects known CVEs in dependencies. Tools: Snyk, Dependabot, OWASP Dependency-Check.
+What is secret scanning in CI/CD?	Automated detection of accidentally committed secrets (API keys, passwords, tokens) in source code and git history. Tools: GitLeaks, TruffleHog, GitHub secret scanning.
+What are abuse cases in security requirements?	Negative use cases describing how an attacker would misuse the system. Example: "An attacker brute-forces the login endpoint at 1000 req/s." They drive security requirements like rate limiting.
+What is a penetration test?	A sanctioned simulated attack against a system to find exploitable vulnerabilities. Has defined scope and rules of engagement. Results in a report with findings and remediation recommendations.
+What is a bug bounty program?	A program where organizations pay external security researchers for finding and responsibly disclosing vulnerabilities. Examples: HackerOne, Bugcrowd. Extends security testing beyond internal teams.
+What is a security champion?	A developer embedded in a team who serves as the security advocate — reviews code for security, promotes best practices, and liaisons with the security team. Scales security knowledge.
+
+# === Unix / Linux Security (In Depth) ===
+
+How does PAM (Pluggable Authentication Modules) work?	PAM is a framework that lets Linux services use configurable authentication stacks. `/etc/pam.d/` contains service-specific configs. Modules (pam_unix, pam_ldap, pam_google_authenticator) are stacked in auth, account, password, and session groups.
+What is SELinux and how does it differ from standard permissions?	SELinux implements Mandatory Access Control (MAC) — the system enforces policies regardless of file permissions. Every process and file has a security context (label). Even root is restricted by policy.
+What is the difference between SELinux enforcing and permissive modes?	Enforcing: policy violations are blocked and logged. Permissive: violations are logged but not blocked (for testing policies). Disabled: no SELinux at all.
+What is AppArmor and how does it differ from SELinux?	AppArmor uses path-based profiles to confine applications (simpler to configure). SELinux uses label-based policies (more granular but complex). Both implement MAC.
+What are Linux namespaces and why are they important for security?	Namespaces isolate system resources per process: PID (process IDs), network, mount (filesystems), user, UTS (hostname), IPC. They're the foundation of container isolation.
+What are cgroups and what security benefit do they provide?	Control Groups limit resource usage (CPU, memory, I/O, PIDs) per process group. They prevent denial-of-service from a single process consuming all resources.
+What are Linux capabilities?	Fine-grained privileges that split the monolithic root power into individual capabilities (e.g., `CAP_NET_BIND_SERVICE` to bind low ports). Allows running services with minimal root privileges.
+What is seccomp-BPF?	A Linux kernel facility that filters system calls using BPF programs. A process can restrict itself to only the syscalls it needs, limiting the kernel attack surface if compromised.
+What is the Linux audit framework (auditd)?	A system for monitoring security-relevant events: file access, syscalls, user actions, authentication. Rules are defined in `/etc/audit/audit.rules`. Logs go to `/var/log/audit/audit.log`.
+How do you harden SSH beyond defaults?	Disable `PermitRootLogin`, set `PasswordAuthentication no`, use `AllowUsers`/`AllowGroups`, change port, enable key-only auth, use fail2ban, set `MaxAuthTries`, enable 2FA with PAM.
+What are sysctl security settings?	Kernel parameters tunable via `/etc/sysctl.conf`. Security-relevant: `kernel.randomize_va_space=2` (ASLR), `kernel.dmesg_restrict=1` (restrict kernel logs), `kernel.yama.ptrace_scope=1` (restrict ptrace).
+What is umask and what is a secure default?	Umask masks out permissions from newly created files/directories. `umask 027` means new files get 640, directories 750 — group can read, others have no access. Default `022` is less restrictive.
+How does systemd service hardening work?	Systemd unit files support security directives: `ProtectSystem=strict` (read-only filesystem), `NoNewPrivileges=true`, `PrivateTmp=true`, `ReadOnlyPaths=/`, `CapabilityBoundingSet=` — sandboxing services.
+What is a symlink attack on /tmp?	An attacker creates a symlink in `/tmp` pointing to a sensitive file. If a privileged process writes to the symlinked path, it overwrites the target file. Mitigated by `PrivateTmp` and the sticky bit.
+
+# === Java Security (In Depth) ===
+
+What is the Java Cryptography Architecture (JCA)?	A framework providing interfaces for cryptographic operations: `Cipher`, `MessageDigest`, `KeyPairGenerator`, `Signature`, `Mac`, `KeyStore`. Implementations are pluggable via provider SPI.
+What is the JCE unlimited strength policy and is it still needed?	JCE previously restricted key lengths (128-bit max AES). Since Java 8u161+, unlimited strength is the default. Older versions required downloading and installing separate policy files.
+How do you configure TLS protocols and cipher suites in Java?	Create an `SSLContext`, configure `SSLParameters` with `setProtocols(new String[]{"TLSv1.3","TLSv1.2"})` and `setCipherSuites(...)`. Apply to `SSLSocketFactory` or `HttpClient`.
+What is the difference between a keystore and a truststore in Java?	A keystore holds the server/client's own private key and certificate chain. A truststore holds trusted CA certificates used to verify remote certificates. Both use `KeyStore` class; separated by purpose.
+What is the `keytool` utility?	A JDK command-line tool for managing keystores: generating key pairs (`-genkeypair`), importing certificates (`-importcert`), listing entries (`-list`), and converting formats (`-importkeystore`).
+How do you configure ALPN in Java?	Use `SSLParameters.setApplicationProtocols(new String[]{"h2","http/1.1"})` before the handshake. After connection, `SSLSocket.getApplicationProtocol()` returns the negotiated protocol.
+How do you debug TLS in Java?	Set `-Djavax.net.debug=ssl:handshake:verbose` to log the full TLS handshake — cipher suite negotiation, certificate chain, ALPN selection, alerts. Invaluable for diagnosing connection failures.
+How do you prevent XXE in Java?	Set `DocumentBuilderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)` or disable external entities individually. For SAX, StAX, and JAXB parsers, disable similar features.
+What is JEP 290 (ObjectInputFilter)?	Introduced serialization filtering — allows restricting which classes can be deserialized, maximum depth, array sizes, etc. Configured via `ObjectInputFilter` API or system property `jdk.serialFilter`.
+Why should passwords be stored in `char[]` instead of `String` in Java?	`String` is immutable and stays in memory until GC. `char[]` can be explicitly zeroed after use with `Arrays.fill(array, '\0')`, reducing the window for memory-based secret extraction.
+What security risks does `setAccessible(true)` via reflection pose?	It bypasses Java access modifiers, allowing access to private fields/methods. Attackers can read sensitive data, invoke hidden APIs, or modify internal state. The module system restricts this.
+What does `--add-opens` do and why is it a security risk?	It opens a package's internals for deep reflection at runtime, bypassing module encapsulation. Overuse weakens the module system's security guarantees and can expose internal APIs.
+What is the Spring Security filter chain?	A chain of servlet filters that intercept every HTTP request. Each filter handles a specific concern: CSRF, authentication, session management, authorization. Highly configurable.
+
+# === Android Security (In Depth) ===
+
+How does Network Security Config work on Android?	An XML file (`network_security_config.xml`) referenced in `AndroidManifest.xml`. It defines per-domain TLS settings: custom trust anchors, certificate pinning, cleartext traffic policy.
+How do you pin certificates on Android using Network Security Config?	Add `<pin-set>` with `<pin digest="SHA-256">base64hash</pin>` inside a `<domain-config>`. Include a backup pin. Set an expiration date to prevent lock-out.
+What is the Android Keystore system?	A hardware-backed (TEE/SE) storage for cryptographic keys. Keys can be generated and used without ever exposing the key material to the app's process. Supports biometric binding.
+How does `BiometricPrompt` integrate with Android Keystore?	Keys in the Keystore can require biometric authentication (`setUserAuthenticationRequired(true)`). `BiometricPrompt` handles the UI; on success, it unlocks the key via a `CryptoObject` for encrypt/sign operations.
+What is a `PendingIntent` hijack and how do you prevent it?	If a `PendingIntent` wraps a mutable, empty implicit intent, a malicious app can fill in intent fields and redirect actions. Fix: use `FLAG_IMMUTABLE` (API 31+) and explicit intents.
+What is tapjacking on Android?	An overlay attack where a malicious app draws a transparent window on top of a legitimate app, intercepting the user's taps. Mitigate with `android:filterTouchesWhenObscured="true"`.
+What is the OWASP Mobile Top 10?	A list of the 10 most critical mobile security risks: insecure data storage, insecure communication, insecure authentication, client-side injection, insufficient cryptography, insecure authorization, code tampering, reverse engineering, extraneous functionality, and insufficient binary protections.
+What is Android's scoped storage and its security benefit?	Scoped storage (Android 10+) restricts app access to only its own app-specific directory and media collections via `MediaStore`. Apps can't freely browse external storage, reducing data leakage.
+What is the Play Integrity API (successor to SafetyNet)?	An API to verify device integrity (genuine device, verified boot, non-rooted), app integrity (signed by Play), and account licensing. Helps detect tampered environments.
+What is File-Based Encryption (FBE) on Android?	Each file is encrypted with a different key. Supports Direct Boot: device-encrypted storage is available before unlock (for alarms, accessibility), credential-encrypted storage requires user authentication.
+How do you validate deep links / App Links on Android?	Use Android App Links with Digital Asset Links (`.well-known/assetlinks.json` on your domain). The system auto-verifies domain ownership, preventing other apps from claiming your URLs.
+What is WebView hardening on Android?	Disable file access (`setAllowFileAccess(false)`), disable content access, enable Safe Browsing, override `shouldOverrideUrlLoading()` to validate URLs, avoid `addJavascriptInterface()` with untrusted content.
+
+# === Automotive Security (In Depth) ===
+
+How does CAN message spoofing work?	CAN has no source authentication. An attacker on the bus sends crafted messages with any arbitration ID (e.g., steering, brakes), and the target ECU accepts them as legitimate.
+What is a CAN bus replay attack?	Recording legitimate CAN messages and retransmitting them later. For example, capturing a door-unlock sequence and replaying it. No timestamps or sequence numbers in CAN to prevent this.
+What is a bus-off attack on CAN?	Exploiting CAN's error handling: sending deliberate error frames forces a target ECU into "bus-off" state (disconnected from the bus), effectively causing denial of service to that ECU.
+What is UDS (Unified Diagnostic Services) security access?	UDS uses a seed-key challenge-response to authenticate diagnostic sessions. The tester requests a seed, computes a key using a secret algorithm, and sends it back. Weak algorithms can be brute-forced.
+What is a gateway ECU and what security role does it play?	A central ECU that bridges different CAN domains (powertrain, body, chassis, infotainment). It acts as a firewall, filtering/blocking messages between domains to prevent cross-domain attacks.
+What is Automotive Ethernet and how is it secured?	Ethernet (100BASE-T1, 1000BASE-T1) is used for high-bandwidth in-vehicle communication (cameras, ADAS). Secured with MACsec (Layer 2 encryption), VLANs, and IP-based firewalling.
+What is SecOC in AUTOSAR?	Secure Onboard Communication — a module that adds authentication (truncated MACs) to CAN/FlexRay/Ethernet messages. Provides message integrity and authenticity with minimal overhead.
+What is ISO/SAE 21434 TARA?	Threat Analysis and Risk Assessment — a systematic process to identify threats, assess attack feasibility and impact, determine risk levels, and define cybersecurity goals and requirements for vehicle components.
+What are rolling codes in key fobs?	A system where each button press generates a new code from a synchronized PRNG. The car accepts the next expected code(s). Prevents simple replay attacks.
+What is a RollJam attack on key fobs?	The attacker jams the car's receiver while capturing the transmitted code. The owner presses again; the attacker captures the second code and releases the first. The attacker now holds one unused valid code.
+What is UNECE WP.29 / R155?	A UN regulation requiring vehicle manufacturers to implement a Cybersecurity Management System (CSMS) and demonstrate cybersecurity across the vehicle lifecycle. Mandatory for new vehicle type approvals in many countries.
+What is an HSM (Hardware Security Module) in automotive context (SHE/EVITA)?	SHE (Secure Hardware Extension) and EVITA HSMs are built into automotive MCUs. They store keys, perform crypto operations, and support SecOC — all within tamper-resistant hardware.
+
+# === Embedded Security (Intermediate) ===
+
+What is a hardware Root of Trust?	An immutable component (ROM, OTP fuse, or secure element) that anchors the chain of trust for secure boot. It holds the first public key used to verify the bootloader's signature.
+What is a secure boot chain?	Each stage verifies the next: ROM bootloader verifies primary bootloader, primary verifies secondary bootloader, secondary verifies OS/kernel. A failure at any stage halts boot.
+Why is firmware signing essential for OTA updates?	Signing ensures the update is from the legitimate vendor and hasn't been tampered with. Without it, attackers can push malicious firmware to devices remotely.
+What is a TPM (Trusted Platform Module)?	A dedicated microcontroller that securely stores keys, performs crypto operations, and maintains platform integrity measurements (PCRs). Used for secure boot attestation.
+What is the difference between a TPM and an HSM?	TPM is a low-cost chip tied to one device, focused on platform integrity and boot measurement. HSM is a high-performance module for key management, supporting many keys and high throughput.
+How does mbed TLS / wolfSSL differ from OpenSSL for embedded?	mbed TLS and wolfSSL are designed for constrained devices — small memory footprint, modular builds, hardware crypto acceleration support. OpenSSL is feature-rich but too large for MCUs.
+What is a Memory Protection Unit (MPU) on embedded devices?	Hardware that enforces access permissions on memory regions — preventing code execution from data areas, isolating tasks in an RTOS, and detecting buffer overflows at hardware level.
+What is a CWE and what are CWE-119 and CWE-787?	Common Weakness Enumeration — a catalog of software weakness types. CWE-119: improper restriction of operations within memory bounds. CWE-787: out-of-bounds write. Both are top vulnerabilities in embedded C/C++ code.
+What security considerations apply to MQTT for IoT?	Use TLS for transport encryption. Require client authentication (certificates or username/password). Implement topic-based ACLs. Disable anonymous access. Validate all payloads.
+What are BLE pairing security modes?	BLE pairing modes: Just Works (no authentication, vulnerable to MitM), Numeric Comparison, Passkey Entry, Out of Band. LE Secure Connections (LESC) with ECDH is required for strong pairing.

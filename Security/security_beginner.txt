@@ -1,0 +1,166 @@
+# Security Beginner Questions
+# Format: Front[TAB]Back
+
+# === General Security Fundamentals ===
+
+What is the CIA Triad in information security?	The three core security principles: Confidentiality (only authorized access), Integrity (data is accurate and unaltered), Availability (systems are accessible when needed).
+Which element of the CIA Triad does encryption primarily protect?	Confidentiality — encryption makes data unreadable to unauthorized parties.
+Which element of the CIA Triad does a DDoS attack target?	Availability — it overwhelms a system to make it unavailable to legitimate users.
+Which element of the CIA Triad does a checksum or hash verify?	Integrity — it confirms that data has not been tampered with or corrupted.
+What is the Principle of Least Privilege?	Users, processes, and systems should have only the minimum permissions necessary to perform their tasks — nothing more.
+Give an example of violating the Principle of Least Privilege.	Running a web application as the root/admin user — if compromised, the attacker has full system access instead of limited app-level access.
+What is Defense in Depth?	A security strategy that uses multiple layers of controls (firewalls, encryption, authentication, monitoring, etc.) so that if one layer fails, others still protect the system.
+What is "security through obscurity" and why is it insufficient?	Relying on secrecy of the system's design (e.g., hiding source code, using non-standard ports) as the primary defense. It's insufficient because attackers can discover hidden details; true security requires proper controls regardless of what an attacker knows.
+What is the STRIDE threat model?	A framework for categorizing threats: Spoofing (impersonation), Tampering (modifying data), Repudiation (denying actions), Information Disclosure (data leaks), Denial of Service, Elevation of Privilege.
+What is CVSS and what does a score of 9.8 indicate?	Common Vulnerability Scoring System — a standardized scale (0–10) for rating vulnerability severity. A 9.8 is Critical, meaning easily exploitable with severe impact.
+What is a CVE?	Common Vulnerabilities and Exposures — a standardized identifier (e.g., CVE-2021-44228) for publicly known security vulnerabilities.
+How do you read a CVE entry? What key information does it contain?	A CVE includes: a unique ID (CVE-YYYY-NNNNN), a description of the vulnerability, affected products/versions, CVSS severity score, and references to patches or advisories.
+
+# === Authentication & Authorization Basics ===
+
+What is the difference between authentication and authorization?	Authentication verifies *who you are* (identity). Authorization determines *what you can do* (permissions). Authentication always comes first.
+Why should passwords never be stored in plaintext?	If the database is breached, all passwords are immediately exposed. Hashing (with salt) ensures passwords can't be read even if stolen.
+What is salting in password hashing?	Adding a unique random value (salt) to each password before hashing, so identical passwords produce different hashes. Prevents rainbow table and precomputation attacks.
+What is Multi-Factor Authentication (MFA)?	Requiring two or more independent factors to verify identity: something you know (password), something you have (phone/token), something you are (biometric).
+What is a session ID and why must it be kept secret?	A unique token issued after login that identifies the user's session. If stolen (via XSS, network sniffing, etc.), an attacker can impersonate the user.
+What is Role-Based Access Control (RBAC)?	An access control model where permissions are assigned to roles (e.g., Admin, Editor, Viewer), and users are assigned to roles — not given individual permissions.
+What is the difference between OAuth 2.0 and OpenID Connect?	OAuth 2.0 is an authorization framework (grants access to resources). OpenID Connect is an identity layer on top of OAuth 2.0 that also provides authentication (who the user is).
+Why should you never send passwords over unencrypted HTTP?	An attacker on the network can read the password in plaintext via packet sniffing. Always use HTTPS to encrypt credentials in transit.
+
+# === TLS & Transport Security Basics ===
+
+What is TLS and what does it provide?	Transport Layer Security — a cryptographic protocol that provides confidentiality (encryption), integrity (tamper detection), and authentication (server identity verification) for network communication.
+Why did TLS replace SSL?	SSL (Secure Sockets Layer) had critical vulnerabilities (e.g., POODLE). TLS is the successor with stronger algorithms and improved protocol design. "SSL" is often used colloquially but modern connections use TLS.
+Which TLS versions are considered safe to use today?	TLS 1.2 and TLS 1.3. TLS 1.0 and 1.1 are deprecated due to known weaknesses; SSL 3.0 is completely broken.
+What key improvement does TLS 1.3 have over TLS 1.2?	TLS 1.3 reduces the handshake to 1-RTT (one round trip), removes insecure algorithms (RSA key exchange, CBC ciphers), and supports 0-RTT resumption for faster connections.
+What is the role of asymmetric encryption in a TLS connection?	Asymmetric encryption (e.g., RSA, ECDH) is used during the handshake to securely exchange or derive the symmetric session key. The actual data transfer uses faster symmetric encryption.
+What does a TLS/SSL certificate prove?	It proves the server's identity — a trusted Certificate Authority (CA) has verified that the certificate holder controls the domain. It also contains the server's public key for encryption.
+What is a Certificate Authority (CA)?	A trusted organization that issues digital certificates after verifying the identity of the certificate requester. Browsers and operating systems ship with a list of trusted root CAs.
+What is a trust anchor?	A root CA certificate that is pre-installed in the operating system or browser's trust store. It's the starting point for validating certificate chains.
+How does HTTPS work at a high level?	The browser connects to the server, performs a TLS handshake (verifies certificate, agrees on encryption), then all HTTP data is encrypted inside the TLS tunnel.
+What does the padlock icon in the browser address bar guarantee?	That the connection is encrypted with TLS and the server's certificate was issued by a trusted CA for that domain. It does NOT guarantee the website is safe or legitimate.
+What is the difference between a self-signed certificate and a CA-signed certificate?	A self-signed cert is signed by its own creator (not trusted by browsers by default). A CA-signed cert is signed by a trusted CA and is automatically trusted by browsers.
+What is Let's Encrypt?	A free, automated, open Certificate Authority that provides domain-validated TLS certificates. It uses the ACME protocol for automated issuance and renewal (every 90 days).
+What does "certificate expired" mean and what should you do?	The certificate's validity period has passed. Browsers will show a warning. The server admin needs to renew the certificate. Users should not bypass the warning.
+What does a "hostname mismatch" TLS error mean?	The domain in the URL doesn't match any of the domains listed in the certificate (CN or SAN fields). This could indicate misconfiguration or an attack.
+What data travels in plaintext with HTTP (no TLS)?	Everything: URLs, headers, cookies, form data (including passwords), request/response bodies. Anyone on the network can read and modify it.
+
+# === Web Security Fundamentals ===
+
+What is the Same-Origin Policy (SOP)?	A browser security mechanism that prevents scripts on one origin (scheme + host + port) from reading data from a different origin. It isolates potentially malicious documents.
+What is Cross-Site Scripting (XSS)?	An attack where malicious JavaScript is injected into a web page and executed in other users' browsers. It can steal cookies, session tokens, or modify page content.
+What are the three types of XSS?	Reflected (malicious script in URL/request, reflected back in response), Stored (script saved in database, served to all users), DOM-based (script manipulates the page's DOM directly in the browser).
+How do you prevent XSS?	Output encode all user-supplied data before rendering in HTML. Use Content Security Policy (CSP). Validate input. Use frameworks that auto-escape (React, Angular).
+What is Cross-Site Request Forgery (CSRF)?	An attack where a malicious site tricks a user's browser into making an authenticated request to another site where the user is logged in, performing unwanted actions.
+How is CSRF typically prevented?	Using anti-CSRF tokens (a unique, unpredictable token included in forms and validated server-side). Also: SameSite cookie attribute, checking Origin/Referer headers.
+What is SQL Injection?	An attack where malicious SQL is inserted into application queries via user input, allowing an attacker to read, modify, or delete database data, or even execute OS commands.
+How do you prevent SQL Injection?	Use parameterized queries (prepared statements) — never concatenate user input into SQL strings. Also: use ORMs, apply input validation, limit database permissions.
+What is input validation?	Checking that user-supplied data conforms to expected format, type, length, and range before processing it. First line of defense against injection attacks.
+What is output encoding?	Converting special characters (e.g., `<`, `>`, `"`, `'`) into safe representations (HTML entities, URL encoding) before rendering user data, preventing injection.
+What is Content Security Policy (CSP)?	An HTTP header that tells the browser which sources of scripts, styles, images, etc. are allowed. Prevents inline script execution, mitigating XSS.
+What is HSTS (HTTP Strict Transport Security)?	An HTTP response header that tells browsers to only connect to the site over HTTPS, preventing SSL-stripping downgrade attacks. Format: `Strict-Transport-Security: max-age=31536000; includeSubDomains`.
+What does the X-Frame-Options header do?	Prevents the page from being embedded in an `<iframe>`, protecting against clickjacking attacks. Values: `DENY`, `SAMEORIGIN`.
+What does the HttpOnly cookie attribute do?	Prevents JavaScript from accessing the cookie via `document.cookie`, mitigating cookie theft through XSS attacks.
+What does the Secure cookie attribute do?	Ensures the cookie is only sent over HTTPS connections, preventing transmission over unencrypted HTTP.
+What does the SameSite cookie attribute do?	Controls when cookies are sent with cross-site requests. `Strict`: never sent cross-site. `Lax`: sent with top-level navigations. `None`: always sent (requires `Secure`).
+
+# === Memory & Process Security Basics ===
+
+What is a buffer overflow?	Writing data beyond the allocated boundary of a buffer in memory, potentially overwriting adjacent memory and allowing code execution or crashes.
+Why are buffer overflows dangerous?	An attacker can overwrite the return address on the stack or function pointers to redirect execution to malicious code, gaining control of the program.
+What is the difference between the stack and the heap?	The stack stores local variables and function call data (fixed, LIFO). The heap stores dynamically allocated memory (`malloc`, `new`). Both are in process memory but managed differently.
+Why are C and C++ considered memory-unsafe?	They allow direct pointer arithmetic, manual memory management, and unchecked array access. There's no runtime bounds checking, making buffer overflows, use-after-free, and other memory bugs possible.
+How do managed languages like Java and C# prevent buffer overflows?	They perform automatic bounds checking on array access, use garbage collection for memory management, and don't allow direct pointer arithmetic.
+What is a segmentation fault (segfault)?	A crash that occurs when a program tries to access memory it's not allowed to access — typically dereferencing a null or dangling pointer, or writing to read-only memory.
+What is a dangling pointer?	A pointer that references memory that has already been freed. Using it leads to undefined behavior and potential security vulnerabilities (use-after-free).
+What is a use-after-free vulnerability?	Accessing memory through a dangling pointer after it has been freed. An attacker can fill that freed memory with malicious data, potentially gaining code execution.
+What is a null pointer dereference?	Attempting to read or write memory through a pointer that is NULL. It typically crashes the program; in some contexts it can be exploited.
+What is a memory leak and why does it matter for security?	Memory that is allocated but never freed. Over time it can exhaust available memory, causing denial of service (availability impact).
+Why should secrets be cleared from memory after use?	If secrets (passwords, keys) remain in memory, they can be extracted via memory dumps, core dumps, swap files, or cold boot attacks.
+What is ASLR (Address Space Layout Randomization)?	An OS security feature that randomizes the memory addresses of the stack, heap, and libraries each time a program runs, making it harder for attackers to predict where code and data reside.
+What is DEP (Data Execution Prevention) / NX bit?	A hardware/OS feature that marks memory regions (stack, heap) as non-executable. Even if an attacker injects shellcode, the CPU refuses to execute it.
+How do garbage collectors help prevent memory bugs?	They automatically reclaim unused memory, preventing use-after-free, double-free, and memory leaks. They also typically enforce bounds checking.
+Why is `strcpy` dangerous in C?	It copies a string without checking the destination buffer's size, making buffer overflows trivial. Use `strncpy`, `strlcpy`, or `snprintf` instead.
+
+# === Secure Coding Basics ===
+
+What is the difference between an allowlist and a denylist for input validation?	An allowlist (whitelist) specifies what IS allowed — reject everything else. A denylist (blacklist) specifies what is NOT allowed. Allowlists are more secure because they can't be bypassed with unknown-bad inputs.
+Why should you never hardcode secrets in source code?	Source code is often stored in version control, shared with teams, or decompiled. Hardcoded secrets (API keys, passwords) are easily discovered. Use environment variables or secret managers.
+Why should error messages not reveal implementation details?	Detailed error messages (stack traces, SQL errors, file paths) help attackers understand the system's internals and find vulnerabilities. Show generic messages to users; log details server-side.
+What is the OWASP Top 10?	A regularly updated list of the 10 most critical web application security risks, published by the Open Web Application Security Project. Used as a baseline for secure development.
+What is Static Application Security Testing (SAST)?	Analyzing source code (without running it) for security vulnerabilities. Tools scan for patterns like SQL injection, XSS, hardcoded secrets. Examples: SonarQube, Semgrep, Checkmarx.
+What should you look for in a security code review?	Input validation, output encoding, authentication/authorization checks, hardcoded secrets, unsafe deserialization, proper error handling, SQL injection, and dependency vulnerabilities.
+Why is keeping dependencies up to date important for security?	Third-party libraries frequently have vulnerabilities discovered. Outdated dependencies with known CVEs are a common attack vector. Use tools like Dependabot, Snyk, or OWASP Dependency-Check.
+
+# === Unix / Linux Security Basics ===
+
+What do the three groups in Unix file permissions represent?	Owner (user who owns the file), Group (users in the file's group), Other (everyone else). Each has independent read (r), write (w), execute (x) permissions.
+What does `chmod 755 file` mean?	Owner: read+write+execute (7), Group: read+execute (5), Other: read+execute (5). The file is executable by all but only writable by the owner.
+Why is running processes as root dangerous?	Root has unrestricted access to the entire system. If a process running as root is compromised, the attacker gains full control. Always run services with minimal privileges.
+What does `sudo` do?	Allows a permitted user to run a command as root (or another user) based on rules in `/etc/sudoers`. Provides auditable, temporary privilege escalation without sharing the root password.
+What is `/etc/shadow` and why is it restricted?	Stores hashed passwords for user accounts. It's readable only by root (mode 640) to prevent non-root users from accessing password hashes for offline cracking.
+What is the setuid bit and why is it a security concern?	When setuid is set on an executable, it runs with the file owner's privileges (often root) regardless of who executes it. A vulnerability in a setuid-root binary gives root access.
+What is the sticky bit on a directory?	When set on a directory (like `/tmp`), only the file owner, directory owner, or root can delete or rename files within it — preventing users from deleting each other's files.
+Why is SSH key-based authentication more secure than passwords?	Keys are much longer and harder to brute-force, they can't be phished, and the private key never leaves the client machine. Combined with a passphrase, they provide two-factor protection.
+What is a basic firewall and what does it do?	A firewall filters network traffic based on rules (source/destination IP, port, protocol). It blocks unauthorized connections while allowing legitimate traffic.
+What is `ufw` on Linux?	Uncomplicated Firewall — a simple frontend for `iptables` that makes it easy to define allow/deny rules. Example: `ufw allow 22/tcp` permits SSH.
+Why should you review log files like `/var/log/auth.log`?	They record authentication events (successful logins, failed attempts, sudo usage). Reviewing them helps detect brute-force attacks, unauthorized access, and suspicious activity.
+What are world-readable/writable files and why are they dangerous?	Files with permissions allowing any user to read or write. Sensitive data in world-readable files is exposed; world-writable files can be modified by attackers.
+What security risks do cron jobs present?	Cron jobs run with the crontab owner's privileges. If a cron job executes a world-writable script, an attacker can modify the script to run arbitrary commands as that user.
+Why does package manager security matter?	Installing unsigned or untrusted packages can introduce malware. Always use official repositories, verify package signatures, and keep packages updated for security patches.
+
+# === Java Security Basics ===
+
+What was the Java Security Manager and why was it removed?	A sandbox mechanism that restricted untrusted code (file access, network, system calls) via policy files. Deprecated in Java 17 and removed in Java 21 due to complexity, poor adoption, and maintenance burden.
+Why is `java.util.Random` insecure for security purposes?	`Random` uses a predictable algorithm (LCG). If the seed is known or guessed, all future values can be predicted. Use `SecureRandom` for tokens, keys, and security-sensitive values.
+Why is `SecureRandom` preferred for generating security tokens?	It uses a cryptographically strong random number generator (CSPRNG) seeded from OS entropy. Values are unpredictable even if previous outputs are known.
+What makes Java serialization (`ObjectInputStream`) dangerous?	Deserializing untrusted data can instantiate arbitrary objects and trigger side effects in their constructors/methods, leading to remote code execution (gadget chain attacks).
+How does `PreparedStatement` prevent SQL injection?	It separates SQL code from data. User input is treated as parameter values, not SQL syntax — quotes, semicolons, and SQL keywords in input are safely escaped.
+Why should you never concatenate user input into SQL queries?	Input like `'; DROP TABLE users;--` will be interpreted as SQL code, allowing injection attacks. Parameterized queries prevent this by treating input as data only.
+What does OWASP Dependency-Check do for Java projects?	Scans project dependencies (JARs) against the NVD (National Vulnerability Database) to identify libraries with known CVEs. Integrates with Maven/Gradle.
+Why should Java applications use bcrypt, scrypt, or Argon2 for password storage?	These are slow, salted hashing algorithms designed to resist brute-force and GPU-based cracking. Standard hash functions (MD5, SHA-256) are too fast for password hashing.
+What is the risk of leaking stack traces to users?	Stack traces reveal internal class names, file paths, library versions, and database details — information that helps attackers identify vulnerabilities and craft exploits.
+Why is logging sensitive data (passwords, tokens, SSNs) dangerous?	Log files are often stored long-term, shared across systems, and accessible to operations teams. Sensitive data in logs can be exposed through log aggregation, breaches, or insider access.
+What is the risk of loading untrusted JARs on the classpath?	An untrusted JAR can contain malicious code that executes when classes are loaded. It could override trusted classes, intercept data, or open backdoors.
+How should you handle HTTPS certificate validation in Java?	Use the default `HttpsURLConnection` or HttpClient which validates certificates against the JVM's truststore. Never disable certificate checking (e.g., trust-all `TrustManager`) in production.
+
+# === Android Security Basics ===
+
+What is the Android permission model?	Apps must declare required permissions in `AndroidManifest.xml`. Since Android 6.0+, dangerous permissions (camera, location, contacts) require explicit runtime user approval.
+What is the principle of least privilege on Android?	Request only the permissions your app actually needs. Don't request camera access for a calculator app. Over-requesting permissions increases the attack surface.
+How does Android sandbox each app?	Each app runs as its own Linux user with a unique UID. Its data directory (`/data/data/<package>`) is accessible only to that UID. Apps can't read each other's data by default.
+Why should you avoid storing secrets on external storage on Android?	External storage (`/sdcard`) is world-readable. Any app with `READ_EXTERNAL_STORAGE` can access files there. Use internal storage or `EncryptedSharedPreferences` for sensitive data.
+What is `EncryptedSharedPreferences`?	Part of Android Jetpack Security — it encrypts both keys and values in SharedPreferences using AES-256. Protects data at rest from extraction on rooted devices.
+Why should Android apps set `android:usesCleartextTraffic="false"`?	It prevents the app from making unencrypted HTTP connections, ensuring all network traffic goes over HTTPS. This protects against network sniffing and MitM attacks.
+What is Network Security Config on Android?	An XML configuration that lets apps customize HTTPS behavior: trust custom CAs, pin certificates, restrict cleartext traffic — all declaratively without code changes.
+What are WebView security risks?	WebViews can execute JavaScript. If loading untrusted content, an attacker can inject scripts to access the app's data, call Java methods via JavaScript bridges, or access the file system.
+What is the difference between explicit and implicit intents?	Explicit intents target a specific component (safe). Implicit intents let any app handle the request — a malicious app could register for the same intent filter and intercept data.
+Why should you set `android:exported="false"` on components not meant for external access?	If a component (Activity, Service, Receiver, Provider) is exported, other apps can invoke it. This could allow unauthorized actions or data access.
+What does APK signing guarantee?	It proves the APK was produced by the holder of the signing key and hasn't been tampered with. Android refuses to install or update an APK if the signature doesn't match.
+Why is `Log.d()` with sensitive data dangerous in production?	Logcat output on pre-Android 4.1 devices was world-readable. Even on newer devices, any app with shell access or connected via ADB can read logs. Sensitive data in logs can be exfiltrated.
+What is Google Play Protect?	Google's malware detection service that scans apps on-device and in the Play Store. It checks for known malware, potentially harmful behavior, and policy violations.
+What is root detection and why do apps implement it?	Rooted devices have removed OS security restrictions. Apps (especially banking/security apps) check for root to detect environments where their data could be compromised or tampered with.
+
+# === Automotive Security Basics ===
+
+What is a CAN bus and why is it used in vehicles?	Controller Area Network — a broadcast protocol that allows ECUs (Electronic Control Units) to communicate without a central computer. It's reliable, real-time, and cost-effective.
+Why is CAN bus inherently insecure?	CAN has no authentication, no encryption, and no source addressing — any device on the bus can send any message, and all devices see all messages. It was designed for reliability, not security.
+What is an ECU (Electronic Control Unit)?	A small embedded computer that controls a specific vehicle function: engine, brakes, steering, airbags, etc. A modern car has 70–100+ ECUs communicating over vehicle networks.
+What is the OBD-II port and what security risk does it pose?	On-Board Diagnostics port (mandatory in vehicles) provides direct access to the CAN bus. Malicious devices plugged into it can send commands to any ECU.
+Why do over-the-air (OTA) updates for vehicles need signing?	Without signature verification, an attacker could push malicious firmware to millions of vehicles simultaneously, potentially controlling braking, steering, or engine functions.
+What attack surface does vehicle connectivity add?	Bluetooth, Wi-Fi, cellular modems, USB ports, and V2X communication all create remote entry points. Each wireless interface is a potential vector for remote exploitation.
+What is a relay attack on keyless entry?	Attackers use two relay devices to extend the key fob's signal range. One device near the fob, one near the car — the car thinks the fob is nearby and unlocks/starts.
+What is ISO 26262?	A functional safety standard for automotive electrical/electronic systems. It defines safety integrity levels (ASIL A–D) and processes to ensure systems don't cause harm due to malfunction.
+What is ISO/SAE 21434?	The automotive cybersecurity engineering standard. It defines requirements for cybersecurity management, threat analysis, risk assessment, and security measures throughout the vehicle lifecycle.
+What is V2X (Vehicle-to-Everything) communication?	Wireless communication between vehicles (V2V), infrastructure (V2I), pedestrians (V2P), and cloud (V2C). Enables safety features like collision warnings but adds a wireless attack surface.
+Why should infotainment systems be isolated from safety-critical ECUs?	If an attacker compromises the infotainment system (which has internet access), isolation prevents them from reaching the brakes, steering, or engine controllers.
+What risks do aftermarket OBD-II devices pose?	Third-party OBD dongles with Bluetooth/Wi-Fi can be exploited remotely to send malicious CAN messages. They often have weak or no authentication.
+
+# === Embedded Security Basics ===
+
+Why is physical security important for embedded devices?	Embedded devices are often deployed in accessible locations. An attacker with physical access can extract firmware, dump memory, connect to debug ports, or tamper with the device.
+What is secure boot at a high level?	A process where the device verifies the cryptographic signature of each software component during startup, ensuring only authorized, unmodified code runs.
+Why must firmware updates be signed?	Without signing, an attacker could install modified firmware containing backdoors or malware. Signature verification ensures the update came from the legitimate manufacturer.
+Why are default credentials dangerous on embedded devices?	Many devices ship with well-known default passwords (admin/admin). Attackers scan for and exploit these at scale. The Mirai botnet compromised millions of IoT devices this way.
+What are UART and JTAG, and why is their exposure a security risk?	UART (serial debug) and JTAG (hardware debug) are debug interfaces on circuit boards. If exposed, attackers can gain a shell, read/write memory, and extract firmware.
+Why is network segmentation important for IoT/embedded devices?	IoT devices often run outdated software with known vulnerabilities. Placing them on a separate network segment prevents a compromised device from accessing critical systems.

@@ -1,0 +1,40 @@
+# Android Automotive OS (AAOS) — Beginner
+# Format: Front[TAB]Back
+
+# ==========================================
+# 3.1 AAOS Overview & Architecture
+# ==========================================
+
+What is Android Automotive OS (AAOS)?	A full Android OS embedded directly in the vehicle's head unit (IVI), running natively on the car's hardware. It is NOT a phone projection — the car IS the Android device.
+What is the difference between Android Automotive OS and Android Auto?	Android Auto projects a phone's apps onto the car's display via USB/wireless (the phone is the brain). AAOS runs the full Android OS natively in the car hardware — no phone needed.
+What is the AAOS system architecture from bottom to top?	Linux Kernel → Vehicle HAL (VHAL) → Car Services → Android Framework + Car APIs → Car Apps (OEM, third-party, Google)
+What is an IVI (In-Vehicle Infotainment) system?	The in-car computing unit that provides entertainment (media, radio), navigation, phone connectivity, vehicle settings, and climate control via a touchscreen display
+Besides IVI, what other displays can AAOS target?	Digital instrument cluster (gauges, speed, navigation behind steering wheel), rear-seat entertainment displays, and heads-up displays (HUD)
+What are Google Automotive Services (GAS)?	Google's proprietary apps and services for AAOS (Google Maps, Google Assistant, Play Store) that OEMs license separately from AOSP. Not all AAOS vehicles include GAS.
+Can AAOS run without Google services?	Yes — AAOS is built from AOSP. OEMs can ship vehicles with their own app store, maps, and assistant without licensing Google Automotive Services (e.g., some Chinese OEMs).
+What types of apps can run on AAOS?	Media apps, navigation apps, communication apps (calling/messaging), vehicle settings, parking apps, point-of-interest (POI) apps, and video apps (parked only)
+What is the Car App Library?	A Jetpack library that provides template-based UI for building apps that work on both Android Auto (phone projection) and Android Automotive OS, ensuring driver distraction compliance
+How are AAOS apps distributed?	Via the Play Store's automotive track (for GAS-equipped vehicles), pre-installed by the OEM in the system image, or through OEM-specific app stores
+What are driver distraction guidelines in AAOS?	Rules restricting UI complexity while the vehicle is in motion — limiting text length, disabling scrollable lists, blocking video, requiring template-based UIs, and minimizing interactions
+What is multi-user support in AAOS?	AAOS supports multiple user profiles (driver, passenger, guest) with separate settings, preferences, and data — the driver profile switches when a different person drives
+
+# ==========================================
+# 3.2 Vehicle Hardware Basics
+# ==========================================
+
+What is an ECU (Electronic Control Unit)?	A dedicated computer in a vehicle that controls a specific system — engine ECU, transmission ECU, ABS ECU, body control module (BCM), ADAS ECU, infotainment ECU, etc.
+How many ECUs does a modern vehicle typically contain?	A modern vehicle contains 70–150+ ECUs, each managing specific functions from engine control to seat adjustment
+What is CAN bus (Controller Area Network)?	A robust vehicle bus standard (ISO 11898) that allows ECUs to communicate without a central host. Messages are broadcast with prioritized arbitration based on message IDs.
+What is the structure of a CAN message frame?	Arbitration ID (11 or 29 bits, determines priority), DLC (data length code, 0-8 bytes), Data field (0-8 bytes payload), CRC, ACK, and control bits
+How does CAN bus arbitration work?	When multiple ECUs transmit simultaneously, dominant bits (0) override recessive bits (1). The ECU with the lowest ID wins arbitration and continues transmitting; others wait and retry.
+What is the difference between standard and extended CAN frames?	Standard CAN uses 11-bit identifiers (2048 possible IDs). Extended CAN uses 29-bit identifiers (536 million possible IDs) for larger networks.
+What is CAN-FD (Flexible Data-rate)?	An extension of CAN that supports larger payloads (up to 64 bytes vs 8) and higher data rates (up to 8 Mbps vs 1 Mbps in the data phase) while remaining backward-compatible with classic CAN
+What is OBD-II?	On-Board Diagnostics II — a standardized diagnostic port (SAE J1962), communication protocols, and parameter IDs (PIDs) that allow external tools to read vehicle data and trouble codes
+What are DTCs (Diagnostic Trouble Codes)?	Standardized codes (e.g., P0300 = random/multiple cylinder misfires) stored by ECUs when they detect a fault. Readable via OBD-II scanners or diagnostic tools.
+What is LIN bus?	Local Interconnect Network — a low-cost, single-wire serial bus for low-speed, non-critical vehicle functions like seat controls, mirrors, window regulators, and interior lighting
+What is FlexRay?	A high-speed (10 Mbps), deterministic, fault-tolerant bus designed for safety-critical applications like drive-by-wire, active suspension, and advanced chassis control
+What is Automotive Ethernet (100BASE-T1)?	Single twisted-pair Ethernet for in-vehicle networking, providing 100 Mbps (100BASE-T1) or 1 Gbps (1000BASE-T1) bandwidth for high-data applications like cameras, ADAS, and infotainment updates
+What is BroadR-Reach?	A physical layer Ethernet standard developed for automotive that uses a single unshielded twisted pair for full-duplex communication, reducing weight and cost compared to standard Ethernet cables
+What is TSN (Time-Sensitive Networking)?	IEEE 802.1 standards that add deterministic, low-latency guarantees to Ethernet — critical for time-sensitive automotive applications like ADAS sensor data, audio synchronization, and control systems
+What does a typical IVI head unit SoC contain?	Application processor (CPU cores for Android), GPU (display rendering), DSP (audio processing), connectivity (Wi-Fi, Bluetooth), memory controller, display interfaces, and camera inputs
+What are rotary controllers in vehicles?	Physical dial/knob input devices (e.g., BMW iDrive, Audi MMI) used for navigating the infotainment UI without touching the screen, reducing driver distraction
