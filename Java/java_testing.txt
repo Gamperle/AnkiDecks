@@ -1,0 +1,67 @@
+# Java Testing — JUnit 5, Mockito, AssertJ, TestContainers
+# Format: Front[TAB]Back
+
+# JUnit 5 — Architecture
+[Beginner] What are the three JUnit 5 modules?	JUnit Platform (test launcher/engine SPI), JUnit Jupiter (new API for writing tests), JUnit Vintage (runs JUnit 3/4 tests on the platform).
+[Beginner] What annotation marks a JUnit 5 test method?	`@Test` from `org.junit.jupiter.api`. Methods must be non-private and non-static (default visibility is fine).
+[Beginner] What is the JUnit 5 equivalent of JUnit 4's `@BeforeClass`?	`@BeforeAll` — runs once before all tests in the class. Method must be `static` (unless `@TestInstance(Lifecycle.PER_CLASS)` is used).
+[Beginner] What does `@BeforeEach` do in JUnit 5?	Runs before each test method in the class; equivalent to JUnit 4's `@Before`. Used for per-test setup (e.g. creating fresh objects).
+[Beginner] What does `@AfterEach` do in JUnit 5?	Runs after each test method, even if the test threw an exception. Used for cleanup (e.g. closing resources).
+[Beginner] What does `@AfterAll` do in JUnit 5?	Runs once after all tests in the class; method must be `static` unless `@TestInstance(Lifecycle.PER_CLASS)` is used.
+[Intermediate] What is `@TestInstance(Lifecycle.PER_CLASS)` used for?	Changes JUnit's default behaviour: instead of creating a new test instance per method, a single instance is reused. Allows `@BeforeAll` / `@AfterAll` on non-static methods and shared mutable state between tests.
+[Beginner] How do you disable a test in JUnit 5?	Annotate it with `@Disabled("reason")`. The test is skipped with a message rather than failing.
+[Beginner] What does `@DisplayName` do?	Provides a human-readable name for a test class or method, shown in test reports and IDEs.
+[Beginner] How does `@Nested` help organise tests?	Allows inner non-static classes to group related tests. Nested classes can have their own `@BeforeEach` / `@AfterEach`. Useful for describing different contexts (e.g. "when user is logged in").
+
+# JUnit 5 — Assertions
+[Beginner] What class provides assertions in JUnit 5?	`org.junit.jupiter.api.Assertions`. Common methods: `assertEquals`, `assertNotEquals`, `assertTrue`, `assertFalse`, `assertNull`, `assertNotNull`, `assertThrows`, `assertAll`.
+[Beginner] How do you assert that a method throws a specific exception in JUnit 5?	`assertThrows(ExpectedException.class, () -> methodUnderTest())`. Returns the exception instance for further inspection (e.g. checking the message).
+[Beginner] What does `assertAll` do in JUnit 5?	Executes all supplied assertions and reports all failures together, rather than stopping at the first failure. Example: `assertAll(() -> assertEquals(1, a), () -> assertEquals(2, b))`.
+[Intermediate] How do you assert that code completes within a time limit in JUnit 5?	`assertTimeout(Duration.ofSeconds(1), () -> { ... })` — runs the executable and fails if it exceeds the limit. `assertTimeoutPreemptively` aborts execution if the timeout is reached.
+[Intermediate] What is the purpose of `assumeTrue` / `assumeFalse`?	Abort (skip) the test if a condition is not met, without counting it as a failure. Used for conditional test execution, e.g. `assumeTrue(System.getenv("CI") != null)`.
+
+# JUnit 5 — Parameterised Tests
+[Intermediate] How do you create a parameterised test in JUnit 5?	Annotate the method with `@ParameterizedTest` and supply a source annotation such as `@ValueSource`, `@CsvSource`, `@MethodSource`, or `@EnumSource`.
+[Intermediate] What does `@ValueSource` provide?	A simple array of literal values (strings, ints, longs, doubles, etc.) passed one at a time to the test method.
+[Intermediate] What does `@CsvSource` provide?	Inline CSV rows as test arguments. Each string is a comma-separated row: `@CsvSource({"1, one", "2, two"})`. Use `@CsvFileSource` to load from a file.
+[Intermediate] What does `@MethodSource` provide?	References a factory method that returns a `Stream`, `Collection`, or array of arguments. The factory must be `static` unless `@TestInstance(PER_CLASS)` is used.
+[Intermediate] What does `@EnumSource` provide?	Passes all (or a subset of) enum constants to the test. Use `names` and `mode` attributes to include or exclude specific values.
+
+# JUnit 5 — Extensions
+[Intermediate] What replaces JUnit 4 `@Rule` and `@ClassRule` in JUnit 5?	The Extension model via `@ExtendWith(SomeExtension.class)`. Extensions implement lifecycle callbacks like `BeforeEachCallback`, `AfterEachCallback`, `ParameterResolver`, etc.
+[Intermediate] How do you register a JUnit 5 extension?	1. `@ExtendWith(MyExtension.class)` on the class or method. 2. `@RegisterExtension` on a field. 3. Automatic via `ServiceLoader` (declarative).
+[Intermediate] What does `@TempDir` do in JUnit 5?	Injects a temporary directory (`Path` or `File`) that is automatically deleted after the test. Works on fields and method parameters.
+
+# Mockito
+[Beginner] What is Mockito used for?	Creating mock objects — test doubles that simulate dependencies, allowing you to test a unit in isolation without requiring real implementations (databases, HTTP clients, etc.).
+[Beginner] How do you create a mock in Mockito?	`Mockito.mock(SomeClass.class)` or annotate a field with `@Mock` and extend the class with `@ExtendWith(MockitoExtension.class)` (JUnit 5).
+[Intermediate] What does `@InjectMocks` do in Mockito?	Creates an instance of the class under test and injects fields annotated with `@Mock` or `@Spy` into it (via constructor, setter, or field injection).
+[Intermediate] How do you stub a method in Mockito?	`when(mock.method(args)).thenReturn(value)` — specifies what the mock returns when called. For void methods: `doNothing().when(mock).method()` or `doThrow().when(mock).method()`.
+[Intermediate] What is the difference between a mock and a spy in Mockito?	A **mock** replaces the object entirely — all methods return defaults unless stubbed. A **spy** wraps a real object — real methods are called unless overridden with `doReturn(...)`.
+[Intermediate] How do you verify interactions in Mockito?	`verify(mock).method(args)` — asserts the method was called. `verify(mock, times(2)).method()`, `verify(mock, never()).method()`, `verify(mock, atLeastOnce()).method()`.
+[Intermediate] What are argument matchers in Mockito?	Flexible argument matching in `when` / `verify`: `any()`, `anyInt()`, `anyString()`, `eq(value)`, `argThat(predicate)`. If one argument uses a matcher, all must use matchers.
+[Intermediate] What does `@Captor` do?	Creates an `ArgumentCaptor<T>` which captures the argument passed to a mock method for later assertion. Access with `captor.getValue()` or `captor.getAllValues()`.
+[Intermediate] What does `Mockito.reset(mock)` do, and when should you avoid it?	Resets all stubs and interactions on a mock. Avoid it — needing to reset usually means the test is doing too much. Prefer creating fresh mocks per test.
+[Intermediate] What does `@MockBean` do in Spring Boot tests?	Registers a Mockito mock as a Spring bean, replacing the real bean in the application context. Used with `@SpringBootTest` or slice tests like `@WebMvcTest`.
+
+# AssertJ
+[Intermediate] What is AssertJ and how does it differ from JUnit assertions?	AssertJ provides a fluent, chained assertion API: `assertThat(value).isEqualTo(x).isGreaterThan(0)`. More readable than `assertEquals` and gives better failure messages.
+[Intermediate] How do you assert a list with AssertJ?	`assertThat(list).hasSize(3).contains("a", "b").doesNotContain("z").isSorted()`. Rich collection assertions with clear failure descriptions.
+[Intermediate] How do you assert exception throwing with AssertJ?	`assertThatThrownBy(() -> method()).isInstanceOf(IllegalArgumentException.class).hasMessage("expected message")`.
+[Intermediate] How do you perform soft assertions in AssertJ?	Use `SoftAssertions`: `SoftAssertions soft = new SoftAssertions(); soft.assertThat(...).isEqualTo(...); soft.assertAll();` — collects all failures before reporting.
+
+# TestContainers
+[Intermediate] What is Testcontainers?	A Java library that spins up real Docker containers during tests, providing actual databases, message brokers, etc. instead of mocks or embedded alternatives.
+[Intermediate] How do you use a PostgreSQL container in a JUnit 5 test?	Annotate with `@Testcontainers`, declare a `@Container static PostgreSQLContainer<?> pg = new PostgreSQLContainer<>("postgres:15")`, then use `pg.getJdbcUrl()`, `pg.getUsername()`, `pg.getPassword()` to configure the data source.
+[Intermediate] What is the difference between `@Container` on a static vs instance field?	Static: container is started once for the class and reused across all tests (faster). Instance: a new container is started for each test (more isolated but slower).
+[Intermediate] How does Testcontainers integrate with Spring Boot data source configuration?	Use `DynamicPropertySource`: `@DynamicPropertySource static void props(DynamicPropertyRegistry r) { r.add("spring.datasource.url", pg::getJdbcUrl); }`.
+[Intermediate] What does the `@Testcontainers` annotation do?	Activates the Testcontainers JUnit 5 extension, which manages the lifecycle of `@Container`-annotated fields automatically.
+
+# Test Patterns & Best Practices
+[Beginner] What is the AAA (Arrange-Act-Assert) pattern?	Structure tests in three sections: **Arrange** — set up objects and inputs; **Act** — call the method under test; **Assert** — verify the result. Improves readability and clarity.
+[Beginner] What is the difference between a unit test and an integration test?	**Unit test**: tests a single class/method in isolation (dependencies mocked). **Integration test**: tests multiple components working together, often involving a real database, file system, or network.
+[Beginner] What is a test fixture?	The fixed state (objects, data, configuration) needed before a test runs. Set up in `@BeforeEach` / `@BeforeAll`.
+[Beginner] What is test isolation and why does it matter?	Each test must be independent — no shared mutable state between tests. Violations cause flaky tests that pass or fail depending on execution order.
+[Intermediate] What does `@SpringBootTest` do?	Loads the full Spring application context for integration testing. Use `webEnvironment = RANDOM_PORT` for real HTTP tests or `MOCK` (default) with `MockMvc`.
+[Intermediate] What is `@WebMvcTest` used for?	Slice test that loads only the web layer (controllers, filters, `MockMvc`). Beans like services are not loaded — stub them with `@MockBean`.
+[Intermediate] What is `@DataJpaTest` used for?	Slice test that loads only JPA components: entity scan, repositories, embedded database (or Testcontainers). Transactions are rolled back after each test by default.

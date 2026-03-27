@@ -1,0 +1,38 @@
+# Java Dependency Injection — Guice, CDI/Weld, JSR-330
+# Format: Front[TAB]Back
+
+# JSR-330 — Standard DI Annotations
+[Beginner] What is JSR-330?	A Java specification (`javax.inject` / `jakarta.inject`) defining standard annotations for DI: `@Inject`, `@Named`, `@Qualifier`, `@Scope`, `@Singleton`, `@Provider`. Supported by Guice, CDI, Spring, and Dagger.
+[Beginner] What does `@Inject` do?	Marks a constructor, method, or field for injection. The DI container resolves and injects the dependency. Constructor injection is preferred — makes dependencies explicit and allows immutable fields.
+[Intermediate] What is `@Named` in JSR-330?	A qualifier annotation that distinguishes between multiple bindings of the same type by a string name: `@Inject @Named("maxRetries") int retries`. Implemented by all JSR-330 containers.
+[Intermediate] What is `@Singleton` scope in JSR-330?	The container creates one instance per application (or scope). Subsequent injection points for the same type receive the same instance. Both Guice and CDI support this annotation.
+[Intermediate] What is `Provider<T>` in JSR-330?	An injectable factory: `@Inject Provider<MyService> serviceProvider; MyService s = serviceProvider.get();`. Useful for lazy instantiation, getting multiple instances, or breaking circular dependencies.
+
+# Guice
+[Intermediate] What is Google Guice?	A lightweight DI framework from Google. Configuration is in pure Java (`Module` + `AbstractModule`) rather than XML or component scanning. No classpath scanning by default — all bindings must be explicit.
+[Intermediate] What is a Guice `Module`?	A class extending `AbstractModule` that configures bindings in `configure()`. Example: `bind(Service.class).to(ServiceImpl.class)`, `bind(String.class).annotatedWith(Names.named("url")).toInstance("http://...")`.
+[Intermediate] How do you create a Guice injector?	`Injector injector = Guice.createInjector(new AppModule()); MyApp app = injector.getInstance(MyApp.class);` — the injector is the root object; get only the top-level object from it.
+[Intermediate] What are the Guice binding types?	Linked binding: `bind(A.class).to(B.class)`. Instance binding: `.toInstance(obj)`. Provider binding: `.toProvider(MyProvider.class)`. Untargetted: `bind(ConcreteClass.class)` (inferred). Constructor binding: `.toConstructor(...)`.
+[Intermediate] What does `@Provides` do in Guice?	Annotate a method in a `Module` to define a binding without a separate `Provider` class: `@Provides @Singleton DataSource provideDataSource() { ... }`. Arguments are injected automatically.
+[Intermediate] What is `@Singleton` in Guice?	Scope annotation ensuring one instance per `Injector`. Apply on a class or on a binding: `bind(Service.class).to(ServiceImpl.class).in(Singleton.class)`. Without scope, Guice creates a new instance per injection.
+[Intermediate] What are Guice `@Named` bindings?	`bind(Integer.class).annotatedWith(Names.named("port")).toInstance(8080)`. Inject with `@Inject @Named("port") int port`. Use `Names.named()` in the module.
+[Intermediate] What is Guice AOP (method interception)?	`bindInterceptor(classMatcher, methodMatcher, interceptor)` — applies `MethodInterceptor` (AOP Alliance) around matching methods. Used for cross-cutting concerns like logging, transactions, and security.
+[Intermediate] What is `Injector.injectMembers(obj)`?	Injects into an already-constructed object. Useful for framework-created objects (e.g. servlets) that you can't construct through Guice directly.
+[Intermediate] What is a Guice child injector?	`injector.createChildInjector(modules)` — inherits parent bindings, adds new ones, can override parent bindings. Used for per-request or per-tenant scopes.
+
+# CDI (Contexts and Dependency Injection)
+[Intermediate] What is CDI?	Jakarta Contexts and Dependency Injection — the Jakarta EE / MicroProfile standard for DI. Unlike Guice, CDI scans the classpath for beans and provides rich lifecycle contexts (Request, Session, Application, Conversation scopes).
+[Intermediate] What is a CDI bean?	Any managed class that CDI can inject. Enabled by placing a `beans.xml` in `META-INF/` (or having `bean-discovery-mode=all`). Annotated beans (`@ApplicationScoped`, `@RequestScoped`, etc.) are always discovered.
+[Intermediate] What are CDI bean scopes?	`@ApplicationScoped` — one instance per application. `@SessionScoped` — one per HTTP session. `@RequestScoped` — one per request. `@Dependent` (default) — lifecycle tied to the injection point. `@ConversationScoped` — user-controlled multi-request scope.
+[Intermediate] What is `@Qualifier` in CDI?	A custom annotation that distinguishes between multiple beans of the same type: `@interface Premium {}`. Inject with `@Inject @Premium PaymentService ps`. Avoids string-based `@Named`.
+[Intermediate] What is `@Alternative` in CDI?	Marks a bean as an alternative implementation not used by default. Activated per deployment in `beans.xml` or with `@Priority`. Used for test doubles or environment-specific implementations.
+[Intermediate] What is CDI `@Produces`?	A method annotated with `@Produces` acts as a factory for a type that CDI cannot discover automatically (e.g. `EntityManager`, `DataSource`): `@Produces @ApplicationScoped DataSource produceDataSource() { ... }`.
+[Intermediate] What is `Instance<T>` in CDI?	Programmatic injection of beans: `@Inject Instance<PaymentService> services; services.get()`. Supports `isUnsatisfied()`, `isAmbiguous()`, `select(qualifier)`. CDI equivalent of Guice's `Provider<T>`.
+[Intermediate] What is `@Observes` in CDI?	Observes CDI events: `void onEvent(@Observes UserLoggedIn event) { ... }`. Fire events with `@Inject Event<UserLoggedIn> eventBus; eventBus.fire(new UserLoggedIn(user))`. CDI's built-in pub-sub.
+[Intermediate] What is Weld?	The reference implementation of CDI. Bundled in WildFly and Payara; available as a standalone JAR (`weld-se-core`) for SE applications. Other implementations: OpenWebBeans, CanDI.
+[Intermediate] How do you use CDI in a plain Java SE application with Weld?	Add `weld-se-core` dependency. `SeContainer container = SeContainerInitializer.newInstance().initialize(); MyBean bean = container.select(MyBean.class).get();` Weld bootstraps and scans the classpath.
+
+# Comparison
+[Intermediate] How does Guice differ from CDI?	Guice: explicit bindings in Java modules, no classpath scanning, simpler and lighter, no web/session scopes out of the box, great testability. CDI: standard Jakarta spec, classpath scanning, rich built-in scopes, events, interceptors, decorators, tightly integrated with Jakarta EE containers.
+[Intermediate] When would you choose Guice over Spring DI?	Guice: pure Java configuration (no annotations/XML overhead), lighter (no application context, no AOP proxy unless needed), better for standalone libraries or command-line tools. Spring: full ecosystem (MVC, Data, Security, Boot), better for web applications.
+[Intermediate] What is Dagger?	A compile-time DI framework from Google (used heavily in Android). Generates DI code at compile time (no reflection at runtime), zero overhead, strict correctness checking. Not practical for large server-side apps due to boilerplate, but ideal for mobile.

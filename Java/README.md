@@ -35,6 +35,18 @@ All cards target **Java 17+** unless otherwise noted.
 | `java_enterprise_patterns.txt` | DI/IoC, Repository, Service, DTO, Circuit Breaker, CQRS, Outbox |
 | `java_web_frameworks.txt` | Spring MVC/Boot/Security/Data, WebFlux, gRPC, SSE |
 | `java_cryptography_advanced.txt` | TLS, keystores, PKI, ECDH, PBKDF2, AES-GCM, secrets management |
+| `java_jdbc.txt` | JDBC Connection/Statement/ResultSet, transactions, isolation levels, HikariCP |
+| `java_logging.txt` | SLF4J, Logback, Log4j2, MDC, structured logging, log levels |
+| `java_testing.txt` | JUnit 5, Mockito, AssertJ, TestContainers, parameterized tests, Spring slice tests |
+| `java_build_tools.txt` | Maven lifecycle/POM/plugins, Gradle DSL/tasks/caching, multi-module projects |
+| `java_messaging.txt` | JMS, Apache Kafka producer/consumer/Streams, RabbitMQ AMQP |
+| `java_xml.txt` | DOM, SAX, StAX, JAXB, XPath, XXE prevention |
+| `java_i18n.txt` | Locale, ResourceBundle, NumberFormat, DateTimeFormatter, MessageFormat, Collator |
+| `java_observability.txt` | Micrometer, OpenTelemetry, distributed tracing, Actuator health/readiness probes |
+| `java_networking.txt` | TCP/UDP sockets, NIO Selector/Channel, Netty EventLoop/pipeline/codecs |
+| `java_regex.txt` | Pattern/Matcher, groups, lookahead/lookbehind, flags, common patterns |
+| `java_di.txt` | JSR-330, Google Guice modules/bindings, CDI scopes/events, Weld, Dagger |
+| `java_jmh.txt` | JMH benchmarking, @Benchmark, modes, Blackhole, dead-code elimination |
 
 ### Expert
 | File | Description |

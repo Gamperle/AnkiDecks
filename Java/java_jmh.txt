@@ -1,0 +1,34 @@
+# Java Benchmarking — JMH (Java Microbenchmark Harness)
+# Format: Front[TAB]Back
+
+# JMH Fundamentals
+[Pro] What is JMH?	Java Microbenchmark Harness — the official OpenJDK tool for writing correct, reproducible Java microbenchmarks. It handles JIT warm-up, dead-code elimination, and statistical analysis that naive `System.nanoTime()` benchmarks get wrong.
+[Pro] Why is writing a Java microbenchmark without JMH unreliable?	Without JMH: the JIT may eliminate "dead" computations with no observable side effects; warm-up effects bias early measurements; GC pauses skew results; OS scheduling adds noise. JMH controls all of these.
+[Pro] How do you add JMH to a Maven project?	Add `org.openjdk.jmh:jmh-core` and `org.openjdk.jmh:jmh-generator-annprocess` as dependencies (or use the `jmh-maven-plugin`). JMH uses annotation processing to generate benchmark infrastructure.
+[Pro] How do you run JMH benchmarks?	Build a fat JAR with `mvn package` (or use the jmh plugin), then `java -jar target/benchmarks.jar`. Alternatively call `new Runner(options).run()` from a main method.
+
+# Core Annotations
+[Pro] What does `@Benchmark` do?	Marks a method as a benchmark. JMH calls this method in a tight loop, measures throughput or latency, handles warm-up, and reports statistics.
+[Pro] What does `@BenchmarkMode` control?	The measurement mode: `Mode.Throughput` (ops/time), `Mode.AverageTime` (time/op), `Mode.SampleTime` (distribution of latencies), `Mode.SingleShotTime` (one cold invocation), `Mode.All`.
+[Pro] What does `@OutputTimeUnit` do?	Sets the time unit for reported results: `TimeUnit.MILLISECONDS`, `MICROSECONDS`, `NANOSECONDS`. Example: `@OutputTimeUnit(TimeUnit.NANOSECONDS)`.
+[Pro] What does `@Warmup` configure?	`@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)` — runs the benchmark for warm-up without recording results. Allows the JIT to fully optimise the hot path before measurement begins.
+[Pro] What does `@Measurement` configure?	The actual measurement phase: `@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)`.
+[Pro] What does `@Fork` do?	Runs the benchmark in a separate JVM process: `@Fork(value = 3)` runs 3 forks. Each fork starts with a fresh JVM, eliminating contamination from previous benchmarks' JIT profiles. `@Fork(0)` disables forking (useful for debugging in IDE).
+[Pro] What does `@State` do?	Marks a class as a state container for benchmarks. `@State(Scope.Benchmark)` — one instance shared across all threads. `@State(Scope.Thread)` — one instance per thread. `@State(Scope.Group)` — one per thread group.
+[Pro] What are `@Setup` and `@TearDown`?	`@Setup(Level.Trial)` / `@TearDown(Level.Trial)` — run once per benchmark trial (all forks). `Level.Iteration` — per iteration. `Level.Invocation` — per benchmark method call (use sparingly; introduces overhead).
+
+# Avoiding Measurement Pitfalls
+[Pro] What is dead code elimination (DCE) and how does JMH address it?	The JIT can detect that a computation's result is unused and eliminate it. JMH addresses this by consuming return values via `Blackhole.consume(result)` or by having benchmarks return the result directly (JMH sinks it automatically).
+[Pro] What is `Blackhole`?	A JMH helper that prevents the JIT from eliminating computations: `public void benchmark(Blackhole bh) { bh.consume(expensiveOp()); }`. The `Blackhole.consume()` call has defined side-effects that block DCE without significant overhead.
+[Pro] What is constant folding and how do you avoid it in benchmarks?	The JIT can compute a result at compile/JIT time if all inputs are constants. Use `@State`-held fields rather than literals, so values appear variable to the JIT.
+[Pro] What does `@Param` do?	Injects parameterised values into `@State` fields: `@Param({"10", "100", "1000"}) public int size;`. JMH runs the full benchmark for each parameter combination, enabling scaling analysis.
+
+# Interpreting Results
+[Pro] What does a JMH output line look like?	`Benchmark          Mode  Cnt     Score     Error  Units`\n`MyBench.test       avgt   10   123.456 ±  2.345  ns/op`. Score is the mean, Error is the 99.9% confidence interval.
+[Pro] What does a high `Error` value indicate in JMH results?	High variance — the benchmark is unstable. Causes: insufficient warm-up, GC pauses, external interference, non-deterministic code paths. Increase iterations/forks or use `@Fork(jvmArgs="-Xmx4g")`.
+[Pro] What is `Mode.SampleTime` useful for?	Captures the latency distribution (p50, p90, p99, p99.9), not just the average. Important for latency-sensitive code where outliers matter more than mean performance.
+
+# Best Practices
+[Pro] What class/method granularity is appropriate for JMH?	Micro: individual operations (serialisation, parsing, a single method). Not appropriate for end-to-end integration benchmarks — use tools like Gatling or k6 for those.
+[Pro] Should you use `@Fork(0)` in production benchmarks?	No — only for debugging. Without forking, benchmark isolation is broken; previous benchmarks' JIT profiles pollute the current one, giving unreliable results.
+[Pro] What JVM flags are useful for benchmarking?	`-XX:+PrintCompilation` (see JIT activity), `-XX:+LogCompilation` (detailed JIT log), `-prof gc` (GC profiling via JMH profiler), `-prof stack` (stack sampling). Add via `@Fork(jvmArgsPrepend=...)`.

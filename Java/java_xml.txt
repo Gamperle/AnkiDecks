@@ -1,0 +1,41 @@
+# Java XML Processing — DOM, SAX, StAX, JAXB
+# Format: Front[TAB]Back
+
+# XML Processing Models Overview
+[Beginner] What are the four main Java XML processing APIs?	**DOM** (Document Object Model): tree-based, loads entire document into memory. **SAX** (Simple API for XML): event-driven, streaming, read-only. **StAX** (Streaming API for XML): cursor/iterator-based streaming, supports both reading and writing. **JAXB** (Jakarta XML Binding): object/XML mapping via annotations.
+[Beginner] When should you use DOM vs SAX vs StAX?	DOM: random access needed, document fits in memory, frequent updates. SAX: large documents, read-only, low memory budget. StAX: large documents, need both read and write, more control than SAX with less memory than DOM.
+
+# DOM
+[Intermediate] What is the DOM API for XML in Java?	`org.w3c.dom` — represents an XML document as a tree of `Node` objects (`Document`, `Element`, `Attr`, `Text`, `Comment`). Loaded into memory entirely.
+[Intermediate] How do you parse an XML file into a DOM Document?	`DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance(); DocumentBuilder builder = factory.newDocumentBuilder(); Document doc = builder.parse(new File("file.xml"));`
+[Intermediate] How do you query DOM elements by tag name?	`NodeList nodes = doc.getElementsByTagName("item");` then iterate: `for (int i = 0; i < nodes.getLength(); i++) { Element e = (Element) nodes.item(i); ... }`
+[Intermediate] How do you create and write a DOM document to XML?	Build with `doc.createElement()`, `doc.createTextNode()`, append nodes; then use `TransformerFactory.newInstance().newTransformer()` and `transformer.transform(new DOMSource(doc), new StreamResult(outputStream))`.
+[Intermediate] What is XXE (XML External Entity) injection and how do you prevent it in Java?	XXE: an attacker supplies an XML document with an `<!ENTITY xxe SYSTEM "file:///etc/passwd">` reference; the parser fetches and embeds the file. Prevention in DOM: `factory.setFeature("http://xml.org/sax/features/external-general-entities", false); factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false); factory.setXIncludeAware(false); factory.setExpandEntityReferences(false);`
+
+# SAX
+[Intermediate] What is SAX parsing?	Event-driven streaming: the parser reads the XML and fires events (`startElement`, `endElement`, `characters`) on a handler. No tree is built in memory — very memory efficient for large files.
+[Intermediate] How do you parse XML with SAX?	Implement `DefaultHandler` (or `ContentHandler`), override `startElement` / `endElement` / `characters`. Pass to `SAXParserFactory.newInstance().newSAXParser().parse(inputStream, handler)`.
+[Intermediate] What are the main SAX handler methods?	`startDocument()`, `endDocument()`, `startElement(uri, localName, qName, attributes)`, `endElement(uri, localName, qName)`, `characters(char[] ch, int start, int length)`.
+[Intermediate] What are the limitations of SAX?	Read-only (cannot write XML), no random access, must maintain your own state stack to reconstruct context (e.g. tracking nesting), cannot go back to a previous element.
+
+# StAX
+[Intermediate] What is StAX and how does it differ from SAX?	StAX (JSR-173) is a pull-based streaming API. The application drives parsing by calling `next()` on the stream rather than being called back by the parser. Supports both reading (`XMLStreamReader`) and writing (`XMLStreamWriter`).
+[Intermediate] How do you read XML with StAX `XMLStreamReader`?	`XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(inputStream);` then `while (reader.hasNext()) { int event = reader.next(); if (event == XMLStreamConstants.START_ELEMENT) { ... } }`.
+[Intermediate] What are the main StAX event constants?	`START_DOCUMENT`, `END_DOCUMENT`, `START_ELEMENT`, `END_ELEMENT`, `CHARACTERS`, `ATTRIBUTE`, `NAMESPACE`, `COMMENT`, `CDATA`, `PROCESSING_INSTRUCTION`.
+[Intermediate] How do you write XML with StAX `XMLStreamWriter`?	`XMLStreamWriter writer = XMLOutputFactory.newInstance().createXMLStreamWriter(outputStream); writer.writeStartDocument(); writer.writeStartElement("root"); writer.writeCharacters("text"); writer.writeEndElement(); writer.writeEndDocument(); writer.close();`
+[Intermediate] What is the difference between `XMLStreamReader` and `XMLEventReader` in StAX?	`XMLStreamReader` is a cursor (lower-level, more efficient). `XMLEventReader` creates `XMLEvent` objects for each event (higher-level, easier to use, slightly more GC pressure). Both pull-based.
+
+# JAXB (Jakarta XML Binding)
+[Intermediate] What is JAXB?	Jakarta XML Binding — maps Java objects to XML and back via annotations. `@XmlRootElement`, `@XmlElement`, `@XmlAttribute` annotate POJOs. `Marshaller` converts object → XML; `Unmarshaller` converts XML → object.
+[Intermediate] How do you marshal a Java object to XML with JAXB?	`JAXBContext ctx = JAXBContext.newInstance(MyClass.class); Marshaller m = ctx.createMarshaller(); m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true); m.marshal(myObject, System.out);`
+[Intermediate] How do you unmarshal XML to a Java object with JAXB?	`JAXBContext ctx = JAXBContext.newInstance(MyClass.class); Unmarshaller u = ctx.createUnmarshaller(); MyClass obj = (MyClass) u.unmarshal(new File("file.xml"));`
+[Intermediate] What JAXB annotations are commonly used?	`@XmlRootElement(name="person")` — marks the root element. `@XmlElement(name="first-name")` — maps a field to an element. `@XmlAttribute` — maps to an attribute. `@XmlTransient` — excludes a field. `@XmlList` — serialises a collection as space-separated values.
+[Intermediate] How do you handle XML namespace in JAXB?	Use `package-info.java` with `@XmlSchema(namespace="http://example.com", elementFormDefault=XmlNsForm.QUALIFIED)`, or set namespace on individual `@XmlRootElement` / `@XmlElement` annotations.
+[Intermediate] What is the status of JAXB in modern Java?	JAXB was part of Java SE until Java 8, removed in Java 9. Now available as `jakarta.xml.bind:jakarta.xml.bind-api` with implementations like `com.sun.xml.bind:jaxb-impl` (reference) or `org.eclipse.persistence:org.eclipse.persistence.moxy`.
+
+# XPath
+[Intermediate] What is XPath and how do you use it in Java?	XPath is a query language for selecting nodes from a DOM tree. In Java: `XPath xpath = XPathFactory.newInstance().newXPath(); NodeList result = (NodeList) xpath.evaluate("//item[@id='1']", doc, XPathConstants.NODESET);`
+[Intermediate] What are common XPath expressions?	`/root/child` (absolute), `//element` (any depth), `@attr` (attribute), `element[2]` (second), `element[@attr='val']` (predicate), `text()` (text node), `..` (parent), `*` (any element).
+
+# XSLT
+[Intermediate] What is XSLT in Java?	XSL Transformations — transforms XML into another XML, HTML, or text using a stylesheet. Java: `TransformerFactory.newInstance().newTransformer(new StreamSource(xsltFile)).transform(new StreamSource(xml), new StreamResult(output))`.

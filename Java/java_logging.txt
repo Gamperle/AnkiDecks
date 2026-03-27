@@ -1,0 +1,46 @@
+# Java Logging — SLF4J, Logback, Log4j2, MDC, Structured Logging
+# Format: Front[TAB]Back
+
+# Logging Fundamentals
+[Beginner] What are the standard log levels in order of severity?	TRACE < DEBUG < INFO < WARN < ERROR. A logger configured at INFO will emit INFO, WARN, and ERROR but suppress TRACE and DEBUG.
+[Beginner] What is the logging facade pattern and why use it?	A facade (e.g. SLF4J) decouples application code from the logging implementation. You can switch from Logback to Log4j2 by changing a dependency — no code changes. Application code always imports `org.slf4j.Logger`.
+[Beginner] Name the main Java logging frameworks.	**SLF4J** (facade), **Logback** (SLF4J native implementation, Spring Boot default), **Log4j2** (Apache, high performance, async), **java.util.logging / JUL** (JDK built-in, least featured).
+
+# SLF4J
+[Beginner] How do you create an SLF4J logger?	`private static final Logger log = LoggerFactory.getLogger(MyClass.class);` — use the class as the logger name so the hierarchy matches the package structure.
+[Intermediate] How do you log with parameterised messages in SLF4J?	Use `{}` placeholders: `log.info("User {} logged in from {}", userId, ip)`. Arguments are evaluated lazily — the string is only formatted if the log level is enabled, avoiding wasted String concatenation.
+[Intermediate] Why should you avoid string concatenation in log statements?	`log.debug("Value: " + heavyComputation())` calls `heavyComputation()` even if DEBUG is disabled. Use `{}` placeholders or guard with `if (log.isDebugEnabled())`.
+[Intermediate] What is the SLF4J binding?	A JAR that bridges SLF4J to a concrete logging implementation: `logback-classic` (Logback), `log4j-slf4j2-impl` (Log4j2), `slf4j-jdk14` (JUL). Exactly one binding must be on the classpath.
+[Intermediate] What is an SLF4J bridge?	Redirects calls from another logging API to SLF4J: `jcl-over-slf4j` (Commons Logging), `log4j-over-slf4j` (Log4j 1.x), `jul-to-slf4j` (JUL). Allows libraries using different APIs to all flow through one backend.
+
+# Logback
+[Intermediate] What is Logback?	The reference implementation of SLF4J, written by the SLF4J author. Composed of three modules: `logback-core`, `logback-classic` (SLF4J binding), `logback-access` (HTTP request logging).
+[Intermediate] What is Logback's configuration file?	`logback.xml` (or `logback-spring.xml` for Spring Boot integration) in the classpath root. Also supports `logback-test.xml` for tests (takes priority over `logback.xml`).
+[Intermediate] What is an Appender in Logback?	A destination for log events: `ConsoleAppender`, `FileAppender`, `RollingFileAppender`, `SocketAppender`. Loggers forward events to attached appenders.
+[Intermediate] What does `RollingFileAppender` do?	Writes logs to a file and rolls (creates a new file) based on policy: `TimeBasedRollingPolicy` (e.g. daily), `SizeAndTimeBasedRollingPolicy` (size + time). Old files can be compressed and auto-deleted.
+[Intermediate] What is a Layout / Encoder in Logback?	Converts a log event to a string. `PatternLayoutEncoder` uses a pattern string: `%d{HH:mm:ss} %-5level %logger{36} - %msg%n`. Encoders write bytes to the appender's output stream.
+[Intermediate] What is an additivity flag on a logger?	By default, a logger propagates events up to its parent (additive = true). Setting `additivity="false"` on a `<logger>` prevents events from reaching ancestor appenders (avoids double-logging).
+
+# Log4j2
+[Intermediate] What advantages does Log4j2 offer over Logback?	Asynchronous logging via LMAX Disruptor (much lower latency under load), garbage-free logging (avoids object allocation), plugin architecture, lambda-based lazy evaluation, and built-in support for structured logging.
+[Intermediate] What is the Log4j2 async logger?	Uses the LMAX Disruptor ring buffer. `AsyncLogger` (all loggers async) or `AsyncAppender` (specific appender async). Enable all-async with `-Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector`.
+[Intermediate] What was Log4Shell (CVE-2021-44228)?	A critical JNDI injection vulnerability in Log4j2 ≤ 2.14.1. The `${jndi:ldap://...}` lookup in a log message triggered remote class loading. Mitigated by upgrading to ≥ 2.15.0 (2.16+ fully disables JNDI by default).
+[Intermediate] How do you configure Log4j2?	Via `log4j2.xml`, `log4j2.json`, or `log4j2.yaml` in the classpath root. Supports hot-reload with `monitorInterval` attribute.
+
+# MDC — Mapped Diagnostic Context
+[Intermediate] What is MDC (Mapped Diagnostic Context)?	A thread-local map of key-value pairs that is automatically included in every log statement. Used to attach context like request ID, user ID, or correlation ID without passing them through every method call.
+[Intermediate] How do you use MDC in SLF4J/Logback?	`MDC.put("requestId", id)` at the start of a request; include `%X{requestId}` in the pattern. Always `MDC.remove("requestId")` or `MDC.clear()` at the end (in a `finally` block) to prevent leaks in thread pools.
+[Intermediate] Why must MDC be cleared in thread pools?	Thread pool threads are reused. If MDC is not cleared, the next task on that thread inherits the previous request's context, causing incorrect log correlation.
+[Intermediate] How does MDC work with virtual threads?	MDC is thread-local, which works with virtual threads, but be careful with `MDC.clear()` since virtual threads are not pooled. Structured Concurrency / Scoped Values are the idiomatic alternative for propagating context.
+
+# Structured Logging
+[Intermediate] What is structured logging?	Emitting log events as structured data (JSON, key=value) rather than plain text. Makes logs machine-parseable for log aggregation tools (ELK, Splunk, Datadog) without regex parsing.
+[Intermediate] How do you output JSON logs in Logback?	Use `logstash-logback-encoder` library: replace `PatternLayoutEncoder` with `LogstashEncoder`. Outputs each event as a JSON object including timestamp, level, logger, message, and MDC fields.
+[Intermediate] What are key-value pairs in Log4j2?	`logger.info("User login", "userId", userId, "ip", ip)` using the `LogBuilder` or fluent API. Log4j2 can emit these as structured fields in JSON output.
+[Intermediate] What should you never include in log messages?	Passwords, tokens, session IDs, PII (names, email, SSN), payment card data. Violates security and compliance (GDPR, PCI-DSS). Use MDC with allowlisted safe identifiers only.
+
+# Performance & Best Practices
+[Intermediate] When should you use TRACE vs DEBUG?	TRACE: very detailed, per-iteration or per-byte data — usually disabled in production. DEBUG: useful during development/troubleshooting — may be enabled selectively in production.
+[Intermediate] What is lazy logging in Log4j2?	Lambda-based: `logger.debug("Result: {}", () -> expensiveComputation())` — the lambda is only invoked if DEBUG is enabled, avoiding the cost of the computation.
+[Intermediate] What is the Logger hierarchy?	Loggers are named hierarchically by package: `com.example.service` is a child of `com.example`. A child inherits the level of its closest configured ancestor if not explicitly set.
+[Intermediate] How do you change log levels at runtime without restart?	Logback supports JMX or logback-spring.xml with Spring Boot Actuator (`POST /actuator/loggers/{name}` with `{"configuredLevel": "DEBUG"}`). Log4j2 supports hot-reload via `monitorInterval`.

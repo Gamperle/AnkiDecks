@@ -1,0 +1,49 @@
+# Java Build Tools — Maven & Gradle
+# Format: Front[TAB]Back
+
+# Maven — Core Concepts
+[Beginner] What is Maven?	A build automation and project management tool. It uses a declarative `pom.xml` (Project Object Model) to describe the project, manage dependencies, and define the build lifecycle.
+[Beginner] What is the Maven build lifecycle?	An ordered sequence of phases. The **default** lifecycle (most common): validate → compile → test → package → verify → install → deploy. Running a phase executes all prior phases first.
+[Beginner] What does `mvn package` do?	Executes all default lifecycle phases up to and including `package` — compiles sources, runs tests, and packages the output (e.g. JAR or WAR) in the `target/` directory.
+[Beginner] What does `mvn install` do?	Same as `package` plus copies the artifact to the local Maven repository (`~/.m2/repository`), making it available to other local projects as a dependency.
+[Beginner] What does `mvn clean` do?	Executes the **clean** lifecycle, deleting the `target/` directory. Commonly run as `mvn clean package` to ensure a fresh build.
+[Beginner] What are Maven coordinates?	The three identifiers that uniquely identify an artifact: `groupId` (organisation/domain, e.g. `com.example`), `artifactId` (project name), and `version`. Together they resolve to a path in the repository.
+[Beginner] What is the Maven local repository?	`~/.m2/repository` — a local cache of downloaded artifacts. Maven checks here first before fetching from remote repositories (Maven Central, corporate Nexus/Artifactory).
+
+# Maven — Dependencies
+[Intermediate] What are Maven dependency scopes?	`compile` (default — on all classpaths), `provided` (compile but not runtime, e.g. Servlet API), `runtime` (runtime only, not compile), `test` (test compile and runtime only), `system` (like provided but explicit path), `import` (POM type only, for BOM imports).
+[Intermediate] What is a BOM (Bill of Materials) in Maven?	A POM with `<packaging>pom</packaging>` that declares `<dependencyManagement>` versions for a set of related artifacts. Import it with `<scope>import</scope>` to centralise version management (e.g. Spring Boot BOM).
+[Intermediate] What is transitive dependency and how does Maven handle it?	A dependency of a dependency. Maven includes transitive dependencies automatically. Use `<exclusions>` to exclude unwanted transitive dependencies that cause conflicts.
+[Intermediate] What is dependency mediation in Maven?	When the same artifact appears at multiple versions in the dependency tree, Maven uses the **nearest wins** rule — the version closest to the root POM is selected.
+[Intermediate] How do you check for dependency conflicts in Maven?	`mvn dependency:tree` — prints the full dependency tree. `mvn dependency:analyze` — lists declared-but-unused and used-but-undeclared dependencies.
+
+# Maven — Plugins & Profiles
+[Intermediate] What is the Maven Surefire Plugin?	Runs unit tests during the `test` phase. By default picks up classes matching `**/*Test.java`. Configure with `<configuration>` to set JVM args, skip tests (`-DskipTests`), etc.
+[Intermediate] What is the Maven Failsafe Plugin?	Runs integration tests during the `integration-test` and `verify` phases. Matches `**/*IT.java` by default. Separates integration tests from unit tests in the lifecycle.
+[Intermediate] What is a Maven profile?	A set of build configuration overrides activated by `-P profileName`, environment variables, or OS conditions. Used for environment-specific settings (dev vs prod), optional dependencies, or alternate plugin configurations.
+[Intermediate] What does the `<parent>` element in a POM do?	Inherits configuration from a parent POM. In Spring Boot projects, `spring-boot-starter-parent` provides dependency management, plugin configuration, and sensible defaults.
+[Intermediate] What is a multi-module Maven project?	A parent POM with `<packaging>pom</packaging>` listing `<modules>`. `mvn install` from the parent builds all modules in dependency order. Modules share the parent's `dependencyManagement` and `pluginManagement`.
+
+# Gradle — Core Concepts
+[Beginner] What is Gradle?	A build tool using a Groovy or Kotlin DSL instead of XML. Incremental builds, build caching, and a powerful task model make it faster than Maven for large projects. Default for Android projects.
+[Beginner] What is the Gradle build file?	`build.gradle` (Groovy DSL) or `build.gradle.kts` (Kotlin DSL). Declares plugins, dependencies, tasks, and configuration.
+[Beginner] What is the Gradle wrapper?	`gradlew` / `gradlew.bat` — a script committed to the repo that downloads and uses the exact Gradle version specified in `gradle/wrapper/gradle-wrapper.properties`. Ensures reproducible builds without requiring Gradle installed.
+[Intermediate] What are Gradle tasks?	Units of work (compile, test, jar, etc.). Run with `./gradlew taskName`. Tasks have inputs and outputs — Gradle skips tasks whose inputs/outputs haven't changed (incremental build).
+[Intermediate] What is the Gradle task DAG?	Gradle models builds as a Directed Acyclic Graph of tasks with dependencies (`dependsOn`, `mustRunAfter`, `finalizedBy`). Executing a task automatically runs its prerequisites.
+
+# Gradle — Dependencies & Configurations
+[Intermediate] What are Gradle dependency configurations?	Named sets of dependencies for specific purposes: `implementation` (compile + runtime, not exposed to consumers), `api` (exposed to consumers — use in libraries), `testImplementation`, `runtimeOnly`, `compileOnly`, `annotationProcessor`.
+[Intermediate] What is the difference between `implementation` and `api` in Gradle?	`api` exposes the dependency to consumers of your library (leaks onto their compile classpath). `implementation` hides it — consumers don't see it at compile time. Prefer `implementation` to reduce recompilation.
+[Intermediate] What is a Gradle version catalog (`libs.versions.toml`)?	A centralised dependency version declaration in `gradle/libs.versions.toml`. Enables type-safe accessor syntax: `implementation(libs.spring.boot.starter.web)` and consistent versions across modules.
+[Intermediate] What is a Gradle platform (BOM)?	`implementation(platform("org.springframework.boot:spring-boot-dependencies:3.2.0"))` — imports a Maven BOM. All dependencies in the platform have their versions managed without specifying them individually.
+
+# Gradle — Build Features
+[Intermediate] What is Gradle incremental build?	Gradle tracks task inputs and outputs. If they haven't changed since the last build, the task is `UP-TO-DATE` and skipped. Dramatically speeds up repeated builds.
+[Intermediate] What is the Gradle build cache?	Stores task output by input hash. Outputs can be reused across machines or CI runs (remote cache). Enable with `org.gradle.caching=true` in `gradle.properties`.
+[Intermediate] What is the Gradle configuration cache?	Serialises the result of the configuration phase to disk. On subsequent builds, task graphs are reloaded without re-executing build scripts. Enabled with `--configuration-cache`.
+[Intermediate] What is a Gradle multi-project build?	A root `settings.gradle` includes subprojects: `include("core", "web", "api")`. Each subproject has its own `build.gradle`. Dependencies between subprojects: `implementation(project(":core"))`.
+[Intermediate] How do you run tests in Gradle?	`./gradlew test` — runs all tests and generates an HTML report in `build/reports/tests/test/`. Use `./gradlew test --tests "com.example.MyTest.myMethod"` to run a specific test.
+
+# Maven vs Gradle
+[Intermediate] When would you choose Maven over Gradle?	Maven: stricter conventions (less flexibility, less misconfiguration), better IDE/tooling support, XML is familiar to Java ecosystem, most Spring tutorials use it, corporate environments with strict governance.
+[Intermediate] When would you choose Gradle over Maven?	Gradle: faster incremental builds and caching (critical for large projects), Android (mandatory), Kotlin DSL is type-safe and refactorable, flexible custom tasks, multi-project builds with cross-project dependencies.

@@ -1,0 +1,54 @@
+# Java Networking — java.net Sockets, NIO, Netty
+# Format: Front[TAB]Back
+
+# java.net — TCP Sockets
+[Beginner] What is a TCP socket in Java?	An endpoint for two-way communication over a TCP connection. `Socket` (client-side) and `ServerSocket` (server-side) in `java.net`. Provides reliable, ordered, byte-stream communication.
+[Intermediate] How do you create a TCP client in Java?	`try (Socket socket = new Socket("host", port); InputStream in = socket.getInputStream(); OutputStream out = socket.getOutputStream()) { ... }` — connect, read/write streams, close.
+[Intermediate] How do you create a TCP server in Java?	`ServerSocket server = new ServerSocket(8080); Socket client = server.accept(); // blocks until connection` — `accept()` returns a `Socket` for each incoming connection. Typically call `accept()` in a loop and handle each client in a new thread.
+[Intermediate] What does `socket.setSoTimeout(milliseconds)` do?	Sets a read timeout on the socket: `socket.getInputStream().read()` will throw `SocketTimeoutException` if no data arrives within the timeout. Prevents indefinitely blocked threads.
+[Intermediate] What is `socket.setTcpNoDelay(true)` for?	Disables Nagle's algorithm, which buffers small writes to reduce packet count. Set `true` for low-latency protocols where you need each write to be sent immediately (e.g. game servers, real-time protocols).
+[Intermediate] What is the difference between `shutdownInput()`, `shutdownOutput()`, and `close()` on a socket?	`shutdownOutput()`: sends a TCP FIN, signals end of data to the remote peer (half-close). `shutdownInput()`: local read end is closed. `close()`: fully closes the socket and releases the file descriptor.
+
+# java.net — UDP Sockets
+[Intermediate] How do you send and receive UDP datagrams in Java?	`DatagramSocket socket = new DatagramSocket(); byte[] buf = data.getBytes(); DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName("host"), port); socket.send(packet);` For receiving: `socket.receive(packet)` fills the packet buffer.
+[Beginner] When is UDP preferred over TCP?	When low latency or broadcast/multicast is more important than reliability: DNS, real-time video/audio, gaming (custom retransmit logic), IoT telemetry. UDP has no handshake, no retransmit, no ordering guarantee.
+[Intermediate] What is a `MulticastSocket` in Java?	Extends `DatagramSocket` to join multicast groups (IP range 224.0.0.0–239.255.255.255): `socket.joinGroup(InetAddress.getByName("224.0.0.1"))`. All sockets in the group receive datagrams sent to that address.
+
+# java.net — URLs and HTTP (classic)
+[Intermediate] What does `URL.openConnection()` return?	A `URLConnection` (or `HttpURLConnection` for HTTP). Supports basic HTTP requests without an external library. For serious HTTP work, prefer `java.net.http.HttpClient` (Java 11+) or a library like OkHttp.
+[Intermediate] What is `InetAddress`?	Represents an IP address (IPv4 or IPv6). `InetAddress.getByName("www.example.com")` does a DNS lookup. `InetAddress.getLocalHost()` returns the machine's address.
+
+# Java NIO — Non-blocking Sockets
+[Intermediate] What is the key difference between `java.io` and `java.nio` for networking?	`java.io` sockets are blocking — a thread blocks on `read()` until data arrives. `java.nio` provides non-blocking channels + `Selector`, allowing a single thread to multiplex many connections (I/O demultiplexing).
+[Intermediate] What is a `Selector` in Java NIO?	A multiplexer that monitors multiple `SelectableChannel`s for readiness (connect, accept, read, write) using a single thread. `selector.select()` blocks until at least one channel is ready.
+[Intermediate] What is a `SelectionKey`?	Represents a channel registered with a `Selector`. Carry interest ops (`OP_ACCEPT`, `OP_CONNECT`, `OP_READ`, `OP_WRITE`) and attachment (application state). `selector.selectedKeys()` returns keys for ready channels.
+[Intermediate] What is a `ServerSocketChannel` in NIO?	Non-blocking server socket: `ServerSocketChannel ssc = ServerSocketChannel.open(); ssc.bind(new InetSocketAddress(8080)); ssc.configureBlocking(false); ssc.register(selector, SelectionKey.OP_ACCEPT);`
+[Intermediate] What is a `SocketChannel` in NIO?	Non-blocking client channel. `SocketChannel.open(); channel.configureBlocking(false); channel.connect(address); channel.register(selector, SelectionKey.OP_CONNECT);`
+[Intermediate] Why is raw NIO difficult to use directly?	Managing `Selector`, `SelectionKey`, buffer flips, partial reads/writes, reconnection, codec framing, and the event loop correctly is extremely error-prone and verbose. Netty abstracts all of this.
+
+# Netty — Architecture
+[Pro] What is Netty?	An asynchronous, event-driven NIO framework for building high-performance network servers and clients. Abstracts the complexity of raw NIO into a clean pipeline model. Used by Kafka, Cassandra, gRPC, Vert.x, and many others.
+[Pro] What is Netty's `EventLoop`?	A single-threaded executor that drives I/O for a set of channels. Runs the I/O Selector loop, fires events, and executes submitted tasks — all on one thread, avoiding synchronisation. Multiple `EventLoop`s form an `EventLoopGroup`.
+[Pro] What is an `EventLoopGroup`?	A pool of `EventLoop`s. Netty servers typically use two groups: **boss group** (accepts connections) and **worker group** (handles I/O on accepted connections). `NioEventLoopGroup` uses NIO; `EpollEventLoopGroup` uses Linux epoll.
+[Pro] What is a `Channel` in Netty?	Represents an open network connection. `NioServerSocketChannel` (TCP server), `NioSocketChannel` (TCP client), `NioDatagramChannel` (UDP). The channel has a `pipeline` of handlers.
+[Pro] What is a `ChannelPipeline`?	A chain of `ChannelHandler`s processing inbound and outbound events on a channel. Inbound events flow from head to tail; outbound events from tail to head. Each handler can transform, filter, or respond to events.
+[Pro] What is a `ChannelHandler`?	A handler that processes I/O events or operations. `ChannelInboundHandlerAdapter` (read data, channel active/inactive). `ChannelOutboundHandlerAdapter` (write, connect, close). `@ChannelHandler.Sharable` if safe to share across channels.
+[Pro] What is `ChannelHandlerContext`?	Passed to handler methods. Use it to interact with the pipeline: `ctx.fireChannelRead(msg)` (forward to next handler), `ctx.writeAndFlush(msg)` (write outbound), `ctx.channel()` (access the channel), `ctx.executor()` (the EventLoop).
+
+# Netty — Buffers & Codecs
+[Pro] What is `ByteBuf`?	Netty's byte buffer, replacing `java.nio.ByteBuffer`. Two separate read and write indexes (no `flip()` required), pooled allocators, composite buffers, reference counting. Obtain via `ctx.alloc().buffer()`.
+[Pro] What is reference counting in Netty `ByteBuf`?	`ByteBuf` is released to its pool when `refCnt` reaches zero. `buf.retain()` increments, `buf.release()` decrements. Passing a `ByteBuf` to `writeAndFlush` automatically releases it after writing.
+[Pro] What is a `ChannelFuture` in Netty?	An asynchronous result for channel I/O operations. `channelFuture.addListener(future -> { if (future.isSuccess()) ... })`. Do not block on `channelFuture.sync()` inside an `EventLoop` thread — causes deadlock.
+[Pro] What is a Netty codec?	A `ChannelHandler` that converts between raw bytes and higher-level messages. `ByteToMessageDecoder` (bytes → objects), `MessageToByteEncoder` (objects → bytes). Combined: `ByteToMessageCodec`. Examples: `HttpServerCodec`, `LengthFieldBasedFrameDecoder`.
+[Pro] What is `LengthFieldBasedFrameDecoder`?	A Netty decoder that reads a length field at the start of each frame to determine message boundaries, solving the TCP framing (stream-based, no message boundaries) problem cleanly.
+[Pro] What is `HttpServerCodec` in Netty?	A combined encoder+decoder for HTTP/1.1: handles request decoding (`HttpRequest`, `HttpContent`, `LastHttpContent`) and response encoding. Add to the pipeline before your business handler.
+
+# Netty — Server Bootstrap
+[Pro] How do you bootstrap a Netty TCP server?	`new ServerBootstrap().group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(new ChannelInitializer<SocketChannel>() { protected void initChannel(SocketChannel ch) { ch.pipeline().addLast(new MyHandler()); } }).bind(8080).sync();`
+[Pro] What does `childHandler` vs `handler` do in `ServerBootstrap`?	`handler`: applied to the server channel itself (e.g. `LoggingHandler` for accept events). `childHandler`: applied to each accepted child channel (most business logic goes here).
+[Pro] What is `ChannelInitializer`?	A special one-use handler that initialises a channel's pipeline when it is registered. `initChannel` is called once; the initialiser removes itself from the pipeline afterwards.
+[Pro] How do you write a Netty echo server handler?	`public class EchoHandler extends ChannelInboundHandlerAdapter { @Override public void channelRead(ChannelHandlerContext ctx, Object msg) { ctx.writeAndFlush(msg); } @Override public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) { cause.printStackTrace(); ctx.close(); } }`
+
+# Networking — TLS / SSL
+[Pro] How do you add TLS to a Netty server?	Create an `SslContext` via `SslContextBuilder.forServer(certChainFile, keyFile).build()`, then add `sslContext.newHandler(ch.alloc())` as the first handler in the pipeline.
+[Pro] How do you enable TLS on a plain Java `SSLSocket`?	`SSLContext ctx = SSLContext.getInstance("TLS"); ctx.init(keyManagers, trustManagers, null); SSLSocketFactory factory = ctx.getSocketFactory(); SSLSocket socket = (SSLSocket) factory.createSocket(host, port); socket.startHandshake();`

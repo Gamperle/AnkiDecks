@@ -1,0 +1,44 @@
+# Java Internationalization (i18n) & Localization (l10n)
+# Format: Front[TAB]Back
+
+# Core Concepts
+[Beginner] What is i18n vs l10n?	**i18n (internationalisation)**: designing software to support multiple locales without code changes (externalising strings, using locale-aware APIs). **l10n (localisation)**: the process of adapting to a specific locale — translating text, formatting numbers, dates, currency.
+[Beginner] What is a `Locale` in Java?	Represents a geographic, political, or cultural region: language code + optional country code + optional variant. Examples: `Locale.US` (`en_US`), `Locale.FRANCE` (`fr_FR`), `new Locale("zh", "CN")`.
+[Intermediate] How do you get the default locale?	`Locale.getDefault()` — returns the JVM's default locale (from OS settings). Set programmatically with `Locale.setDefault(locale)` or at startup with `-Duser.language=fr -Duser.country=FR`.
+[Intermediate] What is `Locale.forLanguageTag(String)`?	Factory method accepting BCP 47 language tags: `Locale.forLanguageTag("en-US")`, `Locale.forLanguageTag("zh-Hans-CN")`. Preferred over the `new Locale(...)` constructor for complex tags.
+
+# ResourceBundle
+[Intermediate] What is `ResourceBundle`?	A set of key-value pairs providing locale-specific resources (primarily translated strings). Java searches for the most specific bundle file matching the requested locale, falling back to less specific ones.
+[Intermediate] How do you create and use a `ResourceBundle`?	Create property files: `messages.properties` (default), `messages_fr.properties` (French), `messages_fr_FR.properties` (French/France). Load: `ResourceBundle rb = ResourceBundle.getBundle("messages", locale); String s = rb.getString("greeting");`
+[Intermediate] What is the `ResourceBundle` fallback mechanism?	If `messages_fr_FR.properties` is missing a key, Java looks in `messages_fr.properties`, then `messages.properties`. If the locale file doesn't exist, falls back through language → default → throws `MissingResourceException`.
+[Intermediate] What is a `ListResourceBundle`?	A Java-class-based alternative to `.properties` files. Override `getContents()` to return an `Object[][]` of key-value pairs. Allows non-String values. Less common than property files.
+[Intermediate] How do you handle UTF-8 in `.properties` files (Java 9+)?	Since Java 9, `ResourceBundle.getBundle()` loads property files as UTF-8 by default. Before Java 9, files were ISO-8859-1 and non-Latin characters needed Unicode escapes (`\u00e9`).
+
+# NumberFormat
+[Intermediate] What is `NumberFormat`?	`java.text.NumberFormat` formats and parses numbers in a locale-aware way: decimal separators, grouping separators, currency symbols. Factory methods: `NumberFormat.getInstance(locale)`, `getCurrencyInstance`, `getPercentInstance`, `getIntegerInstance`.
+[Intermediate] How do you format a number for a specific locale?	`NumberFormat nf = NumberFormat.getInstance(Locale.GERMANY); String s = nf.format(1234567.89); // "1.234.567,89"` — German uses period for grouping and comma for decimal.
+[Intermediate] How do you format currency?	`NumberFormat cf = NumberFormat.getCurrencyInstance(Locale.FRANCE); cf.format(19.99); // "19,99 €"`. The currency symbol and position are locale-specific.
+
+# DateTimeFormatter with Locale
+[Intermediate] How do you format a date for a specific locale in `java.time`?	`DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(Locale.FRANCE).format(LocalDate.now())` — returns "27 mars 2026" in French.
+[Intermediate] What are `FormatStyle` options in `DateTimeFormatter`?	`FULL` (most detail), `LONG`, `MEDIUM`, `SHORT` (least detail). `ofLocalizedDate(style)`, `ofLocalizedTime(style)`, `ofLocalizedDateTime(dateStyle, timeStyle)`.
+
+# MessageFormat
+[Intermediate] What is `MessageFormat`?	`java.text.MessageFormat` formats messages with placeholders that support locale-sensitive formatting of numbers, dates, and choice (plurals). `MessageFormat.format("Hello, {0}! You have {1} messages.", name, count)`.
+[Intermediate] How do you handle plural forms with `MessageFormat`?	Use `ChoiceFormat`: `{1,choice,0#no messages|1#one message|1<{1,number,integer} messages}`. Embedded inside a `MessageFormat` pattern to vary text based on numeric value.
+[Intermediate] What is `MessageFormat` with named arguments (Java alternatives)?	Standard `MessageFormat` uses positional `{0}`, `{1}`. Libraries like ICU4J (`MessageFormat` in `com.ibm.icu.text`) support named arguments `{name}` and advanced plural/gender rules per CLDR data.
+
+# Collation & Sorting
+[Intermediate] What is `Collator`?	`java.text.Collator` performs locale-sensitive string comparison for sorting. `Collator c = Collator.getInstance(Locale.GERMAN); c.compare("ä", "z");` — sorts correctly per German rules (ä after a, not after z).
+[Intermediate] What is `Collator` strength?	Controls how strictly comparisons are made: `PRIMARY` (ignores case/accents), `SECONDARY` (respects accents, ignores case), `TERTIARY` (respects case, default), `IDENTICAL` (exactly equal Unicode).
+
+# Charset & Encoding
+[Intermediate] What is the relationship between i18n and character encoding?	Text must be encoded and decoded with the same charset to avoid garbled output (mojibake). Always specify charset explicitly: `new InputStreamReader(stream, StandardCharsets.UTF_8)`, never rely on the platform default.
+[Intermediate] What is `StandardCharsets`?	Constants for common charsets: `UTF_8`, `ISO_8859_1`, `US_ASCII`, `UTF_16`. Preferred over string names like `"UTF-8"` because they are guaranteed present and avoid `UnsupportedEncodingException`.
+
+# Time Zones
+[Intermediate] Why is time zone handling critical for i18n?	Users in different regions need dates/times in their local zone. Always store times as UTC (`Instant`), convert to local zone only for display: `instant.atZone(ZoneId.of("America/New_York"))`.
+[Intermediate] How do you list all available time zone IDs in Java?	`ZoneId.getAvailableZoneIds()` returns a `Set<String>` of IANA zone IDs like `"Europe/London"`, `"Asia/Tokyo"`.
+
+# Best Practices
+[Intermediate] What are key i18n best practices in Java?	1. Never hardcode user-visible strings — use `ResourceBundle`. 2. Use `java.time` with `ZonedDateTime` for all date/time logic. 3. Use `NumberFormat`/`DateTimeFormatter` with explicit locale for display. 4. Default to UTF-8 everywhere. 5. Test with `Locale.GERMAN` (different separators) and RTL locales.

@@ -1,0 +1,49 @@
+# Java JDBC — Pure Database Access, Connection Pooling, Transactions
+# Format: Front[TAB]Back
+
+# Core JDBC
+[Beginner] What is JDBC?	Java Database Connectivity — a standard Java API (`java.sql`, `javax.sql`) for connecting to relational databases. Applications use JDBC interfaces; JDBC drivers provide vendor-specific implementations.
+[Beginner] What are the four types of JDBC drivers?	Type 1: JDBC-ODBC bridge (obsolete). Type 2: Native-API (partial Java, uses native libs). Type 3: Network protocol (pure Java, talks to middleware). Type 4: Thin driver (pure Java, directly talks to DB via its wire protocol — most common).
+[Intermediate] How do you obtain a JDBC connection?	`Connection conn = DriverManager.getConnection(url, user, password)`. The URL format is driver-specific, e.g. `jdbc:postgresql://localhost:5432/mydb`.
+[Intermediate] What is the role of `DriverManager`?	Manages JDBC drivers registered via `ServiceLoader` (JDBC 4.0+, auto-discovered from the classpath). `getConnection()` iterates drivers until one accepts the URL.
+[Intermediate] What is a `DataSource` and why prefer it over `DriverManager`?	`javax.sql.DataSource` is a factory for connections, typically backed by a connection pool. Preferred in production because it supports pooling, JNDI lookup, and distributed transactions.
+[Intermediate] What does `Connection.close()` do, and what happens if you forget it?	Returns the connection to the pool (or closes it if not pooled). Forgetting to close causes connection leaks, exhausting the pool and hanging future requests.
+[Intermediate] How should JDBC resources be closed safely?	Use try-with-resources: `try (Connection c = ds.getConnection(); PreparedStatement ps = c.prepareStatement(sql)) { ... }`. Ensures `close()` is called even on exceptions.
+
+# Statements
+[Beginner] What is the difference between `Statement`, `PreparedStatement`, and `CallableStatement`?	`Statement`: executes a static SQL string — vulnerable to SQL injection. `PreparedStatement`: pre-compiled SQL with `?` placeholders — safe from injection and more efficient for repeated execution. `CallableStatement`: calls stored procedures.
+[Beginner] Why should you always use `PreparedStatement` instead of `Statement` for user input?	Prevents SQL injection: parameters are sent separately from the SQL, so user input cannot alter the query structure. Also more efficient — the DB can cache the execution plan.
+[Intermediate] How do you set parameters on a `PreparedStatement`?	Use typed setters by 1-based index: `ps.setString(1, value)`, `ps.setInt(2, 42)`, `ps.setNull(3, Types.VARCHAR)`, `ps.setTimestamp(4, Timestamp.valueOf(localDateTime))`.
+[Intermediate] How do you execute a query vs an update in JDBC?	`executeQuery()` returns a `ResultSet` (for SELECT). `executeUpdate()` returns the row count (for INSERT/UPDATE/DELETE/DDL). `execute()` handles either case (returns `true` if result is a `ResultSet`).
+[Intermediate] What is batch execution in JDBC and why use it?	`ps.addBatch()` accumulates multiple operations; `ps.executeBatch()` sends them to the DB in a single round-trip. Dramatically faster than executing rows one by one.
+
+# ResultSet
+[Intermediate] How do you iterate a `ResultSet`?	`while (rs.next()) { String name = rs.getString("column_name"); int age = rs.getInt(2); }`. `next()` advances the cursor; returns `false` when exhausted.
+[Intermediate] What is the difference between `rs.getString(int)` and `rs.getString(String)`?	Both retrieve the value; int uses the 1-based column index (faster), String uses the column name (more readable and robust to column reordering).
+[Intermediate] How do you handle `NULL` values in a `ResultSet`?	After calling a primitive getter, check `rs.wasNull()` to see if the last value was SQL NULL. For objects (`getString`, `getBigDecimal`), `null` is returned directly.
+[Intermediate] What is a scrollable / updatable `ResultSet`?	Created with `conn.createStatement(TYPE_SCROLL_INSENSITIVE, CONCUR_UPDATABLE)`. Allows moving backwards (`previous()`, `absolute(n)`) and updating rows in place (`rs.updateString(...)`, `rs.updateRow()`).
+
+# Transactions
+[Intermediate] What is the default transaction mode in JDBC?	Auto-commit is `true` by default — each statement is committed immediately. For multi-statement transactions, set `conn.setAutoCommit(false)` and call `conn.commit()` or `conn.rollback()` explicitly.
+[Intermediate] How do you roll back a transaction in JDBC?	Call `conn.rollback()` in the `catch` block. Always in a `finally` or use try-with-resources to ensure the connection is returned to the pool.
+[Intermediate] What are JDBC transaction isolation levels?	`TRANSACTION_READ_UNCOMMITTED`, `TRANSACTION_READ_COMMITTED`, `TRANSACTION_REPEATABLE_READ`, `TRANSACTION_SERIALIZABLE`. Set with `conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED)`.
+[Intermediate] What phenomena do isolation levels prevent?	Dirty read (read uncommitted changes), non-repeatable read (same row read twice gives different values), phantom read (new rows appear mid-transaction). Higher isolation prevents more phenomena but reduces concurrency.
+[Intermediate] What is a `Savepoint` in JDBC?	A named point within a transaction to which you can partially roll back: `Savepoint sp = conn.setSavepoint("sp1"); ... conn.rollback(sp);`. Allows nested / partial transactions.
+
+# Metadata
+[Intermediate] What does `DatabaseMetaData` provide?	Information about the database itself: supported features, SQL grammar, driver version, catalog/schema/table names, index info. Obtained via `conn.getMetaData()`.
+[Intermediate] What does `ResultSetMetaData` provide?	Information about the columns in a `ResultSet`: column count, names, types, precision, nullability. Obtained via `rs.getMetaData()`.
+
+# Connection Pooling — HikariCP
+[Intermediate] What is connection pooling and why is it necessary?	Reuses a fixed set of database connections rather than creating and closing a connection for every request. Creating a connection is expensive (TCP handshake, auth). Pooling reduces latency and resource usage.
+[Intermediate] What is HikariCP?	The fastest and most popular JDBC connection pool for Java. Zero-overhead proxy, minimal configuration, Spring Boot's default pool. Configured via `HikariConfig` or `HikariDataSource`.
+[Intermediate] What are the key HikariCP configuration properties?	`maximumPoolSize` (default 10), `minimumIdle`, `connectionTimeout` (ms to wait for a connection from pool), `idleTimeout`, `maxLifetime` (max connection lifetime to avoid stale connections), `jdbcUrl`, `username`, `password`.
+[Intermediate] What does `HikariCP`'s `connectionTimeout` control?	The maximum time a caller waits to obtain a connection from the pool. If exceeded, `SQLException` is thrown. Default: 30 000 ms.
+[Intermediate] What is the `maxLifetime` property in HikariCP for?	Forces recycling of connections that have been open longer than this value (default 30 min), preventing issues with databases that close idle connections server-side (e.g. MySQL `wait_timeout`).
+[Intermediate] How do you configure HikariCP in Spring Boot?	Set `spring.datasource.hikari.*` properties in `application.properties` / `application.yml`. Spring Boot auto-configures `HikariDataSource` when HikariCP is on the classpath.
+
+# Advanced JDBC
+[Intermediate] What is the JDBC `RowSet` API?	`javax.sql.RowSet` extends `ResultSet` with a JavaBeans model. `CachedRowSet` disconnects from the DB and holds data in memory; `JdbcRowSet` wraps a connected `ResultSet` with event support.
+[Intermediate] What is `GeneratedKeys` retrieval in JDBC?	Pass `Statement.RETURN_GENERATED_KEYS` to `prepareStatement`. After execute, call `ps.getGeneratedKeys()` to retrieve auto-generated primary key values (e.g. `SERIAL` / `IDENTITY` columns).
+[Intermediate] What does JDBC 4.2 add for `java.time` support?	`setObject` / `getObject` with a `SQLType` can handle `LocalDate`, `LocalDateTime`, `OffsetDateTime` directly. Avoids manual conversion via `java.sql.Timestamp`.
+[Intermediate] What is connection validation in JDBC pools?	Pools verify a connection is still alive before lending it. HikariCP uses `connectionTestQuery` (fallback) or JDBC 4 `isValid(timeout)` (preferred). Prevents giving callers a broken connection.

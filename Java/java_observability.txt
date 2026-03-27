@@ -1,0 +1,41 @@
+# Java Observability — Micrometer, OpenTelemetry, Distributed Tracing, Health Checks
+# Format: Front[TAB]Back
+
+# Observability Pillars
+[Beginner] What are the three pillars of observability?	**Metrics** — aggregated numerical measurements over time (counters, gauges, histograms). **Logs** — discrete timestamped events. **Traces** — end-to-end request journeys across services. Together they answer "is it broken, what happened, and why?"
+[Beginner] What is the difference between monitoring and observability?	Monitoring: checking predefined metrics against thresholds (you know what to look for). Observability: the ability to understand internal system state from external outputs — you can ask new questions without deploying new instrumentation.
+
+# Micrometer
+[Intermediate] What is Micrometer?	A vendor-neutral metrics facade for JVM applications — the "SLF4J of metrics". Application code uses Micrometer's API; a backend registry (Prometheus, Datadog, CloudWatch, etc.) handles the actual export. Spring Boot's default metrics library.
+[Intermediate] What is a `MeterRegistry` in Micrometer?	The central object that holds all registered meters. In Spring Boot, a `MeterRegistry` bean is auto-configured. Inject it into your components to create and record metrics.
+[Intermediate] What are the core meter types in Micrometer?	**Counter** (monotonically increasing count), **Gauge** (current value, can go up/down), **Timer** (latency + throughput), **DistributionSummary** (distribution of samples), **LongTaskTimer** (duration of long-running tasks).
+[Intermediate] How do you create a Counter in Micrometer?	`Counter counter = Counter.builder("requests.total").tag("endpoint", "/api/users").register(registry); counter.increment();`
+[Intermediate] How do you time a method with Micrometer?	`Timer timer = Timer.builder("service.call.duration").register(registry); timer.record(() -> service.call());` — or use `@Timed` on Spring beans with AOP.
+[Intermediate] What are tags in Micrometer?	Key-value pairs attached to a meter for slicing and dicing data: `timer.builder("http.requests").tag("method", "GET").tag("status", "200")`. Tags become label dimensions in Prometheus.
+[Intermediate] What is Micrometer's `@Timed` annotation?	Spring AOP-backed annotation that automatically records a Timer around a method. Requires `TimedAspect` bean. `@Timed(value="my.method", percentiles={0.95, 0.99})`.
+[Intermediate] How does Micrometer integrate with Prometheus?	Add `micrometer-registry-prometheus` dependency. Spring Boot auto-configures a `/actuator/prometheus` endpoint exposing metrics in Prometheus text format for scraping.
+[Intermediate] What is a histogram in Micrometer?	A Timer or DistributionSummary configured with `publishPercentiles` or `publishPercentileHistogram(true)`. Enables calculation of latency percentiles (p50, p95, p99) — either client-side or server-side in Prometheus.
+
+# OpenTelemetry
+[Intermediate] What is OpenTelemetry (OTel)?	A CNCF observability framework providing vendor-neutral APIs, SDKs, and tooling for collecting traces, metrics, and logs. Goal: single instrumentation standard, many backend options (Jaeger, Zipkin, Datadog, etc.).
+[Intermediate] What is the OpenTelemetry Collector?	A vendor-agnostic agent/proxy that receives telemetry from applications, processes it (batching, filtering, enriching), and exports to one or more backends. Decouples apps from observability backends.
+[Intermediate] What are the key components of an OTel trace?	**Trace**: a collection of spans representing a request. **Span**: a named, timed operation with attributes, events, and a status. **SpanContext**: trace ID + span ID + trace flags propagated across service boundaries. **Baggage**: user-defined key-value pairs propagated in-band.
+[Intermediate] How do you instrument a Java application with OpenTelemetry?	Option 1: **Auto-instrumentation** — attach the OpenTelemetry Java Agent JAR (`-javaagent:opentelemetry-javaagent.jar`), which instruments frameworks (Spring, JDBC, HTTP clients) without code changes. Option 2: **Manual** — use the OTel SDK API to create spans explicitly.
+[Intermediate] What is context propagation in OTel?	The mechanism for passing trace context (trace ID, span ID) across service boundaries via HTTP headers (W3C `traceparent` / `tracestate` or B3 format). Allows stitching spans from different services into one trace.
+[Intermediate] What is W3C Trace Context?	The IETF standard for trace propagation headers: `traceparent` (`00-traceId-spanId-flags`) and `tracestate` (vendor-specific extra data). OTel uses this as its default propagation format.
+
+# Distributed Tracing
+[Intermediate] What is a trace ID and span ID?	**Trace ID**: a 128-bit identifier unique to an entire request chain across all services. **Span ID**: a 64-bit identifier for a single operation within the trace. A trace is a tree of spans sharing the same trace ID.
+[Intermediate] What is Jaeger?	An open-source distributed tracing system (CNCF). Receives OTel-format traces, provides a UI for searching traces, viewing span waterfalls, and analysing latency.
+[Intermediate] What is Zipkin?	Another open-source distributed tracing backend. Supports Zipkin B3 format and OTel export. Simpler than Jaeger; often used with Spring Cloud Sleuth (legacy).
+[Intermediate] What was Spring Cloud Sleuth?	A library that auto-configured trace/span ID propagation in Spring applications. **Deprecated** in Spring Boot 3 — replaced by Micrometer Tracing (the tracing API) + OTel/Brave bridge as the implementation.
+[Intermediate] What is Micrometer Tracing?	A tracing facade (analogous to SLF4J for logging) introduced in Spring Boot 3. Application code uses `Tracer` and `Span` from `io.micrometer.tracing`. Backend is Brave (Zipkin) or OpenTelemetry.
+[Intermediate] How are trace IDs propagated through message queues (Kafka, JMS)?	Inject trace context into message headers when producing. Extract on the consumer side to continue the same trace. OTel instrumentation for Kafka handles this automatically.
+
+# Spring Boot Actuator & Health Checks
+[Intermediate] What is Spring Boot Actuator?	A Spring Boot module that exposes production-ready endpoints over HTTP (or JMX): `/actuator/health`, `/actuator/metrics`, `/actuator/info`, `/actuator/env`, `/actuator/loggers`, etc.
+[Intermediate] What does the `/actuator/health` endpoint return?	A health status (`UP`, `DOWN`, `OUT_OF_SERVICE`, `UNKNOWN`) and component details. Aggregates results from `HealthIndicator` beans (database, disk space, Redis, etc.).
+[Intermediate] What is a `HealthIndicator` in Spring Boot?	A bean implementing `HealthIndicator` that contributes to the overall health. Custom example: check an external dependency and return `Health.up()` or `Health.down().withDetail("error", msg).build()`.
+[Intermediate] What is the difference between liveness and readiness probes?	**Liveness**: is the application alive? If not, Kubernetes restarts the pod. Use `/actuator/health/liveness`. **Readiness**: is the app ready to receive traffic? If not, traffic is stopped. Use `/actuator/health/readiness`.
+[Intermediate] How does Spring Boot expose liveness and readiness in Kubernetes?	Set `management.endpoint.health.probes.enabled=true`. Spring Boot auto-configures `LivenessStateHealthIndicator` and `ReadinessStateHealthIndicator` as separate health groups.
+[Intermediate] What does `/actuator/metrics/{name}` return?	Current value of a named metric with tag filtering. Example: `GET /actuator/metrics/http.server.requests?tag=status:200` returns request count, total time, and max for HTTP 200 responses.

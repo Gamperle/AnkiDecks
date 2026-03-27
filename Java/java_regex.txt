@@ -1,0 +1,49 @@
+# Java Regular Expressions — java.util.regex
+# Format: Front[TAB]Back
+
+# Core Classes
+[Beginner] What are the two main classes in `java.util.regex`?	`Pattern` — a compiled regular expression (thread-safe, reusable). `Matcher` — an engine that applies a `Pattern` to a character sequence (not thread-safe, one use per match operation).
+[Beginner] How do you compile and use a regex in Java?	`Pattern p = Pattern.compile("\\d+"); Matcher m = p.matcher("abc123def"); if (m.find()) { System.out.println(m.group()); // "123" }`
+[Intermediate] Why should you pre-compile `Pattern` rather than using `String.matches()`?	`String.matches(regex)` recompiles the pattern on every call. A static `Pattern` field compiles once, saving significant CPU for frequently used patterns.
+[Intermediate] What does `String.matches(regex)` require that `Pattern`/`Matcher` does not?	`String.matches()` implicitly anchors the pattern to the full string (equivalent to `^...$`). `Matcher.find()` searches for the pattern anywhere in the input.
+
+# Regex Syntax — Basics
+[Intermediate] What do the following metacharacters mean: `.` `^` `$` `*` `+` `?`?	`.` any char (except newline by default); `^` start of line/input; `$` end of line/input; `*` zero or more (greedy); `+` one or more (greedy); `?` zero or one (greedy).
+[Intermediate] What are character classes?	`[abc]` matches a, b, or c. `[^abc]` matches anything except a, b, c. `[a-z]` range. `[a-zA-Z0-9]` alphanumeric. Predefined: `\d` (digit), `\D` (non-digit), `\w` (word char), `\W`, `\s` (whitespace), `\S`.
+[Intermediate] What does `{n}`, `{n,}`, `{n,m}` mean?	Quantifiers: `{3}` exactly 3 times; `{3,}` at least 3 times; `{3,6}` between 3 and 6 times (inclusive).
+[Intermediate] What is the difference between greedy, reluctant, and possessive quantifiers?	**Greedy** (`*`, `+`, `?`, `{m,n}`): match as much as possible, then backtrack. **Reluctant/lazy** (`*?`, `+?`, `??`, `{m,n}?`): match as little as possible. **Possessive** (`*+`, `++`, `?+`): match as much as possible, no backtracking — prevents catastrophic backtracking.
+[Intermediate] What are anchors in regex?	`^` start of input (or line with MULTILINE). `$` end of input (or line). `\b` word boundary. `\B` non-word boundary. `\A` absolute start of input. `\Z` absolute end (before optional final newline). `\z` absolute end.
+[Intermediate] What do `|`, `()`, and `(?:...)` do?	`|` alternation (OR). `()` capturing group — captures the matched text. `(?:...)` non-capturing group — groups without capturing, no effect on group numbering.
+
+# Groups & Capturing
+[Intermediate] How do you extract a captured group?	`Matcher m = pattern.matcher(input); if (m.find()) { String group1 = m.group(1); }` — groups are 1-indexed. `m.group(0)` or `m.group()` returns the entire match.
+[Intermediate] What are named capturing groups?	`(?<name>...)` — syntax for naming a group. Access by name: `m.group("name")`. Java 7+. Makes patterns more readable and robust to reordering.
+[Intermediate] How do backreferences work?	`\1` refers back to what group 1 matched. Example: `(\w+)\s+\1` matches a word followed by a space and the same word again (repeated words). Named: `\k<name>`.
+[Intermediate] What is `m.groupCount()`?	Returns the number of capturing groups in the pattern (not counting group 0). Does not count non-capturing groups `(?:...)`.
+
+# Matcher Methods
+[Intermediate] What is the difference between `Matcher.matches()`, `find()`, and `lookingAt()`?	`matches()`: entire input must match the pattern. `find()`: searches for the pattern anywhere in the input (can be called repeatedly to find all matches). `lookingAt()`: pattern must match at the start of input but need not cover it all.
+[Intermediate] How do you find all non-overlapping matches?	Call `m.find()` in a loop: `while (m.find()) { System.out.println(m.group()); m.start(); m.end(); }`
+[Intermediate] What do `m.start()` and `m.end()` return?	The start index (inclusive) and end index (exclusive) of the last match (or a group if indexed). Useful for substring extraction or replacement positioning.
+[Intermediate] How do you replace all matches using `Matcher`?	`m.replaceAll("replacement")` — replaces all matches. `m.replaceFirst("replacement")`. Use `$1`, `$2`, `${name}` in the replacement string to reference captured groups.
+[Intermediate] What is `Matcher.appendReplacement` / `appendTail`?	For dynamic replacement logic: `StringBuffer sb = new StringBuffer(); while (m.find()) { m.appendReplacement(sb, computeReplacement(m)); } m.appendTail(sb);` — allows per-match computation of the replacement string.
+[Intermediate] What is `Matcher.reset()`?	Resets the matcher's state (position, last match) so it can be reused from the start without creating a new instance.
+
+# Pattern Flags
+[Intermediate] What are common `Pattern` flags?	`Pattern.CASE_INSENSITIVE` (`(?i)`) — case-insensitive matching. `Pattern.MULTILINE` (`(?m)`) — `^`/`$` match line boundaries. `Pattern.DOTALL` (`(?s)`) — `.` matches newlines too. `Pattern.COMMENTS` (`(?x)`) — allows whitespace and `#` comments in the pattern. `Pattern.UNICODE_CASE` — case-insensitive for Unicode.
+[Intermediate] How do you embed flags inline in a pattern?	`(?i)` at the start or `(?i:...)` around a subexpression. Can combine: `(?im)`.
+
+# Lookahead & Lookbehind
+[Intermediate] What is a lookahead assertion?	`(?=...)` **positive lookahead**: asserts that the following text matches the pattern, without consuming it. `(?!...)` **negative lookahead**. Example: `\d+(?= dollars)` matches digits only if followed by " dollars".
+[Intermediate] What is a lookbehind assertion?	`(?<=...)` **positive lookbehind**: asserts the preceding text matches. `(?<!...)` **negative lookbehind**. Example: `(?<=\$)\d+` matches digits preceded by `$`. Java requires fixed-length lookbehinds.
+
+# String Convenience Methods
+[Intermediate] How does `String.split(regex)` work?	Splits the string by the regex delimiter: `"a,b,,c".split(",")` → `["a","b","","c"]`. Trailing empty strings are discarded by default (pass `-1` as the limit to keep them).
+[Intermediate] What does `String.replaceAll(regex, replacement)` do?	Compiles the regex and replaces all matches. Shorthand for `Pattern.compile(regex).matcher(this).replaceAll(replacement)`. Avoid in hot loops — recompiles each call.
+[Intermediate] How do you match a literal string that contains regex metacharacters?	Use `Pattern.quote(literal)` to escape all metacharacters: `Pattern.compile(Pattern.quote("a.b+c"))`.
+
+# Common Patterns
+[Intermediate] What regex matches a valid integer (positive or negative)?	`-?\d+`
+[Intermediate] What regex matches an email address (simplified)?	`[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}`
+[Intermediate] What regex matches an IPv4 address (simplified)?	`\b(?:\d{1,3}\.){3}\d{1,3}\b`
+[Intermediate] What regex matches a UUID?	`[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}`

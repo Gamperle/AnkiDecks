@@ -1,0 +1,40 @@
+# Java Messaging — JMS, Apache Kafka, RabbitMQ
+# Format: Front[TAB]Back
+
+# Messaging Fundamentals
+[Beginner] What is asynchronous messaging and why use it?	Decouples producers from consumers in time and space. Producers send messages without waiting for processing. Benefits: resilience (consumers can be down), scalability (buffer traffic bursts), loose coupling between services.
+[Beginner] What is the difference between a message queue and a publish-subscribe topic?	**Queue (point-to-point)**: each message is consumed by exactly one consumer. **Topic (pub-sub)**: each message is delivered to all subscribers. Queues for task distribution; topics for event broadcasting.
+[Beginner] What is at-most-once, at-least-once, and exactly-once delivery?	**At-most-once**: messages may be lost, never duplicated. **At-least-once**: messages are never lost but may be redelivered (duplicates possible). **Exactly-once**: no loss, no duplicates — hardest to achieve, often requires idempotent consumers.
+
+# JMS — Java Message Service
+[Intermediate] What is JMS?	Jakarta Messaging (formerly JMS) — a Java API for sending and receiving messages. It defines a common interface; brokers (ActiveMQ, IBM MQ) provide implementations. Supports both queue (P2P) and topic (pub-sub) models.
+[Intermediate] What are the core JMS interfaces?	`ConnectionFactory` (creates connections), `Connection` (physical connection to broker), `Session` (lightweight, single-threaded context for producing/consuming), `Destination` (Queue or Topic), `MessageProducer`, `MessageConsumer`, `Message`.
+[Intermediate] What are the JMS message types?	`TextMessage` (String), `BytesMessage` (byte array), `ObjectMessage` (serialized Java object), `MapMessage` (String key / primitive value map), `StreamMessage` (stream of primitives).
+[Intermediate] What are JMS delivery modes?	`DeliveryMode.PERSISTENT` — broker persists messages to storage, survives broker restart. `DeliveryMode.NON_PERSISTENT` — faster but messages are lost on broker failure.
+[Intermediate] What is JMS message acknowledgement?	Tells the broker the message was processed. Modes: `AUTO_ACKNOWLEDGE` (session acks after listener returns), `CLIENT_ACKNOWLEDGE` (consumer calls `message.acknowledge()`), `DUPS_OK_ACKNOWLEDGE` (lazy, allows duplicates for performance).
+[Intermediate] What is a JMS `MessageListener`?	An interface with `onMessage(Message m)` for asynchronous message consumption. Register with `consumer.setMessageListener(listener)`. Alternatively, `consumer.receive()` for synchronous (blocking) consumption.
+[Intermediate] How does Spring JMS simplify messaging?	`JmsTemplate` for sending (wraps boilerplate). `@JmsListener(destination = "myQueue")` on a method for async receiving — no manual `Session`/`Consumer` management.
+
+# Apache Kafka
+[Intermediate] What is Apache Kafka?	A distributed, fault-tolerant, high-throughput event streaming platform. Designed for durable log storage and replay of events, not just transient message passing. Used for event sourcing, stream processing, and integration pipelines.
+[Intermediate] What is a Kafka topic?	A named, ordered, immutable log of records. Topics are split into **partitions** for parallelism and scalability. Records are retained for a configurable period (not deleted on consumption).
+[Intermediate] What is a Kafka partition?	An ordered, immutable sequence of records within a topic. Each partition is a separate log stored on disk. Records within a partition are ordered; across partitions there is no ordering guarantee.
+[Intermediate] What is a consumer group in Kafka?	A named group of consumers that collectively read a topic. Each partition is assigned to exactly one consumer in the group — enabling parallel consumption. Add consumers to scale throughput up to the number of partitions.
+[Intermediate] What is the Kafka offset?	A sequential number identifying a record's position within a partition. Consumers commit their current offset to track progress. On restart, consumption resumes from the committed offset.
+[Intermediate] What is the difference between Kafka and a traditional message queue?	Kafka retains messages after consumption (replay is possible), supports multiple independent consumer groups reading the same data, and is optimised for high-throughput sequential I/O. Traditional queues (JMS) delete messages on consumption.
+[Intermediate] How does Kafka guarantee ordering?	Records within a single partition are ordered. To ensure related records are ordered, use a consistent **partition key** (e.g. user ID) so all records for that entity go to the same partition.
+[Intermediate] What is a Kafka `KafkaProducer`?	The Java client for sending records. Key settings: `bootstrap.servers`, `key.serializer`, `value.serializer`, `acks` (`0`, `1`, `all`), `retries`, `batch.size`, `linger.ms`.
+[Intermediate] What does `acks=all` mean in Kafka?	The producer waits for acknowledgement from all in-sync replicas (ISR) before considering a send successful. Strongest durability guarantee but higher latency.
+[Intermediate] What is a Kafka `KafkaConsumer`?	The Java client for reading records. Subscribes to topics, polls for records, processes them, and commits offsets. Key settings: `group.id`, `key.deserializer`, `value.deserializer`, `auto.offset.reset` (`earliest` / `latest`), `enable.auto.commit`.
+[Intermediate] What is `auto.offset.reset=earliest` vs `latest`?	`earliest`: start from the beginning of the partition when no committed offset exists (or offset is out of range). `latest`: start from the most recent record (skip historical data).
+[Intermediate] What is consumer offset commit in Kafka?	Consumers record their progress by committing offsets to the `__consumer_offsets` topic. `enable.auto.commit=true` commits periodically; `false` requires manual `consumer.commitSync()` or `commitAsync()` after processing.
+[Intermediate] How does Kafka Streams differ from a KafkaConsumer?	Kafka Streams is a client library for stateful stream processing directly inside the application — joins, aggregations, windowing, state stores. A KafkaConsumer is a lower-level record-by-record API.
+[Intermediate] How does Spring Kafka simplify Kafka integration?	`KafkaTemplate` for sending, `@KafkaListener` for consuming. `ConcurrentKafkaListenerContainerFactory` manages threads. Spring Boot auto-configures both with `spring.kafka.*` properties.
+
+# RabbitMQ
+[Intermediate] What is RabbitMQ?	A message broker implementing AMQP (Advanced Message Queuing Protocol). Central concepts: **Exchange** routes messages; **Queue** stores them; **Binding** connects exchanges to queues with a routing key.
+[Intermediate] What are the RabbitMQ exchange types?	**Direct**: routes by exact routing key match. **Fanout**: broadcasts to all bound queues (routing key ignored). **Topic**: routes by pattern matching (`*` one word, `#` zero or more words). **Headers**: routes by message header attributes.
+[Intermediate] What is the difference between Kafka and RabbitMQ?	RabbitMQ: traditional broker with flexible routing, messages deleted after consumption, lower retention, AMQP/MQTT/STOMP protocols, better for complex routing and RPC patterns. Kafka: log-based, high throughput, messages retained for replay, simpler routing, better for event streaming and audit logs.
+[Intermediate] What is RabbitMQ message acknowledgement?	Consumer signals successful processing with `channel.basicAck(deliveryTag, false)`. If the consumer crashes without acking, the broker redelivers the message. `basicNack` or `basicReject` to nack (with optional requeue).
+[Intermediate] What is a Dead Letter Exchange (DLX) in RabbitMQ?	An exchange to which messages are routed when they are rejected, nacked without requeue, or expire (TTL). Enables dead-letter queues for poison-message handling and manual inspection.
+[Intermediate] How does Spring AMQP simplify RabbitMQ?	`RabbitTemplate` for sending/receiving. `@RabbitListener(queues = "myQueue")` for async consumption. `RabbitAdmin` for declaring exchanges, queues, and bindings programmatically.
