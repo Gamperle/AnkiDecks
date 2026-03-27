@@ -1,0 +1,133 @@
+# Android Automotive OS (AAOS) — Pro
+# Format: Front[TAB]Back
+
+# ==========================================
+# 3.10 AAOS System Customization & OEM Integration
+# ==========================================
+
+How do you build AAOS from AOSP?	Source AOSP with the automotive target, configure a device tree with car-specific product makefiles (e.g., aosp_car_x86_64-userdebug), include car packages (CarService, CarSystemUI), build with lunch + m.
+What are car product makefiles?	Makefile configurations that include AAOS-specific packages: CarService, CarSystemUI, CarLauncher, VHAL, car audio, vehicle-specific overlays. They inherit from car_product.mk or car_base.mk.
+How do OEMs extend CarService?	OEMs create custom car service extensions by implementing additional managers under CarService, adding vendor-specific VHAL properties, and extending existing car managers with OEM-specific features.
+How do you implement a custom VHAL?	Write a VHAL server (C++ for AIDL VHAL) that interfaces with the vehicle's CAN bus or proprietary communication protocol, maps CAN signals to VehicleProperty IDs, add SELinux policies, VINTF manifest entries, and init.rc service.
+What is an OEM audio service in AAOS?	A vendor-specific service that extends or replaces the default car audio routing. It controls external amplifiers, DSPs, and implements custom audio policies (e.g., speed-dependent volume, active noise cancellation).
+How is CarSystemUI customized?	OEMs overlay or replace CarSystemUI components: status bar layout, navigation bar, volume dialogs, notification panel, quick settings. Customization via RRO overlays or source code modifications in packages/apps/Car/SystemUI.
+What is CarLauncher?	The home screen application for AAOS — typically shows a map widget, media controls, recent apps, and vehicle status. OEMs customize it heavily to match their brand and interaction model.
+What is the rotary controller framework in AAOS?	An accessibility-like framework that enables spatial navigation without touch: FocusParkingView (default focus target), FocusArea (groups of focusable items), and nudge navigation (directional focus movement). OEMs map rotary HW to these.
+What is FocusParkingView?	A transparent, zero-size view that acts as the default focus holder when no other view should have focus, preventing focus from getting stuck in inappropriate places during rotary navigation
+What is nudge navigation in AAOS?	The mechanism by which a rotary controller moves focus between FocusAreas — nudging left/right/up/down moves focus to the next FocusArea in that direction, while rotating moves within a FocusArea.
+How can OEMs customize cluster rendering?	OEMs can implement a custom ClusterActivity that uses OpenGL, Vulkan, or Compose to render gauges, navigation, and vehicle telltales on the instrument cluster display with guaranteed performance.
+What is MDM (Mobile Device Management) for fleet vehicles?	Remote management of AAOS devices in commercial fleets — provisioning, policy enforcement, app deployment, remote lock/wipe, tracking, and diagnostics via a backend management system
+
+# ==========================================
+# 3.11 Vehicle Communication Protocols
+# ==========================================
+
+What is J1939?	A CAN-based protocol (SAE J1939) used in heavy-duty vehicles (trucks, buses, construction equipment) with standardized PGNs (Parameter Group Numbers) for engine, transmission, and body data
+What is ISO-TP (ISO 15765-2)?	A transport protocol for CAN that enables transmission of messages larger than 8 bytes (CAN max) using segmentation (First Frame, Consecutive Frame, Flow Control) and reassembly
+What is SOME/IP?	Scalable service-Oriented MiddlewarE over IP — an automotive middleware protocol running over Ethernet that provides service discovery, RPC (request/response), events (pub/sub), and serialization for SOA in vehicles
+How does SOME/IP service discovery work?	Services announce their availability via UDP multicast. Clients subscribe to services they need. The discovery protocol handles service instance IDs, version matching, and endpoint information.
+What is DDS (Data Distribution Service)?	An OMG standard for real-time, decentralized data distribution using a pub-sub model. Used in autonomous driving for high-throughput sensor data sharing between ECUs with QoS guarantees.
+What is DoIP (Diagnostics over IP)?	ISO 13400 — a protocol for running UDS (Unified Diagnostic Services) over automotive Ethernet/IP instead of CAN, enabling faster diagnostic communication with higher bandwidth
+What is UDS (Unified Diagnostic Services)?	ISO 14229 — a standardized diagnostic protocol for reading/clearing DTCs, reading vehicle data, programming ECUs, and controlling ECU functions. Runs over CAN (ISO-TP) or Ethernet (DoIP).
+What is V2X (Vehicle-to-Everything)?	Communication between vehicles and infrastructure/other entities: V2V (vehicle-to-vehicle), V2I (vehicle-to-infrastructure), V2P (vehicle-to-pedestrian), V2N (vehicle-to-network)
+What are the two main V2X technologies?	DSRC (Dedicated Short-Range Communications) using IEEE 802.11p/ITS-G5, and C-V2X (Cellular-V2X) using 3GPP LTE/5G sidelink. C-V2X is gaining industry momentum.
+What is AUTOSAR Adaptive Platform?	A standardized middleware for high-performance automotive ECUs running POSIX-based OS. Provides ara::com (communication), Execution Management, service discovery, and diagnostic management.
+What is the difference between AUTOSAR Classic and Adaptive?	Classic: for deeply embedded, safety-critical ECUs running on RTOS with static configuration (RTE, SWC, BSW). Adaptive: for high-performance ECUs running Linux/QNX with dynamic service-oriented architecture.
+What is SOA (Service-Oriented Architecture) in automotive?	A migration from signal-based communication (CAN messages) to service-based communication (SOME/IP, DDS) where ECUs expose and consume services — enabling flexible, scalable vehicle architectures
+
+# ==========================================
+# 3.12 ADAS & Autonomous Driving Integration
+# ==========================================
+
+What is sensor fusion in autonomous driving?	Combining data from multiple sensor types (cameras, LiDAR, radar, ultrasonic) to create a more accurate and reliable perception of the vehicle's environment than any single sensor alone
+What sensors are typically used in ADAS?	Forward cameras (lane detection, signs), surround cameras (parking), LiDAR (3D point cloud), radar (distance, speed in all weather), ultrasonic (close-range parking), IMU (motion/orientation)
+What is the EVS (Exterior View System) in AAOS?	A framework for managing exterior camera streams — rear camera, surround view, side mirrors. EVS HAL provides camera access, and EVS Manager handles rendering and stream management.
+What is an ISP pipeline in camera HAL?	Image Signal Processor pipeline — hardware that processes raw sensor data into usable images: demosaicing, noise reduction, white balance, tone mapping, and lens correction. Critical for ADAS camera quality.
+What are the ISO 26262 ASIL levels?	Automotive Safety Integrity Levels: ASIL A (lowest, e.g., interior lighting), ASIL B (e.g., headlights), ASIL C (e.g., power windows), ASIL D (highest, e.g., steering, braking). Each requires increasingly rigorous safety processes.
+Why do ADAS and infotainment run on separate ECUs or domains?	ADAS requires safety certification (ASIL-B/D), deterministic real-time behavior, and verified code. Infotainment (ASIL-QM, non-safety) is complex and non-deterministic. Separation prevents safety interference.
+What is a watchdog timer in ADAS?	A hardware timer that must be periodically reset ("fed") by the safety software. If the software fails to reset it (crash or hang), the watchdog triggers a safe system state (e.g., limp mode, driver warning).
+What is an RTOS and why is it used alongside Android in vehicles?	A Real-Time Operating System (QNX, FreeRTOS) provides deterministic, guaranteed-latency execution for safety-critical functions. Android cannot guarantee real-time deadlines, so ADAS/cluster may run on RTOS.
+
+# ==========================================
+# 3.13 Power Management & Vehicle State
+# ==========================================
+
+What are the AAOS vehicle power states?	ON (fully running), SHUTDOWN_PREPARE (preparing to shut down), WAIT_FOR_VHAL (waiting for VHAL command), DEEP_SLEEP (suspended to RAM, quick resume), SUSPEND_TO_RAM (low-power sleep), OFF
+What is Garage Mode in AAOS?	A state where the system remains powered after the driver leaves the vehicle, allowing deferred tasks to complete: OTA updates, data sync, log uploads, account sync. The system shuts down after tasks complete or a timeout.
+How does Garage Mode interact with JobScheduler and WorkManager?	During Garage Mode, the system signals that idle maintenance is available. Jobs and Work scheduled with idle constraints (requiresDeviceIdle) are executed before the system fully powers off.
+What is CarPowerPolicy?	A mechanism for defining which system components (Bluetooth, Wi-Fi, display, audio, cellular) are powered in each power state. OEMs configure component power groups for different scenarios (WAIT_FOR_VHAL, SUSPEND, etc.).
+What is silent mode in AAOS?	A state where the system is up and running but display and audio are disabled — used for background processing, remote commands, or Garage Mode operations without bothering the driver
+What is parasitic drain in automotive?	Current draw from the vehicle's 12V battery when the vehicle is off. AAOS systems must minimize drain to prevent dead batteries. Typical budgets: < 5-10 mA in off state.
+Why is cold start < 2 seconds to rear camera important?	Regulatory and safety requirements mandate that the rear camera feed must be visible within 2 seconds of the driver engaging reverse gear, requiring aggressive boot time and camera pipeline optimization
+
+# ==========================================
+# 3.14 AAOS Testing & Validation
+# ==========================================
+
+What is CTS for AAOS?	Compatibility Test Suite — includes CtsCarTestCases that verify AAOS implementations comply with Android Automotive requirements: CarService APIs, VHAL properties, UX restrictions, audio zones
+What is VTS for AAOS?	Vendor Test Suite — VtsHalAutomotiveVehicle tests verify the VHAL implementation correctly responds to get/set/subscribe operations for all required vehicle properties
+What is VehiclePropertyAnnotationValidator?	An AAOS test tool that validates VHAL property definitions against the VehicleProperty AIDL annotations — ensuring property IDs, types, access modes, and areas match specifications
+What is the Cuttlefish automotive emulator?	A virtual AAOS device that runs on a host machine using KVM/QEMU. It includes a virtual VHAL, multiple virtual displays (main, cluster), and supports full CarService functionality.
+What is Trout?	A virtual AAOS device platform that extends Cuttlefish specifically for automotive testing, with enhanced VHAL simulation, multi-display support, and virtual sensor integration
+What is HIL (Hardware-In-the-Loop) testing?	A testing method where the real AAOS hardware (head unit) is connected to a simulated vehicle environment (CAN bus simulator, sensor emulators) to test VHAL integration and system behavior under realistic conditions
+What are CANoe and Vector CANalyzer?	Professional automotive tools for CAN bus simulation, analysis, and testing. CANoe simulates entire vehicle networks. CANalyzer monitors and records CAN traffic. Both are used to validate VHAL integrations.
+What is AAOS GAS compliance testing?	Verification that an AAOS device meets Google's requirements for running Google Automotive Services — including CTS/VTS pass, specific VHAL property support, display requirements, and UX guideline compliance
+
+# ==========================================
+# 3.15 Automotive Security Advanced
+# ==========================================
+
+What is SecOC (Secure Onboard Communication)?	An AUTOSAR module that adds message authentication (MAC) to CAN messages using symmetric keys, protecting against spoofing and replay attacks on the vehicle bus
+How does a CAN bus spoofing attack work?	An attacker with physical or remote access to the CAN bus injects crafted messages with valid arbitration IDs, impersonating legitimate ECUs and sending malicious commands (e.g., fake braking signals)
+What is a CAN bus fuzzing attack?	Sending random or semi-random CAN messages to discover undocumented ECU behaviors, vulnerabilities, or denial-of-service conditions. Used both offensively and for security testing.
+What is a bus-off attack on CAN?	Exploiting CAN's error handling mechanism — an attacker induces enough errors on a target ECU to push it into BUS-OFF state, effectively disconnecting it from the network
+What is ISO/SAE 21434?	A standard for automotive cybersecurity engineering that defines the cybersecurity lifecycle: threat analysis, risk assessment, cybersecurity goals, verification, and incident response — across the entire vehicle development process
+What is UNECE WP.29 R155?	A regulation requiring vehicle manufacturers to implement a Cybersecurity Management System (CSMS) covering the entire vehicle lifecycle. Mandatory for new vehicle type approvals in the EU, Japan, and South Korea.
+What is UNECE WP.29 R156?	A regulation requiring Software Update Management Systems (SUMS) for vehicles — ensuring OTA and dealer updates are secure, traceable, and don't compromise safety
+What is MACSec in automotive Ethernet?	IEEE 802.1AE — provides data confidentiality and integrity at the Ethernet layer (Layer 2). Used to secure in-vehicle Ethernet communication between ECUs.
+What is an HSM (Hardware Security Module) in automotive?	A dedicated tamper-resistant hardware component within an ECU that provides secure key storage, cryptographic operations, random number generation, and secure boot support
+What is SHE (Secure Hardware Extension)?	A standardized (HIS) security module specification for automotive ECUs providing symmetric key storage, AES-128 operations, CMAC computation, and secure boot — simpler than a full HSM
+What is an authenticated UDS session?	A diagnostic session where the tester must pass a security access challenge (seed-key exchange) before being allowed to perform privileged operations like ECU programming or resetting
+What is V2X PKI?	Public Key Infrastructure for vehicle communications — provides certificate issuance, pseudonym certificates (privacy-preserving), revocation (CRL), and misbehavior detection for V2X messages
+What are pseudonym certificates in V2X?	Short-lived certificates that change frequently to prevent tracking of vehicles. A vehicle obtains batches of pseudonym certificates from the PKI and rotates through them.
+What is ISO 15118 Plug & Charge?	A protocol for automatic authentication and billing between an EV and a charging station using TLS mutual authentication and contract certificates — the user just plugs in without payment interaction
+What is the CCC Digital Key standard?	Car Connectivity Consortium's standard for using smartphones as car keys via NFC and UWB. Supports passive entry, engine start, and key sharing with secure element-based credential storage.
+What is dual-bank partitioning for OTA security?	Having two copies of firmware (Bank A, Bank B) so updates are written to the inactive bank. If the update fails verification, the device rolls back to the known-good bank.
+
+# ==========================================
+# 4.4 Hypervisors & Virtualization in Automotive
+# ==========================================
+
+What is a Type 1 hypervisor in automotive?	A bare-metal hypervisor (e.g., QNX Hypervisor, Green Hills INTEGRITY, PikeOS) that runs directly on hardware and hosts multiple guest OSes — enabling real-time RTOS + Android coexistence on one SoC
+Why are hypervisors used in automotive?	To consolidate multiple ECUs onto one SoC — running safety-critical RTOS (cluster, ADAS) and non-safety Android (infotainment) as separate VMs with strong isolation, reducing hardware cost and complexity
+What is pKVM (Protected KVM)?	Android's built-in virtualization framework based on KVM that provides hardware-backed isolation between VMs. Used for running protected workloads and potentially for multi-OS automotive deployments.
+What are virtio devices in automotive virtualization?	Virtual hardware interface standards that allow guest OSes (e.g., Android) to communicate with the hypervisor for GPU (virtio-gpu), input (virtio-input), audio, console, and CAN bus passthrough
+How does Android run as a guest OS on a hypervisor?	Android receives virtual devices (virtio-gpu for display, virtio-input for touch/rotary, virtual VHAL for vehicle data) from the hypervisor. Display may use passthrough or virtual framebuffer.
+What is a safety island in automotive?	A dedicated ASIL-D rated hardware/software domain (small RTOS core) that monitors the main SoC and can take over safety-critical functions if the primary system fails — acting as a last line of defense
+What is multi-OS ECU consolidation?	Running multiple operating systems (Android for IVI + RTOS for cluster + RTOS for ADAS) on a single SoC using a hypervisor, replacing separate physical ECUs with isolated virtual machines
+
+# ==========================================
+# 4.5 OTA & Fleet Management
+# ==========================================
+
+What is the difference between full OTA and delta/incremental OTA?	Full OTA replaces entire partition images. Delta OTA only transfers the differences (binary patches) between old and new images, significantly reducing download size (often 10-20% of full).
+How do A/B (seamless) updates work?	Two partition slots (A/B) hold system images. Updates write to the inactive slot. On reboot, the bootloader switches to the updated slot. If boot fails, it automatically falls back to the old slot.
+What is virtual A/B and how does it save space?	Virtual A/B doesn't duplicate full partitions. It uses dm-snapshot to write differences to userdata. After reboot, the snapshots merge into the target partition, using much less storage than true A/B.
+What is update_engine?	The system daemon that handles OTA payload processing — verifying signatures, applying block-level differences (bsdiff/puffdiff), writing to the target slot, and post-install verification
+What is streaming OTA?	Downloading and applying an OTA simultaneously — update_engine writes blocks as they are received, so the entire payload doesn't need to be stored locally. Useful for storage-constrained AAOS devices.
+What is FOTA vs SOTA?	FOTA (Firmware OTA): updates low-level firmware/bootloader/modem. SOTA (Software OTA): updates the OS/apps. AAOS OTA typically covers SOTA. FOTA may need separate update paths for ECU firmware.
+What is fleet management for automotive?	Remote management of commercial vehicle fleets: monitoring vehicle health/location, deploying app/OS updates, enforcing MDM policies, remote diagnostics, geofencing, and driver behavior tracking
+
+# ==========================================
+# 4.6 Performance Engineering for Automotive
+# ==========================================
+
+What is the boot time target for rear camera display?	< 2 seconds from ignition/reverse engagement to rear camera feed on display. Achieved through optimized bootloader, kernel fast-boot paths, camera HAL early initialization, and bypassing SystemServer for camera.
+How do you optimize Android boot time for automotive?	Reduce kernel init (minimize DTB probing, parallel driver init), optimize second-stage init (defer non-critical services), use EROFS/F2FS for faster mount, pre-initialize camera pipeline, parallelize service starts.
+What is the cluster rendering performance target?	60fps (16.6ms frame time) with guaranteed latency — no dropped frames. The cluster must render smoothly even under high system load from infotainment activities on the main display.
+How do you ensure cluster rendering meets 60fps?	Dedicate a CPU core for the cluster process (CPU isolation via cgroups), use a separate GPU context or HWC overlay, minimize Compose recomposition, use hardware-accelerated rendering, and avoid GC pauses.
+What is memory budgeting for automotive?	Managing limited RAM (2-4GB for low-end IVI) across multiple running apps, system services, and displays. Requires aggressive LMKD tuning, zRAM optimization, limiting cached processes, and memory-efficient rendering.
+What is zRAM tuning in automotive?	Configuring in-memory compression for swap pages. On memory-constrained automotive devices, proper zRAM sizing (swap ratio, compression algorithm: lz4 vs zstd) significantly affects multi-app performance.
+What is thermal management in AAOS?	Monitoring and controlling SoC temperature via the Thermal HAL. When the SoC overheats (common in dashboard-mounted devices), the system throttles CPU/GPU frequencies, dims displays, and limits background work.
+What is the Thermal HAL?	A HAL that reports thermal sensor readings and thresholds to the framework. The framework applies throttling policies: skin temperature monitoring, per-component cooling actions, and shutdown protection.
+What is CPU isolation for automotive real-time tasks?	Using cgroups and CPU affinity to dedicate specific CPU cores exclusively to time-critical processes (audio, cluster rendering, camera). These cores are not used for general scheduling, ensuring predictable latency.

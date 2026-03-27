@@ -15,6 +15,11 @@ What is the STRIDE threat model?	A framework for categorizing threats: Spoofing 
 What is CVSS and what does a score of 9.8 indicate?	Common Vulnerability Scoring System — a standardized scale (0–10) for rating vulnerability severity. A 9.8 is Critical, meaning easily exploitable with severe impact.
 What is a CVE?	Common Vulnerabilities and Exposures — a standardized identifier (e.g., CVE-2021-44228) for publicly known security vulnerabilities.
 How do you read a CVE entry? What key information does it contain?	A CVE includes: a unique ID (CVE-YYYY-NNNNN), a description of the vulnerability, affected products/versions, CVSS severity score, and references to patches or advisories.
+Which two CIA Triad properties often conflict in a highly available public system?	Availability and Confidentiality: maximizing availability (open access, redundancy, caching) can reduce confidentiality controls. Example: a public API must balance open access for uptime against strict data-access restrictions. Security design must explicitly address this tension.
+What is "privilege creep" and how do you prevent it?	Privilege creep is the gradual accumulation of more access rights than needed, typically as users change roles over time without their old permissions being revoked. Prevent it with periodic access reviews (recertification), automated removal of permissions when roles change, and enforcing Least Privilege from the start.
+Which STRIDE threat category does a DDoS attack fall into?	Denial of Service — it overwhelms a system to prevent legitimate users from accessing it, directly targeting the Availability property of the CIA Triad.
+What is the difference between a CVE and a CWE?	A CVE (Common Vulnerabilities and Exposures) identifies a specific known vulnerability in a particular product (e.g., CVE-2021-44228 = Log4Shell in Log4j 2.x). A CWE (Common Weakness Enumeration) describes a class of software weakness (e.g., CWE-89: SQL Injection). CVEs are instances; CWEs are the categories they belong to.
+What are the three metric groups in CVSS v3?	Base (inherent characteristics that don't change: attack vector, complexity, privileges required, user interaction, scope, impact), Temporal (time-dependent factors: exploit maturity, remediation level, report confidence), Environmental (organization-specific modifications to base metrics reflecting actual deployment context).
 
 # === Authentication & Authorization Basics ===
 
@@ -26,6 +31,11 @@ What is a session ID and why must it be kept secret?	A unique token issued after
 What is Role-Based Access Control (RBAC)?	An access control model where permissions are assigned to roles (e.g., Admin, Editor, Viewer), and users are assigned to roles — not given individual permissions.
 What is the difference between OAuth 2.0 and OpenID Connect?	OAuth 2.0 is an authorization framework (grants access to resources). OpenID Connect is an identity layer on top of OAuth 2.0 that also provides authentication (who the user is).
 Why should you never send passwords over unencrypted HTTP?	An attacker on the network can read the password in plaintext via packet sniffing. Always use HTTPS to encrypt credentials in transit.
+What is IDOR and which security principle does it violate?	Insecure Direct Object Reference — accessing another user's resource by changing an identifier in the request (e.g., changing `?invoice_id=1001` to `?invoice_id=1002`). It violates authorization: the server fails to verify that the authenticated user is permitted to access the requested object.
+Which password hashing algorithms are safe for storing passwords today?	bcrypt, scrypt, and Argon2 (recommended). They are slow by design, automatically salted, and resist GPU/ASIC-based cracking. MD5, SHA-1, and plain SHA-256 are NOT safe for passwords — they are far too fast and enable brute-force at scale.
+What is the difference between a salt and a pepper in password hashing?	A salt is a random per-user value stored alongside the hash — it prevents precomputation (rainbow table) attacks. A pepper is a secret server-side value (NOT stored in the database) added before hashing — it protects hashes even if the database is breached, but must be stored separately in a secret manager.
+What are the main weaknesses of SMS-based MFA?	SIM swapping (attacker convinces the carrier to transfer your number), SS7 protocol vulnerabilities (allow interception of SMS), phishing (victim is tricked into forwarding the code), and malware on the device reading SMS messages. Prefer TOTP apps (Google Authenticator) or hardware security keys.
+What is ABAC (Attribute-Based Access Control) and how does it differ from RBAC?	ABAC grants access based on attributes of the user, resource, and environment (e.g., "managers can access salary records for their own department during business hours"). RBAC uses predefined roles. ABAC is more flexible and fine-grained but more complex to administer and audit.
 
 # === TLS & Transport Security Basics ===
 
@@ -44,6 +54,9 @@ What is Let's Encrypt?	A free, automated, open Certificate Authority that provid
 What does "certificate expired" mean and what should you do?	The certificate's validity period has passed. Browsers will show a warning. The server admin needs to renew the certificate. Users should not bypass the warning.
 What does a "hostname mismatch" TLS error mean?	The domain in the URL doesn't match any of the domains listed in the certificate (CN or SAN fields). This could indicate misconfiguration or an attack.
 What data travels in plaintext with HTTP (no TLS)?	Everything: URLs, headers, cookies, form data (including passwords), request/response bodies. Anyone on the network can read and modify it.
+What does TLS NOT protect against?	TLS only encrypts data in transit between endpoints. It does NOT protect against: malware on the client or server, server-side vulnerabilities (SQL injection, XSS), a compromised CA issuing fraudulent certificates, or attacks that occur after the data is decrypted on the server.
+What is SSL stripping and how does HSTS prevent it?	SSL stripping downgrades an HTTPS connection to HTTP by intercepting the initial plain HTTP request before the redirect to HTTPS occurs. HSTS (HTTP Strict Transport Security) prevents this: once a browser has seen the HSTS header, it refuses to connect over HTTP at all and redirects internally. The HSTS preload list enforces this even on the very first visit.
+When is using a self-signed certificate acceptable?	For internal tools, development environments, and private service-to-service communication where both parties can explicitly and deliberately trust the specific certificate. Never for public-facing sites — users cannot safely verify a self-signed cert and are exposed to MitM attacks without manual configuration.
 
 # === Web Security Fundamentals ===
 
@@ -63,6 +76,11 @@ What does the X-Frame-Options header do?	Prevents the page from being embedded i
 What does the HttpOnly cookie attribute do?	Prevents JavaScript from accessing the cookie via `document.cookie`, mitigating cookie theft through XSS attacks.
 What does the Secure cookie attribute do?	Ensures the cookie is only sent over HTTPS connections, preventing transmission over unencrypted HTTP.
 What does the SameSite cookie attribute do?	Controls when cookies are sent with cross-site requests. `Strict`: never sent cross-site. `Lax`: sent with top-level navigations. `None`: always sent (requires `Secure`).
+What can an attacker do after successfully executing a stored XSS attack?	Steal session cookies (session hijacking), redirect users to phishing sites, log keystrokes in forms, make authenticated requests as the victim, deface the page, deliver drive-by malware, or mine cryptocurrency in the victim's browser — anything executable JavaScript can do.
+Why does HTTPS NOT prevent CSRF attacks?	CSRF exploits the browser's automatic inclusion of cookies in cross-origin requests. The malicious request travels over HTTPS (encrypted), but the server still receives a fully authenticated request because the victim's session cookies are attached automatically. HTTPS secures the channel — it cannot distinguish authorized user actions from forged cross-site requests.
+What is blind SQL injection?	A variant where the application does not return query results directly. The attacker infers data through boolean differences in the page response (true vs. false conditions) or time delays (`SLEEP()`, `WAITFOR`), extracting data one bit at a time without ever seeing output directly.
+Why is client-side input validation insufficient as a security control?	An attacker can bypass it entirely by modifying the HTTP request directly with tools like Burp Suite or curl, or by disabling JavaScript. Client-side validation improves user experience; server-side validation is the actual security control.
+Why is `unsafe-inline` in a Content Security Policy dangerous?	It permits any inline `<script>` tag on the page to execute, defeating CSP's primary purpose of blocking injected scripts. If an attacker injects a `<script>` tag via XSS, `unsafe-inline` allows it to run even though CSP is enabled.
 
 # === Memory & Process Security Basics ===
 
@@ -81,6 +99,9 @@ What is ASLR (Address Space Layout Randomization)?	An OS security feature that r
 What is DEP (Data Execution Prevention) / NX bit?	A hardware/OS feature that marks memory regions (stack, heap) as non-executable. Even if an attacker injects shellcode, the CPU refuses to execute it.
 How do garbage collectors help prevent memory bugs?	They automatically reclaim unused memory, preventing use-after-free, double-free, and memory leaks. They also typically enforce bounds checking.
 Why is `strcpy` dangerous in C?	It copies a string without checking the destination buffer's size, making buffer overflows trivial. Use `strncpy`, `strlcpy`, or `snprintf` instead.
+What is the difference between a stack-based and a heap-based buffer overflow?	Stack-based: overflows a local buffer on the stack, typically overwriting the saved return address to redirect execution. Heap-based: overflows a heap-allocated buffer, corrupting adjacent heap objects or allocator metadata (function pointers, free lists) — harder to exploit but equally dangerous.
+What is the primary purpose of Return-Oriented Programming (ROP)?	To execute arbitrary code even when DEP/NX marks the stack and heap as non-executable. ROP reuses small existing code sequences ("gadgets") already in the program, each ending in a `ret` instruction, chaining them via attacker-controlled return addresses on the stack — no new code is injected.
+Name two programming languages designed to prevent buffer overflows at the language level.	Rust (compile-time ownership and borrow checker eliminate dangling pointers and out-of-bounds access without runtime overhead) and Go (automatic bounds checking on slices and arrays). Java and C# also prevent them via managed runtime bounds checking.
 
 # === Secure Coding Basics ===
 
@@ -91,6 +112,9 @@ What is the OWASP Top 10?	A regularly updated list of the 10 most critical web a
 What is Static Application Security Testing (SAST)?	Analyzing source code (without running it) for security vulnerabilities. Tools scan for patterns like SQL injection, XSS, hardcoded secrets. Examples: SonarQube, Semgrep, Checkmarx.
 What should you look for in a security code review?	Input validation, output encoding, authentication/authorization checks, hardcoded secrets, unsafe deserialization, proper error handling, SQL injection, and dependency vulnerabilities.
 Why is keeping dependencies up to date important for security?	Third-party libraries frequently have vulnerabilities discovered. Outdated dependencies with known CVEs are a common attack vector. Use tools like Dependabot, Snyk, or OWASP Dependency-Check.
+Give an example of how a denylist for input validation can be bypassed.	A denylist blocking the word "script" can be bypassed with `<ScRiPt>` (case variation), `<sc\x72ipt>` (encoding), or `<img onerror=alert(1)>` (different XSS vector entirely). An allowlist that only accepts expected input patterns is far harder to bypass because unknown-bad inputs are rejected by default.
+What should you do if a secret (API key, password) is accidentally committed to a git repository?	Immediately revoke and rotate the secret — treat it as fully compromised, regardless of how quickly you act. Remove it from the codebase. Use `git filter-branch` or BFG Repo-Cleaner to purge it from history. Add the file to `.gitignore`. Revocation is the critical step since the history may already have been cloned or indexed.
+What is the #1 risk in the OWASP Top 10 (2021)?	Broken Access Control — failures to enforce what authenticated users are allowed to do. Includes IDOR, privilege escalation, missing authorization checks on actions. It rose from #5 in 2017 to #1 in 2021, reflecting how common authorization failures are.
 
 # === Unix / Linux Security Basics ===
 
@@ -108,6 +132,8 @@ Why should you review log files like `/var/log/auth.log`?	They record authentica
 What are world-readable/writable files and why are they dangerous?	Files with permissions allowing any user to read or write. Sensitive data in world-readable files is exposed; world-writable files can be modified by attackers.
 What security risks do cron jobs present?	Cron jobs run with the crontab owner's privileges. If a cron job executes a world-writable script, an attacker can modify the script to run arbitrary commands as that user.
 Why does package manager security matter?	Installing unsigned or untrusted packages can introduce malware. Always use official repositories, verify package signatures, and keep packages updated for security patches.
+Why is setting file permissions to `chmod 777` dangerous?	It gives read, write, and execute permission to all users on the system (owner, group, and everyone else). Any user or process — including a compromised one — can read sensitive data, modify the file, or execute it, potentially enabling privilege escalation.
+What should you verify when accepting an SSH host key fingerprint for the first time?	Verify it out-of-band — confirm the fingerprint matches what the server administrator reports through a trusted channel (phone, internal documentation, or a secure portal). Accepting an unknown fingerprint blindly risks connecting to a MitM machine that intercepts your session.
 
 # === Java Security Basics ===
 
@@ -123,6 +149,8 @@ What is the risk of leaking stack traces to users?	Stack traces reveal internal 
 Why is logging sensitive data (passwords, tokens, SSNs) dangerous?	Log files are often stored long-term, shared across systems, and accessible to operations teams. Sensitive data in logs can be exposed through log aggregation, breaches, or insider access.
 What is the risk of loading untrusted JARs on the classpath?	An untrusted JAR can contain malicious code that executes when classes are loaded. It could override trusted classes, intercept data, or open backdoors.
 How should you handle HTTPS certificate validation in Java?	Use the default `HttpsURLConnection` or HttpClient which validates certificates against the JVM's truststore. Never disable certificate checking (e.g., trust-all `TrustManager`) in production.
+What are safer alternatives to Java's built-in serialization for data exchange?	JSON (Jackson, Gson), Protocol Buffers (protobuf), XML with external entities disabled, MessagePack, or Avro. These data-format libraries don't instantiate arbitrary Java objects and avoid the gadget-chain RCE vulnerability inherent in `ObjectInputStream` deserializing untrusted data.
+What is the purpose of the "work factor" in bcrypt?	The work factor (cost parameter) controls how computationally expensive bcrypt is — each increment doubles the computation time. Higher values make each password guess slower, directly resisting brute-force attacks. Tune it so hashing takes ~100–300ms on current hardware, and increase it as hardware gets faster.
 
 # === Android Security Basics ===
 
@@ -140,6 +168,8 @@ What does APK signing guarantee?	It proves the APK was produced by the holder of
 Why is `Log.d()` with sensitive data dangerous in production?	Logcat output on pre-Android 4.1 devices was world-readable. Even on newer devices, any app with shell access or connected via ADB can read logs. Sensitive data in logs can be exfiltrated.
 What is Google Play Protect?	Google's malware detection service that scans apps on-device and in the Play Store. It checks for known malware, potentially harmful behavior, and policy violations.
 What is root detection and why do apps implement it?	Rooted devices have removed OS security restrictions. Apps (especially banking/security apps) check for root to detect environments where their data could be compromised or tampered with.
+What is the difference between "normal" and "dangerous" permissions on Android?	Normal permissions are granted automatically at install time (low privacy/security risk, e.g., INTERNET, VIBRATE). Dangerous permissions affect user privacy or security (e.g., CAMERA, ACCESS_FINE_LOCATION, READ_CONTACTS) and require explicit user approval at runtime (Android 6.0+).
+Why can't two apps on Android normally access each other's internal storage?	Each app runs as a unique Linux user with its own UID. The app's internal storage directory (`/data/data/<package>`) is owned by that UID and has permissions set to 700. The kernel denies access to any other UID — including other apps — regardless of their permissions.
 
 # === Automotive Security Basics ===
 
@@ -155,6 +185,8 @@ What is ISO/SAE 21434?	The automotive cybersecurity engineering standard. It def
 What is V2X (Vehicle-to-Everything) communication?	Wireless communication between vehicles (V2V), infrastructure (V2I), pedestrians (V2P), and cloud (V2C). Enables safety features like collision warnings but adds a wireless attack surface.
 Why should infotainment systems be isolated from safety-critical ECUs?	If an attacker compromises the infotainment system (which has internet access), isolation prevents them from reaching the brakes, steering, or engine controllers.
 What risks do aftermarket OBD-II devices pose?	Third-party OBD dongles with Bluetooth/Wi-Fi can be exploited remotely to send malicious CAN messages. They often have weak or no authentication.
+Why is it difficult to retrofit authentication onto the classic CAN bus?	Standard CAN frames have only 8 bytes of payload, leaving almost no room for a MAC or signature alongside actual data. Adding authentication requires protocol changes, firmware updates across potentially 100+ ECUs from multiple suppliers, and re-validation of safety-critical systems — a massive, expensive undertaking.
+How can relay attacks on keyless entry be prevented?	Ultra-Wideband (UWB) ranging (measures precise distance, hard to relay), motion sensors in key fobs (disable the signal when the fob is stationary), Faraday cage signal-blocking pouches, and requiring a PIN or button press confirmation before engine start.
 
 # === Embedded Security Basics ===
 
@@ -164,3 +196,5 @@ Why must firmware updates be signed?	Without signing, an attacker could install 
 Why are default credentials dangerous on embedded devices?	Many devices ship with well-known default passwords (admin/admin). Attackers scan for and exploit these at scale. The Mirai botnet compromised millions of IoT devices this way.
 What are UART and JTAG, and why is their exposure a security risk?	UART (serial debug) and JTAG (hardware debug) are debug interfaces on circuit boards. If exposed, attackers can gain a shell, read/write memory, and extract firmware.
 Why is network segmentation important for IoT/embedded devices?	IoT devices often run outdated software with known vulnerabilities. Placing them on a separate network segment prevents a compromised device from accessing critical systems.
+What is the difference between Secure Boot and Measured Boot?	Secure Boot verifies each boot component's cryptographic signature and halts the boot process if verification fails — it enforces integrity by blocking unauthorized code. Measured Boot records (measures) each component's hash into a TPM's PCR registers without blocking — it enables remote attestation so an external verifier can later confirm what ran at boot.
+How can manufacturers reduce the security risk of exposed UART and JTAG debug ports in production devices?	Disable debug interfaces in production firmware via fuse bits or configuration registers (one-time programmable). Require authentication before accepting debug commands. Physically remove or fill the header pins on the PCB so they cannot be easily connected to. Document and audit all debug interface access.

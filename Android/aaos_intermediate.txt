@@ -1,0 +1,125 @@
+# Android Automotive OS (AAOS) — Intermediate
+# Format: Front[TAB]Back
+
+# ==========================================
+# 3.3 Vehicle HAL (VHAL)
+# ==========================================
+
+What is the Vehicle HAL (VHAL) in AAOS?	The Hardware Abstraction Layer that bridges the Android framework and the vehicle's hardware — translating vehicle signals (speed, gear, HVAC) into Android-readable properties and vice versa
+What is a VehicleProperty?	A numeric identifier representing a specific vehicle data point (e.g., PERF_VEHICLE_SPEED, HVAC_TEMPERATURE_SET, GEAR_SELECTION). Each property has an ID, type, access mode, and area type.
+What are the access modes for VHAL properties?	READ (framework can only read), WRITE (framework can only write), READ_WRITE (framework can both read and write). Example: speed is READ, HVAC temperature is READ_WRITE.
+What data types does VHAL support?	INT32, INT32_VEC, FLOAT, FLOAT_VEC, INT64, INT64_VEC, STRING, BYTES, MIXED (combination of types in a single property value)
+What are VHAL property zones/areas?	Properties can be scoped to specific vehicle regions — GLOBAL (whole vehicle), SEAT (per-seat, e.g., seat heater), DOOR (per-door), WINDOW (per-window), WHEEL, MIRROR (per-mirror)
+How does area-based property addressing work?	Each area is a bitmask (e.g., SEAT_ROW_1_LEFT | SEAT_ROW_1_RIGHT). When getting/setting a zoned property, you specify the area ID to target a specific zone (e.g., driver's seat heater).
+What is the AIDL VHAL (Android 14+)?	The latest VHAL implementation using stable AIDL instead of HIDL, providing a cleaner interface, better type safety, and alignment with the AIDL HAL migration across Android
+What are the three subscription modes for VHAL properties?	onChange (notify only when value changes), continuous (notify at a specified sample rate in Hz), onSet (notify every time the property is set, even to the same value — used for commands)
+What is the default VHAL implementation?	A reference VHAL server in AOSP that provides fake/simulated vehicle property values, used for development and testing on emulators and the Cuttlefish virtual device
+What is the Grpc VHAL?	A VHAL implementation that communicates over gRPC, used in emulator environments where the vehicle simulation runs on a separate host process connected via network
+
+# ==========================================
+# 3.4 Car Service & Car APIs
+# ==========================================
+
+What is CarService in AAOS?	A system service (runs in a privileged process) that hosts all car-specific manager services. Apps interact with vehicle features through CarService managers via the Car API.
+How do apps connect to CarService?	By creating a Car object: Car.createCar(context, handler, ..., connectionCallback). Once connected, use car.getCarManager(Car.PROPERTY_SERVICE) to get specific managers.
+What is CarPropertyManager?	The primary API for apps to read/write vehicle properties. Example: carPropertyManager.getIntProperty(VehiclePropertyIds.PERF_VEHICLE_SPEED, 0) returns the current vehicle speed.
+How does CarPropertyManager subscribe to property changes?	carPropertyManager.registerCallback(callback, propertyId, rate) — the callback's onChangeEvent(value) is invoked when the property value changes
+What is CarUxRestrictionsManager?	A manager that provides the current UX restriction state (what the driver is and isn't allowed to interact with based on driving state). Apps register listeners to adapt their UI accordingly.
+What are UX restriction types?	NO_VIDEO, NO_TEXT_MESSAGE, NO_FILTERING, LIMIT_STRING_LENGTH, LIMIT_CONTENT, NO_KEYBOARD, NO_SETUP, NO_DIALPAD — restrictions applied while driving to minimize distraction
+What is CarAudioService?	The car-specific audio service that extends Android's AudioManager with audio zones, per-zone volume groups, occupant-aware audio focus, and routing to multiple speaker zones
+What is CarOccupantZoneManager?	A manager that maps physical displays to occupants (driver, front passenger, rear seat). Each occupant zone can have its own display, audio, and user profile.
+What is CarPowerManagementService?	Manages vehicle power states — coordinates with VHAL for power state transitions (ON, SHUTDOWN_PREPARE, DEEP_SLEEP, SUSPEND_TO_RAM) and notifies apps of power changes
+What is CarWatchdogService?	A watchdog that monitors processes for health (responsiveness) and I/O overuse. If a process exceeds I/O budgets or stops responding, CarWatchdog can warn, throttle, or kill it.
+What is CarEvsService?	Exterior View System service — provides camera streams for surround view, rear camera, and other exterior camera applications. Integrates with the EVS HAL.
+What is CarTelemetryService?	A service for collecting vehicle metrics and data from publishers (VHAL properties, system stats) and delivering them to subscribers (OEM apps, cloud backends) for analytics and diagnostics
+What is Car Input Service?	Handles hardware input specific to vehicles — physical HW buttons on the steering wheel, rotary controllers, and touch input — mapping them to Android input events or custom car actions
+
+# ==========================================
+# 3.5 Driver Distraction & UX
+# ==========================================
+
+What is Distraction Optimization (DO) for AAOS apps?	A set of guidelines and system-enforced restrictions that ensure apps minimize driver distraction while driving — limiting complexity, disabling scrolling, and forcing template-based UIs
+Name five UX restriction types applied while driving.	NO_VIDEO (no video playback), LIMIT_STRING_LENGTH (short text only), NO_FILTERING (no scrollable lists), NO_KEYBOARD (no text input), LIMIT_CONTENT (limited list items)
+How do you test UX restrictions during development?	Use adb shell cmd car_service inject-vhal to simulate driving state changes (PARKED, IDLING, MOVING), then verify your app correctly disables/enables UI elements
+What are the three driving states in AAOS?	PARKED (vehicle stationary, gear in park), IDLING (engine running, gear in park/neutral), MOVING (vehicle in motion). Different UX restrictions apply to each.
+How does the Car App Library enforce distraction compliance?	Templates have built-in restrictions — ListTemplate limits items, MapTemplate restricts overlays, NavigationTemplate shows only approved maneuvers. The system enforces these; apps cannot override.
+How should an app respond to changing UX restrictions?	Register a CarUxRestrictionsManager listener and adapt the UI when restrictions change — hide videos, shorten text, disable keyboards, simplify layouts when driving, restore full UI when parked.
+
+# ==========================================
+# 3.6 Multi-Display & Multi-User on AAOS
+# ==========================================
+
+What displays does a typical AAOS vehicle have?	Driver's main display (center console), instrument cluster (behind steering wheel), optional front passenger display, optional rear-seat entertainment displays
+How does AAOS assign Activities to different displays?	Using ActivityOptions.setLaunchDisplayId(displayId) or CarOccupantZoneManager to launch activities on specific displays based on the target occupant zone
+What is CarActivityView?	A special view (now TaskView) that hosts an Activity from another process, embedding it in the current display. Used for picture-in-picture style embedding of apps on different displays.
+How does multi-user work in AAOS?	Each driver has a separate Android user profile with independent settings, app data, and preferences. AAOS supports profile switching, guest profiles, and passenger profiles linked to different display zones.
+What is Occupant Zone mapping?	The association of a display, audio zone, and user profile to a specific vehicle occupant (driver, front passenger, rear-seat-left, etc.). Managed by CarOccupantZoneManager.
+Can different occupants play different media simultaneously?	Yes — AAOS supports per-occupant audio zones. Each occupant zone can have independent media playback routed to their audio zone (headphones for rear seats, speakers for driver zone).
+
+# ==========================================
+# 3.7 AAOS Audio System
+# ==========================================
+
+How does car audio differ from standard Android audio?	Car audio adds audio zones (per-occupant routing), multiple speaker groups, OEM amplifier control, vehicle-specific audio focus policies, and occupant-aware volume management
+What is an audio zone in AAOS?	A grouping of audio output devices mapped to a specific vehicle area (e.g., driver zone = front speakers, rear-left zone = rear-left headrest speakers). Each zone can play independent audio.
+What are volume groups?	Groups of audio streams within a zone that share volume control. Example: a zone might have separate volume groups for media, navigation, phone calls, and notifications.
+What is IAudioControl HAL?	The vendor HAL that gives the OEM control over audio routing and amplifier settings. It handles volume ducking, balance, fade, EQ, and external amplifier communication.
+What is audio focus in the automotive context?	A mechanism that manages which audio source has priority. When navigation speaks, music ducks (lowers volume). When a phone call starts, media pauses. Policies are vehicle-specific.
+What is the difference between ducking, pausing, and mixing for concurrent audio?	Ducking: lower one source's volume while another plays (nav over music). Pausing: fully stop one source (phone call stops music). Mixing: both play at full volume simultaneously (alerts over music).
+What are audio contexts in AAOS?	Labels that classify audio usage: NAVIGATION, MUSIC, CALL, ALARM, NOTIFICATION, SYSTEM_SOUND, ANNOUNCEMENT, EMERGENCY, SAFETY, VEHICLE_STATUS — used for focus and routing decisions
+
+# ==========================================
+# 3.8 AAOS Cluster & Instrument Display
+# ==========================================
+
+What is the instrument cluster in AAOS?	The display behind the steering wheel that shows speed, RPM, fuel, navigation turn-by-turn, and telltales (warning lights). AAOS can render this display using Android.
+What is InstrumentClusterService?	A system service that manages rendering content on the instrument cluster display — navigation state, vehicle data, and OEM-specific gauge information
+What is DirectRenderingCluster?	A cluster implementation where the cluster Activity directly renders the UI using Android's rendering pipeline (Canvas, Compose, OpenGL) on the cluster display
+What is NavigationStateProto?	A protobuf-based protocol for sending navigation state (next maneuver, distance, road name) from a navigation app to the cluster for independent rendering of turn-by-turn directions
+How does an app render on a remote (cluster) display?	Using VirtualDisplay or Presentation API — the app creates a Presentation targeting the cluster's Display, and renders its content there independently from the main display
+
+# ==========================================
+# 3.9 AAOS Security
+# ==========================================
+
+How are VHAL property access permissions enforced?	Only system and privileged apps can access vehicle properties. Specific properties may require additional permissions (e.g., android.car.permission.CAR_SPEED for reading speed).
+What SELinux policies are specific to AAOS?	AAOS adds domains for vehicle_hal (VHAL process), car_service (CarService), and related vehicle daemons. Policies restrict which processes can communicate with VHAL and access vehicle data.
+How is the IVI boot chain secured?	The bootloader verifies the kernel, which verifies system/vendor images (AVB/dm-verity). This chain ensures no unauthorized code runs on the IVI, protecting vehicle integrity.
+How does AAOS isolate data between multiple users?	Each user has separate CE (Credential Encrypted) storage, separate app data directories, and separate preference stores. Apps cannot access other users' data unless using device-owner APIs.
+Why is a gateway ECU important between IVI and safety-critical ECUs?	The gateway ECU acts as a firewall — filtering CAN messages between the IVI (AAOS) and safety-critical ECUs (brakes, steering, engine) to prevent compromised infotainment from affecting vehicle safety
+How do OTA updates work on AAOS?	Similar to consumer Android — A/B seamless updates allow the inactive slot to be updated while the driver uses the vehicle. The update is applied during Garage Mode (vehicle off) or at the owner's request.
+
+# ==========================================
+# 4.1 Compose for Automotive
+# ==========================================
+
+Can you use Jetpack Compose for AAOS apps?	Yes — Compose works on AAOS, but apps distributed via the Play Store must use Car App Library templates. OEM system apps and non-Play apps can use full custom Compose UI.
+What are the limitations of Compose in Car App Library apps?	Car App Library enforces template-based UI. You cannot use arbitrary Compose layouts in the main template area for Play Store-distributed apps — only template slots support some custom rendering.
+How do OEMs customize Compose theming in AAOS?	OEMs can provide custom Material 3 themes, color schemes, and typography that match the vehicle's interior design. These are applied globally via theme overlays.
+What are the challenges of Compose for cluster rendering?	Performance constraints — the cluster must maintain guaranteed frame rates (60fps), recomposition must be minimal, and composables must be designed for low-latency rendering on limited GPU resources.
+
+# ==========================================
+# 4.2 Connectivity & Companion Apps
+# ==========================================
+
+How does Android Auto (phone projection) communicate with the head unit?	Via the Android Auto protocol over USB or wireless (Wi-Fi Direct). The phone renders its UI and sends video frames to the head unit; the head unit sends touch/input events back to the phone.
+What Bluetooth profiles are used in automotive?	HFP (Hands-Free calling), PBAP (Phone Book Access), MAP (Message Access), AVRCP (Audio/Video Remote Control for media), A2DP (Advanced Audio Distribution for streaming music)
+What is PBAP (Phone Book Access Profile)?	A Bluetooth profile that allows the car to download the phone's contacts and call history for display on the infotainment system and voice command access
+What is MAP (Message Access Profile)?	A Bluetooth profile that allows the car to access phone messages (SMS, MMS) for read-aloud and hands-free reply via the infotainment system
+How does Wi-Fi tethering work on AAOS?	AAOS devices with an embedded cellular modem can share their internet connection via Wi-Fi hotspot to passengers' devices, or vice versa — use the phone's hotspot for IVI connectivity
+What is eSIM management in AAOS?	Vehicles with embedded modems use eSIM for cellular connectivity — the OEM or carrier can remotely provision, activate, and manage cellular subscriptions without physical SIM cards
+
+# ==========================================
+# 4.3 App Development for AAOS
+# ==========================================
+
+What is the Car App Library Screen class?	The base class for creating screens in Car App Library apps. Each Screen provides a Template (the UI) and can be pushed/popped on a navigation stack.
+What templates does the Car App Library provide?	ListTemplate, GridTemplate, MessageTemplate, PaneTemplate, MapTemplate, NavigationTemplate, SearchTemplate, TabTemplate, SignInTemplate
+How do you build a media app for AAOS?	Implement MediaBrowserServiceCompat (expose a browse tree of media items) and MediaSessionCompat (playback controls). AAOS renders the UI using the system media template.
+What is a browse tree in a media app?	A hierarchical structure of MediaItem objects that the media browser can navigate — root → categories (playlists, albums, artists) → individual tracks. The system displays this in the media UI template.
+How does navigation app development work for AAOS?	Use NavigationTemplate with NavigationManagerCallback for turn-by-turn directions. The app draws on a Surface for the map and provides navigation metadata (distance, maneuver type) for the cluster.
+What is the TurnByTurn API?	An API for navigation apps to provide structured navigation data (next turn direction, distance, road name) that AAOS forwards to the instrument cluster for display
+What templates are available for communication apps?	Messaging templates for displaying conversations and calling templates for VoIP/phone call UI. Messages can be read by the system's TTS (text-to-speech) while driving.
+What are parked-only templates?	Templates that are only interactive when the vehicle is PARKED — used for video playback, detailed settings, and complex interactions that would be distracting while driving
+What is the Desktop Head Unit (DHU)?	A development tool that simulates an Android Auto head unit on your computer, allowing you to test Car App Library apps without a real vehicle or automotive emulator
+How do you test AAOS apps without a vehicle?	Use the Cuttlefish automotive emulator (virtual AAOS device), the Desktop Head Unit (DHU) for Android Auto apps, or the Android Automotive emulator in Android Studio
