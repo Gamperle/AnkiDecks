@@ -1,6 +1,6 @@
 # AnkiDecks
 
-A collection of Anki flashcard decks for learning and reviewing **Java**, **C++**, **Android**, and **Security** topics.
+A collection of Anki flashcard decks for learning and reviewing **Java**, **C++**, **Android**, **Security**, **Git**, and **Linux** topics.
 
 ## Repository Structure
 
@@ -9,7 +9,9 @@ AnkiDecks/
 ├── Java/          # Flashcard decks for Java programming
 ├── Cpp/           # Flashcard decks for C++ programming
 ├── Android/       # Flashcard decks for Android development
-└── Security/      # Flashcard decks for cybersecurity fundamentals
+├── Security/      # Flashcard decks for cybersecurity fundamentals
+├── Git/           # Flashcard decks for Git & version control
+└── Linux/         # Flashcard decks for Linux fundamentals & administration
 ```
 
 ## Topics Covered
@@ -20,6 +22,8 @@ AnkiDecks/
 | `Cpp/` | C++ fundamentals, STL, memory management, OOP, modern C++ features |
 | `Android/` | Android app development, AOSP internals, Android Automotive OS (AAOS), AAOS security — beginner through pro (12 decks) |
 | `Security/` | Cybersecurity fundamentals — beginner, intermediate, and pro levels |
+| `Git/` | Git & version control — basics, workflows, internals, security, and Git at scale |
+| `Linux/` | Linux fundamentals, shell scripting, system administration, kernel internals, eBPF, and performance tuning |
 
 ## Deck Format
 

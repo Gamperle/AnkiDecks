@@ -1,0 +1,120 @@
+# Linux — Pro
+# Format: Front	Back
+
+# ============================================================
+# Section 14: Kernel Fundamentals
+# ============================================================
+
+What type of kernel is Linux?	A monolithic kernel — all core OS services (scheduling, memory management, filesystems, drivers) run in kernel space, but functionality can be extended via loadable kernel modules (LKMs).
+What is the difference between kernel space and user space?	Kernel space: privileged mode with full hardware access, runs the kernel and drivers. User space: restricted mode where applications run. Communication happens through system calls (syscalls).
+What is a system call?	The interface between user space and kernel space. When a user process needs kernel services (e.g., read(), write(), fork()), it triggers a syscall, which switches to kernel mode via a software interrupt or syscall instruction.
+What is task_struct in the Linux kernel?	The process descriptor — a large struct containing all information about a process: PID, state, scheduling info, memory mappings, file descriptors, credentials, signal handlers, etc.
+What are the main process states in the kernel?	TASK_RUNNING (runnable or running), TASK_INTERRUPTIBLE (sleeping, can be woken by signal), TASK_UNINTERRUPTIBLE (sleeping, cannot be interrupted — e.g., I/O wait), TASK_STOPPED, TASK_ZOMBIE (EXIT_ZOMBIE).
+What is a context switch?	The kernel saving the state (registers, program counter, stack pointer) of the current process and loading the state of the next process to run. Context switches have overhead — the TLB and CPU caches may be invalidated.
+What is the CFS (Completely Fair Scheduler)?	The default Linux CPU scheduler. It models an ideal multitasking CPU using a red-black tree keyed by virtual runtime (vruntime). Processes that have used less CPU time are scheduled first, ensuring fairness.
+What is the nice value?	A user-space priority hint, ranging from -20 (highest priority) to 19 (lowest). Default is 0. Only root can set negative nice values. Affects CFS scheduling weight.
+What is the difference between nice values and real-time scheduling?	Nice values affect CFS priority within the normal scheduling class. Real-time scheduling (SCHED_FIFO, SCHED_RR) provides guaranteed CPU time, preempting all normal processes. RT priorities range from 1-99.
+How does virtual memory work in Linux?	Each process gets its own virtual address space. The MMU translates virtual addresses to physical addresses using page tables. Pages can be in RAM, on swap, or unmapped (triggering a page fault).
+What is a page fault?	When a process accesses a virtual page not currently in physical memory. Minor fault: page is in memory but not mapped. Major fault: page must be loaded from disk (swap). Major faults are expensive.
+What is copy-on-write (COW)?	An optimization where forked processes share the parent's memory pages (read-only). Pages are only copied when a process writes to them, saving memory and speeding up fork().
+What is the slab allocator?	A kernel memory allocator that pre-allocates pools (caches) of frequently used kernel objects (e.g., task_struct, inode). Avoids repeated allocation/deallocation overhead and reduces fragmentation.
+What is the difference between kmalloc and vmalloc?	kmalloc allocates physically contiguous memory from the slab/buddy system — fast but limited. vmalloc allocates virtually contiguous memory that may be physically scattered — slower but can allocate larger regions.
+What is the buddy system?	The kernel's page allocator. Manages physical memory in power-of-2 blocks (1, 2, 4, 8... pages). When memory is freed, adjacent buddies are merged into larger blocks to reduce fragmentation.
+What is VFS (Virtual Filesystem Switch)?	An abstraction layer providing a common interface for all filesystems. User programs call read()/write(), VFS dispatches to the correct filesystem (ext4, XFS, NFS, procfs, etc.) via function pointers.
+What are inodes, dentries, and superblocks in VFS?	inode: metadata about a file (permissions, owner, size, block pointers). dentry: maps names to inodes (directory entries, cached). superblock: metadata about a mounted filesystem (block size, total blocks, free blocks).
+What is the difference between top-half and bottom-half interrupt handling?	Top-half: the interrupt handler that runs immediately with interrupts disabled — should be fast (acknowledge hardware, schedule work). Bottom-half: deferred work that runs later with interrupts enabled (softirqs, tasklets, workqueues).
+What are softirqs, tasklets, and workqueues?	softirqs: statically defined, high-priority deferred work (networking, block I/O). tasklets: dynamically allocated, built on softirqs, serialized per-tasklet. workqueues: kernel threads that execute deferred work in process context (can sleep).
+What is the difference between character devices and block devices?	Character devices: accessed as a stream of bytes, no buffering/caching by the kernel (e.g., /dev/tty, /dev/random). Block devices: accessed in fixed-size blocks with kernel-managed buffering and caching (e.g., /dev/sda).
+
+# ============================================================
+# Section 15: Namespaces & Cgroups
+# ============================================================
+
+What are Linux namespaces?	Kernel features that isolate and partition system resources. Each namespace type provides a separate view: PID, network, mount, UTS (hostname), IPC, user, cgroup, and time namespaces. Foundation of containers.
+What does the PID namespace do?	Provides an isolated process ID space. A process has PID 1 inside its PID namespace (acting as init) while having a different PID in the parent namespace. Processes can't see or signal processes in other PID namespaces.
+What does the network namespace do?	Provides an isolated networking stack: its own interfaces, routing tables, iptables rules, and sockets. veth (virtual Ethernet) pairs connect network namespaces. Each Docker container gets its own network namespace.
+What does the mount namespace do?	Provides an isolated set of mount points. A process in a mount namespace can mount/unmount filesystems without affecting other namespaces. Container filesystems are implemented via mount namespaces.
+What is the UTS namespace?	Isolates the hostname and domain name. Each UTS namespace can have its own hostname — containers appear to have independent hostnames.
+What does the user namespace do?	Maps UIDs/GIDs between the namespace and the host. A process can be UID 0 (root) inside the namespace while being an unprivileged user outside. Enables rootless containers.
+How do you create a namespace?	unshare(1) command: unshare --pid --fork --mount-proc bash creates a new PID namespace. Programmatically: clone() with CLONE_NEWPID, CLONE_NEWNET, etc.
+How do you enter an existing namespace?	nsenter -t <PID> --pid --net --mount — enters the namespaces of the process with the given PID. Used to debug running containers.
+What is the difference between cgroups v1 and v2?	v1: multiple independent hierarchies, one controller per hierarchy, complex interaction rules. v2: single unified hierarchy, simpler resource management, better pressure stall information (PSI), improved writeback control.
+What is a cgroup controller?	A kernel subsystem that manages a specific resource type within a cgroup. Key controllers: cpu (CPU time), memory (RAM limits), io (block I/O), pids (process count limit), cpuset (CPU/memory node pinning).
+How does the memory cgroup controller work?	Sets memory limits via memory.max (hard limit — triggers OOM killer), memory.high (throttling point), memory.low (best-effort protection). memory.swap.max limits swap usage. memory.current shows current usage.
+What is memory.max in cgroup v2?	The hard memory limit. If a cgroup exceeds this value, the OOM killer selects and kills a process within the cgroup. Set to "max" for no limit.
+How does the CPU cgroup controller work?	cpu.max sets a bandwidth limit: "quota period" (e.g., "100000 100000" = 100% of one CPU). cpu.weight (1-10000, default 100) sets proportional sharing when CPUs are contended.
+How does systemd integrate with cgroups?	Each systemd service runs in its own cgroup scope/slice. Resource controls are set in unit files: MemoryMax=, CPUQuota=, IOWeight=, TasksMax=. systemd uses cgroup v2 by default on modern distributions.
+What are systemd slices?	A hierarchical grouping of cgroups in systemd. Default slices: system.slice (services), user.slice (user sessions), machine.slice (VMs/containers). Custom slices can be created for resource partitioning.
+
+# ============================================================
+# Section 16: Performance Tuning
+# ============================================================
+
+What is the USE method for performance analysis?	Utilization, Saturation, Errors — for every resource (CPU, memory, disk, network), check: how busy it is (utilization), if work is queued (saturation), and if errors are occurring. Provides systematic coverage.
+What are CPU frequency governors?	Kernel policies controlling CPU clock speed: performance (max speed), powersave (min speed), ondemand/schedutil (dynamic scaling based on load). Set via cpufreq-set or /sys/devices/system/cpu/cpufreq/.
+What is CPU pinning?	Binding a process or thread to specific CPU cores. taskset -c 0,1 command pins to cores 0 and 1. isolcpus= boot parameter reserves cores from general scheduling. Reduces cache misses and context switches.
+What is NUMA and why does it matter for performance?	Non-Uniform Memory Access — in multi-socket systems, each CPU has local memory (fast access) and remote memory (slower via interconnect). NUMA-aware allocation (numactl) improves performance by keeping data close to the processing CPU.
+What does vm.swappiness control?	The kernel's preference for swapping anonymous pages vs dropping file-backed cache (0-200, default 60). Lower values favor keeping processes in RAM, higher values favor swapping. vm.swappiness=10 is common for databases.
+What are huge pages in Linux?	Memory pages larger than the default 4KB. Transparent Huge Pages (THP): kernel automatically merges 4KB pages into 2MB pages. Explicit huge pages (hugetlbfs): pre-allocated at boot, used by databases and large memory applications. Reduces TLB misses.
+What does vm.dirty_ratio control?	The percentage of total system memory that can hold dirty (unwritten) pages before the process writing data is forced to flush them synchronously. Default 20%. Lower values reduce data loss risk; higher improves write throughput.
+What does vm.overcommit_memory control?	0 (default): heuristic overcommit (kernel estimates if memory is available). 1: always overcommit (never fail malloc). 2: strict — limit total commit to swap + (RAM × overcommit_ratio). Mode 2 prevents OOM situations.
+What are Linux I/O schedulers?	Algorithms that order and merge I/O requests. mq-deadline: fair, deadline-based (good for most workloads). bfq: budget fair queueing (good for interactive). none/noop: pass-through (for NVMe, where hardware has its own scheduler).
+How do you change the I/O scheduler?	echo mq-deadline > /sys/block/sda/queue/scheduler. For persistent changes, use udev rules or kernel boot parameters (elevator=mq-deadline).
+What is direct I/O?	Bypasses the kernel page cache, reading/writing directly between user buffers and the disk. Used by databases (they have their own caching). Enabled with O_DIRECT flag in open().
+What TCP tuning parameters are commonly adjusted?	net.core.rmem_max/wmem_max (socket buffer sizes), net.ipv4.tcp_rmem/tcp_wmem (per-connection TCP buffer sizes), net.ipv4.tcp_congestion_control (algorithm: bbr, cubic), net.core.somaxconn (listen backlog).
+What is BBR congestion control?	Bottleneck Bandwidth and Round-trip propagation time — a TCP congestion control algorithm developed by Google. Unlike loss-based algorithms (CUBIC), BBR models the network path to achieve higher throughput and lower latency.
+What does the perf tool do?	A powerful Linux profiling tool. perf stat — hardware counter statistics. perf record — samples CPU events. perf report — analyzes recorded data. Can generate flame graphs for visualizing CPU hotspots.
+What does strace do?	Traces system calls made by a process along with their arguments and return values. strace -p PID attaches to a running process. strace -e trace=file cmd traces only file-related syscalls. Useful for debugging but adds significant overhead.
+What does ltrace do?	Traces dynamic library calls made by a process. Similar to strace but at the library level — shows calls to libc functions like malloc(), printf(), etc.
+What is the noatime mount option?	Prevents updating the file access time (atime) metadata on every read. Reduces I/O, especially for read-heavy workloads. relatime (default) is a compromise — updates atime only if it's older than mtime.
+
+# ============================================================
+# Section 17: eBPF & Observability
+# ============================================================
+
+What is eBPF?	Extended Berkeley Packet Filter — a technology allowing sandboxed programs to run inside the Linux kernel without modifying kernel source or loading kernel modules. Used for networking, observability, security, and tracing.
+How does the eBPF verifier work?	Before loading, the kernel verifier checks every eBPF program for safety: bounded loops (no infinite loops), valid memory access (no out-of-bounds reads), no unreachable code, and limited program size. This guarantees kernel stability.
+What types of eBPF programs exist?	kprobe/kretprobe (kernel function tracing), tracepoint (stable kernel trace points), uprobe (user space function tracing), XDP (network packet processing), cgroup (resource control), socket (socket filtering), perf_event, and more.
+What are eBPF maps?	Shared data structures for communication between eBPF programs and user space: hash maps, arrays, ring buffers, LRU hash, per-CPU arrays, stack traces. Maps persist across eBPF program invocations.
+What is BCC (BPF Compiler Collection)?	A toolkit for creating eBPF-based tracing and networking programs. Provides Python/Lua front-ends and many ready-made tools: execsnoop (trace exec calls), biolatency (block I/O latency), tcplife (TCP connection lifetimes), opensnoop (trace open calls).
+What is bpftrace?	A high-level tracing language for eBPF. Supports one-liners and scripts. Example: bpftrace -e 'tracepoint:syscalls:sys_enter_openat { printf("%s %s\n", comm, str(args->filename)); }' — traces file opens.
+What is XDP (eXpress Data Path)?	An eBPF hook that runs at the earliest point in the network receive path (NIC driver level). Allows high-performance programmable packet processing (drop, redirect, modify) before the kernel network stack processes the packet.
+What are the XDP return actions?	XDP_PASS (pass to normal network stack), XDP_DROP (drop the packet — useful for DDoS mitigation), XDP_TX (transmit back out the same NIC), XDP_REDIRECT (redirect to another NIC or CPU), XDP_ABORTED (error/drop + trace).
+How is eBPF used for security?	Seccomp-BPF: filters system calls. Cilium: eBPF-based Kubernetes networking and security policies. Falco: runtime security monitoring. eBPF programs can enforce policies, detect anomalies, and trace security events in real time.
+What is BTF (BPF Type Format)?	A metadata format embedded in the kernel describing data structure layouts. Enables CO-RE (Compile Once, Run Everywhere) — eBPF programs compiled on one kernel version can run on another without recompilation by adapting struct offsets at load time.
+What is CO-RE (Compile Once, Run Everywhere)?	A technique using BTF and libbpf to make eBPF programs portable across kernel versions. The BPF loader relocates struct field accesses based on the running kernel's BTF, eliminating the need to compile eBPF programs on each target machine.
+
+# ============================================================
+# Section 18: Boot Process & Init
+# ============================================================
+
+What is the Linux boot sequence?	BIOS/UEFI → bootloader (GRUB2) → kernel decompression and start_kernel() → initramfs (early userspace) → PID 1 init process (systemd) → userspace services and login.
+What is UEFI Secure Boot?	A UEFI feature that only allows booting signed bootloaders and kernels. The firmware has a database of trusted signing keys. Prevents bootkits and unauthorized boot code. shim is a signed first-stage bootloader that enables distro-signed kernels.
+What is the EFI System Partition (ESP)?	A FAT32 partition (typically 100-512 MB, mounted at /boot/efi) that stores UEFI bootloaders, kernel images, and boot configuration. Required for UEFI booting.
+What does GRUB2 do?	GRand Unified Bootloader 2 — the default bootloader on most Linux distributions. Loads the kernel and initramfs into memory, passes kernel command line parameters, and supports multi-boot configurations.
+What is grub-mkconfig?	grub-mkconfig -o /boot/grub/grub.cfg regenerates the GRUB configuration file by scanning for installed kernels and OS entries. Configuration scripts are in /etc/grub.d/ and defaults in /etc/default/grub.
+What happens during kernel boot (start_kernel)?	The kernel decompresses, sets up memory management, initializes the scheduler, mounts the rootfs (initramfs), detects hardware, loads drivers, and eventually executes /init from initramfs (or /sbin/init from the real root).
+What is initramfs?	Initial RAM filesystem — a temporary root filesystem loaded into memory by the bootloader. Contains essential drivers and scripts needed to mount the real root filesystem (LVM, RAID, encrypted, network-mounted). Generated by dracut or mkinitramfs.
+Why do we need initramfs?	The kernel may not have built-in drivers for the root filesystem's storage controller, filesystem type, or encryption. initramfs provides these modules, assembles RAID/LVM, unlocks LUKS, and then switches to the real root (pivot_root or switch_root).
+What is PID 1 and why is it special?	The first userspace process started by the kernel. It adopts orphaned processes and is responsible for reaping zombies. If PID 1 dies, the kernel panics. On modern systems, PID 1 is systemd.
+What init systems exist besides systemd?	OpenRC (Gentoo, Alpine), runit (Void Linux), s6 (minimal), SysVinit (legacy). Each has different design philosophies: simplicity, parallelism, dependency management, supervision.
+What are common kernel command line parameters?	root= (root filesystem), init= (PID 1 binary), quiet (suppress output), verbose, single/rescue (single-user mode), nomodeset (disable KMS), mem= (limit memory), enforcing=0 (SELinux permissive).
+
+# ============================================================
+# Section 19: Custom Kernels & Modules
+# ============================================================
+
+How do you configure the Linux kernel before building?	make menuconfig (ncurses TUI), make xconfig (Qt GUI), or edit .config directly. Each option (CONFIG_*) can be set to y (built-in), m (module), or n (disabled).
+How do you build and install a kernel from source?	make -j$(nproc) (compile), make modules_install (install modules to /lib/modules/), make install (copy kernel to /boot/, update bootloader). Then update-grub or grub-mkconfig.
+What is a kernel module (.ko)?	A loadable piece of kernel code (device driver, filesystem, network protocol) that can be inserted and removed at runtime without rebooting. Stored in /lib/modules/$(uname -r)/.
+What does modprobe do?	Loads a kernel module and its dependencies (resolved by depmod). modprobe -r unloads. Preferred over insmod (which doesn't handle dependencies) and rmmod.
+What does lsmod show?	Lists currently loaded kernel modules with their size and which modules depend on them (Used by column).
+What is DKMS?	Dynamic Kernel Module Support — automatically recompiles out-of-tree kernel modules when a new kernel is installed. Used by NVIDIA drivers, VirtualBox, and ZFS. Ensures modules survive kernel upgrades.
+What is the structure of a basic kernel module?	A C file with: #include <linux/module.h>, a module_init(init_func) and module_exit(exit_func) registration, and MODULE_LICENSE("GPL"). The init function runs on load, exit on unload.
+How do you create a /proc entry from a kernel module?	Use proc_create("name", permissions, NULL, &proc_fops) where proc_fops is a struct proc_ops with .proc_read and .proc_write handlers. Removed with remove_proc_entry().
+What are major and minor device numbers?	Major number identifies the driver (e.g., 8 for sd). Minor number identifies the specific device instance (e.g., sda=0, sda1=1). Visible with ls -l /dev/. register_chrdev() registers a major number for a character driver.
+What are the file_operations for a character device driver?	A struct containing function pointers: .open, .release (close), .read, .write, .ioctl, .mmap, etc. These functions are called when userspace performs the corresponding operations on the device file.
+What is printk?	The kernel's logging function (similar to printf). Uses log levels: KERN_EMERG, KERN_ERR, KERN_WARNING, KERN_INFO, KERN_DEBUG. Output visible via dmesg. dmesg -w follows new messages.
+What is ftrace?	The kernel's built-in tracing framework. Available at /sys/kernel/debug/tracing/. Tracers include function (trace all function calls), function_graph (with call depth), and event tracing. Lower overhead than kprobes.
+What is kgdb?	A kernel debugger allowing GDB to debug a running kernel over a serial or network connection. Enables setting breakpoints, inspecting memory, and stepping through kernel code. Useful for driver development.
+What is the crash utility?	A tool for analyzing kernel crash dumps (kdump/vmcore) and live systems. Provides GDB-like commands: bt (backtrace), ps (processes), vm (virtual memory), files (open files). Essential for post-mortem kernel debugging.

@@ -1,0 +1,138 @@
+# Linux — Intermediate
+# Format: Front	Back
+
+# ============================================================
+# Section 7: Systemd & Service Management
+# ============================================================
+
+What is systemd?	The init system and service manager used by most modern Linux distributions. It manages services, handles boot sequence, mounts, logging, and more, using unit files.
+What is a systemd unit?	The basic object systemd manages. Types include .service (daemons), .timer (scheduled tasks), .socket (socket activation), .mount, .target (groups of units), .path, and .device.
+What does systemctl start <service> do?	Starts a service immediately. Example: systemctl start nginx. Does not persist across reboots — use enable for that.
+What does systemctl enable <service> do?	Creates symlinks so the service starts automatically at boot. It does NOT start the service immediately — combine with --now to start and enable.
+What does systemctl status <service> show?	Shows whether the service is active/inactive/failed, its PID, memory usage, recent log entries, and the loaded unit file path.
+What does systemctl daemon-reload do?	Tells systemd to re-read all unit files after you've modified or added one. Required before changes take effect.
+What are the three main sections of a systemd unit file?	[Unit] — description and dependencies (After=, Requires=, Wants=). [Service] — how to start/stop the service (ExecStart=, Type=). [Install] — where to enable it (WantedBy=).
+What are the systemd service types?	simple (default, process stays in foreground), forking (traditional daemon — process forks and parent exits), oneshot (runs once and exits), notify (signals readiness to systemd), idle (waits for other jobs).
+What is journalctl?	The journal log viewer for systemd. Queries structured logs. Examples: journalctl -u nginx (by unit), journalctl --since "1 hour ago" (by time), journalctl -p err (by priority).
+How do systemd timers work as a cron replacement?	A .timer unit fires a matching .service unit at scheduled intervals. Use OnCalendar= for calendar-based scheduling or OnBootSec=/OnUnitActiveSec= for monotonic timers. List active timers with systemctl list-timers.
+What is socket activation in systemd?	systemd listens on a socket and starts the service only when a connection arrives. Saves resources — the service isn't running until needed. Defined in .socket units with ListenStream=.
+What does systemd-analyze blame do?	Shows how long each unit took to start during boot, sorted by time. Helps identify slow services affecting boot performance.
+What does systemd-analyze critical-chain do?	Shows the chain of units that determined the boot time, highlighting the critical path — the sequence of blocking dependencies.
+
+# ============================================================
+# Section 8: Networking & Firewalls
+# ============================================================
+
+What is NetworkManager?	A daemon that manages network connections dynamically, commonly used on desktop systems. Controlled via nmcli (CLI) or nmtui (TUI).
+What is systemd-networkd?	A systemd component for network configuration, often used on servers and containers. Configured via .network files in /etc/systemd/network/.
+What is netplan?	A YAML-based network configuration abstraction (Ubuntu). Generates configuration for either NetworkManager or systemd-networkd as the backend renderer.
+What are iptables tables and chains?	Tables: filter (default, packet filtering), nat (address translation), mangle (packet modification). Chains: INPUT (incoming), OUTPUT (outgoing), FORWARD (routed). Rules are evaluated top-to-bottom.
+How do you add an iptables rule to allow SSH?	iptables -A INPUT -p tcp --dport 22 -j ACCEPT — appends a rule to the INPUT chain allowing TCP traffic on port 22.
+What are iptables targets?	ACCEPT (allow packet), DROP (silently discard), REJECT (discard and send error back), LOG (log and continue processing), MASQUERADE (NAT for dynamic IPs).
+What is nftables?	The successor to iptables, providing a unified framework for packet filtering, NAT, and classification. Uses the nft command with a cleaner syntax and better performance.
+What is ufw?	Uncomplicated Firewall — a simplified frontend for iptables/nftables on Ubuntu. Example: ufw allow 22/tcp, ufw enable, ufw status.
+What is firewalld?	A dynamic firewall manager (RHEL/Fedora/CentOS) using zones. Zones define trust levels for network connections. Managed with firewall-cmd.
+What is NAT (Network Address Translation)?	Translates private IP addresses to a public IP (and vice versa) at a router/gateway. SNAT changes the source, DNAT changes the destination. Masquerading is SNAT with a dynamic source IP.
+How do you capture packets with tcpdump?	tcpdump -i eth0 -n port 80 — captures packets on interface eth0 for port 80. -w file.pcap saves to a file for analysis in Wireshark.
+What does nmap do?	Network scanner for host discovery and port scanning. nmap -sV host scans open ports and detects service versions. Use responsibly — scanning without permission may be illegal.
+What is WireGuard?	A modern, fast VPN protocol built into the Linux kernel. Uses simple key pairs, minimal configuration, and UDP-based encrypted tunnels. Faster than OpenVPN with less overhead.
+What is the difference between WireGuard and OpenVPN?	WireGuard: kernel-space, UDP-only, simpler config, faster, newer. OpenVPN: user-space, supports TCP/UDP, more mature, more configuration options, wider corporate adoption.
+What is systemd-resolved?	A systemd service providing DNS resolution, caching, and DNSSEC validation. Configured via /etc/systemd/resolved.conf. resolvectl shows current DNS settings.
+
+# ============================================================
+# Section 9: Storage & Filesystems
+# ============================================================
+
+What does lsblk show?	Lists all block devices (disks, partitions) in a tree format with their name, size, type, and mount point.
+What is the difference between MBR and GPT?	MBR: legacy partitioning, max 2TB disk, max 4 primary partitions. GPT: modern (UEFI), supports disks >2TB, up to 128 partitions, includes a protective MBR for backward compatibility.
+What tools are used for partitioning?	fdisk (interactive, MBR and GPT), gdisk (GPT-only), parted (scriptable, supports both, can resize). All modify the partition table on a disk.
+What is ext4?	The default Linux filesystem for many distributions. Journaling filesystem supporting up to 1 EiB volumes. Mature, stable, good general-purpose performance.
+What is XFS?	A high-performance 64-bit journaling filesystem. Excellent for large files and parallel I/O. Default on RHEL. Can be grown but not shrunk online.
+What is Btrfs?	B-tree filesystem with advanced features: copy-on-write, snapshots, built-in RAID, compression, checksumming, online defragmentation. Default on openSUSE and Fedora Workstation.
+What is ZFS?	An advanced filesystem with integrated volume management, checksumming, compression, deduplication, and snapshots. Not in mainline Linux kernel due to CDDL license — available via OpenZFS module.
+How do you mount a filesystem?	mount /dev/sda1 /mnt — mounts the partition at /mnt. Options: -t for type, -o for options (ro, noexec, nosuid). Unmount with umount /mnt.
+What is /etc/fstab?	Filesystem table defining permanent mounts. Each line: device UUID/path, mount point, filesystem type, options, dump, pass. Applied at boot and with mount -a.
+Why use UUID instead of device paths in fstab?	Device names (e.g., /dev/sda1) can change when disks are added or reordered. UUIDs are unique identifiers that persist regardless of device ordering.
+What is LVM?	Logical Volume Manager — adds an abstraction layer between physical disks and filesystems. Allows flexible resizing, snapshots, and spanning across multiple disks.
+What are PV, VG, and LV in LVM?	PV (Physical Volume): actual disk/partition. VG (Volume Group): pool of one or more PVs. LV (Logical Volume): a virtual partition carved from a VG, formatted with a filesystem.
+How do you extend an LVM logical volume?	lvextend -L +10G /dev/vg0/lv0 (add 10GB) → then resize the filesystem: resize2fs /dev/vg0/lv0 (ext4) or xfs_growfs /mnt (XFS).
+What RAID levels are commonly used?	RAID 0 (striping, no redundancy), RAID 1 (mirroring), RAID 5 (striping + 1 parity disk), RAID 6 (striping + 2 parity disks), RAID 10 (mirror + stripe).
+What does mdadm do?	Manages Linux software RAID arrays. mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sd[ab]1 creates a RAID 1 mirror.
+What is the difference between a swap partition and a swap file?	A swap partition is a dedicated partition for virtual memory. A swap file is a regular file on an existing filesystem used for swap. Both serve the same purpose — swap files are easier to resize.
+What does the swappiness value control?	vm.swappiness (0–200, default 60) controls how aggressively the kernel moves pages from RAM to swap. Lower = prefer keeping data in RAM. 0 doesn't disable swap — it minimizes swapping.
+What does smartctl do?	Monitors disk health via S.M.A.R.T. attributes. smartctl -a /dev/sda shows all attributes. smartctl -t short /dev/sda runs a short self-test.
+
+# ============================================================
+# Section 10: Shell Scripting
+# ============================================================
+
+What is a shebang (hashbang)?	The first line of a script: #!/bin/bash or #!/usr/bin/env bash. Tells the kernel which interpreter to use when the script is executed directly.
+Why is #!/usr/bin/env bash preferred over #!/bin/bash?	env searches $PATH for the bash executable, making the script more portable since bash may be installed in different locations on different systems.
+How do you define and use variables in bash?	name="value" (no spaces around =). Access with $name or ${name}. Use readonly to make it immutable. Use local inside functions for local scope.
+How do arrays work in bash?	Declare: arr=(a b c). Access element: ${arr[0]}. All elements: ${arr[@]}. Length: ${#arr[@]}. Append: arr+=("d").
+What are associative arrays in bash?	Key-value mappings. Declare: declare -A map. Set: map[key]="value". Access: ${map[key]}. Keys: ${!map[@]}.
+What is the difference between [ ] and [[ ]] in bash?	[ ] is the POSIX test command. [[ ]] is a bash keyword with extras: pattern matching (=~), logical operators (&&, ||), and no word splitting or globbing of variables.
+What are common test operators for files?	-f (is regular file), -d (is directory), -e (exists), -r/-w/-x (readable/writable/executable), -s (size > 0), -L (is symlink).
+What are common string test operators?	-z (string is empty), -n (string is non-empty), = or == (equal), != (not equal). Use quotes around variables: [[ -z "$var" ]].
+How does a for loop work in bash?	for item in list; do commands; done. Example: for f in *.txt; do echo "$f"; done. C-style: for ((i=0; i<10; i++)); do echo $i; done.
+How does a while loop work in bash?	while condition; do commands; done. Example: while read -r line; do echo "$line"; done < file.txt — reads a file line by line.
+How do functions work in bash?	Define: myfunc() { commands; } or function myfunc { commands; }. Arguments: $1, $2, ..., $@ (all args), $# (count). Return an exit code with return N.
+What does $? contain?	The exit code of the last executed command. 0 = success, non-zero = failure. Conventionally, 1 = general error, 2 = misuse, 126 = not executable, 127 = not found.
+What does set -e do?	Causes the script to exit immediately if any command returns a non-zero exit code. Prevents scripts from continuing after errors.
+What does set -o pipefail do?	Makes a pipeline return the exit code of the last command that failed (not just the last command). Without it, only the final command's exit code matters.
+What does trap do in bash?	Executes a command when a signal or event occurs. Example: trap 'rm -f /tmp/mylock' EXIT — runs cleanup when the script exits. Common signals: EXIT, ERR, INT, TERM.
+What is a heredoc?	A way to pass multi-line input to a command. Syntax: command <<EOF\nline1\nline2\nEOF. Use <<- to strip leading tabs. Quoting the delimiter (<<'EOF') prevents variable expansion.
+What is process substitution?	<(command) creates a temporary file-like object from command output. Example: diff <(sort file1) <(sort file2) — compares sorted versions without creating temp files.
+What does ${var#pattern} do?	Removes the shortest match of pattern from the beginning of $var. ${var##pattern} removes the longest match. Example: ${path##*/} extracts the filename from a path.
+What does ${var%pattern} do?	Removes the shortest match of pattern from the end of $var. ${var%%pattern} removes the longest match. Example: ${file%.*} removes the file extension.
+
+# ============================================================
+# Section 11: Containers & Virtualization
+# ============================================================
+
+What is the key difference between containers and virtual machines?	VMs virtualize hardware and run a full OS with its own kernel. Containers share the host kernel and isolate processes using namespaces and cgroups — they're lighter and start faster.
+What is a Docker image?	A read-only template containing the application, its dependencies, and filesystem. Images are built from a Dockerfile and stored in layers. Containers are running instances of images.
+What is a Dockerfile?	A text file with instructions to build a Docker image. Key instructions: FROM (base image), RUN (execute commands), COPY/ADD (add files), CMD/ENTRYPOINT (default command), EXPOSE (ports).
+What does docker run do?	Creates and starts a container from an image. Example: docker run -d -p 8080:80 --name web nginx — runs nginx in background (-d), maps port 8080→80, names it "web."
+What Docker networking modes exist?	bridge (default, isolated network with NAT), host (shares host network stack — no isolation), none (no networking), overlay (multi-host networking for Swarm/clusters).
+What is the difference between a Docker volume and a bind mount?	Volumes are managed by Docker and stored in /var/lib/docker/volumes/ — portable and recommended. Bind mounts map a host directory directly — useful for development but tightly coupled to the host.
+What is Docker Compose?	A tool for defining and running multi-container applications using a docker-compose.yml file. Defines services, networks, and volumes in one YAML file. Start with docker compose up.
+What is Podman?	A daemonless OCI-compatible container engine. Unlike Docker, it doesn't require a root daemon. Commands are mostly Docker-compatible (podman run, podman build). Supports rootless containers natively.
+What is the OCI (Open Container Initiative)?	A set of open standards for container formats and runtimes. OCI Image Spec defines image format. OCI Runtime Spec defines container execution (reference implementation: runc).
+What is KVM?	Kernel-based Virtual Machine — a Linux kernel module that turns Linux into a type-1 hypervisor. Uses hardware virtualization (Intel VT-x/AMD-V). QEMU provides device emulation on top of KVM.
+What is libvirt?	A toolkit providing a unified API for managing KVM, QEMU, Xen, and other hypervisors. virsh is its CLI, virt-manager is its GUI.
+What is systemd-nspawn?	A lightweight container tool built into systemd. Spawns a container from a directory or disk image. Simpler than Docker — good for testing OS images and lightweight isolation.
+
+# ============================================================
+# Section 12: Monitoring & Logging
+# ============================================================
+
+Where are system logs typically stored?	/var/log/ — common files: syslog or messages (general), auth.log or secure (authentication), kern.log (kernel), dmesg (boot/kernel ring buffer).
+What is the syslog protocol?	A standard for log message transport (RFC 5424). Messages have facility (kern, mail, auth, etc.) and severity (emerg, alert, crit, err, warning, notice, info, debug).
+What is the difference between rsyslog and syslog-ng?	Both are syslog implementations. rsyslog is the default on RHEL/Debian, supports high-performance filtering and output modules. syslog-ng offers a more flexible configuration language and better structured logging support.
+What does logrotate do?	Rotates, compresses, and removes old log files to prevent disk space exhaustion. Configured in /etc/logrotate.conf and /etc/logrotate.d/. Supports size-based and time-based rotation.
+What does vmstat show?	Reports virtual memory, CPU, I/O, and system statistics. vmstat 1 updates every second. Key columns: r (runnable processes), b (blocked), si/so (swap in/out), us/sy/id/wa (CPU breakdown).
+What does sar do?	System Activity Reporter — collects and reports system activity (CPU, memory, disk, network) over time. Part of the sysstat package. sar -u (CPU), sar -r (memory), sar -d (disk).
+What does free -h show?	Displays memory usage: total, used, free, shared, buff/cache, available. The "available" column estimates how much memory is available for new applications (including reclaimable cache).
+How do you interpret Linux load average?	Three numbers representing average system load over 1, 5, and 15 minutes. Load = number of runnable + uninterruptible processes. On a 4-core system, load 4.0 means full utilization.
+What does iostat show?	Reports CPU and disk I/O statistics. iostat -x shows extended stats: %util (device utilization), await (average I/O latency), r/s and w/s (reads/writes per second).
+What does iotop do?	Shows per-process I/O usage in real time — which processes are reading/writing the most. Requires root. Similar to top but for disk I/O.
+What do iftop and nethogs show?	iftop shows bandwidth usage per connection in real time (like top for networks). nethogs groups bandwidth by process — useful for finding which process is consuming bandwidth.
+What is dmesg?	Prints the kernel ring buffer — messages from the kernel including hardware detection, driver loading, and errors. dmesg -T shows timestamps in human-readable format.
+
+# ============================================================
+# Section 13: Security Hardening
+# ============================================================
+
+How do you harden SSH?	Disable root login (PermitRootLogin no), use key-only authentication (PasswordAuthentication no), change the default port, limit users (AllowUsers), use fail2ban to block brute-force attempts.
+What is fail2ban?	A daemon that scans log files for failed authentication attempts and bans offending IPs by adding firewall rules. Configurable jails define which services to protect and ban thresholds.
+What is SELinux?	Security-Enhanced Linux — a mandatory access control (MAC) system. Enforces policies that restrict what processes can access, regardless of traditional Unix permissions. Modes: enforcing, permissive, disabled.
+What are SELinux contexts?	Labels applied to files, processes, and ports in the format user:role:type:level. The type field is most important — policies define which process types can access which file types.
+What does audit2why do?	Analyzes SELinux AVC denial messages from the audit log and explains why the access was denied, often suggesting boolean changes or policy fixes.
+What is AppArmor?	A Linux security module that restricts program capabilities using per-program profiles. Simpler than SELinux — profiles are path-based rather than label-based. Modes: enforce, complain (log only).
+What is AIDE?	Advanced Intrusion Detection Environment — a file integrity checker. Creates a baseline database of file attributes (hash, permissions, size) and reports changes on subsequent scans.
+What is auditd?	The Linux audit daemon that logs system calls and security events. Rules defined in /etc/audit/audit.rules. Query logs with ausearch and generate reports with aureport.
+What are PAM modules?	Pluggable Authentication Modules — a framework for authentication services. Configured in /etc/pam.d/. Modules are stacked: pam_unix (passwords), pam_ldap (LDAP), pam_faillock (lockout), etc.
+What is LUKS?	Linux Unified Key Setup — the standard for disk encryption on Linux. Uses dm-crypt as the backend. cryptsetup luksFormat /dev/sdX encrypts a partition. Multiple key slots are supported.
+What are Linux capabilities?	Fine-grained privileges replacing the all-or-nothing root model. Instead of giving a process full root, assign specific capabilities like CAP_NET_BIND_SERVICE (bind low ports) or CAP_SYS_PTRACE (trace processes).
+What is seccomp?	Secure Computing Mode — restricts which system calls a process can make. Used by containers (Docker) and browsers (Chrome) to reduce attack surface. seccomp-bpf allows custom filters using BPF programs.

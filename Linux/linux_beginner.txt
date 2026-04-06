@@ -1,0 +1,147 @@
+# Linux — Beginner
+# Format: Front	Back
+
+# ============================================================
+# Section 1: Shell & Command Line Basics
+# ============================================================
+
+What is a shell in Linux?	A command-line interpreter that processes user commands and communicates with the kernel. Common shells include bash, zsh, and sh.
+What is bash?	Bourne Again Shell — the default shell on most Linux distributions. It extends the original Bourne shell (sh) with features like command history, tab completion, and arrays.
+What is zsh?	Z Shell — an extended shell with features like better tab completion, spelling correction, and plugin support (e.g., Oh My Zsh). Default on macOS since Catalina.
+What is the difference between sh and bash?	sh (Bourne Shell) is the original POSIX-compliant shell with minimal features. bash is a superset of sh with arrays, brace expansion, [[ ]] tests, and other extensions.
+How is a Linux command structured?	command [options] [arguments] — e.g., ls -la /home. Options modify behavior (short: -l, long: --long), arguments specify targets.
+What is the difference between an absolute and a relative path?	Absolute paths start from / (root), e.g., /home/user/file. Relative paths start from the current directory, e.g., ./file or ../dir.
+What do . and .. represent in a path?	. (dot) = current directory. .. (double dot) = parent directory.
+What does ~ represent in a path?	The current user's home directory, e.g., ~ expands to /home/username.
+How do you view a command's manual page?	man <command> — displays the full manual. Sections are numbered (1=user commands, 5=file formats, 8=admin commands).
+What does --help do?	Most commands support --help to print a short usage summary with available options and syntax.
+What does the ; operator do between commands?	Runs commands sequentially regardless of success or failure. Example: cmd1 ; cmd2 — cmd2 runs even if cmd1 fails.
+What does && do between commands?	Runs the second command only if the first succeeds (exit code 0). Example: make && make install.
+What does || do between commands?	Runs the second command only if the first fails (non-zero exit code). Example: test -f file.txt || echo "Not found".
+What is a pipe (|) in Linux?	Connects stdout of one command to stdin of the next. Example: ls -l | grep ".txt" — filters ls output for .txt files.
+What does > do in shell redirection?	Redirects stdout to a file, overwriting the file. Example: echo "hello" > file.txt.
+What does >> do in shell redirection?	Appends stdout to a file instead of overwriting. Example: echo "line2" >> file.txt.
+What does 2> do in shell redirection?	Redirects stderr (file descriptor 2) to a file. Example: cmd 2> errors.log.
+What does &> do in shell redirection?	Redirects both stdout and stderr to a file. Example: cmd &> all_output.log.
+What is $PATH?	An environment variable listing directories the shell searches (left to right) to find executable commands, separated by colons. Example: /usr/local/bin:/usr/bin:/bin.
+What is $HOME?	Environment variable containing the path to the current user's home directory, e.g., /home/username.
+What does the export command do?	Makes a variable available to child processes. Without export, the variable is only available in the current shell session.
+What is the difference between single quotes and double quotes in bash?	Single quotes preserve all characters literally. Double quotes allow variable expansion ($VAR) and command substitution ($(cmd)) but preserve spaces and most special characters.
+What does the backslash (\) do in the shell?	Escapes the next character, removing its special meaning. Example: echo \$HOME prints $HOME literally.
+What is globbing in the shell?	Pattern matching for filenames. * = any characters, ? = one character, [abc] = one of a/b/c, {a,b} = brace expansion for a or b.
+How do you search your command history?	Press Ctrl+R to start reverse incremental search. Type part of the command and press Ctrl+R again to find older matches. history command lists all history.
+What does !! do in bash?	Repeats the last command. Useful as sudo !! to run the previous command with sudo.
+What does !n do in bash?	Runs command number n from history. Use the history command to see command numbers.
+
+# ============================================================
+# Section 2: Filesystem & Navigation
+# ============================================================
+
+What is the Filesystem Hierarchy Standard (FHS)?	A standard defining the directory structure and layout of Linux systems. It specifies where files should be placed (e.g., /bin for binaries, /etc for config).
+What is the / directory in Linux?	The root directory — the top of the filesystem hierarchy. All other directories are subdirectories of /.
+What is /bin used for?	Essential user command binaries needed for single-user mode and booting (e.g., ls, cp, cat). Often symlinked to /usr/bin on modern systems.
+What is /etc used for?	System-wide configuration files (e.g., /etc/fstab, /etc/hostname, /etc/passwd). "etc" originally stood for "et cetera."
+What is /home used for?	Contains the personal home directories for regular users. Each user gets a directory like /home/username.
+What is /var used for?	Variable data that changes during system operation — logs (/var/log), mail, spool files, temporary data.
+What is /tmp used for?	Temporary files that may be deleted on reboot. World-writable with the sticky bit set. Some systems use tmpfs (RAM-based).
+What is /usr used for?	Secondary hierarchy for read-only user data. Contains /usr/bin (user programs), /usr/lib (libraries), /usr/share (shared data).
+What is /opt used for?	Optional add-on application software packages — typically third-party software installed outside the standard package manager.
+What is /proc?	A virtual filesystem providing process and kernel information as files. /proc/cpuinfo, /proc/meminfo, /proc/PID/ are common entries. Exists only in RAM.
+What is /sys?	A virtual filesystem exposing kernel objects (devices, drivers, kernel features) in a structured hierarchy. Used for device and kernel parameter management.
+What is /dev?	Contains device files (nodes) representing hardware and virtual devices. Examples: /dev/sda (disk), /dev/null, /dev/zero, /dev/random.
+What does cd do?	Changes the current working directory. cd / goes to root, cd ~ goes to home, cd - goes back to the previous directory.
+What does pwd do?	Prints the current (present) working directory as an absolute path.
+What do ls -l and ls -a show?	ls -l shows detailed listing (permissions, owner, size, date). ls -a shows hidden files (names starting with .).
+What is the difference between a hard link and a symbolic (soft) link?	A hard link is another name for the same inode — both entries are equal. A soft link (symlink) is a pointer to a pathname; it breaks if the target is deleted.
+How do you create a symbolic link?	ln -s target linkname — creates a symlink. Without -s, ln creates a hard link.
+What does the file command do?	Determines a file's type by inspecting its content (magic bytes), not its extension. Example: file photo.jpg → "JPEG image data".
+What does cat do?	Concatenates and prints file contents to stdout. Example: cat file.txt. For large files, use less instead.
+What is the difference between less and more?	less allows forward and backward navigation through a file. more only supports forward scrolling (and is the older tool).
+What does head do?	Prints the first n lines of a file (default 10). Example: head -n 20 file.txt shows the first 20 lines.
+What does tail do? What does tail -f do?	tail prints the last n lines (default 10). tail -f follows a file, printing new lines as they are appended — useful for monitoring logs.
+What does wc do?	Word count — displays the number of lines (-l), words (-w), and bytes/characters (-c/-m) in a file.
+What does find do?	Searches for files in a directory tree. Example: find /home -name "*.txt" -type f finds all .txt files under /home.
+What is the difference between find and locate?	find searches the actual filesystem in real time (slower but current). locate uses a pre-built database (fast but may be outdated; updated by updatedb).
+What does grep do?	Searches text for lines matching a pattern (regex). Example: grep -r "TODO" src/ — recursively searches for "TODO" in src/.
+What does sed do?	Stream editor — processes text line by line with commands. Common use: sed 's/old/new/g' file — substitutes all occurrences of "old" with "new."
+What does awk do?	A pattern-scanning and text-processing language. Common use: awk '{print $1, $3}' file — prints the 1st and 3rd fields of each line.
+What does cut do?	Extracts sections (fields or characters) from each line. Example: cut -d':' -f1 /etc/passwd extracts usernames.
+What does sort do? What about uniq?	sort orders lines alphabetically or numerically (-n). uniq removes adjacent duplicate lines (often piped after sort).
+What does xargs do?	Reads items from stdin and executes a command with those items as arguments. Example: find . -name "*.log" | xargs rm — deletes found files.
+
+# ============================================================
+# Section 3: Users, Groups & Permissions
+# ============================================================
+
+What information does /etc/passwd contain?	One line per user: username:x:UID:GID:comment:home_dir:shell. The x means the password hash is stored in /etc/shadow.
+What is /etc/shadow?	Contains hashed user passwords and password aging information. Readable only by root for security.
+How do you add a new user?	useradd username (low-level) or adduser username (interactive, Debian-based). Creates a user entry, home directory (with -m), and sets default shell.
+How do you change a user's password?	passwd username (root can change any user's password). Users can run passwd without arguments to change their own.
+How do you delete a user?	userdel username — removes the user. Add -r to also delete their home directory and mail spool.
+What is a group in Linux?	A collection of users sharing file access permissions. Every user has a primary group (in /etc/passwd) and can belong to supplementary groups (in /etc/group).
+How do you add a user to a supplementary group?	usermod -aG groupname username — the -a flag appends (without it, the user is removed from other supplementary groups).
+How do Linux file permissions work?	Three permission types (read=4, write=2, execute=1) for three categories: owner, group, others. Displayed as rwxrwxrwx.
+What does chmod 755 mean?	Sets permissions to rwxr-xr-x — owner has read/write/execute, group and others have read/execute only.
+What is the difference between chmod symbolic and octal mode?	Symbolic: chmod u+x file (add execute for user). Octal: chmod 755 file (set all at once numerically).
+What does chown do?	Changes file ownership. Example: chown user:group file.txt — sets owner to user and group to group.
+What is the setuid bit?	When set on an executable, it runs with the file owner's permissions instead of the caller's. Example: /usr/bin/passwd has setuid so users can change their own password.
+What is the setgid bit?	On a file: executes with the group's permissions. On a directory: new files inherit the directory's group instead of the creator's primary group.
+What is the sticky bit?	When set on a directory, only the file's owner (or root) can delete or rename files inside it. /tmp has the sticky bit set.
+What is umask?	A mask that determines default permissions for newly created files and directories. Example: umask 022 means new files get 644 and directories get 755.
+What does sudo do?	Executes a command as another user (default: root). Configured in /etc/sudoers. Safer than logging in as root because it logs commands and limits scope.
+What is /etc/sudoers and visudo?	/etc/sudoers defines who can run sudo and what commands they may execute. visudo edits it safely with syntax checking.
+
+# ============================================================
+# Section 4: Package Management
+# ============================================================
+
+What is a package manager?	A tool to install, update, remove, and manage software packages and their dependencies. Examples: apt (Debian), dnf (Fedora), pacman (Arch).
+What is the difference between apt and dpkg?	dpkg is the low-level tool that installs/removes individual .deb packages. apt is the high-level tool that resolves dependencies, downloads from repositories, and calls dpkg.
+How do you update the package list and upgrade all packages on Debian/Ubuntu?	sudo apt update (refresh package list) && sudo apt upgrade (install available upgrades).
+How do you install a package with apt?	sudo apt install <package>. Add -y to skip confirmation prompts.
+How do you remove a package with apt?	sudo apt remove <package> (keep config files) or sudo apt purge <package> (remove config files too).
+What is the difference between dnf and yum?	dnf is the successor to yum (used in Fedora/RHEL 8+). It's faster, handles dependencies better, and supports modules. The yum command is often aliased to dnf.
+What does rpm do?	Low-level package manager for RPM-based distros. rpm -i installs, rpm -e erases, rpm -q queries. Does NOT resolve dependencies.
+What is pacman?	The package manager for Arch Linux. pacman -S installs, pacman -Syu updates the system, pacman -R removes packages.
+What is the difference between snap, flatpak, and AppImage?	snap: Canonical's sandboxed universal packages (auto-updates). flatpak: desktop-focused sandboxed apps (Flathub). AppImage: single-file portable executables (no installation).
+What does building from source typically involve?	Download source → ./configure (check dependencies) → make (compile) → sudo make install (install to /usr/local). May require build-essential or equivalent.
+How do you verify the authenticity of a package?	Package managers verify GPG signatures against repository signing keys. You import keys with apt-key add (deprecated, use /etc/apt/trusted.gpg.d/) or rpm --import.
+
+# ============================================================
+# Section 5: Processes & Job Control
+# ============================================================
+
+What is a process in Linux?	A running instance of a program. Each process has a unique PID, a parent process (PPID), its own memory space, and a state.
+What are the common process states?	R (Running/Runnable), S (Interruptible Sleep), D (Uninterruptible Sleep — usually I/O wait), Z (Zombie — terminated but not reaped), T (Stopped).
+What does ps aux do?	Lists all running processes with user, PID, CPU%, MEM%, start time, and command. -e or -A also shows all processes.
+What is top? How does htop differ?	top shows real-time process statistics (CPU, memory, load). htop adds color, mouse support, tree view, and easier process management.
+How do you send a signal to a process?	kill <PID> sends SIGTERM (15) by default. kill -9 <PID> sends SIGKILL (force kill). kill -HUP <PID> sends SIGHUP (reload config).
+What is the difference between SIGTERM and SIGKILL?	SIGTERM (15) asks a process to terminate gracefully (it can be caught/ignored). SIGKILL (9) forcefully terminates a process immediately (cannot be caught or ignored).
+What does SIGHUP do?	Historically: "hang up" — terminal disconnected. Many daemons interpret SIGHUP as a signal to reload their configuration files without restarting.
+What does & do at the end of a command?	Runs the command in the background, returning control to the shell immediately. The shell prints the job number and PID.
+How do you bring a background job to the foreground?	fg %n — where n is the job number from the jobs command. fg alone brings the most recent background job.
+What does Ctrl+Z do?	Sends SIGTSTP to the foreground process, suspending (stopping) it. Resume with fg (foreground) or bg (background).
+What is a zombie process?	A process that has finished execution but whose parent hasn't called wait() to read its exit status. It occupies a PID but uses no resources. Cleaned up when the parent reads the status or when the parent dies and init reaps it.
+What does nohup do?	Runs a command immune to SIGHUP — the process continues running after the terminal is closed. Output goes to nohup.out by default.
+What is the difference between nohup, disown, and screen/tmux?	nohup prevents SIGHUP from terminating the process. disown removes a running job from the shell's job table. screen/tmux create persistent terminal sessions that survive disconnection.
+What is /proc/PID/status?	A virtual file showing the status of a process: name, PID, state, memory usage, UID/GID, threads, etc.
+What does /proc/cpuinfo contain?	Information about the CPU(s): model name, speed, cache size, number of cores, flags (instruction set features like sse, avx).
+What does /proc/meminfo contain?	System memory information: MemTotal, MemFree, MemAvailable, Buffers, Cached, SwapTotal, SwapFree, and more.
+
+# ============================================================
+# Section 6: Basic Networking
+# ============================================================
+
+How do you view IP addresses assigned to interfaces?	ip addr show (or ip a) — shows all interfaces with their IP addresses, MAC addresses, and status. Replaces the deprecated ifconfig.
+How do you view the routing table?	ip route show (or ip r) — displays the kernel routing table with destinations, gateways, and interface assignments.
+What is /etc/hosts?	A local file mapping hostnames to IP addresses, consulted before DNS. Example: 127.0.0.1 localhost.
+What is /etc/resolv.conf?	Configures DNS resolvers. Contains nameserver entries specifying DNS server IPs used for name resolution.
+What does dig do?	DNS lookup utility. dig example.com queries the A record. dig example.com MX queries mail exchangers. Shows detailed DNS response information.
+What does ping do?	Sends ICMP Echo Request packets to a host and measures round-trip time. Used to test network connectivity and latency.
+What does traceroute do?	Traces the route packets take to a destination by sending packets with increasing TTL values. Reveals each hop (router) along the path.
+What does ss do?	Displays socket statistics — listening ports, established connections, protocol info. Replaces the deprecated netstat. Example: ss -tlnp shows TCP listening ports with process names.
+How do you download a file from the command line?	curl -O <url> or wget <url>. curl is more versatile (supports more protocols, can send POST requests). wget is simpler for recursive downloads.
+What is SSH?	Secure Shell — a protocol for encrypted remote login and command execution over an insecure network. Uses port 22 by default.
+How do you generate an SSH key pair?	ssh-keygen -t ed25519 (or -t rsa -b 4096). Creates a private key (~/.ssh/id_ed25519) and public key (~/.ssh/id_ed25519.pub).
+What does ssh-copy-id do?	Copies your public key to a remote server's ~/.ssh/authorized_keys file, enabling passwordless SSH login.
+What is ~/.ssh/config used for?	Stores SSH client configuration: hostnames, usernames, ports, identity files, and proxy settings for easy connection shortcuts. Example: Host myserver → ssh myserver.

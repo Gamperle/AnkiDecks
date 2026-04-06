@@ -1,0 +1,104 @@
+# Git & Versioning — Intermediate
+# Format: Front[TAB]Back
+
+# ==========================================
+# 6. Rebase & History Rewriting
+# ==========================================
+
+What does `git rebase` do?	Moves (replays) the commits of the current branch onto a new base commit. It creates new commits with different SHAs that have the same changes as the originals, resulting in a linear history.
+What is the difference between merge and rebase?	Merge preserves the full branching history and creates a merge commit. Rebase rewrites history to create a linear sequence of commits. Merge is safer for shared branches; rebase produces cleaner history for feature branches.
+When should you rebase instead of merge?	When you want to update a local feature branch with upstream changes and prefer a clean, linear history. Rebase before merging a feature branch into main: `git rebase main` on your feature branch, then fast-forward merge.
+What is an interactive rebase?	`git rebase -i <base>` opens an editor listing commits, letting you reorder, squash, fixup, reword, edit, or drop individual commits. It's the most powerful tool for cleaning up commit history before pushing.
+What does `squash` do in interactive rebase?	Combines a commit with the previous one and lets you edit the combined commit message. Used to merge multiple small commits (e.g., "wip", "fix typo") into a single meaningful commit.
+What does `fixup` do in interactive rebase?	Like squash, it combines a commit with the previous one, but discards the fixup commit's message entirely — keeping only the previous commit's message. Faster than squash when the message doesn't matter.
+What does `reword` do in interactive rebase?	Keeps the commit's changes unchanged but opens an editor to modify the commit message.
+What does `edit` do in interactive rebase?	Pauses the rebase at that commit, allowing you to modify the commit's content (amend files, split the commit into multiple commits, etc.) before continuing with `git rebase --continue`.
+What does `drop` do in interactive rebase?	Removes the commit entirely from history — the changes in that commit are discarded as if they never happened.
+What does `git rebase --onto <newbase> <oldbase> <branch>` do?	Replays only the commits between <oldbase> and <branch> onto <newbase>. Used to transplant a subset of commits to a different base — e.g., moving a feature branch from develop to main.
+How do you resolve rebase conflicts?	(1) Edit the conflicted files and resolve. (2) Stage resolved files with `git add`. (3) Continue with `git rebase --continue`. Alternatively, skip the conflicting commit with `git rebase --skip` or abort entirely with `git rebase --abort`.
+Why is rebasing published (pushed) history dangerous?	Other developers who have already pulled the old commits will have divergent history. When they pull again, Git will attempt to merge the old and new (rebased) commits, creating duplicates and confusion. Rule: never rebase commits that others have based work on.
+What is `git pull --rebase`?	Instead of merging remote changes into your local branch, it rebases your local commits on top of the fetched remote commits. Produces a linear history without merge commits for routine syncing.
+
+# ==========================================
+# 7. Stash, Cherry-Pick & Advanced Branching
+# ==========================================
+
+What does `git stash` do?	Saves your uncommitted changes (staged and unstaged) onto a stack and reverts the working tree to a clean state. Useful when you need to switch branches without committing half-done work.
+What does `git stash push -m "message"` do?	Stashes changes with a descriptive message. Without -m, Git generates a default message based on the current branch and last commit.
+What does `git stash pop` do?	Applies the most recent stash entry to the working tree and removes it from the stash list. If applying causes conflicts, the stash is kept in the list (not dropped).
+What is the difference between `git stash pop` and `git stash apply`?	`pop` applies and removes the stash from the list. `apply` applies the stash but keeps it in the list — useful when you want to apply the same stash to multiple branches.
+What does `git stash list` show?	All stash entries in a stack format: stash@{0} (most recent), stash@{1}, etc. Each entry shows the branch it was created on and the associated message.
+What does `git stash -p` do?	Interactively selects which hunks (changes) to stash — you can stash partial changes while keeping other modifications in the working tree. Useful for separating concerns.
+What does `git stash drop stash@{n}` do?	Removes a specific stash entry from the stash list without applying it.
+What does `git cherry-pick <commit>` do?	Applies the changes introduced by a specific commit onto the current branch as a new commit. It does not move the original commit — it creates a copy with a new SHA.
+When is cherry-pick useful?	When you need a specific fix from another branch without merging the entire branch. Example: applying a hotfix from release branch back to develop, or pulling a single commit from a feature branch.
+Can you cherry-pick a range of commits?	Yes: `git cherry-pick A..B` applies all commits after A up to and including B. Or `git cherry-pick A^..B` to include A itself. Use --no-commit to stage all changes without committing each one.
+What does `git worktree add <path> <branch>` do?	Creates an additional working tree at the specified path, checked out to the specified branch. This lets you work on multiple branches simultaneously without stashing or switching — each worktree is a separate directory.
+What are the advantages of git worktree over separate clones?	Worktrees share a single .git repository (objects, refs, config), saving disk space and clone time. Branches are automatically exclusive — you cannot check out the same branch in two worktrees simultaneously.
+What is an orphan branch?	A branch with no parent commit — created with `git checkout --orphan <name>`. The first commit on this branch has no parent, creating an independent history. Used for gh-pages or unrelated content in the same repo.
+
+# ==========================================
+# 8. Collaboration Workflows
+# ==========================================
+
+What is the feature branch workflow?	Each feature is developed in an isolated branch created from main. When complete, the feature branch is merged back to main (usually via pull request with code review). Main is always deployable.
+What is Gitflow?	A branching model with two long-lived branches (main and develop) and short-lived branches for features (feature/*), releases (release/*), and hotfixes (hotfix/*). Develop is the integration branch; main always reflects production.
+What is the difference between Gitflow and trunk-based development?	Gitflow uses long-lived branches and scheduled releases. Trunk-based development has all developers committing to main (trunk) frequently, using short-lived feature branches (< 1 day) and feature flags — better suited for continuous delivery.
+What is trunk-based development?	A workflow where developers commit small, incremental changes directly to the main branch (or via very short-lived branches). Continuous integration runs on every push. Feature flags hide incomplete features in production.
+What is the forking workflow?	Each developer forks (clones) the central repository into their own server-side copy. They push changes to their fork and submit pull requests to the upstream repository. Common in open source.
+What is a pull request (or merge request)?	A request to merge changes from one branch (or fork) into another. It serves as a review and discussion point where teammates can review code, leave comments, request changes, and approve before merging.
+What should a good pull request include?	A clear title and description, link to the related issue, focused scope (one feature/fix), passing CI checks, documentation updates if needed, and reasonable size (avoid >500 line changes when possible).
+What is a code review in the context of Git?	Systematic examination of proposed code changes (via pull request) by one or more teammates, checking for correctness, security, performance, readability, and adherence to project conventions before merging.
+
+# ==========================================
+# 9. Git Hooks
+# ==========================================
+
+What are Git hooks?	Scripts that Git executes automatically before or after certain events (commit, push, merge, checkout). Located in .git/hooks/ by default as sample files with the .sample extension.
+What is the pre-commit hook?	A client-side hook that runs before a commit is created. Used for linting, formatting checks, running unit tests, or preventing commits with debug statements or secrets. Exit code 0 allows the commit; non-zero blocks it.
+What is the commit-msg hook?	A hook that runs after the commit message is entered but before the commit is finalized. Used to validate commit message format (e.g., enforcing conventional commits pattern). Receives the message file path as argument.
+What is the pre-push hook?	A hook that runs before `git push` transfers commits to the remote. Used to run tests, check for secrets, or verify branch naming conventions. Exit non-zero to block the push.
+What is the pre-receive hook?	A server-side hook that runs when the server receives a push, before any refs are updated. Can reject the entire push if conditions are not met (e.g., failing CI, unauthorized branch, protected branch violation).
+What is the difference between client-side and server-side hooks?	Client-side hooks run on the developer's machine (pre-commit, pre-push) — they can be bypassed with --no-verify. Server-side hooks run on the Git server (pre-receive, update) — they cannot be bypassed and are the enforcement point.
+How can you share Git hooks across a team?	Store hooks in a project directory (e.g., .githooks/) and configure Git with `git config core.hooksPath .githooks`. Alternatively, use tools like Husky (Node.js) or pre-commit (Python) that install hooks from config files.
+What is the pre-commit framework?	A Python-based tool for managing multi-language pre-commit hooks. Configured via .pre-commit-config.yaml, it downloads and manages hook implementations (formatters, linters, secret scanners) and installs them automatically.
+
+# ==========================================
+# 10. Submodules & Subtrees
+# ==========================================
+
+What is a Git submodule?	A reference to another Git repository embedded within a parent repository at a specific commit. The parent tracks which commit of the submodule to use, but the submodule has its own independent .git history.
+What does `git submodule add <url> <path>` do?	Clones the repository at <url> into <path>, adds it as a submodule, creates a .gitmodules file with the mapping, and stages both the .gitmodules and the submodule directory for commit.
+What does `git submodule update --init --recursive` do?	Initializes and clones all submodules (including nested submodules) to the commits recorded in the parent repository. Necessary after cloning a repo with submodules.
+What is the main drawback of submodules?	Complexity — developers must remember to init/update submodules after cloning, submodule updates require committing the new reference in the parent, and merge conflicts in .gitmodules can be confusing. Forgotten updates lead to stale dependencies.
+What is a Git subtree?	An alternative to submodules where another repository's content is merged directly into a subdirectory of the parent repo. No special commands needed for cloning — the subtree content is part of the main repo's tree.
+What is `git subtree add --prefix=<dir> <url> <branch>`?	Merges the entire history (or squashed content) of the external repo into the specified subdirectory of the current repo. The content becomes part of the parent's commits.
+What are the trade-offs between submodules and subtrees?	Submodules: smaller parent repo, clear separation, but complex workflow. Subtrees: simpler for contributors (no extra commands), but repo size grows, and pushing changes back to the external project is harder.
+What is a monorepo and what tools support it?	A single repository containing multiple projects/packages. Tools: Nx (JS/TS), Turborepo (JS/TS), Bazel (multi-language), Lerna (JS, deprecated), pants (Python). Git sparse-checkout and partial clone help with scale.
+
+# ==========================================
+# 11. Tagging & Releases
+# ==========================================
+
+What is a Git tag?	A named reference pointing to a specific commit, typically used to mark release points (v1.0.0, v2.3.1). Unlike branches, tags don't move — they permanently point to one commit.
+What is the difference between a lightweight and an annotated tag?	A lightweight tag is just a pointer to a commit (like a branch that doesn't move). An annotated tag is a full Git object with tagger name, date, message, and optionally a GPG/SSH signature.
+How do you create an annotated tag?	`git tag -a v1.0.0 -m "Release 1.0.0"` — creates a tag object with the message, tagger identity, and timestamp.
+How do you push tags to a remote?	`git push origin <tagname>` pushes a specific tag. `git push --tags` pushes all local tags. `git push --follow-tags` pushes only annotated tags reachable from pushed commits.
+What is Semantic Versioning (SemVer)?	A versioning scheme: MAJOR.MINOR.PATCH (e.g., 2.4.1). MAJOR: breaking changes. MINOR: backward-compatible new features. PATCH: backward-compatible bug fixes. Pre-release: 1.0.0-alpha.1.
+How do you sign a tag with GPG?	`git tag -s v1.0.0 -m "Signed release"` — creates an annotated tag with a GPG signature using your configured signing key. Verifiable with `git tag -v v1.0.0`.
+What is a GitHub/GitLab release?	A higher-level concept built on Git tags that adds release notes (changelog), binary assets (download attachments), and a user-friendly UI. Created via web interface or API.
+How do you delete a tag locally and remotely?	Locally: `git tag -d v1.0.0`. Remotely: `git push origin --delete v1.0.0` or `git push origin :refs/tags/v1.0.0`.
+
+# ==========================================
+# 12. Reflog & Recovery
+# ==========================================
+
+What is the reflog?	A local log of all changes to HEAD and branch tips — recording every checkout, commit, rebase, reset, merge, and amend. It acts as a safety net for recovering lost commits.
+What does `git reflog` show?	A chronological list of where HEAD has pointed, with entries like: `abc1234 HEAD@{0}: commit: Fix login bug`, `def5678 HEAD@{1}: rebase: moving to main`. Each entry has a reflog selector.
+How long does the reflog retain entries?	By default, 90 days for reachable entries and 30 days for unreachable entries. After that, `git gc` may prune them. Configurable via gc.reflogExpire and gc.reflogExpireUnreachable.
+How do you recover a lost commit using reflog?	(1) Run `git reflog` to find the commit hash. (2) Create a branch or cherry-pick: `git branch recovered abc1234` or `git cherry-pick abc1234`. The commit is restored.
+How do you recover from a bad rebase?	Use `git reflog` to find the commit before the rebase started (the entry will say "rebase: moving to..."). Then `git reset --hard HEAD@{n}` to that entry, restoring the branch to its pre-rebase state.
+How do you recover from a bad `git reset --hard`?	The discarded commits are still in the reflog for ~30 days. Run `git reflog`, find the commit hash of the state you want, and `git reset --hard <hash>` to restore it.
+What does `git fsck` do?	Checks the repository's object database for integrity and reports dangling (unreachable) objects — commits, blobs, and trees with no references. Useful for finding orphaned commits that are not in the reflog.
+What does `git gc` do?	Garbage collection — packs loose objects into packfiles, removes unreachable objects older than the reflog retention period, prunes reflogs, and optimizes the repository for performance and size.
+What is a dangling commit?	A commit object that is not reachable from any branch, tag, or reflog entry. Dangling commits are candidates for garbage collection but may contain work you want to recover (findable via `git fsck --no-reflogs`).

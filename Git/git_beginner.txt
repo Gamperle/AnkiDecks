@@ -1,0 +1,83 @@
+# Git & Versioning — Beginner
+# Format: Front[TAB]Back
+
+# ==========================================
+# 1. Version Control Fundamentals
+# ==========================================
+
+What is version control?	A system that records changes to files over time so you can recall specific versions later, track who made changes, and collaborate without overwriting each other's work.
+What is the difference between centralized and distributed version control?	Centralized VCS (e.g., SVN) has one central server holding the full history — clients check out snapshots. Distributed VCS (e.g., Git) gives every developer a full copy of the entire repository history locally, enabling offline work and redundancy.
+Why is Git considered distributed?	Every Git clone is a complete repository with the full history. You can commit, branch, merge, and inspect history entirely offline. Push/pull synchronizes with other repositories.
+What are the three main areas in a Git workflow?	(1) Working tree — the actual files you edit. (2) Staging area (index) — a snapshot of changes you want to include in the next commit. (3) Repository (.git) — the database storing all commits, branches, and history.
+What is a repository?	A directory tracked by Git containing your project files plus a hidden .git folder that stores the entire version history, configuration, branches, tags, and objects.
+What is a commit?	A snapshot of the entire project at a point in time, identified by a unique SHA hash. It includes a pointer to a tree (directory snapshot), author, committer, timestamp, and parent commit(s).
+What is the staging area (index)?	An intermediate area between your working tree and the repository where you assemble the next commit. Only changes explicitly staged (git add) become part of the commit.
+What is HEAD in Git?	A pointer to the current commit (or branch) you are working on. Usually HEAD points to a branch name (e.g., main), which in turn points to the latest commit on that branch.
+
+# ==========================================
+# 2. Git Basics
+# ==========================================
+
+What does `git init` do?	Creates a new Git repository in the current directory by initializing a .git folder with the necessary structure (objects, refs, HEAD, config).
+What does `git clone <url>` do?	Creates a local copy of a remote repository, including its full history, branches, and tags. It automatically sets up the remote "origin" pointing to the source URL.
+What does `git add <file>` do?	Stages changes in the specified file for the next commit. It copies the current content of the file into the staging area (index).
+What is the difference between `git add .` and `git add -A`?	`git add .` stages new and modified files in the current directory and below. `git add -A` (or --all) stages new, modified, and deleted files across the entire repository.
+What does `git status` show?	The state of the working tree and staging area: which files are modified, staged for commit, untracked, or deleted. It also shows the current branch and its relationship to the remote tracking branch.
+What does `git diff` show?	The unstaged changes in your working tree compared to the staging area. Use `git diff --staged` (or --cached) to see staged changes compared to the last commit.
+What does `git commit` do?	Records the staged snapshot as a new commit in the repository. It creates a new commit object with a pointer to the staged tree, the parent commit(s), author info, and the commit message.
+What makes a good commit message?	A clear, imperative subject line (50 chars max) summarizing the change, optionally followed by a blank line and a body explaining why. Example: "Fix null pointer in user authentication". Avoid vague messages like "fix" or "update".
+What are conventional commits?	A commit message convention: `type(scope): description`. Types: feat, fix, chore, docs, style, refactor, test, perf, ci. Example: `feat(auth): add OAuth2 login flow`. Enables automated changelogs and semantic versioning.
+What does `git log` show?	The commit history of the current branch, starting from the most recent commit. Shows commit hash, author, date, and message. Use --oneline, --graph, --all for compact/visual/full views.
+What does `git show <commit>` do?	Displays the details of a specific commit: the commit metadata (author, date, message) and the diff of changes introduced by that commit.
+What is a .gitignore file?	A text file specifying patterns of files and directories that Git should ignore (not track). Common entries: build outputs, IDE files, OS files (.DS_Store), dependency folders (node_modules/).
+What are common .gitignore patterns?	`*.class` (all .class files), `build/` (build directory), `!important.log` (negate — do track this file), `**/temp` (temp in any directory), `.env` (environment files with secrets).
+What does `git rm <file>` do?	Removes a file from both the working tree and the staging area. The deletion will be recorded in the next commit.
+What does `git mv <old> <new>` do?	Renames or moves a file and stages the change. It is equivalent to `mv old new && git rm old && git add new`, but Git recognizes it as a rename for cleaner history.
+What is a detached HEAD state?	When HEAD points directly to a commit instead of a branch name. You can look around and make commits, but they won't belong to any branch and may be lost unless you create a new branch from this state.
+
+# ==========================================
+# 3. Branching & Merging Basics
+# ==========================================
+
+What is a branch in Git?	A lightweight movable pointer to a commit. Creating a branch is just creating a new pointer — Git doesn't copy files. The branch pointer advances with each new commit on that branch.
+How do you create a new branch?	`git branch <name>` creates the branch (pointing to the current commit). `git switch -c <name>` or `git checkout -b <name>` creates the branch and switches to it in one step.
+What is the difference between `git switch` and `git checkout`?	`git switch` (Git 2.23+) is specifically for switching branches. `git checkout` is the older command that does both branch switching and file restoration — `git switch` and `git restore` replaced it for clarity.
+What is a fast-forward merge?	When the target branch has no new commits since the source branch diverged, Git simply moves the target branch pointer forward to the source branch's latest commit. No merge commit is created.
+What is a three-way merge?	When both branches have diverged (each has unique commits), Git creates a merge commit with two parents that combines the changes from both branches, using the common ancestor as the base.
+What is a merge conflict?	When Git cannot automatically combine changes because both branches modified the same region of the same file in incompatible ways. Git marks the conflicting sections and requires manual resolution.
+How are merge conflicts marked in a file?	Conflict markers divide the file into sections: `<<<<<<< HEAD` (your changes), `=======` (separator), `>>>>>>> branch-name` (incoming changes). You edit the file to keep the desired content and remove all markers.
+How do you resolve a merge conflict?	(1) Open the conflicted files. (2) Edit to resolve the conflict (remove markers, keep correct content). (3) Stage the resolved files with `git add`. (4) Complete the merge with `git commit`.
+What does `git merge --abort` do?	Cancels the current merge operation and restores the working tree and index to the state before the merge began. Useful when conflicts are too complex and you want to start over.
+What are common branch naming conventions?	main/master (production), develop (integration), feature/<name> (new features), bugfix/<name> (bug fixes), release/<version> (release prep), hotfix/<name> (urgent production fixes).
+What is the difference between `git merge` and `git merge --no-ff`?	`git merge` performs a fast-forward when possible (no merge commit). `git merge --no-ff` always creates a merge commit, even if fast-forward is possible — preserving the fact that a feature branch existed.
+
+# ==========================================
+# 4. Remote Repositories
+# ==========================================
+
+What is a remote in Git?	A named reference to another repository, usually on a server. The default remote after cloning is called "origin". Remotes allow you to push and pull changes between your local repository and others.
+What does `git remote add <name> <url>` do?	Registers a new remote repository under the given name, so you can reference it by name instead of URL for push/pull/fetch operations.
+What does `git remote -v` show?	Lists all configured remotes with their names and URLs for both fetch and push operations.
+What is the difference between `git fetch` and `git pull`?	`git fetch` downloads new commits and refs from the remote but does not modify your working tree or current branch. `git pull` does a fetch followed by a merge (or rebase with --rebase) to integrate remote changes into your current branch.
+What does `git push` do?	Uploads your local commits to the remote repository. By default, it pushes the current branch to its configured upstream tracking branch on the remote.
+What is a tracking branch?	A local branch that has a direct relationship to a remote branch. When you clone, `main` tracks `origin/main`. This enables `git pull` and `git push` without specifying the remote and branch name.
+What does `origin/main` represent?	A remote-tracking branch — a local read-only pointer showing where the `main` branch on the `origin` remote was at the last fetch. It is updated by `git fetch` or `git pull`.
+What is the difference between `origin` and `upstream`?	Convention in forking workflows: `origin` is your personal fork, `upstream` is the original repository you forked from. You pull updates from upstream and push your work to origin.
+What does `git push -u origin <branch>` do?	Pushes the branch to origin and sets the upstream tracking, so future `git push` and `git pull` on this branch don't require specifying the remote and branch.
+What is a shallow clone?	A clone with limited history: `git clone --depth 1` downloads only the latest commit. This saves time and disk space for large repositories, but you cannot see full history without unshallowing (`git fetch --unshallow`).
+
+# ==========================================
+# 5. Undoing Changes
+# ==========================================
+
+What does `git restore <file>` do?	Discards unstaged changes in the working tree, reverting the file to the version in the staging area (or HEAD if nothing is staged). Replaces the old `git checkout -- <file>`.
+What does `git restore --staged <file>` do?	Unstages a file — removes it from the staging area without discarding your working tree changes. The file remains modified but is no longer staged for the next commit.
+What are the three modes of `git reset`?	`--soft`: moves HEAD to the target commit, keeps changes staged. `--mixed` (default): moves HEAD, unstages changes, keeps working tree. `--hard`: moves HEAD, discards staged and working tree changes entirely.
+When should you use `git reset --soft`?	When you want to undo the last commit(s) but keep all changes staged — useful for re-committing with a better message or combining multiple commits into one.
+When is `git reset --hard` dangerous?	It permanently discards all uncommitted changes in both the staging area and working tree. If you haven't committed or stashed those changes, they are lost (though recent commits can be recovered via reflog).
+What does `git revert <commit>` do?	Creates a new commit that undoes the changes introduced by the specified commit. Unlike reset, revert doesn't rewrite history — it adds a new commit, making it safe for published/shared branches.
+When should you use `git revert` instead of `git reset`?	When undoing changes on a branch that others have already pulled. Revert adds a new commit (safe for shared history) while reset rewrites history (breaks other developers' clones).
+What does `git commit --amend` do?	Replaces the most recent commit with a new one incorporating staged changes and/or a new message. The old commit is replaced (new SHA), so only amend unpushed commits.
+How can you recover a deleted branch?	Use `git reflog` to find the commit the deleted branch pointed to, then recreate it with `git branch <name> <commit-hash>`. The reflog retains references to recently checked-out commits for ~90 days.
+What does `git clean -fd` do?	Removes untracked files (-f) and directories (-d) from the working tree. Add -n for a dry run (shows what would be deleted without actually deleting).
+What is the difference between `git reset` and `git revert` in one sentence?	`git reset` rewrites history by moving the branch pointer backward (destructive for shared branches), while `git revert` creates a new commit that reverses a previous commit's changes (safe for shared branches).
