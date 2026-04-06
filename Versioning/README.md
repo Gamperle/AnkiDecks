@@ -1,6 +1,6 @@
 # Git & Versioning Anki Decks
 
-Flashcard decks covering Git, version control concepts, and collaboration workflows — classified by difficulty level.
+Flashcard decks covering Git, the repo tool (AOSP multi-repo management), Gerrit code review, version control concepts, and collaboration workflows — classified by difficulty level.
 
 ## Format
 
@@ -17,6 +17,8 @@ Front (question or term)[TAB]Back (answer or definition)
 | `git_beginner.txt` | Basics: init, add, commit, push, pull, branches, merge, terminology |
 | `git_intermediate.txt` | Rebase, stash, cherry-pick, reflog, hooks, submodules, worktrees, collaboration workflows |
 | `git_pro.txt` | Internals (objects, packfiles, refs), custom merge drivers, filter-branch/filter-repo, performance, security, large-scale Git |
+| `repo_beginner.txt` | Repo tool fundamentals, manifest basics, core commands, Gerrit basics, .repo/ structure |
+| `repo_pro.txt` | Advanced manifests, Gerrit deep dive, performance, troubleshooting, AOSP workflows, practical scenarios |
 
 ---
 
@@ -176,6 +178,93 @@ Front (question or term)[TAB]Back (answer or definition)
 
 ---
 
+### Repo Tool (repo_beginner.txt, repo_pro.txt)
+
+#### Beginner
+
+##### 1. Repo Fundamentals
+- What is the repo tool and why it exists
+- Installation and prerequisites
+- Repo launcher vs repo client
+- repo vs git submodule
+- Gerrit overview
+
+##### 2. Manifest Basics
+- Manifest files: default.xml structure
+- Key elements: remote, default, project
+- copyfile, linkfile, include
+- Manifest repository
+
+##### 3. Core Commands
+- repo init, sync, start, upload
+- repo status, diff, branches
+- repo abandon, prune, download
+- repo forall, overview, info, grep
+
+##### 4. Gerrit & Code Review Basics
+- What is Gerrit, Change-Id, refs/for/
+- Review labels, patchsets
+- Upload workflow
+
+##### 5. The .repo/ Directory
+- Directory structure and layout
+- Where manifests, projects, and repo source live
+
+#### Pro
+
+##### 6. Manifest XML Advanced
+- revision vs upstream vs dest-branch
+- clone-depth, sync-c, sync-s
+- remove-project, extend-project, annotation
+- Local manifests for overrides
+- Manifest groups for partial sync
+
+##### 7. Gerrit Advanced
+- refs/changes/ namespace
+- Submit strategies
+- Topics and atomic cross-project submission
+
+##### 8. Additional Commands & Features
+- repo manifest -r, -o (pinned/effective manifests)
+- repo selfupdate, version, rebase, checkout, stage
+- repo list, smartsync, diffmanifests
+- Project nesting (overlapping paths)
+
+##### 9. Performance & Optimization
+- Speeding up repo sync (-j, --no-tags, -c, --optimized-fetch)
+- --mirror, --reference, --dissociate
+- --partial-clone, --worktree
+- Clone bundles
+- Multi-manifest workspaces
+
+##### 10. Troubleshooting
+- repo sync -d, --force-sync
+- Merge conflict recovery
+- Debugging manifests
+- repo --trace
+
+##### 11. Repo Hooks
+- Pre-upload hooks, manifest configuration
+- Repo hooks vs Git hooks
+
+##### 12. AOSP Workflow
+- Full development cycle: init, sync, lunch, start, commit, upload
+- Manifest branches for Android releases
+- Cross-project changes and bisection
+
+##### 13. Practical Scenarios & Concrete Solutions
+- Workspace setup: init, mirror, reference, shallow clone, partial clone
+- Daily development: start branch, edit, commit, amend, upload, stash
+- Working with others: download, cherry-pick, forall queries
+- Branch cleanup: abandon, prune, reset to manifest
+- Manifest manipulation: local manifests, forks, pinning, diffmanifests
+- Sync scenarios: single project, resume, no-rebase, force-sync, fresh reset
+- Mass operations with forall: clean, grep, branch status, config
+- CI/CD automation: reproducible builds, presubmit testing, automated upload
+- Troubleshooting: unsaved changes, missing Change-Id, broken projects, slow sync, GC errors
+
+---
+
 ## Deck File Plan
 
 | Level | File | Topics Covered |
@@ -183,3 +272,5 @@ Front (question or term)[TAB]Back (answer or definition)
 | Beginner | `git_beginner.txt` | Fundamentals, basics, branching, remotes, undoing (1–5) |
 | Intermediate | `git_intermediate.txt` | Rebase, stash, workflows, hooks, submodules, tags, reflog (6–12) |
 | Pro | `git_pro.txt` | Internals, history manipulation, scale, security, server admin, broader concepts (13–18) |
+| Beginner | `repo_beginner.txt` | Repo fundamentals, manifest basics, core commands, Gerrit basics, .repo/ structure (1–5) |
+| Pro | `repo_pro.txt` | Advanced manifests, Gerrit deep dive, performance, troubleshooting, AOSP workflows, practical scenarios (6–13) |

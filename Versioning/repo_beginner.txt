@@ -1,0 +1,68 @@
+# Repo Tool — Beginner
+# Format: Front[TAB]Back
+
+# ==========================================
+# 1. Repo Fundamentals
+# ==========================================
+
+What is the Android `repo` tool?	A Python-based tool built on top of Git that manages multiple Git repositories as a single project. Developed by Google for AOSP, it orchestrates syncing, branching, and uploading changes across hundreds of Git repos simultaneously.
+What problem does `repo` solve that Git alone cannot?	AOSP consists of 800+ Git repositories. Managing them individually (cloning, branching, syncing, submitting changes) would be impractical. `repo` provides a single command-line interface to perform these operations across all repositories at once, coordinated by a central manifest file.
+How do you install the `repo` tool?	`mkdir -p ~/bin && curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo`. Then add `~/bin` to your `$PATH`. The launcher script is small (~40KB) and bootstraps the full client on first `repo init`.
+What is the `repo` launcher vs the repo client?	The launcher (`~/bin/repo`) is a small Python script that bootstraps the full repo client. On `repo init`, the launcher clones the full client into `.repo/repo/`. The launcher ensures the correct client version is used per workspace. You update the launcher separately from the client.
+What are the prerequisites for using `repo`?	Python 3.6+, Git 2.10.2+, and a POSIX-compatible OS (Linux, macOS). On Ubuntu: `sudo apt install git python3 curl`. The repo launcher handles the rest. Windows is not natively supported — use WSL.
+What is the difference between `repo` and `git submodule` for managing multiple repos?	`repo` uses a manifest XML and keeps each sub-repo as an independent Git repository — no nesting. `git submodule` embeds repos inside a parent repo with pinned commits tracked in the superproject. Key differences: repo scales to hundreds of repos, has Gerrit integration, and supports partial sync via groups; submodules have tighter Git integration and simpler setup but struggle at scale.
+What source code review system does `repo` integrate with?	Gerrit — a web-based code review system. `repo upload` pushes changes to Gerrit for review. The manifest's `<remote>` element has a `review` attribute pointing to the Gerrit server URL. Gerrit + repo is the standard AOSP workflow.
+
+# ==========================================
+# 2. Manifest Basics
+# ==========================================
+
+What is a repo manifest file?	An XML file (typically `default.xml`) that defines the collection of Git repositories making up a project. It specifies: each repo's name, remote URL, path on disk, branch to track, and optional attributes like revision, clone-depth, and groups. Hosted in a dedicated manifest repository.
+What is the manifest repository?	A special Git repository containing the manifest XML file(s). When you run `repo init -u <URL>`, repo clones this manifest repo into `.repo/manifests/`. It serves as the single source of truth for which repositories, branches, and revisions make up the project.
+What are the key elements in a repo manifest XML?	`<remote>` — defines a remote server (name, fetch URL, review URL for Gerrit). `<default>` — sets default remote, revision (branch), and sync behavior. `<project>` — defines a single Git repo with name, path, remote, and revision. `<copyfile>` / `<linkfile>` — copy or symlink files after sync. `<include>` — include another manifest XML.
+What does the `<remote>` element define in a manifest?	A named remote server with its fetch URL and optional review (Gerrit) URL. Example: `<remote name="aosp" fetch="https://android.googlesource.com/" review="https://android-review.googlesource.com/" />`. Multiple remotes can be defined for projects hosted on different servers.
+What does the `<default>` element control in a manifest?	Sets defaults inherited by all `<project>` entries: `remote` (which remote to use), `revision` (branch to track, e.g., `main`), `sync-j` (parallel sync jobs), `sync-c` (sync current branch only). Individual projects can override any default.
+What does a `<project>` element define?	A single Git repository to be managed. Attributes: `name` (repo name on the server), `path` (local checkout path, defaults to name), `remote` (which remote, defaults to `<default>`), `revision` (branch/tag/SHA to checkout). Example: `<project name="platform/frameworks/base" path="frameworks/base" />`.
+What is the `<copyfile>` element used for?	Copies a file from inside a project to the top-level workspace directory after sync. Syntax: `<copyfile src="path/in/project" dest="path/in/workspace" />`. AOSP uses this to copy the `Makefile` and `envsetup.sh` from the `build/make` project to the workspace root.
+What is the `<linkfile>` element used for?	Creates a symbolic link from a project file to the workspace directory after sync. Syntax: `<linkfile src="path/in/project" dest="path/in/workspace" />`. Preferred over `<copyfile>` when you want the workspace file to stay in sync with the project source automatically.
+What does the `<include>` element do in a manifest?	Includes another manifest XML file, allowing modular manifest composition. Syntax: `<include name="other.xml" />`. The included file is resolved relative to the manifest repository root. Useful for splitting large manifests into logical groups (e.g., platform, vendor, device).
+
+# ==========================================
+# 3. Core Commands
+# ==========================================
+
+What does `repo init` do?	Initializes a new repo client directory. It clones the manifest repository and the repo launcher. Key flags: `-u <URL>` (manifest repo URL), `-b <branch>` (manifest branch), `-m <file.xml>` (manifest filename, default: default.xml), `--depth=1` (shallow clone). Creates the `.repo/` directory structure.
+What does `repo sync` do?	Synchronizes all projects listed in the manifest with their remote repositories. It fetches new commits from each remote and rebases (or resets) local branches. Key flags: `-j<N>` (parallel jobs), `-c` (current branch only), `--no-tags` (skip tags), `-d` (detach, switch to manifest revision), `-f` (force, continue on errors).
+What does `repo start` do?	Creates a new topic branch across one or more projects. Syntax: `repo start <branch-name> [<project>...]`. Without specifying projects, it starts the branch in the current project. Unlike `git checkout -b`, this integrates with repo's branch tracking so `repo upload` knows which branches to submit.
+What does `repo upload` do?	Uploads local commits to a code review system (typically Gerrit). It pushes changes from topic branches to `refs/for/<branch>` on the remote, creating Gerrit change requests. Equivalent to `git push origin HEAD:refs/for/main` but handles multiple repos and adds interactive prompts for selecting branches.
+What does `repo status` do?	Shows the working-tree status for all projects (or specified projects), similar to `git status` but across all managed repos. Displays a two-character status code per file: first char = index status (staged), second char = working-tree status (unstaged). Projects with no changes are omitted.
+What does `repo diff` do?	Runs `git diff` across all projects and shows a combined diff output. Useful for reviewing all uncommitted changes across the entire multi-repo workspace at once. Accepts standard diff flags.
+What does `repo branches` do?	Lists all topic branches across all projects, showing which projects each branch exists in and how many commits it contains. Helps track in-progress work across the multi-repo workspace.
+What does `repo abandon` do?	Deletes a topic branch across one or more projects. Syntax: `repo abandon <branch-name> [<project>...]`. The opposite of `repo start` — cleans up branches after changes have been uploaded and merged.
+What does `repo prune` do?	Removes topic branches that have already been merged into the upstream branch. Runs across all projects, cleaning up stale branches. Equivalent to running `git branch -d` on merged branches in every repo.
+What does `repo download` do?	Fetches a specific Gerrit change (by change number and optional patchset) into the local project for testing. Syntax: `repo download <project> <change>[/<patchset>]`. Useful for reviewing and testing changes from other developers before they are merged.
+What does `repo forall` do?	Executes a shell command in every project (or a filtered set). Syntax: `repo forall [<project>...] -c <command>`. Available environment variables: `$REPO_PROJECT` (project name), `$REPO_PATH` (project path), `$REPO_REMOTE` (remote name), `$REPO_LREV` (local revision). Example: `repo forall -c 'git clean -fdx'`.
+What does `repo overview` do?	Shows a summary of branches that have unuploaded commits, organized by project. For each branch, it lists the number of commits ahead of the upstream. Helps identify work that hasn't been submitted for review yet.
+What does `repo info` do?	Displays metadata about one or more projects: manifest name, path, current branch, remote, Gerrit review URL, and the current commit. Useful for quickly checking which revision a project is on.
+What does `repo grep` do?	Runs `git grep` across all (or selected) projects. Syntax: `repo grep <pattern> [<project>...]`. Searches only tracked files (not untracked). Outputs results prefixed with the project path, making it easy to locate matches across the entire AOSP tree.
+
+# ==========================================
+# 4. Gerrit & Code Review Basics
+# ==========================================
+
+What is Gerrit?	A web-based code review and repository management system for Git. Each proposed change gets a unique review page where reviewers add comments, approve, or reject. Changes are merged only after required approvals. Google uses Gerrit for AOSP, Chromium, and other projects.
+What is a Gerrit Change-Id?	A unique identifier (`Change-Id: I<40-hex-chars>`) appended to commit messages by a Gerrit commit-msg hook. It links amended commits to the same Gerrit review — pushing a new patchset with the same Change-Id updates the existing review instead of creating a new one.
+How does the Gerrit commit-msg hook get installed?	`repo` automatically installs it via the manifest's `<remote review="...">` configuration. The hook is placed in each project's `.git/hooks/commit-msg` and generates a `Change-Id` trailer on every commit.
+What is `refs/for/` in Gerrit?	A magic ref namespace. Pushing to `refs/for/<branch>` doesn't update the branch directly — instead, Gerrit creates a pending change (code review) targeting that branch. The change must pass review and verification before Gerrit merges it into the actual branch. This is how `repo upload` works under the hood.
+What are Gerrit review labels?	Voting categories on a change: `Code-Review` (+2/+1/0/-1/-2), `Verified` (+1/0/-1). A change typically needs Code-Review +2 and Verified +1 to be submittable. Labels are configurable per project. CI systems typically provide the Verified label.
+What is a Gerrit patchset?	A specific version of a proposed change. When you amend a commit and re-upload, Gerrit creates a new patchset under the same Change-Id. Reviewers can compare patchsets to see what changed between iterations. Only the latest patchset is merged.
+What is the typical workflow for submitting code via `repo upload`?	(1) `repo start my-feature <project>` — create a topic branch. (2) Edit files, `git add`, `git commit` (Change-Id is auto-generated). (3) `repo upload` — select the branch to upload. (4) Repo pushes to `refs/for/<branch>` on Gerrit. (5) Reviewers approve. (6) Change is merged. (7) `repo abandon my-feature` or `repo prune` to clean up.
+
+# ==========================================
+# 5. The .repo/ Directory
+# ==========================================
+
+What is the `.repo/` directory structure?	`.repo/manifests/` (the manifest Git repo), `.repo/manifests.git/` (bare clone of manifest repo), `.repo/manifest.xml` (symlink to active manifest), `.repo/project-objects/` (bare Git repos shared across worktrees), `.repo/projects/` (per-project .git data), `.repo/repo/` (the repo tool source code).
+Where does repo store the active manifest?	`.repo/manifest.xml` — a symlink pointing to the actual manifest file inside `.repo/manifests/`. This is the file repo reads when running any command. You can check which manifest is active with `ls -l .repo/manifest.xml`.
+Where are per-project Git repositories stored?	In `.repo/projects/<path>.git/` for worktree metadata and `.repo/project-objects/<name>.git/` for the actual bare Git repository data. The working trees are checked out at the paths specified in the manifest. This separation allows object sharing across worktrees.
+Where is the repo tool source code stored?	In `.repo/repo/` — a Git clone of the repo tool itself. The launcher (`~/bin/repo`) uses this local clone to run repo commands. `repo selfupdate` updates this clone. Each workspace can use a different repo client version.

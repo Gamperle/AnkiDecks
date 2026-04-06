@@ -1,0 +1,169 @@
+# Repo Tool — Pro
+# Format: Front[TAB]Back
+
+# ==========================================
+# 6. Manifest XML Advanced
+# ==========================================
+
+What does the `<remote>` element's `review` attribute do?	Specifies the Gerrit code review server URL (e.g., `review="https://android-review.googlesource.com/"`). When running `repo upload`, repo uses this URL to push changes to Gerrit's `refs/for/` namespace. Without it, `repo upload` doesn't know where to send reviews.
+What is the `revision` attribute on a `<project>` element?	Specifies which branch, tag, or commit SHA to checkout for that project. Can be a branch name (`main`), a tag (`android-14.0.0_r1`), or a full SHA for pinning. Overrides the `<default revision>` for that specific project.
+What is the difference between `revision` and `upstream` in a manifest project?	`revision` is what repo checks out locally (can be a SHA for pinning). `upstream` is the tracking branch name used by `repo upload` to determine the Gerrit destination branch. When `revision` is a SHA (pinned manifest), `upstream` tells repo which branch the change should be uploaded against.
+What does `dest-branch` do in a manifest?	Overrides the Gerrit destination branch for `repo upload`. When set on a `<project>` or `<default>`, repo uploads to `refs/for/<dest-branch>` instead of `refs/for/<revision>`. Useful when `revision` is a SHA or tag but uploads should target a named branch.
+What does `clone-depth` do on a `<project>` element?	Limits the Git clone to the specified number of commits (shallow clone). `clone-depth="1"` fetches only the latest commit, drastically reducing download time and disk usage. Trade-off: `git log`, `git blame`, and bisect won't work beyond the shallow depth.
+What does `sync-c="true"` mean in a manifest?	Tells repo to sync only the current branch instead of all branches. Reduces network and disk usage because only the ref specified by `revision` is fetched. Set on `<default>` to apply project-wide or on individual `<project>` elements.
+What does `sync-s="true"` mean in a manifest?	Enables syncing of sub-projects (nested manifests). When a project itself contains a manifest, `sync-s` tells repo to recursively process it. Rarely used in AOSP but available for complex multi-level project structures.
+What is `<remove-project>` used for in a manifest?	Removes a project that was defined in an included manifest. Syntax: `<remove-project name="platform/project" />`. Commonly used in local manifests to exclude unwanted projects or replace them with forked versions by removing and re-adding with a different remote.
+What is `<extend-project>` used for?	Modifies attributes of an already-defined project without removing and re-adding it. Syntax: `<extend-project name="platform/project" revision="my-branch" />`. Useful in local manifests to change the revision or groups of a project from the main manifest.
+What is the `<annotation>` element in a manifest?	Adds key-value metadata to a project. Syntax: `<annotation name="key" value="val" />` inside a `<project>`. Annotations are passed to repo hooks as environment variables and can be used by build systems or CI to tag projects with custom attributes.
+What is a repo local manifest?	A file at `.repo/local_manifests/local_manifest.xml` (or any XML in that directory) that extends or overrides the main manifest. Used to add personal projects, swap remotes, pin specific revisions, or remove projects without modifying the shared manifest. Processed after the main manifest.
+What are repo manifest groups?	Projects in the manifest can have a `groups` attribute (e.g., `groups="device,broadcom"`). `repo init -g <group1>,<group2>` or `repo sync -g` filters which projects are synced. This lets developers work with a subset of the full AOSP tree. Special groups: `default`, `all`, `notdefault`.
+
+# ==========================================
+# 7. Gerrit Advanced
+# ==========================================
+
+What is `refs/changes/` in Gerrit?	The namespace where Gerrit stores change patchsets. Format: `refs/changes/<last-two-digits>/<change-number>/<patchset>`. Example: change 12345 patchset 3 is at `refs/changes/45/12345/3`. `repo download` fetches from this namespace.
+What are Gerrit submit strategies?	How Gerrit integrates a change into the target branch: (1) Merge If Necessary — fast-forward or merge commit, (2) Always Merge — always creates a merge commit, (3) Cherry Pick — cherry-picks the change (new SHA), (4) Rebase If Necessary — rebases before fast-forward, (5) Rebase Always. AOSP commonly uses "Rebase If Necessary."
+What are Gerrit topics and how do they help multi-repo changes?	A topic is a label applied to related changes across multiple repos. When submitting, Gerrit can submit all changes with the same topic atomically (if configured). In AOSP, cross-project changes (e.g., a framework API change + an app update) use topics to ensure they land together.
+What is Gerrit's "Submit Whole Topic" feature?	When enabled, clicking Submit on any change in a topic submits ALL changes in that topic together. This ensures atomic cross-project changes: either all land or none do. Critical for AOSP where a single feature may touch framework, packages, and build repos.
+
+# ==========================================
+# 8. Additional Commands & Features
+# ==========================================
+
+What does `repo manifest -r` output?	A frozen manifest XML with every `<project>` pinned to its exact current commit SHA in the `revision` attribute. This snapshot is fully reproducible: running `repo init -m snapshot.xml && repo sync` recreates the exact workspace state. Used for release tagging, build reproducibility, and bisection.
+What does `repo manifest -o <file>` do?	Saves the current effective manifest (resolved from all includes and local manifests) to a file. Without `-r`, it preserves branch names; with `-r`, it pins all revisions to SHAs. Useful for archiving the exact state of a workspace or sharing manifest configurations.
+What does `repo selfupdate` do?	Updates the repo tool itself to the latest version. Repo periodically auto-checks for updates during `repo sync`, but `repo selfupdate` forces an immediate update. The tool lives in `.repo/repo/` and updates via `git pull` from its upstream repository.
+What does `repo version` show?	Displays the version of the repo launcher, the repo client (in `.repo/repo/`), the Git version, and the Python version. Useful for debugging compatibility issues or reporting bugs.
+What does `repo rebase` do?	Rebases local topic branches on top of the upstream branch for each project. Similar to running `git rebase` in each project. Less commonly used than `repo sync` (which also rebases), but useful when you want to rebase without fetching new data from the remote.
+What does `repo checkout` do?	Checks out a branch across all projects that have it. Syntax: `repo checkout <branch> [<project>...]`. Unlike `repo start` (which creates a new branch), `repo checkout` switches to an existing branch.
+What does `repo stage` do?	Opens an interactive staging tool (`git add -p` equivalent) for each project with changes. Lets you selectively stage hunks across multiple repos. Useful when fine-grained control over what gets committed before `repo upload`.
+What does `repo list` output?	A list of all projects defined in the manifest with their local path and remote name. Format: `<path> : <name>`. Useful for scripting and verifying which projects are part of the current workspace. Can be filtered by groups.
+What does `repo smartsync` do?	Syncs only projects that have been modified recently on the server. Instead of fetching all 800+ projects, it queries the Gerrit server for recently changed projects and syncs only those. Much faster for daily development. Requires Gerrit server support.
+What does `repo diffmanifests` do?	Compares two manifest files and shows which projects were added, removed, changed (different revision), or have a different tracking branch. Useful for understanding what changed between two AOSP releases or between your current workspace and a target manifest.
+How does repo handle project nesting (overlapping paths)?	If project A checks out at `frameworks/base` and project B at `frameworks/base/services`, repo handles this by cloning them as separate Git repos with overlapping filesystem paths. The inner project "shadows" the outer project in its subdirectory. This is common in AOSP for splitting large components.
+
+# ==========================================
+# 9. Performance & Optimization
+# ==========================================
+
+How can you speed up `repo sync` for a large AOSP workspace?	(1) `-j16` or higher for parallel fetches. (2) `--no-tags` to skip fetching tags. (3) `-c` to sync current branch only. (4) `--optimized-fetch` to skip unchanged projects. (5) Use a local `--reference` mirror. (6) Use `--depth=1` for shallow clones if you don't need history. (7) Limit projects with `repo init -g <group>`.
+What is `repo init --mirror` and when is it used?	Creates a mirror of all repositories without checkout — bare Git repos only. Used for: (1) local caching to speed up subsequent `repo init` by other developers on the same network, (2) offline builds, (3) CI/CD infrastructure. A mirror can serve as a reference for new workspaces via `repo init --reference=<mirror-path>`.
+What is `--reference` in `repo init`?	Points to a local mirror or existing repo workspace to use as a reference for object sharing. `repo init --reference=/path/to/mirror` makes each project use Git alternates to share objects from the reference. Dramatically reduces disk usage and clone time — only new objects are fetched from the network.
+What is `repo sync --optimized-fetch`?	Optimization that avoids fetching projects whose remote revision hasn't changed since the last sync. Repo checks the remote HEAD for each project before fetching, skipping projects that are already up to date. Significantly speeds up syncs when only a few of 800+ repos have new commits.
+What is `repo sync --no-clone-bundle`?	Disables the use of clone bundles. Clone bundles are pre-packaged repository archives hosted on CDNs that speed up initial clones. If a bundle is stale or behind a restrictive proxy, `--no-clone-bundle` forces repo to clone directly from the Git server.
+What is `repo init --partial-clone`?	Enables Git's partial clone feature for all projects. Blobs are fetched on demand rather than during initial sync. Combined with `--clone-filter=blob:none`, this dramatically reduces initial clone time and disk usage for AOSP (from ~300GB to ~100GB). Tree objects are still fetched for directory listings.
+What is `repo init --worktree`?	Creates Git worktrees instead of full clones for each project. Multiple repo clients can share the same underlying Git data in `.repo/project-objects/`, with each workspace being a lightweight worktree. Reduces disk usage when maintaining multiple workspaces (e.g., different Android branches).
+What is `repo init --dissociate`?	Used with `--reference`: after the initial clone using a reference mirror, repo copies the shared objects into the local repo and removes the alternates link. The workspace becomes independent of the reference. Useful when the reference mirror might be deleted or moved.
+How does `repo` support multi-manifest workspaces?	Since repo 2.17+, `repo init --submanifests` allows a manifest to reference other manifest repos via `<submanifest>` elements. Each submanifest manages its own set of projects, enabling a workspace to combine projects from multiple organizations or manifest sources under a single `repo sync`.
+
+# ==========================================
+# 10. Troubleshooting
+# ==========================================
+
+What does `repo sync -d` do?	Detaches each project's HEAD to the exact revision specified in the manifest, discarding any local topic branches. Useful for returning to a clean manifest state when local branches have diverged or when you want a pristine build environment.
+What is `repo sync --force-sync` and when should you use it?	Forces repo to re-clone a project if its Git directory is corrupted or in a bad state. It removes the local `.git` data for the affected project and clones fresh. Use as a last resort when normal sync fails with Git errors about corrupt objects or missing refs.
+How do you recover from a `repo sync` merge conflict?	The conflicting project is left in a merge state. You can: (1) Resolve conflicts manually, then `git add` and `git rebase --continue`. (2) `git rebase --abort` to cancel and keep your old branch. (3) `repo sync -d` to discard local changes entirely. Re-running `repo sync` after resolution continues syncing remaining projects.
+How do you debug manifest issues in repo?	(1) `repo manifest -r` — dump the effective resolved manifest. (2) `repo info <project>` — check project metadata. (3) `repo list` — show all projects and their paths. (4) Check `.repo/manifest.xml` — the symlink to the active manifest. (5) Check `.repo/local_manifests/` for overrides. (6) `repo --trace sync` — enable verbose tracing.
+What does `repo --trace` do?	Enables verbose tracing output for any repo command. Shows the underlying Git commands that repo executes, HTTP/SSH requests, and timing information. Invaluable for diagnosing slow syncs, authentication failures, or unexpected behavior.
+How does `repo sync` handle a failed sync?	If some projects fail to sync (network issues, conflicts), `repo sync -f` continues past errors. After fixing the issue, re-running `repo sync` retries only the failed projects. For persistent conflicts, `repo sync -d` discards local changes and resets to the manifest revision.
+
+# ==========================================
+# 11. Repo Hooks
+# ==========================================
+
+What are repo pre-upload hooks?	Scripts executed before `repo upload` pushes changes to Gerrit. Defined in a dedicated hooks project specified by `<repo-hooks>` in the manifest. Common checks: code formatting (clang-format, google-java-format), commit message conventions, forbidden file patterns, license headers. Failures block the upload.
+How are repo hooks configured in the manifest?	Using `<repo-hooks in-project="platform/tools/repohooks" enabled-list="pre-upload" />` inside the manifest. The `in-project` attribute points to a project containing hook scripts. `enabled-list` specifies which hooks are active. The hook scripts are Python modules with a `main()` function.
+What is the difference between repo hooks and Git hooks?	Git hooks run per-repository (in `.git/hooks/`) and execute on local Git operations (commit, push, etc.). Repo hooks run across the entire multi-repo workspace before `repo upload` and are defined centrally in the manifest. Repo hooks are shared and enforced for all developers; Git hooks are typically local.
+
+# ==========================================
+# 12. AOSP Workflow
+# ==========================================
+
+What is the typical AOSP development workflow with repo?	(1) `repo init -u <manifest-url> -b <branch>` — initialize workspace. (2) `repo sync -j8` — download all projects. (3) `source build/envsetup.sh && lunch <target>` — set up build environment. (4) `repo start <branch> <project>` — start working. (5) Edit, build, test. (6) `git add && git commit` — commit locally. (7) `repo upload` — submit to Gerrit for review.
+How does AOSP use manifest branches for different Android versions?	Each Android release has a manifest branch (e.g., `android-14.0.0_r1`, `android-15.0.0_r1`). Running `repo init -b android-14.0.0_r1` checks out the manifest for that release, which pins all 800+ projects to the revisions that made up that release. This ensures build reproducibility for any past Android version.
+How can you bisect across multiple repos with `repo`?	Use pinned manifests: generate snapshots at known-good and known-bad points, then binary-search by syncing to manifests at intermediate points. Alternatively, if the bug is in one repo, use `git bisect` within that project while keeping other repos at a fixed revision via `repo sync -d`.
+How do you submit a cross-project change in AOSP using repo?	(1) `repo start <topic-branch>` in each affected project. (2) Make changes and commit in each project. (3) `repo upload` — assign the same Gerrit topic to all changes. (4) Review and approve all changes. (5) Submit as a topic — Gerrit merges all changes atomically. Without topic submission, dependent changes could land out of order and break the build.
+
+# ==========================================
+# 13. Practical Scenarios & Concrete Solutions
+# ==========================================
+
+# --- Workspace Setup ---
+
+How do you initialize an AOSP workspace for Android 14?	`mkdir aosp && cd aosp && repo init -u https://android.googlesource.com/platform/manifest -b android-14.0.0_r1 && repo sync -j$(nproc) -c --no-tags`. Use `-c` to fetch only the current branch and `--no-tags` to skip tags and save time.
+How do you initialize a workspace using only a subset of AOSP?	`repo init -u <manifest-url> -b <branch> -g default,-notdefault,<group>`. For example, to sync only the platform and tools: `repo init -g default,platform,tools`. Then `repo sync -j8`. This avoids downloading device-specific repos you don't need.
+How do you set up a local AOSP mirror for your team?	(1) `repo init -u https://android.googlesource.com/platform/manifest --mirror`. (2) `repo sync -j16`. (3) Other developers clone from the mirror: `repo init -u /path/to/mirror/platform/manifest.git --reference=/path/to/mirror`. This makes subsequent syncs fast and reduces external bandwidth.
+How do you create a second workspace for a different Android branch without re-downloading everything?	`mkdir aosp-15 && cd aosp-15 && repo init -u <manifest-url> -b android-15.0.0_r1 --reference=/path/to/aosp-14 --dissociate && repo sync -j8`. The `--reference` shares objects from the existing workspace; `--dissociate` makes the new workspace independent afterward.
+How do you switch an existing workspace to a different Android release branch?	`repo init -b android-15.0.0_r1 && repo sync -d -j8`. The `-d` flag detaches all projects to the new manifest revision. Warning: any local topic branches remain but are no longer tracking the new manifest revisions — use `repo abandon` to clean up old branches first.
+
+# --- Daily Development ---
+
+How do you start working on a bug fix in `frameworks/base`?	`cd frameworks/base && repo start fix-bug-12345 . && [edit files] && git add -A && git commit -m "Fix null pointer in ActivityManager" && repo upload .`. The `.` restricts `repo start` and `repo upload` to the current project.
+How do you make changes across two repos atomically (e.g., frameworks/base and packages/apps/Settings)?	`repo start my-feature frameworks/base packages/apps/Settings`. Edit and commit in both projects. Then `repo upload --label=Verified+1 -t my-topic frameworks/base packages/apps/Settings`. The `-t my-topic` assigns the same Gerrit topic. Submit using "Submit Whole Topic" in Gerrit.
+How do you update a Gerrit change with a new patchset?	In the project directory: `git add -A && git commit --amend` (keep the same Change-Id in the message). Then `repo upload .`. Gerrit detects the same Change-Id and creates a new patchset on the existing change instead of a new review.
+How do you squash multiple local commits into one before uploading?	`git rebase -i HEAD~<N>` where N is the number of commits. Mark all but the first as `squash` or `fixup`. Save and close. The result is a single commit with one Change-Id, which uploads as one Gerrit change. `repo upload` then pushes it.
+How do you check if you have unuploaded work in any project?	`repo overview` — shows all branches with commits not yet uploaded to Gerrit, organized by project. Alternatively, `repo status` shows files with local changes. For a more detailed view: `repo forall -c 'echo $REPO_PATH; git log --oneline @{u}..HEAD' 2>/dev/null`.
+How do you check which projects have uncommitted changes?	`repo status` — shows modified/added/deleted files across all projects. To filter to just project names with changes: `repo status | grep "^project"`. For a quick summary: `repo forall -c 'if [ -n "$(git status --porcelain)" ]; then echo $REPO_PATH; fi'`.
+How do you discard all local changes and return to a clean manifest state?	`repo sync -d --force-sync -j8 && repo forall -c 'git clean -fdx && git checkout -- .'`. The `-d` detaches to manifest revisions, `--force-sync` re-clones corrupted repos, `git clean` removes untracked files, and `git checkout -- .` discards unstaged changes.
+How do you stash changes in a specific project before syncing?	`cd <project-path> && git stash push -m "WIP before sync" && repo sync <project-path> && git stash pop`. Repo doesn't have a built-in stash command — use Git stash directly within the project directory.
+
+# --- Working with Others' Changes ---
+
+How do you test someone else's Gerrit change locally?	`repo download <project> <change-number>`. For example: `repo download platform/frameworks/base 12345`. This fetches the change and checks it out in the project. Add `/<patchset>` to get a specific patchset: `repo download platform/frameworks/base 12345/3`.
+How do you cherry-pick a Gerrit change into your topic branch?	(1) `repo download <project> <change-number>` to fetch it. (2) Note the commit hash. (3) Switch to your branch: `git checkout my-feature`. (4) `git cherry-pick <commit-hash>`. (5) Resolve any conflicts, commit, and `repo upload`.
+How do you view the latest commit in every project?	`repo forall -c 'echo "=== $REPO_PATH ===" && git log --oneline -1'`. This runs `git log` in each project and prints the path as a header. Add `| head -100` to limit output if there are hundreds of projects.
+How do you find which project contains a specific file?	`repo forall -c 'if [ -f "<filename>" ]; then echo "$REPO_PATH/<filename>"; fi'`. Replace `<filename>` with the file you're looking for. For source code searches: `repo grep "search_term"` is faster.
+How do you find all projects that have been modified in the last 7 days?	`repo forall -c 'if [ "$(git log --oneline --since="7 days ago" -1 2>/dev/null)" ]; then echo "$REPO_PATH"; fi'`. This runs `git log` in each project and prints those with recent commits.
+
+# --- Branch & Cleanup Operations ---
+
+How do you list all your active topic branches across the workspace?	`repo branches` — shows every topic branch, which projects it exists in, and how many commits it has. Output format: branch name, project count, and project list. Branches with commits pending upload are highlighted.
+How do you delete a topic branch you no longer need?	`repo abandon <branch-name>` — deletes the branch across all projects that have it. If you want to limit it to specific projects: `repo abandon <branch-name> <project1> <project2>`. This is the opposite of `repo start`.
+How do you clean up branches that have already been merged?	`repo prune` — removes topic branches across all projects where the branch has been merged into the upstream. Run this periodically to keep your workspace clean. It's equivalent to `git branch -d` on merged branches in every repo.
+How do you reset a single project to its manifest revision?	`cd <project-path> && git checkout -f m/<branch>` (where `<branch>` is the manifest branch, e.g., `m/main`). Or: `repo sync -d <project-path>` to detach to the manifest revision. The `m/` prefix is a repo-managed ref pointing to the manifest revision.
+
+# --- Manifest Manipulation ---
+
+How do you add a personal repository to your workspace without modifying the shared manifest?	Create `.repo/local_manifests/my_projects.xml` with content like: `<?xml version="1.0" encoding="UTF-8"?><manifest><remote name="my-remote" fetch="https://github.com/me/" /><project name="my-tool" path="vendor/my-tool" remote="my-remote" revision="main" /></manifest>`. Then `repo sync vendor/my-tool`.
+How do you swap a project's remote to your own fork?	In `.repo/local_manifests/local_manifest.xml`: `<remove-project name="platform/frameworks/base" />` followed by `<project name="frameworks-base" path="frameworks/base" remote="my-fork" revision="my-branch" />`. This replaces the AOSP repo with your fork at the same path.
+How do you pin a specific project to a fixed commit SHA?	In `.repo/local_manifests/pin.xml`: `<extend-project name="platform/frameworks/base" revision="abc123def456..." />`. After `repo sync`, that project will be checked out at the specified commit regardless of what the main manifest specifies.
+How do you generate a pinned manifest for a release build?	`repo manifest -r -o release_manifest.xml`. This captures every project's exact commit SHA. Store this file in version control. To reproduce: `repo init -m release_manifest.xml && repo sync -j8`. Every project will be at the exact same revision as when the snapshot was taken.
+How do you see which projects changed between two manifest snapshots?	`repo diffmanifests release_v1.xml release_v2.xml`. This shows which projects were added, removed, or changed revision. To generate the manifests first: `repo manifest -r -o release_v1.xml` at time 1 and `repo manifest -r -o release_v2.xml` at time 2.
+How do you view the effective resolved manifest (with all includes applied)?	`repo manifest -o effective.xml` — writes the fully resolved manifest to a file with all `<include>` elements expanded and local manifests applied. Without `-o`, it prints to stdout. Useful for debugging when the manifest is split across multiple files.
+
+# --- Sync Scenarios ---
+
+How do you sync only a single project instead of the entire tree?	`repo sync <project-path>` — for example, `repo sync frameworks/base`. This fetches and updates only that project. Much faster than syncing 800+ repos when you only care about one.
+How do you resume a failed sync?	Simply re-run `repo sync -j8`. Repo skips projects that are already up to date and retries only those that failed. Add `-f` to force continuing past errors: `repo sync -j8 -f`. Check which projects still fail with `repo status`.
+How do you sync without rebasing your local changes?	`repo sync --no-rebase -j8`. By default, `repo sync` rebases local branches on top of the updated upstream. With `--no-rebase`, it fetches but does not rebase — you can rebase manually later with `repo rebase` or `git rebase` in each project.
+How do you do a fresh full sync discarding everything?	`repo sync -d --force-sync -j8`. The `-d` detaches all projects to manifest revisions, and `--force-sync` re-clones any project whose Git state is corrupted. Follow up with `repo forall -c 'git clean -fdx'` to remove all untracked files (build outputs, etc.).
+How do you fetch only metadata (not file contents) to save disk space?	`repo init --partial-clone --clone-filter=blob:none -u <url> -b <branch> && repo sync -j8`. This uses Git's partial clone: tree objects are fetched but file blobs are downloaded on demand when you access them. Reduces initial download from ~300GB to ~100GB for AOSP.
+How do you shallow-clone the entire AOSP to save disk and time?	`repo init -u <url> -b <branch> --depth=1 && repo sync -j8 -c --no-tags`. `--depth=1` fetches only the latest commit per project, `-c` syncs current branch only, `--no-tags` skips tags. Suitable for builds but not for `git log`, `git blame`, or bisect operations.
+
+# --- Mass Operations with forall ---
+
+How do you run `git clean` across all projects?	`repo forall -c 'git clean -fdx'`. This removes all untracked files and directories (including build outputs, `.idea/`, etc.) in every project. Use with caution — it's irreversible. Add `-p` for parallel execution: `repo forall -p -c 'git clean -fdx'`.
+How do you search for a string across the entire AOSP source tree?	`repo grep "pattern"` for tracked files. For more control: `repo forall -c 'git grep -n "pattern"'`. The `repo grep` variant is faster and prefixes results with the project path automatically.
+How do you check which branch each project is on?	`repo forall -c 'echo "$REPO_PATH: $(git rev-parse --abbrev-ref HEAD)"'`. This prints the current branch for every project. Projects on the manifest revision show `(no branch)` or `HEAD` (detached).
+How do you list projects that have diverged from the manifest revision?	`repo forall -c 'if [ "$(git rev-parse HEAD)" != "$(git rev-parse m/main 2>/dev/null)" ]; then echo "$REPO_PATH"; fi'`. Replace `m/main` with your manifest branch. This compares the current HEAD to the manifest revision.
+How do you count the number of local commits in all projects?	`repo forall -c 'count=$(git rev-list --count @{u}..HEAD 2>/dev/null); if [ "$count" -gt 0 ]; then echo "$REPO_PATH: $count commits"; fi'`. This shows only projects with unpushed commits and the count.
+How do you apply a common Git config across all projects?	`repo forall -c 'git config user.email "me@example.com" && git config user.name "My Name"'`. This sets the config in each project's `.git/config`. Alternatively, set it globally with `git config --global` (once) which applies to all repos.
+
+# --- CI/CD & Automation ---
+
+How do you reproduce an exact build from a specific date?	(1) Find the manifest branch active at that date. (2) `repo init -b <branch>` then `cd .repo/manifests && git log --before="2024-01-15" -1 --format=%H` to find the manifest commit. (3) `git checkout <sha>`, go back to root, `repo sync -d -j8`. Or better: use a pinned manifest saved at that date with `repo init -m saved_manifest.xml`.
+How do you automate `repo upload` in a CI pipeline?	`repo upload --no-verify --yes --label=Verified+1 -t ci-topic <project>`. `--no-verify` skips pre-upload hooks (CI is the verifier), `--yes` auto-confirms prompts, `--label` sets a Gerrit label. The CI system should have a service account with appropriate Gerrit permissions.
+How do you set up a build that tests a specific Gerrit change?	In CI: (1) `repo init -u <url> -b <branch> && repo sync -d -j8` for a clean baseline. (2) `repo download <project> <change-number>/<patchset>` to apply the change. (3) Build and test. (4) Post the Verified label back to Gerrit. This is how presubmit CI works in AOSP.
+How do you create a reproducible snapshot of your workspace for a release?	`repo manifest -r -o manifests/release_$(date +%Y%m%d).xml && cd .repo/manifests && git add . && git commit -m "Release snapshot $(date +%Y%m%d)" && git push`. The pinned manifest is committed to the manifest repo itself, ensuring it's version-controlled and available to anyone.
+
+# --- Troubleshooting Scenarios ---
+
+What do you do when `repo sync` says "error: Cannot checkout <project>: Unsaved changes"?	You have uncommitted changes in that project. Options: (1) `cd <project> && git stash` then retry sync. (2) `cd <project> && git checkout -- .` to discard changes. (3) `repo sync -d <project>` to force detach (loses local changes). (4) `git add && git commit` to save your work, then sync.
+What do you do when `repo upload` fails with "no branches ready for upload"?	You didn't use `repo start` to create a topic branch — you're on a detached HEAD or the manifest branch directly. Fix: `repo start my-branch . && git cherry-pick HEAD` (re-apply your commit on the topic branch), then `repo upload .`.
+What do you do when a project is in a "broken" state and `repo sync` keeps failing?	`repo sync --force-sync <project-path>`. This deletes the corrupt `.git` data for that project and re-clones it from scratch. If that fails too, manually delete the project: `rm -rf <project-path> .repo/projects/<path>.git .repo/project-objects/<name>.git` and run `repo sync <project-path>`.
+What do you do when `repo init` fails with "fatal: Cannot get repo launcher version"?	Your repo launcher is outdated. Update it: `curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo && chmod a+x ~/bin/repo`. Then retry `repo init`. Also ensure Python 3.6+ is installed: `python3 --version`.
+What do you do when `repo upload` says "Change-Id missing"?	The Gerrit commit-msg hook wasn't installed or the commit was created without it. Fix: (1) Install the hook: `scp -p <gerrit>:hooks/commit-msg .git/hooks/` or `repo sync` to let repo reinstall it. (2) Amend the commit: `git commit --amend` — the hook will add the Change-Id. (3) `repo upload` again.
+What do you do when manifests are out of sync after switching branches?	`repo init -b <new-branch>` to switch the manifest branch, then `repo sync -d -j8` to fetch and detach all projects to the new revisions. If projects still show old content: `repo forall -c 'git clean -fdx'` to remove stale build files and untracked content.
+How do you fix "error: Exited sync due to gc errors"?	Git garbage collection failed in one or more projects. Fix: `repo forall -c 'git gc --auto 2>/dev/null'` to retry GC individually. If a specific project fails: `cd <project> && git reflog expire --expire=now --all && git gc --prune=now --aggressive`. Last resort: `repo sync --force-sync <project>` to re-clone.
+How do you diagnose why `repo sync` is slow?	`repo --trace sync -j1 2>&1 | tee sync_debug.log`. The `--trace` flag shows Git commands and network details, and `-j1` serializes operations for clearer output. Look for: slow DNS, proxy issues, large objects, or projects with many refs. Common fix: add `--no-tags -c` to reduce data fetched.

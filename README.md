@@ -10,7 +10,7 @@ AnkiDecks/
 ├── Cpp/           # Flashcard decks for C++ programming
 ├── Android/       # Flashcard decks for Android development
 ├── Security/      # Flashcard decks for cybersecurity fundamentals
-├── Git/           # Flashcard decks for Git & version control
+├── Versioning/    # Flashcard decks for Git, repo tool & version control
 ├── Linux/         # Flashcard decks for Linux fundamentals & administration
 └── English/       # Technical English vocabulary (DE → EN)
 ```
@@ -23,7 +23,7 @@ AnkiDecks/
 | `Cpp/` | C++ fundamentals, STL, memory management, OOP, modern C++ features |
 | `Android/` | Android app development, AOSP internals, Android Automotive OS (AAOS), AAOS security — beginner through pro (12 decks) |
 | `Security/` | Cybersecurity fundamentals — beginner, intermediate, and pro levels |
-| `Git/` | Git & version control — basics, workflows, internals, security, and Git at scale |
+| `Versioning/` | Git & version control — basics, workflows, internals, security, Git at scale, and AOSP repo tool |
 | `Linux/` | Linux fundamentals, shell scripting, system administration, kernel internals, eBPF, and performance tuning |
 | `English/` | Technical English IT/programming vocabulary for German speakers (DE → EN) |
 
