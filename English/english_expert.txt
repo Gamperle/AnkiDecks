@@ -1,0 +1,492 @@
+# Technical English — Expert (DE → EN)
+# Format: Front (Deutsch)	Back (English)
+
+# ============================================================
+# Section 19: Compiler & Language Theory
+# ============================================================
+
+Lexikalische Analyse / Tokenisierung	lexical analysis / tokenization
+Token / Lexem	token / lexeme
+Parser / Syntaxanalysator	parser
+Abstrakter Syntaxbaum (AST)	abstract syntax tree (AST)
+Kontextfreie Grammatik	context-free grammar (CFG)
+Backus-Naur-Form	BNF (Backus-Naur Form)
+Erweiterte Backus-Naur-Form	EBNF (Extended Backus-Naur Form)
+Semantische Analyse	semantic analysis
+Zwischencode / Intermediate Representation	intermediate representation (IR)
+Codeerzeugung	code generation
+Codeoptimierung	code optimization
+Kompilierzeit	compile time
+Laufzeit	runtime
+Just-in-Time-Kompilierung	JIT (Just-in-Time) compilation
+Ahead-of-Time-Kompilierung	AOT (Ahead-of-Time) compilation
+Bytecode	bytecode
+Maschinencode	machine code / native code
+Befehlssatzarchitektur	ISA (Instruction Set Architecture)
+Registerallokation	register allocation
+Schleifenabrollung	loop unrolling
+Inline-Ersetzung / Inlining	inlining / inline expansion
+Tote-Code-Eliminierung	dead code elimination
+Konstantenfaltung	constant folding
+Konstantenweitergabe	constant propagation
+Escape-Analyse	escape analysis
+Devirtualisierung	devirtualization
+Typinferenz	type inference
+Typsystem	type system
+Starke Typisierung	strong typing
+Schwache Typisierung	weak typing
+Statische Typisierung	static typing
+Dynamische Typisierung	dynamic typing
+Typensicherheit	type safety
+Generische Programmierung	generic programming / generics
+Kovarianz	covariance
+Kontravarianz	contravariance
+Algebraischer Datentyp	algebraic data type (ADT)
+Summentyp	sum type / tagged union
+Produkttyp	product type
+Musterabgleich	pattern matching
+Monade	monad
+Funktor (funktionale Programmierung)	functor
+Referenzielle Transparenz	referential transparency
+Reine Funktion	pure function
+Seiteneffektfreiheit	side-effect-free / pure
+Träge Auswertung / Lazy Evaluation	lazy evaluation
+Gierige Auswertung / Eager Evaluation	eager evaluation
+Teilanwendung	partial application
+Currying	currying
+Funktionen höherer Ordnung	higher-order functions
+Abschluss / Closure	closure
+Lambda-Ausdruck	lambda expression
+Endrekursion	tail recursion
+Endrekursionsoptimierung	tail call optimization (TCO)
+Garbage-Collection-Algorithmus	garbage collection algorithm
+Referenzzählung	reference counting
+Mark-and-Sweep-Algorithmus	mark-and-sweep (algorithm)
+Generationelle Garbage Collection	generational garbage collection
+Speicherbarriere	memory barrier / memory fence
+
+# ============================================================
+# Section 20: Operating Systems & Low-Level Concepts
+# ============================================================
+
+Kernel / Betriebssystemkern	kernel
+Benutzermodus	user mode / user space
+Kernelmodus	kernel mode / kernel space
+Systemaufruf / Syscall	system call (syscall)
+Kontextwechsel	context switch
+Prozessplanung / Scheduling	scheduling
+Planungsalgorithmus	scheduling algorithm
+Zeitscheibe	time slice / time quantum
+Präemptive Planung	preemptive scheduling
+Kooperative Planung	cooperative scheduling
+Prozesszustand	process state
+Prozesssteuerungsblock	PCB (Process Control Block)
+Elternprozess	parent process
+Kindprozess	child process
+Verwaister Prozess	orphan process
+Zombieprozess	zombie process
+Daemon / Hintergrundprozess	daemon
+Fork (Prozessgabelung)	fork
+Exec (Prozessersetzung)	exec
+Interprozesskommunikation (IPC)	IPC (Inter-Process Communication)
+Gemeinsamer Speicher / Shared Memory	shared memory
+Semaphor	semaphore
+Mutex (Gegenseitiger Ausschluss)	mutex (mutual exclusion)
+Bedingungsvariable	condition variable
+Nachrichtenübergabe	message passing
+Signal (Betriebssystem)	signal
+Pipeline / Pipe (Unix)	pipe
+Benannte Pipe / FIFO	named pipe / FIFO
+Socket (Unix-Domäne)	Unix domain socket
+Dateisystemtreiber	filesystem driver
+Blockgerät	block device
+Zeichengerät	character device
+Gerätetreiber	device driver
+Interrupt / Unterbrechung	interrupt
+Interrupt-Handler / Unterbrechungsroutine	interrupt handler / ISR (Interrupt Service Routine)
+DMA (Direkter Speicherzugriff)	DMA (Direct Memory Access)
+Seitentabelle	page table
+Seitenfehler	page fault
+Virtuelle Speicheradresse	virtual memory address
+Physische Speicheradresse	physical memory address
+Adressübersetzungspuffer / TLB	TLB (Translation Lookaside Buffer)
+Auslagerung / Swapping	swapping
+Auslagerungsdatei / Swap	swap (file / partition)
+Speicherschutz	memory protection
+Speicherschutzeinheit (MMU)	MMU (Memory Management Unit)
+POSIX-Standard	POSIX (Portable Operating System Interface)
+Dateibeschreiber / Dateideskriptor	file descriptor (fd)
+Inode / Indexknoten	inode
+Harte Verknüpfung	hard link
+Symbolische Verknüpfung	symbolic link / symlink
+Mounten / Einhängen (Dateisystem)	to mount
+Aushängen / Unmounten	to unmount
+Dateisystem-Journal	filesystem journal
+Journaling-Dateisystem	journaling filesystem
+Schreibbarriere	write barrier
+Dateisperre / Dateisperrung	file locking
+Mandatorische Dateisperre	mandatory locking
+Empfohlene Dateisperre	advisory locking
+
+# ============================================================
+# Section 21: Distributed Systems & Consensus
+# ============================================================
+
+Verteiltes System	distributed system
+Verteilter Algorithmus	distributed algorithm
+Knotenausfall	node failure
+Netzwerkpartitionierung	network partition
+Teilversagen / Partial Failure	partial failure
+Byzantine Fehler	Byzantine fault
+Byzantinische Fehlertoleranz	Byzantine fault tolerance (BFT)
+Absturzfehlertoleranz	crash fault tolerance (CFT)
+Fehlermodell	failure model
+Fehlererkennung	failure detection
+Herzschlag / Heartbeat	heartbeat
+Zeitüberschreitung (Verteilte Systeme)	timeout (distributed systems)
+Phi-Vermutungsbasierter Fehlerdetektor	phi accrual failure detector
+Paxos-Algorithmus	Paxos (algorithm)
+Raft-Algorithmus	Raft (algorithm)
+Zustandsmaschinen-Replikation	replicated state machine
+Verteilter Hash-Tabelle (DHT)	DHT (Distributed Hash Table)
+Konsistentes Hashing	consistent hashing
+Datenversionierung	data versioning
+Lese-Quorum	read quorum
+Schreib-Quorum	write quorum
+Lese-nach-Schreib-Konsistenz	read-your-writes consistency
+Monotone Lesekonsistenz	monotonic read consistency
+Sitzungskonsistenz	session consistency
+Starke Konsistenz	strong consistency
+Schwache Konsistenz	weak consistency
+Uhr-Skew / Zeitversatz	clock skew
+Logische Uhr	logical clock
+Lamport-Zeitstempel	Lamport timestamp
+Happens-Before-Beziehung	happens-before relation
+Kausale Ordnung	causal ordering
+Totale Ordnung	total ordering
+Partielle Ordnung	partial ordering
+Gossip-Protokoll	gossip protocol
+Epidemisches Protokoll	epidemic protocol
+Mitgliedschaftsprotokoll	membership protocol
+Splitbrain / Geteiltes Gehirn	split-brain
+Fechtung / Fencing	fencing
+Fencing-Token	fencing token
+Idempotenter Empfänger	idempotent receiver
+Genau-einmal-Zustellung	exactly-once delivery
+Mindestens-einmal-Zustellung	at-least-once delivery
+Höchstens-einmal-Zustellung	at-most-once delivery
+Outbox-Muster	outbox pattern
+Transaktionales Postfach	transactional outbox
+Abrufmuster / Polling-Publisher	polling publisher
+Transaktionsprotokoll-Tailing	transaction log tailing
+Change Data Capture (Änderungsdatenerfassung)	CDC (Change Data Capture)
+Stream-Verarbeitung	stream processing
+Mikro-Batch-Verarbeitung	micro-batch processing
+Ereigniszeitfenster	event time window
+Verarbeitungszeitfenster	processing time window
+Wasserzeichen (Stream-Verarbeitung)	watermark (stream processing)
+Spätankommende Daten	late-arriving data
+Zustandsbehaftete Verarbeitung	stateful processing
+Zustandslose Verarbeitung	stateless processing
+Prüfpunkt / Checkpoint	checkpoint
+Wiederherstellungspunkt	recovery point
+Wiedergabe / Replay	replay
+Zurückspulen / Rewind	rewind
+Offset (Nachrichtenwarteschlange)	offset (message queue)
+Verbrauchergruppe	consumer group
+Partitionsschlüssel	partition key
+Themenpartition	topic partition
+
+# ============================================================
+# Section 22: Kernel & Hardware-Level Vocabulary
+# ============================================================
+
+Monolithischer Kernel	monolithic kernel
+Mikrokernel	microkernel
+Ladebare Kernelmodule	loadable kernel modules (LKM)
+Kernelmodul laden	to load a kernel module (insmod / modprobe)
+Kernelmodul entladen	to unload a kernel module (rmmod)
+Kernel-Ringpuffer	kernel ring buffer (dmesg)
+Kernel-Panik	kernel panic
+Kernspeicherabbilddatei	kernel core dump / vmcore
+Kernel-Stackverfolgung	kernel stack trace
+Systemaufruf-Tabelle	syscall table
+Namespace (Kernel)	namespace (PID, net, mnt, user, uts, ipc, cgroup)
+Kontrollgruppe	cgroup (control group)
+Kontrollgruppen-Controller	cgroup controller
+Speicherbegrenzung (cgroup)	memory limit (cgroup)
+CPU-Gewichtung (cgroup)	CPU weight / CPU shares (cgroup)
+OOM-Killer	OOM killer (Out-of-Memory killer)
+OOM-Punkte / OOM-Score	OOM score
+Speicherüberbelegung	memory overcommit
+Seitenrückforderung	page reclaim
+Kernel-Slab-Allocator	slab allocator
+Buddy-Algorithmus	buddy allocator / buddy system
+Riesenseiten / Huge Pages	huge pages
+Transparente Riesenseiten	THP (Transparent Huge Pages)
+NUMA-Bewusstsein	NUMA awareness (Non-Uniform Memory Access)
+CPU-Affinität / CPU-Bindung	CPU affinity / CPU pinning
+Isolierte CPUs	isolated CPUs (isolcpus)
+Taktfrequenzregler	CPU frequency governor
+Unterbrechungsverteilung / IRQ-Balancing	IRQ balancing
+Softirq / Weiche Unterbrechung	softirq (soft interrupt)
+Tasklet	tasklet
+Arbeitswarteschlange	workqueue
+Kernel-Timer	kernel timer
+Hochpräzisionstimer	hrtimer (high-resolution timer)
+Lese-Kopier-Aktualisierung (RCU)	RCU (Read-Copy-Update)
+Spinlock / Drehschloss	spinlock
+Lese-/Schreibsperre	read-write lock (rwlock)
+Sequenzsperre	seqlock
+Speicherbarriere (Kernel)	memory barrier (mb, rmb, wmb)
+Atomare Operationen	atomic operations
+Compare-and-Swap / Vergleichen-und-Tauschen	CAS (Compare-and-Swap)
+Speicherordnungs-Semantik	memory ordering semantics
+Koheränzprotokoll (Cache)	cache coherence protocol
+MESI-Protokoll	MESI protocol (Modified, Exclusive, Shared, Invalid)
+Cache-Zeile	cache line
+Cache-Thrashing	cache thrashing
+Falsche Teilung / False Sharing	false sharing
+Spekulative Ausführung	speculative execution
+Seitenkanalangriff	side-channel attack
+Meltdown / Spectre	Meltdown / Spectre
+eBPF (erweiterter Berkeley-Paketfilter)	eBPF (extended Berkeley Packet Filter)
+XDP (Express-Datenpfad)	XDP (eXpress Data Path)
+ftrace (Funktionsverfolgung)	ftrace (function tracer)
+kprobe (Kernel-Sonde)	kprobe (kernel probe)
+uprobe (Benutzersonde)	uprobe (user-space probe)
+Tracepoint / Ablaufverfolgungspunkt	tracepoint
+perf (Leistungsanalyse-Tool)	perf (performance analysis tool)
+Systemzustandsbericht	system activity report (sar)
+
+# ============================================================
+# Section 23: Formal Methods & Correctness
+# ============================================================
+
+Formale Verifikation	formal verification
+Modellprüfung / Model Checking	model checking
+Zustandsraum	state space
+Zustandsexplosion	state space explosion
+Temporale Logik	temporal logic
+LTL (Lineare Temporale Logik)	LTL (Linear Temporal Logic)
+CTL (Baumtemporale Logik)	CTL (Computation Tree Logic)
+Invariante	invariant
+Vorbedingung	precondition
+Nachbedingung	postcondition
+Schleifeninvariante	loop invariant
+Assertionsbeweis	assertion proof
+Korrektheitsbeweis	correctness proof
+Partielle Korrektheit	partial correctness
+Totale Korrektheit	total correctness
+Terminierung	termination
+Verklemmungsfreiheit	deadlock freedom
+Verhungerungsfreiheit	starvation freedom / livelock freedom
+Lebendigkeit / Liveness	liveness (property)
+Sicherheit / Safety (formale Eigenschaft)	safety (property)
+TLA+ (Temporale Logik der Aktionen)	TLA+ (Temporal Logic of Actions)
+Alloy (Modellierungssprache)	Alloy (modeling language)
+Z-Notation	Z notation
+Hoare-Logik	Hoare logic
+Hoare-Tripel	Hoare triple
+Spezifikationssprache	specification language
+Vertrag / Design by Contract	design by contract
+Vor- und Nachbedingungen (Vertrag)	preconditions and postconditions (contract)
+Eigenschaftsbasiertes Testen	property-based testing
+QuickCheck	QuickCheck
+Fuzzing / Fuzz-Testing	fuzzing / fuzz testing
+Symbolische Ausführung	symbolic execution
+Abstrakte Interpretation	abstract interpretation
+Statische Analyse	static analysis
+Datenflussanalyse	data flow analysis
+Kontrollflussanalyse	control flow analysis
+Kontrollfluss-Graph (CFG)	CFG (Control Flow Graph)
+Aufrufgraph	call graph
+Abhängigkeitsgraph	dependency graph
+
+# ============================================================
+# Section 24: Advanced Networking & Protocols
+# ============================================================
+
+OSI-Modell (Schichtenmodell)	OSI model (Open Systems Interconnection)
+Physikalische Schicht	physical layer (Layer 1)
+Sicherungsschicht	data link layer (Layer 2)
+Netzwerkschicht	network layer (Layer 3)
+Transportschicht	transport layer (Layer 4)
+Sitzungsschicht	session layer (Layer 5)
+Darstellungsschicht	presentation layer (Layer 6)
+Anwendungsschicht	application layer (Layer 7)
+TCP-Dreiwege-Handshake	TCP three-way handshake (SYN, SYN-ACK, ACK)
+TCP-Fenstergröße	TCP window size
+TCP-Überlastkontrolle	TCP congestion control
+Schneller Neuübertragung	fast retransmit
+Selektive Bestätigung (SACK)	SACK (Selective Acknowledgment)
+Nagle-Algorithmus	Nagle's algorithm
+TCP-Keep-Alive	TCP keep-alive
+Halb-offene Verbindung	half-open connection
+FIN-Paket	FIN packet
+RST-Paket	RST packet
+UDP-Datagramm	UDP datagram
+Multicast	multicast
+Broadcast	broadcast
+Anycast	anycast
+BGP (Border-Gateway-Protokoll)	BGP (Border Gateway Protocol)
+OSPF (Offener Kürzester-Pfad-Zuerst)	OSPF (Open Shortest Path First)
+Autonomes System (AS)	autonomous system (AS)
+Netzwerkpeering	network peering
+Internet Exchange Point (IXP)	IXP (Internet Exchange Point)
+QUIC-Protokoll	QUIC protocol
+HTTP/2	HTTP/2
+HTTP/3	HTTP/3
+Server-Push (HTTP/2)	server push (HTTP/2)
+Multiplexing (HTTP/2)	multiplexing (HTTP/2)
+Stream-Priorisierung	stream prioritization
+Kopfkomprimierung (HPACK/QPACK)	header compression (HPACK / QPACK)
+gRPC-Streaming	gRPC streaming
+Bidirektionales Streaming	bidirectional streaming
+Server-gesendete Ereignisse	SSE (Server-Sent Events)
+Long Polling / Langes Abfragen	long polling
+Zweiphasen-Handshake (WebSocket)	WebSocket handshake
+Paketverlustrate	packet loss rate
+Jitter / Laufzeitschwankung	jitter
+QoS (Dienstgüte)	QoS (Quality of Service)
+Verkehrsformung	traffic shaping
+Verkehrsrichtlinie	traffic policy
+Tiefe Paketinspektion	DPI (Deep Packet Inspection)
+Netzwerkpaketvermittlung	packet switching
+Leitungsvermittlung	circuit switching
+Overlay-Netzwerk	overlay network
+Underlay-Netzwerk	underlay network
+VXLAN (Virtuelles erweiterbares LAN)	VXLAN (Virtual Extensible LAN)
+Software-Defined Networking (SDN)	SDN (Software-Defined Networking)
+Netzwerkfunktionsvirtualisierung	NFV (Network Functions Virtualization)
+
+# ============================================================
+# Section 25: Data Engineering & ML Ops Vocabulary
+# ============================================================
+
+Datenpipeline	data pipeline
+Datenaufnahme / Ingestion	data ingestion
+Datentransformation	data transformation
+Datenbereinigung	data cleansing / data cleaning
+Datenqualität	data quality
+Datenherkunft / Data Lineage	data lineage
+Datenkatalog	data catalog
+Metadatenverwaltung	metadata management
+Daten-Governance	data governance
+Hauptdatenverwaltung	master data management (MDM)
+Batch-Verarbeitung	batch processing
+Echtzeitverarbeitung	real-time processing
+Nahe-Echtzeitverarbeitung	near-real-time processing
+Stream-Verarbeitung	stream processing
+Datenverteilungsformat (Parquet, Avro, ORC)	columnar format (Parquet, Avro, ORC)
+Schema-auf-Lesen	schema-on-read
+Schema-auf-Schreiben	schema-on-write
+Schema-Registrierung	schema registry
+Datensee / Data Lake	data lake
+Lakehouse	lakehouse
+Data Mesh	data mesh
+Datenprodukt	data product
+Datenanbieter / Data Producer	data producer
+Datennutzer / Data Consumer	data consumer
+Feature Store	feature store
+Merkmalsextraktion / Feature Engineering	feature engineering
+Trainingspiepeline	training pipeline
+Inferenz / Vorhersage	inference
+Modellbereitstellung	model serving / model deployment
+Modellversionierung	model versioning
+Modellregistrierung	model registry
+Modellüberwachung	model monitoring
+Modellabweichung / Model Drift	model drift
+Datenabweichung / Data Drift	data drift
+A/B-Test (ML)	A/B testing (ML)
+Schattenbereitstellung	shadow deployment
+Canary-Bereitstellung (ML)	canary deployment (ML)
+Experiment-Tracking	experiment tracking
+Hyperparameter-Optimierung	hyperparameter tuning
+Reproduzierbarkeit (ML)	reproducibility (ML)
+ML-Pipeline	ML pipeline
+DAG (Gerichteter azyklischer Graph)	DAG (Directed Acyclic Graph)
+Workflow-Orchestrierung	workflow orchestration
+Aufgabenplaner / Task Scheduler	task scheduler
+Idempotente Aufgabe	idempotent task
+Datenpartitionierung (nach Datum, Region)	data partitioning (by date, region)
+Kompaktierung (Daten)	compaction
+Datenanreicherung	data enrichment
+Nachschlagetabelle / Lookup	lookup table
+Dimensionstabelle	dimension table
+Faktentabelle	fact table
+Langsam ändernde Dimension	SCD (Slowly Changing Dimension)
+Datenüberprüfung / Datenvalidierung	data validation
+Datenvertrag	data contract
+
+# ============================================================
+# Section 26: Advanced Adjectives, Adverbs & Phrases
+# ============================================================
+
+Grundlegend / Elementar	fundamental / elementary
+Umfassend / Ganzheitlich	comprehensive / holistic
+Eingehend / Tiefgehend	in-depth / thorough
+Geringfügig / Unwesentlich	negligible / insignificant
+Erheblich / Beträchtlich	significant / substantial
+Entscheidend / Kritisch	crucial / critical
+Unverzichtbar / Unerlässlich	essential / indispensable
+Vorübergehend / Vergänglich	transient / temporary / ephemeral
+Dauerhaft / Persistent	persistent / permanent / durable
+Belastbar / Widerstandsfähig	resilient / robust
+Spröde / Zerbrechlich (System)	brittle / fragile
+Deterministisch	deterministic
+Vorhersagbar	predictable
+Reproduzierbar	reproducible
+Nachvollziehbar / Rückverfolgbar	traceable / auditable
+Transparent (System)	transparent (system)
+Undurchsichtig / Opak	opaque
+Eng gekoppelt	tightly coupled
+Lose gekoppelt	loosely coupled / decoupled
+Monolithisch	monolithic
+Modular	modular
+Granular / Feinkörnig	granular / fine-grained
+Grobkörnig	coarse-grained
+Zustandslos	stateless
+Zustandsbehaftet	stateful
+Nicht-blockierend	non-blocking
+Blockierend	blocking
+Synchron	synchronous
+Asynchron	asynchronous
+Gleichzeitig / Nebenläufig	concurrent
+Parallel	parallel
+Verteilbar	distributable
+Skalierbar (horizontal)	horizontally scalable
+Skalierbar (vertikal)	vertically scalable
+Idempotent	idempotent
+Atomar	atomic
+Konsistent	consistent
+Isoliert (Transaktion)	isolated (transaction)
+Dauerhaft (Transaktion)	durable (transaction)
+Fehleranfällig	error-prone / failure-prone
+Fehlerresistent	fault-tolerant / failure-resistant
+Selbstheilend	self-healing
+Selbstbeschreibend	self-describing / self-documenting
+Abwärtskompatibel	backward-compatible
+Vorwärtskompatibel	forward-compatible
+Interoperabel	interoperable
+Erweiterbar	extensible / expandable
+Austauschbar	interchangeable / pluggable
+Eingebettet (System)	embedded (system)
+Echtzeitfähig	real-time capable
+Latenzarm	low-latency
+Hochdurchsatz	high-throughput
+Bandbreitenintensiv	bandwidth-intensive
+Rechenintensiv	compute-intensive / CPU-bound
+Speicherintensiv	memory-intensive / memory-bound
+I/O-gebunden	I/O-bound
+Netzwerkgebunden	network-bound
+Von Natur aus unsicher	inherently insecure
+Veraltet / Altlast	legacy / outdated / obsolete
+Modernisieren	to modernize
+Ab sofort verfügbar	available immediately / generally available (GA)
+Vorabversion	pre-release / preview / beta
+Stabile Version	stable release / GA release
+Kandidatenversion	release candidate (RC)
+Langzeitunterstützung	LTS (Long-Term Support)
+Ende der Lebensdauer	EOL (End of Life)
+Ende der Unterstützung	end of support / EOS

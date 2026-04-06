@@ -35,6 +35,52 @@ Orchestrierung	orchestration
 Choreographie	choreography
 Diensterkennung	service discovery
 API-Gateway	API gateway
+Seitenwagencontainer / Sidecar	sidecar (pattern)
+Service Mesh / Dienstvermittlungsnetz	service mesh
+Rückverfolgbarkeit / Tracing	distributed tracing
+Beobachtbarkeit	observability
+Telemetrie	telemetry
+Korrelations-ID	correlation ID
+Ablaufverfolgung / Span	span (tracing)
+Lastabwurf / Load Shedding	load shedding
+Rückstaudruck / Backpressure	backpressure
+Wiederholungsstrategie	retry strategy
+Zeitüberschreitung / Timeout-Muster	timeout (pattern)
+Bulkhead-Muster / Schottmuster	bulkhead (pattern)
+Ausfallsicherer Rückfall / Fallback	fallback
+Anti-Korruptions-Schicht	anti-corruption layer
+Domänenereignis	domain event
+Befehl / Command (CQRS)	command (CQRS)
+Abfrage / Query (CQRS)	query (CQRS)
+Projektion	projection
+Ereignisspeicher / Event Store	event store
+Ereignisbeschaffung / Event Sourcing	event sourcing
+Materialisierende Sicht	materialized view
+Strangler-Fig-Muster	strangler fig pattern
+Servicevertrag	service contract
+Verbrauchergetriebene Vertragstests	consumer-driven contract testing
+Abwärtskompatible Änderung	backward-compatible change
+Vorwärtskompatible Änderung	forward-compatible change
+Schema-Evolution	schema evolution
+Nachrichtenumschlag / Message Envelope	message envelope
+Totbriefwarteschlange	dead letter queue (DLQ)
+Kompensationstransaktion	compensating transaction
+Zweiphasen-Commit	two-phase commit (2PC)
+Quorum	quorum
+Konsensalgorithmus	consensus algorithm
+Leiterwahl / Leader Election	leader election
+Verteilte Sperre	distributed lock
+CAP-Theorem	CAP theorem (Consistency, Availability, Partition tolerance)
+BASE-Prinzipien	BASE (Basically Available, Soft state, Eventually consistent)
+Dauerhaftigkeit / Durability	durability
+Linearisierbarkeit	linearizability
+Kausale Konsistenz	causal consistency
+Vektoruhr	vector clock
+Konfliktfreie replizierte Datentypen (CRDT)	CRDT (Conflict-free Replicated Data Types)
+Multi-Region-Bereitstellung	multi-region deployment
+Active-Active-Konfiguration	active-active configuration
+Active-Passive-Konfiguration	active-passive configuration
+Geo-Routing	geo-routing / geographic routing
 
 # ============================================================
 # Section 14: Security Vocabulary
@@ -73,6 +119,48 @@ Rollenbasierte Zugriffskontrolle	RBAC (Role-Based Access Control)
 Geringstmögliche Berechtigung	principle of least privilege
 Angriffsflächenreduzierung	attack surface reduction
 Sichere Softwareentwicklung	secure software development lifecycle (SDLC)
+Sicherheitsrichtlinie	security policy
+Einbruchserkennungssystem	IDS (Intrusion Detection System)
+Einbruchsverhinderungssystem	IPS (Intrusion Prevention System)
+Honigtopf / Honeypot	honeypot
+Sandbox / Isolierter Ausführungsbereich	sandbox
+Webanwendungs-Firewall	WAF (Web Application Firewall)
+Sitzungsübernahme	session hijacking
+Sitzungsfixierung	session fixation
+Deserialisierungsangriff	deserialization attack
+Verzeichnisdurchquerung	directory traversal / path traversal
+Dateieinbindung (lokal/remote)	file inclusion (LFI / RFI)
+Befehlseinschleusung	command injection
+Server-Side Request Forgery	SSRF (Server-Side Request Forgery)
+Sicherheitsheader	security headers
+Content-Security-Policy	CSP (Content Security Policy)
+Herkunftsrichtlinie / Same-Origin-Policy	same-origin policy
+Ressourcenteilung über Herkunftsgrenzen	CORS (Cross-Origin Resource Sharing)
+JsonWebToken	JWT (JSON Web Token)
+Multifaktor-Authentifizierung	MFA (Multi-Factor Authentication)
+Einmalanmeldung / Single Sign-On	SSO (Single Sign-On)
+Identitätsanbieter	identity provider (IdP)
+Verzeichnisdienst	directory service (e.g., LDAP, Active Directory)
+Zugriffstoken-Erneuerung	token refresh / token rotation
+Sitzungsablauf	session expiration / session timeout
+Kryptographische Streuwertfunktion	cryptographic hash function
+Symmetrische Verschlüsselung	symmetric encryption
+Asymmetrische Verschlüsselung	asymmetric encryption
+Schlüsselaustausch	key exchange
+Perfekte Vorwärtsgeheimhaltung	perfect forward secrecy (PFS)
+Geheimnisrotation	secret rotation
+Tresor für Geheimnisse	vault / secrets vault
+Sicherheitsbewertung	security assessment
+Risikoanalyse	risk analysis
+CVE (Gemeinsame Schwachstellenaufzählung)	CVE (Common Vulnerabilities and Exposures)
+CVSS (Bewertungssystem für Schwachstellen)	CVSS (Common Vulnerability Scoring System)
+Null-Vertrauen / Zero Trust	zero trust (architecture / model)
+Datenverschleierung / Obfuskation	obfuscation
+Datenmaskierung	data masking
+Datenklassifizierung	data classification
+Sicherheitsvorfall	security incident
+Forensik (IT)	(digital) forensics
+Protokollprüfung / Audit-Trail	audit trail / audit log
 
 # ============================================================
 # Section 15: Cloud & Infrastructure
@@ -110,6 +198,55 @@ Kontingent / Quote	quota
 Drosselung / Throttling	throttling
 Unveränderliche Infrastruktur	immutable infrastructure
 Deklarative Konfiguration	declarative configuration
+Imperative Konfiguration	imperative configuration
+Öffentliche Cloud	public cloud
+Private Cloud	private cloud
+Hybride Cloud	hybrid cloud
+Multi-Cloud	multi-cloud
+Cloud-nativ	cloud-native
+Zwölf-Faktoren-App	twelve-factor app
+Kontrolleben / Control Plane	control plane
+Datenebene / Data Plane	data plane
+API-Server (Kubernetes)	API server
+Scheduler (Kubernetes)	scheduler
+Knotenpool	node pool
+Automatische Skalierung (Pods)	horizontal pod autoscaler (HPA)
+DaemonSet	DaemonSet
+StatefulSet	StatefulSet
+ConfigMap	ConfigMap
+Geheimnisse (Kubernetes)	secrets (Kubernetes)
+Persistenter Speicher	persistent volume (PV)
+Speicheranforderung	persistent volume claim (PVC)
+Speicherklasse	storage class
+Eingangssteuerung / Ingress Controller	ingress controller
+Diensttyp (ClusterIP, NodePort, LoadBalancer)	service type (ClusterIP, NodePort, LoadBalancer)
+Netzwerkrichtlinie (Kubernetes)	network policy
+Ressourcenkontingent	resource quota
+Ressourcenanforderung	resource request
+Ressourcenlimit	resource limit
+Lebenszeichenprüfung	liveness probe
+Bereitschaftsprüfung	readiness probe
+Anlaufprüfung	startup probe
+Blaupause / CloudFormation-Stack	stack (CloudFormation)
+Zustandsdatei (Terraform)	state file (Terraform)
+Anbieter / Provider (Terraform)	provider (Terraform)
+Modul (Terraform)	module (Terraform)
+Infrastrukturplan	infrastructure plan
+Infrastrukturanwenden	infrastructure apply
+Drift-Erkennung	drift detection
+Konfigurations-Repository	configuration repository / GitOps repo
+GitOps	GitOps
+Abstimmungsschleife	reconciliation loop
+Servicekonto	service account
+IDaaS (Identität als Dienst)	IDaaS (Identity as a Service)
+Cloud-Sicherheitsgruppierung	security group
+Netzwerk-ACL	network ACL (Access Control List)
+VPC (Virtuelle Private Cloud)	VPC (Virtual Private Cloud)
+Peering (Netzwerk)	peering
+Transit-Gateway	transit gateway
+Lasten- und Kostenverteilung	cost allocation / cost attribution
+Abrechnungskennzeichnung	billing tag / cost tag
+Kontingentüberschreitung	quota exceeded
 
 # ============================================================
 # Section 16: Performance & Optimization
@@ -148,6 +285,49 @@ Vorabladen / Prefetching	prefetching
 Komprimierung	compression
 Minifizierung (Code)	minification
 Bündelung / Bundling	bundling
+Seitenauslagerung / Paging	paging
+Speicherfragmentierung	memory fragmentation
+Garbage Collection / Speicherbereinigung	garbage collection (GC)
+GC-Pause	GC pause / stop-the-world pause
+Heapspeicher	heap (memory)
+Stapelspeicher	stack (memory)
+Pufferüberlauf	buffer overflow
+Speicherzuweisung	memory allocation
+Speicherfreigabe	memory deallocation
+Objektpool	object pool
+Null-Kopie-Übertragung	zero-copy transfer
+Speicherabgebildete Datei	memory-mapped file
+Write-Ahead-Log	write-ahead log (WAL)
+Schreibverstärkung	write amplification
+Leseverstärkung	read amplification
+Abfragecache	query cache
+Ergebniszwischenspeicherung	result caching
+CDN-Cache	CDN cache
+Edge-Caching	edge caching
+Speicher-Tiering	storage tiering
+SSD-Abnutzung	SSD wear (write endurance)
+IOPS (Ein-/Ausgabeoperationen pro Sekunde)	IOPS (Input/Output Operations Per Second)
+Abfrageoptimierung	query optimization
+N+1-Abfrageproblem	N+1 query problem
+Langsame Abfrage	slow query
+Abfrage-Profiler	query profiler
+Fensterungsfunktion (SQL)	window function
+Materialisierte Sicht	materialized view
+Ereignisschleife / Event Loop	event loop
+Nicht-blockierende E/A	non-blocking I/O
+Reaktive Programmierung	reactive programming
+Gegendruck / Backpressure	backpressure
+Vorausschauende Skalierung	predictive scaling
+Lastspitzenbewältigung	peak load handling
+Kaltstart (Lambda / Serverless)	cold start
+Aufwärmphase	warm-up phase
+Vertikale Partitionierung	vertical partitioning
+Horizontale Partitionierung	horizontal partitioning / sharding
+Lesekonsistenz	read consistency
+Schreibkonsistenz	write consistency
+Abtastung / Sampling	sampling
+Telemetriedaten	telemetry data
+Verteilte Ablaufverfolgung	distributed tracing
 
 # ============================================================
 # Section 17: Technical Communication & Documentation
@@ -183,6 +363,39 @@ Glossar	glossary
 FAQ (Häufig gestellte Fragen)	FAQ (Frequently Asked Questions)
 Freigabe / Sign-off	sign-off / approval
 Entwurf / Draft	draft
+Endgültige Fassung	final version / final draft
+Rückmeldung geben	to give feedback / to provide feedback
+Überarbeitung	revision
+Korrekturlesen	to proofread
+Zusammenfassung	summary / executive summary
+Handlungsanweisung / Aktionspunkt	action item
+Nächste Schritte	next steps
+Tagesordnung	agenda
+Protokoll (Besprechung)	meeting minutes / meeting notes
+Nachfassen / Follow-up	follow-up
+Statusbericht	status report / progress report
+Wochenbericht	weekly report
+Entscheidungsvorlage	decision paper / decision brief
+Architekturdiagramm	architecture diagram
+Sequenzdiagramm	sequence diagram
+Komponentendiagramm	component diagram
+Bereitstellungsdiagramm	deployment diagram
+Datenflussdiagramm	data flow diagram
+Systemübersicht	system overview
+Schnittsteilenbeschreibung	interface description / interface specification
+Vorher-Nachher-Vergleich	before-and-after comparison
+Machbarkeitsbewertung	feasibility assessment
+Technischer Vorschlag	technical proposal
+Lektionen gelernt / Lessons Learned	lessons learned
+Wissenstransfer	knowledge transfer
+Dokumentation pflegen	to maintain documentation
+Veraltete Dokumentation	outdated documentation / stale documentation
+Interne Dokumentation	internal documentation
+Externe Dokumentation	external documentation / public-facing documentation
+API-Referenz	API reference
+Änderungsanforderung	change request (CR)
+Genehmigungsworkflow	approval workflow
+Freigabeprozess	release process / approval process
 
 # ============================================================
 # Section 18: Common Verbs & Phrases in Tech
@@ -228,3 +441,41 @@ Ausfallsicher	failsafe
 Quelloffene Software	open source (software)
 Herstellersperre / Vendor Lock-in	vendor lock-in
 Technische Schulden abbauen	to pay off technical debt / to reduce technical debt
+Etwas von Grund auf neu bauen	to build from scratch
+In Betrieb nehmen	to go live / to launch
+Pilotbetrieb	pilot / pilot run
+Stufenweise Einführung	phased rollout / gradual rollout
+Leistungsrückgang / Degradation	degradation / performance degradation
+Fehlerkaskade	cascading failure
+Selbstheilend	self-healing
+Etwas hart codieren	to hardcode
+Konfigurierbar machen	to make configurable / to externalize
+Umgebungsspezifisch	environment-specific
+Plattformunabhängig	platform-agnostic / platform-independent
+Nicht-invasive Änderung	non-breaking change
+Eine Ebene darüber abstrahieren	to abstract away
+Ausgründen / Auslagern (Code)	to extract / to refactor out
+Zusammenführen / Konsolidieren	to consolidate
+Vereinfachen	to simplify / to streamline
+Ein Feature hinter einem Flag verstecken	to feature-flag / to gate behind a flag
+Durchgehend testen	to test end-to-end
+Automatisiert prüfen	to validate automatically
+Manuell eingreifen	to intervene manually
+Nachträglich beheben	to fix retroactively / to backport a fix
+Auf eine neuere Version migrieren	to migrate / to upgrade
+Seitwärtskompatibel	cross-compatible / interoperable
+Einwegmigration	one-way migration
+Zurückmigrierbar	reversible migration
+Bei Bedarf skalieren	to scale on demand
+Lastverteilt	load-balanced
+Hochverfügbar betreiben	to run in high availability (HA)
+Einen Dienst ausrollen	to roll out a service
+Schrittweise einführen	to incrementally roll out / to canary
+Den Dienst beobachten	to observe / to monitor
+Kennzahlen erheben	to collect metrics / to instrument
+Alarme konfigurieren	to set up alerts / to configure alerting
+Das System unter Last setzen	to put under load / to stress-test
+Einen Engpass identifizieren	to identify a bottleneck
+Die Grundursache ermitteln	to perform root cause analysis (RCA)
+Einen Vorfall dokumentieren	to document an incident
+Rückblickend analysieren	to conduct a retrospective / to do a post-incident review

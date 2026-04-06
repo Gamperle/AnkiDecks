@@ -39,6 +39,59 @@ Rückstand / Legacy-Code	legacy code
 Ablaufdiagramm	flowchart
 Anwendungsfall	use case
 Beschränkung / Randbedingung	constraint
+Abhängigkeitsinjektion	dependency injection
+Umkehrung der Steuerung	inversion of control (IoC)
+Entwurfsprinzip	design principle
+Offen-Geschlossen-Prinzip	open-closed principle (OCP)
+Liskovsches Substitutionsprinzip	Liskov substitution principle (LSP)
+Schnittstellentrennungsprinzip	interface segregation principle (ISP)
+SOLID-Prinzipien	SOLID principles
+DRY-Prinzip (Wiederhole dich nicht)	DRY (Don't Repeat Yourself)
+KISS-Prinzip (Halte es einfach)	KISS (Keep It Simple, Stupid)
+YAGNI-Prinzip (Du wirst es nicht brauchen)	YAGNI (You Ain't Gonna Need It)
+Schätzung (Aufwand)	estimation
+Story Points	story points
+Geschwindigkeit (Scrum)	velocity
+Kanban-Board	Kanban board
+Produktinhaber	product owner
+Scrum Master	Scrum Master
+Impediment / Hindernis (Scrum)	impediment
+Burndown-Diagramm	burndown chart
+Definition of Done	definition of done (DoD)
+Definition of Ready	definition of ready (DoR)
+Technische Anforderung	technical requirement
+Funktionale Anforderung	functional requirement
+Nicht-funktionale Anforderung	non-functional requirement
+Architekturentscheidung	architectural decision
+Codeabdeckung	code coverage
+Statische Codeanalyse	static code analysis
+Codegeruch / Code Smell	code smell
+Toter Code	dead code
+Duplizierter Code	duplicated code / code duplication
+Umgebungsvariable	environment variable
+Feature Branch / Funktionszweig	feature branch
+Pull Request / Zusammenführungsanfrage	pull request (PR) / merge request (MR)
+Codebesitzer	code owner
+Pair Programming / Paarprogrammierung	pair programming
+Mob Programming / Teamprogrammierung	mob programming / ensemble programming
+Werkzeugkette / Toolchain	toolchain
+Build-System	build system
+Paketverwaltung	package management
+Abhängigkeitsbaum	dependency tree
+Semantische Versionierung	semantic versioning (SemVer)
+Breaking Change / Inkompatible Änderung	breaking change
+Rückwärtskompatibel	backward compatible
+Vorwärtskompatibel	forward compatible
+Iteration	iteration
+Inkrement	increment
+Epik / Epic (großes Feature)	epic
+Aufgabe / Task	task
+Unteraufgabe	subtask
+Fehlerbehebungszyklus	bug lifecycle
+Priorisierung	prioritization
+Risikobewertung	risk assessment
+Auswirkungsanalyse	impact analysis
+Übergabe / Handover	handover / handoff
 
 # ============================================================
 # Section 8: Databases & Data Management
@@ -80,6 +133,52 @@ Stored Procedure / Gespeicherte Prozedur	stored procedure
 Sicht / View	view
 Cursor (Datenbank)	cursor
 ORM (Objekt-Relationale Abbildung)	ORM (Object-Relational Mapping)
+Verbindungszeichenfolge	connection string
+Verbindungspool (Datenbank)	connection pool
+Datenbanksperre	database lock
+Lesesperre	read lock / shared lock
+Schreibsperre	write lock / exclusive lock
+Optimistisches Sperren	optimistic locking
+Pessimistisches Sperren	pessimistic locking
+Isolationsstufe	isolation level
+Read Committed	read committed
+Wiederholbares Lesen	repeatable read
+Serialisierbar (Isolationsstufe)	serializable
+Phantom-Lesen	phantom read
+Dirty Read / Unsauberes Lesen	dirty read
+Trigger (Datenbank)	trigger
+Zwischenspeicher / Cache (Datenbank)	database cache
+Abfrageoptimierung	query optimization
+Ausführungsplan	execution plan / query plan
+Volltextsuche	full-text search
+Sicherung (Datenbank)	database backup
+Punkt-in-Zeit-Wiederherstellung	point-in-time recovery
+Failover (Datenbank)	database failover
+Primärer Knoten	primary node / master
+Sekundärer Knoten	secondary node / replica
+Lese-Replikat	read replica
+Konsistenz (Daten)	data consistency
+Datenintegrität	data integrity
+Referenzielle Integrität	referential integrity
+Nullwert	null value
+Standardwert	default value
+Auto-Increment / Automatische Nummerierung	auto-increment
+Sequenz (Datenbank)	sequence
+Batch-Einfügung	batch insert / bulk insert
+Upsert (Einfügen oder Aktualisieren)	upsert (insert or update)
+ETL (Extrahieren, Transformieren, Laden)	ETL (Extract, Transform, Load)
+Data Warehouse / Datenlager	data warehouse
+Data Lake / Datenpool	data lake
+Sternschema	star schema
+Zeitreihendatenbank	time-series database
+Spaltenorientierte Datenbank	columnar database
+In-Memory-Datenbank	in-memory database
+Zwischenspeicher (Redis, Memcached)	cache (Redis, Memcached)
+Cache-Invalidierung	cache invalidation
+Datenmodell	data model
+Entity-Relationship-Diagramm	entity-relationship diagram (ERD)
+Kardinalität	cardinality
+Beziehung (1:1, 1:n, n:m)	relationship (one-to-one, one-to-many, many-to-many)
 
 # ============================================================
 # Section 9: Networking & Infrastructure
@@ -117,6 +216,47 @@ Zeitüberschreitung / Timeout	timeout
 DNS-Auflösung	DNS resolution
 Subnetz	subnet
 VLAN (Virtuelles LAN)	VLAN (Virtual Local Area Network)
+Netzwerkschnittstelle	network interface
+MAC-Adresse	MAC address (Media Access Control address)
+ARP (Adressauflösungsprotokoll)	ARP (Address Resolution Protocol)
+ICMP (Internet-Kontrollnachrichtenprotokoll)	ICMP (Internet Control Message Protocol)
+Ping	ping
+Traceroute / Routenverfolgung	traceroute
+Netzwerkmaske / Subnetzmaske	subnet mask / netmask
+CIDR-Notation	CIDR notation (Classless Inter-Domain Routing)
+Netzwerkadressübersetzung (NAT)	NAT (Network Address Translation)
+Portweiterleitung	port forwarding
+Tunnelung	tunneling
+TLS (Transport Layer Security)	TLS (Transport Layer Security)
+SSL (Secure Sockets Layer)	SSL (Secure Sockets Layer)
+Zertifikat (Netzwerk)	certificate
+Selbstsigniertes Zertifikat	self-signed certificate
+DNS-Eintrag	DNS record
+A-Eintrag	A record
+CNAME-Eintrag	CNAME record (Canonical Name)
+MX-Eintrag	MX record (Mail Exchange)
+TTL (Gültigkeitsdauer)	TTL (Time To Live)
+CDN (Inhaltsverteilungsnetzwerk)	CDN (Content Delivery Network)
+Edge-Server / Randserver	edge server
+Rechenzentrum	data center
+Rack / Serverschrank	rack
+Bare-Metal-Server	bare-metal server
+Hypervisor	hypervisor
+Virtualisierung	virtualization
+Netzwerksegmentierung	network segmentation
+Demilitarisierte Zone (DMZ)	DMZ (Demilitarized Zone)
+Bastion-Host / Sprungserver	bastion host / jump server
+VPN-Tunnel	VPN tunnel
+Konfiguration (Netzwerk)	network configuration
+Netzwerkdurchsatz	network throughput
+Fehlerhafte Pakete	malformed packets
+Round-Robin (Lastverteilung)	round-robin (load balancing)
+Sitzungspersistenz	session persistence / sticky sessions
+SSL-Terminierung	SSL termination / TLS termination
+Dienstvermittlung / Service Mesh	service mesh
+Ingress (Kubernetes)	ingress
+Egress (ausgehender Verkehr)	egress
+Netzwerkrichtlinie	network policy
 
 # ============================================================
 # Section 10: Testing & Quality Assurance
@@ -152,6 +292,44 @@ Testdaten	test data
 Erwartetes Ergebnis	expected result / expected outcome
 Tatsächliches Ergebnis	actual result / actual outcome
 Fehlerbericht	bug report / defect report
+Verhaltensgetriebene Entwicklung	behavior-driven development (BDD)
+Vertragstests	contract testing
+Mutationstest	mutation testing
+Snapshot-Test	snapshot testing
+Sicherheitstest	security testing
+Barrierefreiheitstest	accessibility testing
+Kompatibilitätstest	compatibility testing
+Benutzerfreundlichkeitstest	usability testing
+Explorativer Test	exploratory testing
+Manueller Test	manual testing
+Automatisierter Test	automated test
+Testautomatisierungsframework	test automation framework
+Testimplementierung	test implementation
+Testplan	test plan
+Teststrategie	test strategy
+Testpyramide	test pyramid
+Testverdopplung	test double
+Spy / Testspion	spy (test spy)
+Dummy (Testverdopplung)	dummy (test double)
+Fake (Testverdopplung)	fake (test double)
+Äquivalenzklasse	equivalence class / equivalence partition
+Entscheidungstabelle	decision table
+Zustandsübergangstest	state transition testing
+White-Box-Test	white-box testing
+Black-Box-Test	black-box testing
+Grey-Box-Test	grey-box testing
+Testbarkeit	testability
+Testisolierung	test isolation
+Testparallelisierung	test parallelization
+Testbericht	test report
+Fehlerschwere	defect severity
+Fehlerpriorität	defect priority
+Fehlerdichte	defect density
+Fehlerbehebungsrate	defect resolution rate
+Codeabdeckungsbericht	code coverage report
+Zweigabdeckung	branch coverage
+Anweisungsabdeckung	statement coverage
+Pfadabdeckung	path coverage
 
 # ============================================================
 # Section 11: DevOps & CI/CD
@@ -186,6 +364,51 @@ Vorfallmanagement	incident management
 Dienstgütevereinbarung	SLA (Service Level Agreement)
 Betriebshandbuch / Runbook	runbook
 Nachbesprechung / Post-Mortem	postmortem / post-incident review
+Rollforward / Vorwärtskorrektur	roll forward
+Unveränderliches Artefakt	immutable artifact
+Build-Auslöser / Trigger	build trigger
+Webhook (CI/CD-Auslöser)	webhook trigger
+Parallele Pipeline	parallel pipeline
+Pipeline-Stufe	pipeline stage
+Pipeline-Schritt	pipeline step
+Gated Build / Kontrollierter Build	gated build
+Qualitätstor / Quality Gate	quality gate
+Artefakt-Repository	artifact repository
+Container-Registry	container registry
+Image / Abbild (Container)	container image
+Tag / Kennzeichnung (Image)	image tag
+Docker-Compose	Docker Compose
+Kubernetes	Kubernetes (K8s)
+Pod (Kubernetes)	pod
+Knoten / Node (Kubernetes)	node
+Namespace (Kubernetes)	namespace
+Helm-Chart	Helm chart
+Terraform	Terraform
+Ansible	Ansible
+Playbook (Ansible)	playbook
+Idempotente Konfiguration	idempotent configuration
+Konfigurationsdrift	configuration drift
+Geplante Ausfallzeit	scheduled downtime / maintenance window
+Wartungsfenster	maintenance window
+Blaupause / Template	template / blueprint
+Sicherheitsscanner	security scanner
+Schwachstellenscan	vulnerability scan
+Abhängigkeitsscan	dependency scan
+Lizenzprüfung	license check / license compliance
+Geheimisverwaltung	secrets management
+Umgebungskonfiguration	environment configuration
+Entwicklungsumgebung	development environment
+Testumgebung	test / QA environment
+Vorproduktionsumgebung	pre-production environment / staging
+Produktionsbereitschaft	production readiness
+Bereitschaftsdienst / On-Call	on-call (duty)
+Eskalationsrichtlinie	escalation policy
+Metriken / Kennzahlen	metrics
+Dashboard / Übersichtstafel	dashboard
+Schwellenwert (Alerting)	threshold
+Selbstheilung	self-healing
+Graceful Shutdown / Geordnetes Herunterfahren	graceful shutdown
+Warmstart / Kaltstart	warm start / cold start
 
 # ============================================================
 # Section 12: APIs & Integration
@@ -222,3 +445,51 @@ Veraltete Schnittstelle / Deprecated	deprecated
 SDK (Software-Entwicklungsbausatz)	SDK (Software Development Kit)
 Wrapper / Hüllklasse	wrapper
 Middleware	middleware
+Idempotenter Endpunkt	idempotent endpoint
+Paginierung / Seitenumbruch	pagination
+Filterung (API)	filtering
+Sortierung (API)	sorting
+HATEOAS (Hypermedia als Motor des Anwendungszustands)	HATEOAS (Hypermedia as the Engine of Application State)
+Content-Type / Inhaltstyp	content type
+Accept-Header	accept header
+Inhaltsvereinbarung	content negotiation
+HTTP-Methoden (GET, POST, PUT, DELETE, PATCH)	HTTP methods (GET, POST, PUT, DELETE, PATCH)
+Ressource (REST)	resource
+URI (Einheitlicher Ressourcenbezeichner)	URI (Uniform Resource Identifier)
+Statuscode 200 (OK)	200 OK
+Statuscode 201 (Erstellt)	201 Created
+Statuscode 204 (Kein Inhalt)	204 No Content
+Statuscode 400 (Ungültige Anfrage)	400 Bad Request
+Statuscode 401 (Nicht autorisiert)	401 Unauthorized
+Statuscode 403 (Verboten)	403 Forbidden
+Statuscode 404 (Nicht gefunden)	404 Not Found
+Statuscode 409 (Konflikt)	409 Conflict
+Statuscode 422 (Nicht verarbeitbar)	422 Unprocessable Entity
+Statuscode 429 (Zu viele Anfragen)	429 Too Many Requests
+Statuscode 500 (Interner Serverfehler)	500 Internal Server Error
+Statuscode 502 (Fehlerhaftes Gateway)	502 Bad Gateway
+Statuscode 503 (Dienst nicht verfügbar)	503 Service Unavailable
+OpenAPI / Swagger	OpenAPI / Swagger
+API-Dokumentation	API documentation
+Schemavalidierung	schema validation
+Eingabevalidierung	input validation
+Ausgabeformatierung	output formatting / response formatting
+Fehlerbehandlung (API)	error handling
+Fehlerantwort	error response
+Wiederholungsversuch	retry
+Exponentielles Backoff	exponential backoff
+Zeitüberschreitung (API)	timeout
+Kurzschluss / Circuit Breaker	circuit breaker
+Seiteneffekt	side effect
+Callback / Rückruffunktion	callback
+Promise / Versprechen (asynchron)	promise
+Async/Await (asynchron/abwarten)	async/await
+Nachrichtenformat	message format
+Protokollpuffer / Protocol Buffers	Protocol Buffers (protobuf)
+gRPC	gRPC
+Nachrichtenbroker	message broker
+Warteschlange (Nachricht)	message queue
+Thema / Topic (Nachricht)	topic
+Abonnent / Subscriber	subscriber
+Herausgeber / Publisher	publisher
+Ereignis / Event	event

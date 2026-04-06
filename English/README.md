@@ -17,6 +17,7 @@ Front (German term / Beschreibung)[TAB]Back (English translation)
 | `english_beginner.txt` | Grundbegriffe: Hardware, Software, Dateien, Internet, einfache Programmierung |
 | `english_intermediate.txt` | Fortgeschritten: Software Engineering, Datenbanken, Netzwerk, DevOps, Testing |
 | `english_pro.txt` | Experte: Architektur, Security, Cloud, Performance, fachliche Kommunikation |
+| `english_expert.txt` | Spezialist: Compiler-Theorie, OS-Internals, verteilte Systeme, Kernel/Hardware, formale Methoden, Netzwerkprotokolle, Data Engineering, Fachadjektive |
 
 ---
 
@@ -140,3 +141,55 @@ Front (German term / Beschreibung)[TAB]Back (English translation)
 - Debugging: reproduce, isolate, trace, diagnose, root cause, workaround, hotfix
 - Collaboration: onboard, hand off, pair programming, rubber duck debugging
 - Status: out of scope, work in progress, done, blocked, on hold, deprecated
+
+---
+
+### Expert
+
+#### 19. Compiler & Language Theory
+- Compilation: lexical analysis, tokenization, parser, AST, code generation, optimization
+- Type systems: strong/weak typing, static/dynamic typing, type inference, generics, covariance
+- Functional: monad, functor, closure, currying, higher-order functions, tail recursion
+- Memory: garbage collection algorithms, reference counting, mark-and-sweep, generational GC
+
+#### 20. Operating Systems & Low-Level Concepts
+- Kernel: kernel space, user space, system calls, context switch, scheduling
+- Processes: fork, exec, IPC, shared memory, semaphore, mutex, signals, pipes
+- Memory: virtual memory, page tables, TLB, page faults, MMU, swapping
+- Devices: device drivers, interrupts, DMA, block devices, character devices, file descriptors
+
+#### 21. Distributed Systems & Consensus
+- Consensus: Paxos, Raft, leader election, quorum, Byzantine fault tolerance
+- Consistency: CAP theorem, linearizability, causal consistency, vector clocks, CRDTs
+- Messaging: exactly-once/at-least-once/at-most-once delivery, dead letter queue, outbox pattern
+- Streaming: stream processing, event windows, watermarks, checkpoints, consumer groups
+
+#### 22. Kernel & Hardware-Level Vocabulary
+- Kernel internals: slab allocator, buddy system, OOM killer, cgroups, namespaces
+- Concurrency: spinlock, RCU, memory barriers, atomic operations, CAS, false sharing
+- Tracing: eBPF, XDP, ftrace, kprobe, uprobe, tracepoints, perf
+- Security: speculative execution, side-channel attacks, Meltdown, Spectre
+
+#### 23. Formal Methods & Correctness
+- Verification: formal verification, model checking, temporal logic (LTL, CTL)
+- Contracts: invariants, preconditions, postconditions, Hoare logic, design by contract
+- Testing: property-based testing, fuzzing, symbolic execution, abstract interpretation
+- Analysis: static analysis, data flow analysis, control flow graph, call graph
+
+#### 24. Advanced Networking & Protocols
+- OSI model: all 7 layers and their functions
+- TCP internals: three-way handshake, congestion control, window size, SACK, Nagle
+- Modern protocols: QUIC, HTTP/2, HTTP/3, gRPC streaming, SSE, WebSocket
+- Infrastructure: BGP, OSPF, SDN, NFV, VXLAN, overlay/underlay networks
+
+#### 25. Data Engineering & ML Ops Vocabulary
+- Pipelines: data ingestion, transformation, cleansing, lineage, governance
+- Storage: data lake, lakehouse, data mesh, columnar formats, schema registry
+- ML Ops: model serving, model drift, experiment tracking, feature store, ML pipeline
+- Processing: batch, real-time, stream processing, DAG, workflow orchestration
+
+#### 26. Advanced Adjectives, Adverbs & Phrases
+- System qualities: resilient, brittle, granular, coarse-grained, idempotent, atomic
+- Performance: low-latency, high-throughput, CPU-bound, I/O-bound, memory-intensive
+- Lifecycle: GA, pre-release, release candidate, LTS, end of life, deprecated
+- Descriptions: comprehensive, negligible, crucial, transient, persistent, interoperable
