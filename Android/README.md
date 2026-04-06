@@ -582,6 +582,67 @@ Front (question or term)[TAB]Back (answer or definition)
 
 ---
 
+## 5. AAOS Security
+
+### Beginner
+
+#### 5.1 AAOS Security Fundamentals
+- Automotive threat model: untrusted apps, vehicle bus attacks, network exposure, physical access
+- Secure boot and verified boot for IVI: bootloader, kernel, system image validation
+- App permission model on AAOS: system vs privileged permissions, automotive-specific restrictions
+- VHAL access and permission zones: read-only vs control properties, system/privileged enforcement
+- SELinux basics on AAOS: domains, types, service contexts, neverallow rules
+- App sandboxing and process isolation in AAOS
+- Secure update basics: OTA signing, rollback protection, A/B updates
+- Vehicle data protection: scoped storage, multi-user isolation, encrypted storage
+- User authentication on AAOS: PIN, pattern, password for driver profiles, guest mode restrictions, profile switching security
+- USB and debug port security: ADB restrictions in production vehicles, USB accessory/host policy, locking down development interfaces
+- Privacy in connected vehicles: location data handling, driving behavior data collection, GDPR/CCPA considerations, user consent flows
+- Bluetooth and Wi-Fi attack surface: pairing security, unauthorized device connections, rogue hotspot risks in vehicles
+- Third-party app vetting for automotive: Play Store automotive review requirements, restricted API surface, sideloading prevention
+
+### Intermediate
+
+#### 5.2 AAOS Platform Security
+- VHAL/CarService security model: access controls, service permissions, car property authorization
+- AAOS-specific SELinux policies: vehicle HAL domains, car service domains, sepolicy for OEM extensions
+- UX restriction security: driver distraction enforcement and anti-bypass measures
+- Secure diagnostics and maintenance: authenticated UDS sessions, diagnostic port protections, debug-only access
+- OTA security for AAOS: signed payload verification, delta updates, rollback prevention, dual-bank integrity
+- Secure communication on the vehicle network: TLS over Ethernet, IPsec, MACSec, secure HMI channels
+- Firewalling and gateway ECU isolation between IVI and safety-critical ECUs
+- Secure boot chain continuity from bootloader to car services
+- Android Keystore in automotive: key storage for vehicle-specific operations, TEE/StrongBox on automotive SoCs, key attestation for backend trust
+- Secure multi-user and guest isolation: per-user encrypted storage, credential-encrypted vs device-encrypted boundaries, profile wiping on resale
+- Network segmentation: isolating infotainment traffic from vehicle control domains, VLAN and firewall policies at the SoC level
+- Telematics Control Unit (TCU) security: remote command authentication, backend-to-vehicle TLS mutual auth, command allow-listing
+- Secure logging and audit trails: tamper-evident logging on AAOS, audit events for VHAL writes, forensic readiness
+- Certificate lifecycle management on AAOS: provisioning, rotation, revocation for vehicle TLS and code-signing certificates
+- Supply chain security for automotive software: vendor component verification, SBOM (Software Bill of Materials), third-party library auditing
+
+### Pro
+
+#### 5.3 Advanced AAOS Security
+- Hardware root of trust and HSM integration for vehicle keys and attestation
+- ISO/SAE 21434 automotive cybersecurity engineering practices
+- UNECE WP.29 R155/R156 regulations for vehicle cybersecurity and software updates
+- CAN bus security: authentication, intrusion detection systems, spoofing/fuzzing defenses, bus-off handling
+- Digital key and vehicle access security: UWB, CCC Digital Key, backend authentication, key lifecycle management
+- V2X security: certificate management, pseudonym certificates, misbehavior detection
+- Runtime integrity and tamper detection for AAOS components
+- Secure OEM extension patterns: vendor HALs, custom CarServices, SELinux enforcement, update policy compliance
+- Security testing and validation: automotive security scanning, fuzzing, attack simulation, compliance testing
+- Hypervisor security boundaries: isolation between safety-critical RTOS and Android guest, virtio attack surface, shared memory risks
+- Automotive SoC security features: ARM TrustZone in automotive SoCs, secure enclaves, OP-TEE trusted apps for vehicle operations
+- AUTOSAR SecOC integration with AAOS: Secure On-board Communication for CAN/Ethernet frames, freshness value management, MAC verification
+- Automotive IDPS architecture: Intrusion Detection and Prevention Systems, anomaly detection on in-vehicle networks, SIEM integration for fleets
+- Secure vehicle decommissioning: data erasure procedures, key revocation on resale, factory reset completeness, backend de-registration
+- Vehicle SOC/CSIRT and threat intelligence: vehicle security operations center, incident response for connected fleets, coordinated vulnerability disclosure
+- Penetration testing methodologies for AAOS: automotive red-teaming, attack trees for IVI systems, hardware fault injection, RF-based attacks
+- ISO 15118 Plug & Charge security: TLS mutual authentication, contract certificate installation, EXI-encoded messages, charging infrastructure PKI
+
+---
+
 ## Deck File Plan
 
 | Level | Planned File | Topics Covered |
