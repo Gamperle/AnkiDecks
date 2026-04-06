@@ -18,7 +18,7 @@ Bildschirm / Monitor	monitor / display / screen
 Tastatur	keyboard
 Maus	mouse
 Drucker	printer
-Scanner	scanner
+Gerät zum Digitalisieren von Dokumenten und Bildern	scanner
 Anschluss / Schnittstelle	port / interface / connector
 USB-Anschluss	USB port
 Netzwerkkarte	network interface card (NIC)
@@ -27,11 +27,11 @@ Herunterfahren	to shut down
 Neu starten	to restart / to reboot
 Einstecken / Anschließen	to plug in / to connect
 Aufrüsten / Erweitern	to upgrade
-Byte	byte
-Kilobyte	kilobyte (KB)
-Megabyte	megabyte (MB)
-Gigabyte	gigabyte (GB)
-Terabyte	terabyte (TB)
+Kleinste adressierbare Speichereinheit (8 Bit)	byte
+Speichereinheit: 1.024 Byte	kilobyte (KB)
+Speichereinheit: ca. 1 Million Byte	megabyte (MB)
+Speichereinheit: ca. 1 Milliarde Byte	gigabyte (GB)
+Speichereinheit: ca. 1 Billion Byte	terabyte (TB)
 Taktfrequenz	clock speed / clock rate
 Kern (Prozessor)	core
 Mehrkernprozessor	multi-core processor
@@ -43,10 +43,10 @@ Ausgabegerät	output device
 # Section 2: Software & Operating Systems
 # ============================================================
 
-Software	software
+Gesamtheit aller Programme und Daten eines Computers	software
 Anwendung / Programm	application / app
 Betriebssystem	operating system (OS)
-Firmware	firmware
+Fest eingebaute Steuerungssoftware in Geräten (z.B. BIOS, Router)	firmware
 Treiber	driver
 Hilfsprogramm / Dienstprogramm	utility
 Installieren	to install
@@ -63,7 +63,7 @@ Schreibtischoberfläche / Desktop	desktop
 Taskleiste	taskbar
 Dateimanager	file manager
 Kommandozeile / Terminal	terminal / command line
-Shell	shell
+Kommandozeileninterpreter des Betriebssystems	shell
 Benutzeroberfläche	user interface (UI)
 Grafische Benutzeroberfläche	graphical user interface (GUI)
 Benachrichtigung	notification
@@ -112,7 +112,7 @@ Prüfsumme	checksum
 # Section 4: Internet & Web Basics
 # ============================================================
 
-Browser / Webbrowser	browser / web browser
+Programm zum Anzeigen von Webseiten (z.B. Chrome, Firefox)	browser / web browser
 Webadresse / URL	URL (Uniform Resource Locator)
 Domäne / Domain	domain
 IP-Adresse	IP address
@@ -124,21 +124,21 @@ Hyperlink / Verweis	hyperlink / link
 Herunterladen	to download
 Hochladen	to upload
 Streamen	to stream / streaming
-E-Mail	email
+Elektronische Nachricht über das Internet	email
 Anhang (E-Mail)	attachment
 Spam / unerwünschte E-Mail	spam
-Phishing	phishing
+Betrügerische E-Mail zum Stehlen von Zugangsdaten	phishing
 Passwort	password
 Authentifizierung	authentication
 Verschlüsselung	encryption
-Firewall	firewall
+Netzwerk-Schutzsystem, das unerlaubten Datenverkehr blockiert	firewall
 VPN (Virtuelles Privates Netzwerk)	VPN (Virtual Private Network)
 Lesezeichen / Favorit	bookmark / favorite
 Suchmaschine	search engine
-Cookie	cookie
+Kleine Datei, die eine Webseite im Browser speichert	cookie
 Sitzung	session
-Server	server
-Client	client
+Rechner oder Programm, das Dienste für andere bereitstellt	server
+Programm oder Rechner, das/der Dienste eines Servers nutzt	client
 Anmelden / Einloggen	to log in / to sign in
 Abmelden / Ausloggen	to log out / to sign out
 Benutzername	username
@@ -148,7 +148,7 @@ Zwei-Faktor-Authentifizierung	two-factor authentication (2FA)
 # Section 5: Basic Programming Concepts
 # ============================================================
 
-Variable	variable
+Benannter Speicherplatz für veränderliche Werte im Programm	variable
 Konstante	constant
 Datentyp	data type
 Zeichenkette	string
@@ -166,7 +166,7 @@ Abbruch (Schleife)	break
 Weiter (nächste Schleifeniteration)	continue
 Funktion	function
 Methode	method
-Parameter	parameter
+Übergabewert, den eine Funktion bei ihrem Aufruf erhält	parameter
 Argument / Übergabewert	argument
 Rückgabewert	return value
 Klasse	class
@@ -194,10 +194,10 @@ Typ-Umwandlung	type casting / type conversion
 # ============================================================
 
 Entwicklungsumgebung (IDE)	IDE (Integrated Development Environment)
-Editor / Texteditor	editor / text editor
-Compiler	compiler
-Interpreter	interpreter
-Debugger	debugger
+Programm zum Schreiben und Bearbeiten von (Quell-)Text	editor / text editor
+Programm, das Quellcode vollständig in Maschinencode übersetzt	compiler
+Programm, das Quellcode Zeile für Zeile ausführt	interpreter
+Werkzeug zum schrittweisen Durchlaufen und Fehlersuchen im Code	debugger
 Linter / Codeprüfer	linter
 Versionsverwaltung	version control
 Repository / Projektarchiv	repository (repo)

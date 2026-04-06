@@ -15,8 +15,8 @@ Zusammenhalt / Kohäsion	cohesion
 Trennung der Zuständigkeiten	separation of concerns
 Einzelverantwortungsprinzip	single responsibility principle
 Agile Softwareentwicklung	agile (software development)
-Scrum	Scrum
-Sprint	sprint
+Agiles Rahmenwerk mit Sprints, Rollen und Zeremonien	Scrum
+Festgelegter Arbeitszeitraum (1–4 Wochen) in Scrum	sprint
 Backlog / Aufgabenliste	backlog
 User Story / Benutzergeschichte	user story
 Akzeptanzkriterien	acceptance criteria
@@ -31,10 +31,10 @@ Umfang / Geltungsbereich	scope
 Meilenstein	milestone
 Frist / Termin	deadline
 Liefergegenstand / Ergebnis	deliverable
-Prototyp	prototype
+Erster Entwurf eines Produkts zum Testen und Lernen	prototype
 Machbarkeitsstudie	feasibility study
-Proof of Concept (PoC)	proof of concept (PoC)
-Minimum Viable Product	MVP (Minimum Viable Product)
+Machbarkeitsnachweis durch einen praktischen Prototyp	proof of concept (PoC)
+Einfachste funktionsfähige Version eines Produkts	MVP (Minimum Viable Product)
 Rückstand / Legacy-Code	legacy code
 Ablaufdiagramm	flowchart
 Anwendungsfall	use case
@@ -50,15 +50,15 @@ DRY-Prinzip (Wiederhole dich nicht)	DRY (Don't Repeat Yourself)
 KISS-Prinzip (Halte es einfach)	KISS (Keep It Simple, Stupid)
 YAGNI-Prinzip (Du wirst es nicht brauchen)	YAGNI (You Ain't Gonna Need It)
 Schätzung (Aufwand)	estimation
-Story Points	story points
+Relative Schätzeinheit für Aufwand in agilen Teams	story points
 Geschwindigkeit (Scrum)	velocity
-Kanban-Board	Kanban board
+Visuelles Aufgabenboard mit Spalten (To Do, In Progress, Done)	Kanban board
 Produktinhaber	product owner
-Scrum Master	Scrum Master
+Moderator und Prozesshüter im Scrum-Team	Scrum Master
 Impediment / Hindernis (Scrum)	impediment
 Burndown-Diagramm	burndown chart
-Definition of Done	definition of done (DoD)
-Definition of Ready	definition of ready (DoR)
+Vereinbarte Kriterien, wann eine Aufgabe als fertig gilt	definition of done (DoD)
+Kriterien, wann ein Backlog-Eintrag bereit zur Bearbeitung ist	definition of ready (DoR)
 Technische Anforderung	technical requirement
 Funktionale Anforderung	functional requirement
 Nicht-funktionale Anforderung	non-functional requirement
@@ -75,14 +75,14 @@ Codebesitzer	code owner
 Pair Programming / Paarprogrammierung	pair programming
 Mob Programming / Teamprogrammierung	mob programming / ensemble programming
 Werkzeugkette / Toolchain	toolchain
-Build-System	build system
+Werkzeug zum automatischen Kompilieren und Paketieren von Software	build system
 Paketverwaltung	package management
 Abhängigkeitsbaum	dependency tree
 Semantische Versionierung	semantic versioning (SemVer)
 Breaking Change / Inkompatible Änderung	breaking change
 Rückwärtskompatibel	backward compatible
 Vorwärtskompatibel	forward compatible
-Iteration	iteration
+Wiederholungsdurchlauf in einem iterativen Prozess	iteration
 Inkrement	increment
 Epik / Epic (großes Feature)	epic
 Aufgabe / Task	task
@@ -101,8 +101,8 @@ Datenbank	database
 Tabelle (Datenbank)	table
 Zeile / Datensatz	row / record
 Spalte / Feld	column / field
-Schema (Datenbank)	schema
-Index (Datenbank)	index
+Abbildung einer Datenbankstruktur (Tabellen, Spalten, Beziehungen)	schema
+Datenstruktur für schnellere Suche in Datenbanken	index
 Abfrage	query
 Einfügen (Daten)	to insert
 Aktualisieren (Daten)	to update
@@ -141,7 +141,7 @@ Schreibsperre	write lock / exclusive lock
 Optimistisches Sperren	optimistic locking
 Pessimistisches Sperren	pessimistic locking
 Isolationsstufe	isolation level
-Read Committed	read committed
+Isolationsstufe: nur bestätigte Änderungen werden gelesen	read committed
 Wiederholbares Lesen	repeatable read
 Serialisierbar (Isolationsstufe)	serializable
 Phantom-Lesen	phantom read
@@ -192,22 +192,22 @@ FTP (Dateiübertragungsprotokoll)	FTP (File Transfer Protocol)
 SSH (Sichere Shell)	SSH (Secure Shell)
 SMTP (E-Mail-Versandprotokoll)	SMTP (Simple Mail Transfer Protocol)
 DHCP (Dynamisches Hostkonfigurationsprotokoll)	DHCP (Dynamic Host Configuration Protocol)
-Router	router
+Netzwerkgerät, das Datenpakete zwischen Netzen weiterleitet	router
 Switch / Netzwerkschalter	switch
-Gateway	gateway
+Verbindungspunkt zwischen zwei Netzwerken mit unterschiedlichen Protokollen	gateway
 Lastverteiler / Load Balancer	load balancer
-Proxy-Server	proxy server
-Reverse Proxy	reverse proxy
+Vermittlungsrechner, der Anfragen stellvertretend weiterleitet	proxy server
+Vermittlungsserver, der eingehende Anfragen an Backend-Server verteilt	reverse proxy
 Latenz / Verzögerung	latency
 Durchsatz	throughput
 Paket (Netzwerk)	packet
-Port	port
-Socket / Netzwerkbuchse	socket
+Netzwerkanschluss, über den ein Dienst erreichbar ist (z.B. 80, 443)	port
+Netzwerkkommunikations-Endpunkt (IP + Port)	socket
 Handshake (Verbindungsaufbau)	handshake
 Virtuelle Maschine	virtual machine (VM)
-Container	container
+Leichtgewichtige, isolierte Laufzeitumgebung für Anwendungen	container
 Instanz (Cloud)	instance
-Cluster	cluster
+Verbund aus mehreren vernetzten Rechnern, die als Einheit arbeiten	cluster
 Region (Cloud)	region
 Verfügbarkeitszone	availability zone
 Netzwerkverkehr	network traffic
@@ -220,15 +220,15 @@ Netzwerkschnittstelle	network interface
 MAC-Adresse	MAC address (Media Access Control address)
 ARP (Adressauflösungsprotokoll)	ARP (Address Resolution Protocol)
 ICMP (Internet-Kontrollnachrichtenprotokoll)	ICMP (Internet Control Message Protocol)
-Ping	ping
+Netzwerkbefehl zur Prüfung der Erreichbarkeit eines Rechners	ping
 Traceroute / Routenverfolgung	traceroute
 Netzwerkmaske / Subnetzmaske	subnet mask / netmask
 CIDR-Notation	CIDR notation (Classless Inter-Domain Routing)
 Netzwerkadressübersetzung (NAT)	NAT (Network Address Translation)
 Portweiterleitung	port forwarding
 Tunnelung	tunneling
-TLS (Transport Layer Security)	TLS (Transport Layer Security)
-SSL (Secure Sockets Layer)	SSL (Secure Sockets Layer)
+Verschlüsselungsprotokoll für sichere Datenübertragung im Internet	TLS (Transport Layer Security)
+Vorgänger von TLS; veraltetes Verschlüsselungsprotokoll	SSL (Secure Sockets Layer)
 Zertifikat (Netzwerk)	certificate
 Selbstsigniertes Zertifikat	self-signed certificate
 DNS-Eintrag	DNS record
@@ -240,13 +240,13 @@ CDN (Inhaltsverteilungsnetzwerk)	CDN (Content Delivery Network)
 Edge-Server / Randserver	edge server
 Rechenzentrum	data center
 Rack / Serverschrank	rack
-Bare-Metal-Server	bare-metal server
-Hypervisor	hypervisor
+Physischer Server ohne Virtualisierungsschicht	bare-metal server
+Software zur Verwaltung virtueller Maschinen auf physischer Hardware	hypervisor
 Virtualisierung	virtualization
 Netzwerksegmentierung	network segmentation
 Demilitarisierte Zone (DMZ)	DMZ (Demilitarized Zone)
 Bastion-Host / Sprungserver	bastion host / jump server
-VPN-Tunnel	VPN tunnel
+Verschlüsselte Verbindung durch ein öffentliches Netz	VPN tunnel
 Konfiguration (Netzwerk)	network configuration
 Netzwerkdurchsatz	network throughput
 Fehlerhafte Pakete	malformed packets
@@ -254,7 +254,7 @@ Round-Robin (Lastverteilung)	round-robin (load balancing)
 Sitzungspersistenz	session persistence / sticky sessions
 SSL-Terminierung	SSL termination / TLS termination
 Dienstvermittlung / Service Mesh	service mesh
-Ingress (Kubernetes)	ingress
+Eingehender Netzwerkverkehr / Zugangssteuerung (Kubernetes)	ingress
 Egress (ausgehender Verkehr)	egress
 Netzwerkrichtlinie	network policy
 
@@ -262,7 +262,7 @@ Netzwerkrichtlinie	network policy
 # Section 10: Testing & Quality Assurance
 # ============================================================
 
-Test	test
+Prüfung der einzelnen Codeteile	test
 Unit-Test / Einzeltest	unit test
 Integrationstest	integration test
 End-to-End-Test	end-to-end test (E2E test)
@@ -285,7 +285,7 @@ Falsch-Positiv	false positive
 Falsch-Negativ	false negative
 Grenzfall / Sonderfall	edge case / corner case
 Lastentest	load test / load testing
-Stresstest	stress test
+Belastungstest unter extremen Bedingungen	stress test
 Performanztest	performance test
 Testumgebung	test environment
 Testdaten	test data
@@ -305,7 +305,7 @@ Manueller Test	manual testing
 Automatisierter Test	automated test
 Testautomatisierungsframework	test automation framework
 Testimplementierung	test implementation
-Testplan	test plan
+Dokument mit Teststrategie, Umfang und Zeitrahmen	test plan
 Teststrategie	test strategy
 Testpyramide	test pyramid
 Testverdopplung	test double
@@ -338,7 +338,7 @@ Pfadabdeckung	path coverage
 Kontinuierliche Integration	continuous integration (CI)
 Kontinuierliche Auslieferung	continuous delivery (CD)
 Kontinuierliche Bereitstellung	continuous deployment
-Build-Pipeline	build pipeline
+Automatisierbare Schrittfolge von Build, Test und Deployment	build pipeline
 Artefakt (Build-Ergebnis)	artifact
 Staging-Umgebung	staging environment
 Produktionsumgebung	production environment
@@ -346,7 +346,7 @@ Zurückrollen / Rollback	to roll back / rollback
 Canary-Release / Schrittweise Einführung	canary release
 Blau-Grün-Bereitstellung	blue-green deployment
 Feature-Flag / Feature-Schalter	feature flag / feature toggle
-A/B-Test	A/B test
+Vergleichstest zweier Varianten zur Ermittlung der besseren	A/B test
 Gesundheitsprüfung / Health Check	health check
 Container-Orchestrierung	container orchestration
 Infrastruktur als Code	infrastructure as code (IaC)
@@ -367,25 +367,25 @@ Nachbesprechung / Post-Mortem	postmortem / post-incident review
 Rollforward / Vorwärtskorrektur	roll forward
 Unveränderliches Artefakt	immutable artifact
 Build-Auslöser / Trigger	build trigger
-Webhook (CI/CD-Auslöser)	webhook trigger
+Automatischer HTTP-Rückruf eines Servers bei einem Ereignis	webhook trigger
 Parallele Pipeline	parallel pipeline
 Pipeline-Stufe	pipeline stage
 Pipeline-Schritt	pipeline step
 Gated Build / Kontrollierter Build	gated build
 Qualitätstor / Quality Gate	quality gate
 Artefakt-Repository	artifact repository
-Container-Registry	container registry
+Zentrales Verzeichnis zum Speichern und Verteilen von Container-Images	container registry
 Image / Abbild (Container)	container image
 Tag / Kennzeichnung (Image)	image tag
-Docker-Compose	Docker Compose
-Kubernetes	Kubernetes (K8s)
-Pod (Kubernetes)	pod
+Werkzeug zum Definieren und Starten mehrerer Container als Verbund	Docker Compose
+Orchestrierungsplattform für Container-Anwendungen	Kubernetes (K8s)
+Kleinste Bereitstellungseinheit in Kubernetes	pod
 Knoten / Node (Kubernetes)	node
 Namespace (Kubernetes)	namespace
-Helm-Chart	Helm chart
-Terraform	Terraform
-Ansible	Ansible
-Playbook (Ansible)	playbook
+Kubernetes-Paketformat mit Templates und Abhängigkeiten	Helm chart
+Deklaratives IaC-Werkzeug zur Infrastrukturdefinition (HashiCorp)	Terraform
+Agentenloses Automatisierungswerkzeug für Konfigurationsmanagement	Ansible
+Anweisungsdatei für automatisierte Konfigurationsschritte	playbook
 Idempotente Konfiguration	idempotent configuration
 Konfigurationsdrift	configuration drift
 Geplante Ausfallzeit	scheduled downtime / maintenance window
@@ -404,7 +404,7 @@ Produktionsbereitschaft	production readiness
 Bereitschaftsdienst / On-Call	on-call (duty)
 Eskalationsrichtlinie	escalation policy
 Metriken / Kennzahlen	metrics
-Dashboard / Übersichtstafel	dashboard
+Visuelle Übersicht mit Kennzahlen und Diagrammen	dashboard
 Schwellenwert (Alerting)	threshold
 Selbstheilung	self-healing
 Graceful Shutdown / Geordnetes Herunterfahren	graceful shutdown
@@ -418,25 +418,25 @@ Programmierschnittstelle / API	API (Application Programming Interface)
 Endpunkt	endpoint
 Anfrage (API)	request
 Antwort (API)	response
-Statuscode	status code
+Dreistellige Zahl in der HTTP-Antwort (z.B. 200, 404, 500)	status code
 Nutzlast / Payload	payload
 Kopfzeile / Header	header
 REST (Representational State Transfer)	REST / RESTful API
-GraphQL	GraphQL
+API-Abfragesprache, bei der der Client die Datenstruktur bestimmt	GraphQL
 RPC (Fernprozeduraufruf)	RPC (Remote Procedure Call)
-Webhook	webhook
-WebSocket	WebSocket
+Automatischer HTTP-Rückruf bei einem Ereignis	webhook
+Bidirektionales Echtzeit-Kommunikationsprotokoll über TCP	WebSocket
 Abfragen / Polling	polling
 JSON (JavaScript-Objektnotation)	JSON (JavaScript Object Notation)
 XML (Erweiterbare Auszeichnungssprache)	XML (Extensible Markup Language)
-YAML	YAML (YAML Ain't Markup Language)
+Datenformat mit Einrückung statt Klammern für Konfigurationsdateien	YAML (YAML Ain't Markup Language)
 CSV (Kommagetrennte Werte)	CSV (Comma-Separated Values)
 Serialisierung	serialization
 Deserialisierung	deserialization
 API-Schlüssel	API key
 OAuth (Offene Autorisierung)	OAuth (Open Authorization)
 Token / Zugriffstoken	token / access token
-Bearer-Token	bearer token
+Zugangstoken, das dem Inhaber Zugriff gewährt (z.B. im HTTP-Header)	bearer token
 Ratenbegrenzung	rate limiting
 Drosselung	throttling
 Versionierung (API)	API versioning
@@ -444,14 +444,14 @@ Abwärtskompatibilität	backward compatibility
 Veraltete Schnittstelle / Deprecated	deprecated
 SDK (Software-Entwicklungsbausatz)	SDK (Software Development Kit)
 Wrapper / Hüllklasse	wrapper
-Middleware	middleware
+Zwischengeschaltete Verarbeitungsschicht in einer Anfragekette	middleware
 Idempotenter Endpunkt	idempotent endpoint
 Paginierung / Seitenumbruch	pagination
 Filterung (API)	filtering
 Sortierung (API)	sorting
 HATEOAS (Hypermedia als Motor des Anwendungszustands)	HATEOAS (Hypermedia as the Engine of Application State)
 Content-Type / Inhaltstyp	content type
-Accept-Header	accept header
+HTTP-Kopfzeile, die dem Server das gewünschte Antwortformat mitteilt	accept header
 Inhaltsvereinbarung	content negotiation
 HTTP-Methoden (GET, POST, PUT, DELETE, PATCH)	HTTP methods (GET, POST, PUT, DELETE, PATCH)
 Ressource (REST)	resource
@@ -469,7 +469,7 @@ Statuscode 429 (Zu viele Anfragen)	429 Too Many Requests
 Statuscode 500 (Interner Serverfehler)	500 Internal Server Error
 Statuscode 502 (Fehlerhaftes Gateway)	502 Bad Gateway
 Statuscode 503 (Dienst nicht verfügbar)	503 Service Unavailable
-OpenAPI / Swagger	OpenAPI / Swagger
+Standardisierte Spezifikation zur Beschreibung von REST-APIs	OpenAPI / Swagger
 API-Dokumentation	API documentation
 Schemavalidierung	schema validation
 Eingabevalidierung	input validation
@@ -486,7 +486,7 @@ Promise / Versprechen (asynchron)	promise
 Async/Await (asynchron/abwarten)	async/await
 Nachrichtenformat	message format
 Protokollpuffer / Protocol Buffers	Protocol Buffers (protobuf)
-gRPC	gRPC
+Hochleistungs-RPC-Framework mit Protocol Buffers und HTTP/2	gRPC
 Nachrichtenbroker	message broker
 Warteschlange (Nachricht)	message queue
 Thema / Topic (Nachricht)	topic
@@ -501,11 +501,11 @@ Ereignis / Event	event
 Faden / Thread	thread
 Fadenbecken / Thread-Pool	thread pool
 Sperre (Java)	lock
-Monitor (Java)	monitor
+Synchronisierungsmechanismus, der nur einen Thread gleichzeitig zulässt (Java)	monitor
 Eingebaute Sperre	intrinsic lock / monitor lock
 Gegenseitiger Ausschluss	mutual exclusion (mutex)
 Flüchtig (volatile)	volatile
-Barriere (Concurrency)	barrier
+Synchronisierungspunkt, an dem mehrere Threads aufeinander warten	barrier
 Falsches Aufwecken	spurious wake-up
 Arbeitsentzug / Work-Stealing	work-stealing
 Lastfaktor (HashMap)	load factor
@@ -534,7 +534,7 @@ Stream-Verarbeitung (Java)	stream processing (Java Streams)
 Optionalwert / Optional	Optional (wrapper type)
 Datensatzklasse / Record	record (class)
 Versiegelte Klasse	sealed class
-Textblock	text block
+Mehrzeilige Zeichenkette ohne Escape-Zeichen (Java 13+)	text block
 Lokale Variable Typinferenz	local variable type inference (var)
 Modulsystem (Java)	module system (JPMS)
 Klassenpfad	classpath
@@ -545,7 +545,7 @@ Modulpfad	module path
 # ============================================================
 
 Aktivität / Activity	Activity
-Fragment	Fragment
+Wiederverwendbarer UI-Baustein innerhalb einer Android-Activity	Fragment
 Dienst / Service (Android)	Service (Android)
 Inhaltsanbieter	Content Provider
 Sendungsempfänger	Broadcast Receiver
@@ -564,7 +564,7 @@ Neuzusammensetzung (Compose)	recomposition (Jetpack Compose)
 Zustandsanhebung	state hoisting
 Datenbindung	data binding
 Ansichtsmodell / ViewModel	ViewModel
-LiveData	LiveData
+Lebenszyklusbewusstes, beobachtbares Datenobjekt (Android Jetpack)	LiveData
 Zustandsfluss / StateFlow	StateFlow
 Bereichsbezogener Speicher	scoped storage
 Berechtigungsmodell	permission model
@@ -578,12 +578,12 @@ Tiefenlink / Deep Link	deep link
 App-Verknüpfung	app link / app shortcut
 ProGuard / R8 (Code-Verschleierung)	ProGuard / R8 (code shrinking / obfuscation)
 APK (Android-Paketdatei)	APK (Android Package)
-AAB (Android-App-Bundle)	AAB (Android App Bundle)
+Android-Veröffentlichungsformat, das Google Play in optimierte APKs umwandelt	AAB (Android App Bundle)
 Gradle-Build-Skript	Gradle build script
 Build-Variante	build variant
 Produktvariante	product flavor
 Build-Typ	build type
-ADB (Android Debug Bridge)	ADB (Android Debug Bridge)
+Kommandozeilenwerkzeug zur Kommunikation mit Android-Geräten	ADB (Android Debug Bridge)
 
 # ============================================================
 # Section 12c: Security Domain Vocabulary (Grundlagen)

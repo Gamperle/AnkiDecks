@@ -30,11 +30,11 @@ Begrenzter Kontext	bounded context
 Domäne	domain
 Entität	entity
 Wertobjekt	value object
-Aggregat	aggregate
+Zusammengefasste Einheit verwandter Objekte in DDD	aggregate
 Orchestrierung	orchestration
 Choreographie	choreography
 Diensterkennung	service discovery
-API-Gateway	API gateway
+Zentraler Eingangspunkt für API-Anfragen (Routing, Auth, Ratenbegrenzung)	API gateway
 Seitenwagencontainer / Sidecar	sidecar (pattern)
 Service Mesh / Dienstvermittlungsnetz	service mesh
 Rückverfolgbarkeit / Tracing	distributed tracing
@@ -61,12 +61,12 @@ Servicevertrag	service contract
 Verbrauchergetriebene Vertragstests	consumer-driven contract testing
 Abwärtskompatible Änderung	backward-compatible change
 Vorwärtskompatible Änderung	forward-compatible change
-Schema-Evolution	schema evolution
+Weiterentwicklung eines Datenschemas bei bestehenden Verbrauchern	schema evolution
 Nachrichtenumschlag / Message Envelope	message envelope
 Totbriefwarteschlange	dead letter queue (DLQ)
 Kompensationstransaktion	compensating transaction
 Zweiphasen-Commit	two-phase commit (2PC)
-Quorum	quorum
+Mindestanzahl an Knoten für eine gültige Entscheidung in verteilten Systemen	quorum
 Konsensalgorithmus	consensus algorithm
 Leiterwahl / Leader Election	leader election
 Verteilte Sperre	distributed lock
@@ -92,9 +92,9 @@ Zero-Day-Schwachstelle	zero-day (vulnerability)
 Angriffsvektor	attack vector
 Bedrohungsmodellierung	threat modeling
 Injection-Angriff / Einschleusung	injection (attack)
-SQL-Injection	SQL injection
-Cross-Site-Scripting (XSS)	cross-site scripting (XSS)
-Cross-Site-Request-Forgery (CSRF)	cross-site request forgery (CSRF)
+Einschleusung von Datenbankbefehlen über Benutzereingaben	SQL injection
+Einschleusung von Schadskripten in Webseiten über Benutzereingaben	cross-site scripting (XSS)
+Untergeschobene Anfrage im Namen eines eingeloggten Nutzers	cross-site request forgery (CSRF)
 Dienstverweigerungsangriff	denial of service (DoS)
 Verteilter Dienstverweigerungsangriff	distributed denial of service (DDoS)
 Brute-Force-Angriff	brute force (attack)
@@ -105,7 +105,7 @@ Sicherheitsprüfung / Audit	(security) audit
 Compliance / Regelkonformität	compliance
 Vorfallreaktion	incident response
 Hashwert / Hashfunktion	hash / hash function
-Salt (kryptographisch)	salt
+Kryptographischer Zusatzwert, der vor dem Hashen dem Passwort beigefügt wird	salt
 Chiffre / Verschlüsselungsalgorithmus	cipher
 Zertifikat (digital)	(digital) certificate
 Öffentlicher Schlüssel	public key
@@ -131,12 +131,12 @@ Deserialisierungsangriff	deserialization attack
 Verzeichnisdurchquerung	directory traversal / path traversal
 Dateieinbindung (lokal/remote)	file inclusion (LFI / RFI)
 Befehlseinschleusung	command injection
-Server-Side Request Forgery	SSRF (Server-Side Request Forgery)
+Angriff, bei dem der Server zu ungewollten Anfragen verleitet wird	SSRF (Server-Side Request Forgery)
 Sicherheitsheader	security headers
-Content-Security-Policy	CSP (Content Security Policy)
+HTTP-Header, der erlaubte Inhaltsquellen einer Webseite festlegt	CSP (Content Security Policy)
 Herkunftsrichtlinie / Same-Origin-Policy	same-origin policy
 Ressourcenteilung über Herkunftsgrenzen	CORS (Cross-Origin Resource Sharing)
-JsonWebToken	JWT (JSON Web Token)
+Signiertes Token zur Übertragung von Identitätsdaten im JSON-Format	JWT (JSON Web Token)
 Multifaktor-Authentifizierung	MFA (Multi-Factor Authentication)
 Einmalanmeldung / Single Sign-On	SSO (Single Sign-On)
 Identitätsanbieter	identity provider (IdP)
@@ -200,20 +200,20 @@ Unveränderliche Infrastruktur	immutable infrastructure
 Deklarative Konfiguration	declarative configuration
 Imperative Konfiguration	imperative configuration
 Öffentliche Cloud	public cloud
-Private Cloud	private cloud
-Hybride Cloud	hybrid cloud
-Multi-Cloud	multi-cloud
-Cloud-nativ	cloud-native
+Cloud-Angebot ausschließlich für eine Organisation	private cloud
+Kombination aus öffentlicher und privater Cloud	hybrid cloud
+Nutzung mehrerer Cloud-Anbieter gleichzeitig	multi-cloud
+Für Cloud-Betrieb entworfene Anwendungsarchitektur	cloud-native
 Zwölf-Faktoren-App	twelve-factor app
 Kontrolleben / Control Plane	control plane
 Datenebene / Data Plane	data plane
 API-Server (Kubernetes)	API server
-Scheduler (Kubernetes)	scheduler
+Prozessplaner, der Pods auf Knoten verteilt (Kubernetes)	scheduler
 Knotenpool	node pool
 Automatische Skalierung (Pods)	horizontal pod autoscaler (HPA)
-DaemonSet	DaemonSet
-StatefulSet	StatefulSet
-ConfigMap	ConfigMap
+Kubernetes-Ressource, die genau einen Pod pro Knoten ausführt	DaemonSet
+Kubernetes-Ressource für zustandsbehaftete Anwendungen mit stabiler Identität	StatefulSet
+Kubernetes-Objekt zum Speichern von Konfigurationsdaten	ConfigMap
 Geheimnisse (Kubernetes)	secrets (Kubernetes)
 Persistenter Speicher	persistent volume (PV)
 Speicheranforderung	persistent volume claim (PVC)
@@ -235,15 +235,15 @@ Infrastrukturplan	infrastructure plan
 Infrastrukturanwenden	infrastructure apply
 Drift-Erkennung	drift detection
 Konfigurations-Repository	configuration repository / GitOps repo
-GitOps	GitOps
+Infrastrukturverwaltung über Git-Repository als Single Source of Truth	GitOps
 Abstimmungsschleife	reconciliation loop
 Servicekonto	service account
 IDaaS (Identität als Dienst)	IDaaS (Identity as a Service)
 Cloud-Sicherheitsgruppierung	security group
 Netzwerk-ACL	network ACL (Access Control List)
 VPC (Virtuelle Private Cloud)	VPC (Virtual Private Cloud)
-Peering (Netzwerk)	peering
-Transit-Gateway	transit gateway
+Vernetzung zweier Netzwerke zum direkten Datenaustausch	peering
+Zentraler Netzwerkknoten zur Verbindung mehrerer VPCs/Netzwerke	transit gateway
 Lasten- und Kostenverteilung	cost allocation / cost attribution
 Abrechnungskennzeichnung	billing tag / cost tag
 Kontingentüberschreitung	quota exceeded
@@ -297,13 +297,13 @@ Speicherfreigabe	memory deallocation
 Objektpool	object pool
 Null-Kopie-Übertragung	zero-copy transfer
 Speicherabgebildete Datei	memory-mapped file
-Write-Ahead-Log	write-ahead log (WAL)
+Änderungsprotokoll, das vor dem eigentlichen Schreibvorgang persistiert wird	write-ahead log (WAL)
 Schreibverstärkung	write amplification
 Leseverstärkung	read amplification
 Abfragecache	query cache
 Ergebniszwischenspeicherung	result caching
-CDN-Cache	CDN cache
-Edge-Caching	edge caching
+Zwischenspeicher auf weltweit verteilten Auslieferungsservern	CDN cache
+Zwischenspeicherung von Inhalten nahe am Endnutzer (Randknoten)	edge caching
 Speicher-Tiering	storage tiering
 SSD-Abnutzung	SSD wear (write endurance)
 IOPS (Ein-/Ausgabeoperationen pro Sekunde)	IOPS (Input/Output Operations Per Second)
@@ -359,7 +359,7 @@ Vorschlagen	to suggest / to propose
 Eskalieren	to escalate
 Technischer Redakteur	technical writer
 Zielgruppe	target audience
-Glossar	glossary
+Wörterverzeichnis mit Erklärung technischer Fachbegriffe	glossary
 FAQ (Häufig gestellte Fragen)	FAQ (Frequently Asked Questions)
 Freigabe / Sign-off	sign-off / approval
 Entwurf / Draft	draft
@@ -504,14 +504,14 @@ Trägerfaden	carrier thread
 Strukturierte Parallelität	structured concurrency
 Bereichsbezogene Werte	scoped values
 Vergleichen-und-Austauschen (CAS)	compare-and-swap (CAS)
-ABA-Problem	ABA problem
+Nebenläufigkeitsfalle: CAS erkennt A→B→A nicht als Änderung	ABA problem
 Sperren-freier Algorithmus	lock-free algorithm
 Warte-freier Algorithmus	wait-free algorithm
 Datensatz (Java 16)	record
 Versiegelte Klasse (Java 17)	sealed class
 Mustererkennung (Java 21)	pattern matching
 Annotationsverarbeitung	annotation processing
-Bytecode-Manipulation	bytecode manipulation
+Programmatische Veränderung von kompiliertem Zwischencode zur Laufzeit	bytecode manipulation
 Methodengriff	method handle
 GraalVM-natives Abbild	GraalVM native image
 Schwache Referenz	weak reference
@@ -580,7 +580,7 @@ ProGuard-Regeln	ProGuard rules
 Fahrzeugdienst (AAOS)	CarService
 Fahrzeug-HAL	Vehicle HAL (VHAL)
 Fahrzeugeigenschaft	VehicleProperty
-CAN-Bus	CAN bus (Controller Area Network)
+Serielles Bussystem für Fahrzeugnetzwerke	CAN bus (Controller Area Network)
 Steuergerät	ECU (Electronic Control Unit)
 Gateway-Steuergerät	gateway ECU
 Digitaler Fahrzeugschlüssel	digital key
@@ -672,7 +672,7 @@ Variadische Templates	variadic templates
 Parameterpakt	parameter pack
 Lambda-Ausdruck	lambda expression
 Capture-Klausel	capture clause
-SFINAE	SFINAE (substitution failure is not an error)
+Codeanalyse zur Auffälligkeitserkennung durch Substitution funktionierender Codeteile	SFINAE (substitution failure is not an error)
 Typ-Merkmale	type traits
 Iterator-Kategorie	iterator category
 Bereiche (C++20)	ranges (C++20)
@@ -764,7 +764,7 @@ Verzeichniseintrag-Cache	dentry cache
 Seitencache	page cache
 Rückschreiben (Dirty Pages)	writeback
 Schmutze Seiten	dirty pages
-Interrupt-Handler	interrupt handler
+Unterbrechungsbehandlungsroutine im Betriebssystem-Kernel	interrupt handler
 Obere Hälfte (Interrupt)	top-half handler
 Untere Hälfte (Interrupt)	bottom-half handler (softirq, tasklet, workqueue)
 Zeichengerät	character device
@@ -792,7 +792,7 @@ eBPF (erweiterter BPF)	eBPF (extended Berkeley Packet Filter)
 BPF-Verifizierer	BPF verifier
 Tracepoint (Kernel)	tracepoint
 XDP (Frühpaketverarbeitung)	XDP (eXpress Data Path)
-Kernel-Modul	kernel module (LKM)
+Nachladbarer Betriebssystem-Baustein für Treiber und Dateisysteme	kernel module (LKM)
 Kernel-Befehlszeile	kernel command line
 Kernelprotokoll	dmesg (kernel log)
 Drehsperre	spinlock

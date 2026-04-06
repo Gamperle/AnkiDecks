@@ -21,7 +21,7 @@ Beweis	proof
 Lemma / Hilfssatz	lemma
 Satz / Theorem	theorem
 Korollar / Folgesatz	corollary
-Notation	notation
+Mathematische Schreibweise für Formeln und Ausdrücke	notation
 Obere Schranke	upper bound
 Untere Schranke	lower bound
 Asymptotische Komplexität	asymptotic complexity
@@ -60,7 +60,7 @@ Grundlinie / Baseline	baseline
 Vergleichsarbeit	comparative study
 Empirische Studie	empirical study
 Fallstudie	case study
-Whitepaper	white paper
+Informelles technisches Dokument zu Produkten oder Methoden	white paper
 Technischer Bericht	technical report
 Quellenangabe / Zitat	citation / reference
 Zitierindex	citation index
@@ -83,7 +83,7 @@ Dynamische Programmierung	dynamic programming
 Gierige Methode / Greedy-Algorithmus	greedy algorithm
 Rückverfolgung / Backtracking	backtracking
 Verzweigen und Begrenzen	branch and bound
-Graphalgorithmus	graph algorithm
+Verfahren zur Lösung von Problemen auf Knoten-Kanten-Strukturen	graph algorithm
 Kürzester-Pfad-Algorithmus	shortest path algorithm
 Minimaler Spannbaum	minimum spanning tree (MST)
 Topologische Sortierung	topological sorting
@@ -103,13 +103,13 @@ Verkettung / Chaining	chaining (hash table)
 B-Baum	B-tree
 Rot-Schwarz-Baum	red-black tree
 AVL-Baum	AVL tree
-Skip-Liste	skip list
+Mehrstufige, verkettete Datenstruktur für schnelle Suche (O(log n))	skip list
 Trie / Präfixbaum	trie / prefix tree
 Suffixbaum	suffix tree
-Suffixarray	suffix array
-Bloom-Filter	Bloom filter
-Count-Min-Sketch	Count-Min sketch
-HyperLogLog	HyperLogLog
+Sortiertes Feld aller Suffixe eines Textes für schnelle Mustersuche	suffix array
+Probabilistische Datenstruktur zur Mengenzugehörigkeitsprüfung (falsch-positiv möglich)	Bloom filter
+Probabilistische Datenstruktur zur Häufigkeitsschätzung in Datenströmen	Count-Min sketch
+Probabilistische Datenstruktur zur Kardinalitätsschätzung	HyperLogLog
 Probabilistische Datenstruktur	probabilistic data structure
 Gewichteter Graph	weighted graph
 Ungerichteter Graph	undirected graph
@@ -119,7 +119,7 @@ Eulerweg / Eulerpfad	Eulerian path
 Hamiltonpfad	Hamiltonian path
 Rundreiseproblem / TSP	TSP (Traveling Salesman Problem)
 Rucksackproblem	knapsack problem
-Schedulingproblem	scheduling problem
+Optimierungsproblem: Aufgaben zeitlich einplanen unter Nebenbedingungen	scheduling problem
 Stabile Zuordnung / Matching	stable matching
 Flussnetzwerk	flow network
 Lineare Programmierung	linear programming
@@ -135,24 +135,24 @@ Stochastischer Gradientenabstieg	SGD (Stochastic Gradient Descent)
 Symmetrisches Verschlüsselungsverfahren	symmetric cipher
 Blockchiffre	block cipher
 Stromchiffre	stream cipher
-AES (Advanced Encryption Standard)	AES (Advanced Encryption Standard)
+Weit verbreiteter symmetrischer Verschlüsselungsstandard (128/192/256 Bit)	AES (Advanced Encryption Standard)
 Betriebsmodus (Verschlüsselung)	mode of operation (e.g., CBC, CTR, GCM)
 Initialisierungsvektor (IV)	IV (Initialization Vector)
 Nonce (Einmalwert)	nonce
 Auffüllung / Padding (Kryptographie)	padding (cryptography)
 Padding-Orakel-Angriff	padding oracle attack
 Asymmetrisches Verschlüsselungsverfahren	asymmetric cipher / public-key cryptography
-RSA-Algorithmus	RSA algorithm
+Asymmetrisches Verschlüsselungsverfahren auf Basis großer Primzahlen	RSA algorithm
 Elliptische-Kurven-Kryptographie	ECC (Elliptic Curve Cryptography)
 Diffie-Hellman-Schlüsselaustausch	Diffie-Hellman key exchange
 Diskreter Logarithmus	discrete logarithm
 Einwegfunktion	one-way function
 Falltürfunktion	trapdoor function
 Schlüsselableitung / Key Derivation	key derivation (KDF)
-PBKDF2	PBKDF2 (Password-Based Key Derivation Function 2)
-Argon2	Argon2
-bcrypt	bcrypt
-scrypt	scrypt
+Standardisierte, iterative Schlüsselableitungsfunktion für Passwörter	PBKDF2 (Password-Based Key Derivation Function 2)
+Speicherresistente Passwort-Hashfunktion (Gewinner des PHC 2015)	Argon2
+Passwort-Hashfunktion basierend auf Blowfish mit einstellbarem Arbeitsfaktor	bcrypt
+Speicher- und rechenintensive Schlüsselableitungsfunktion	scrypt
 HMAC (Schlüsselgebundener Hash)	HMAC (Hash-based Message Authentication Code)
 Nachrichtenauthentifizierungscode	MAC (Message Authentication Code)
 Digitale Signatur (Algorithmus)	digital signature algorithm (DSA / ECDSA / EdDSA)
@@ -177,7 +177,7 @@ Vollständig homomorphe Verschlüsselung	FHE (Fully Homomorphic Encryption)
 Sichere Mehrparteienberechnung	MPC (Secure Multi-Party Computation)
 Schwellenwert-Kryptographie	threshold cryptography
 Geheimnisteilung / Secret Sharing	secret sharing (e.g., Shamir's)
-Oblivious Transfer	oblivious transfer
+Kryptographisches Protokoll zum Übertragen eines von N Geheimnissen, ohne preiszugeben, welches gewählt wurde	oblivious transfer
 Differenzielle Privatheit	differential privacy
 Post-Quanten-Kryptographie	post-quantum cryptography
 Gitterbasierte Kryptographie	lattice-based cryptography
@@ -199,7 +199,7 @@ Entropiequelle	entropy source
 Befehlssatzarchitektur (ISA)	ISA (Instruction Set Architecture)
 CISC (Komplexer Befehlssatz)	CISC (Complex Instruction Set Computing)
 RISC (Reduzierter Befehlssatz)	RISC (Reduced Instruction Set Computing)
-RISC-V	RISC-V
+Offene, lizenzfreie Befehlssatzarchitektur	RISC-V
 ARM-Architektur	ARM architecture
 x86-Architektur	x86 architecture
 Mikroprozessor	microprocessor
@@ -226,21 +226,21 @@ AVX (Erweiterte Vektorbefehle)	AVX (Advanced Vector Extensions)
 NEON (ARM-Vektorbefehle)	NEON (ARM SIMD)
 GPU (Grafikprozessor)	GPU (Graphics Processing Unit)
 GPGPU (Allzweck-GPU-Berechnung)	GPGPU (General-Purpose GPU computing)
-Shader	shader
-CUDA	CUDA (Compute Unified Device Architecture)
-OpenCL	OpenCL (Open Computing Language)
+GPU-Programm für Pixel-, Vertex- oder Geometrieberechnungen	shader
+NVIDIA-Plattform für parallele GPU-Berechnungen	CUDA (Compute Unified Device Architecture)
+Offener Standard für parallele Berechnungen auf CPU/GPU/FPGA	OpenCL (Open Computing Language)
 Tensorprozessor / TPU	TPU (Tensor Processing Unit)
 Neuronaler Netzwerk-Beschleuniger	neural network accelerator / NPU
 FPGA (Feldprogrammierbares Gate-Array)	FPGA (Field-Programmable Gate Array)
 ASIC (Anwendungsspezifische Integrierte Schaltung)	ASIC (Application-Specific Integrated Circuit)
-SoC (System-on-a-Chip)	SoC (System on a Chip)
+Komplettes System (CPU, RAM, I/O) auf einem einzigen Chip	SoC (System on a Chip)
 Fertigungsprozess / Prozesstechnologie	process node / fabrication process (e.g., 5nm, 3nm)
 Taktrate	clock rate / clock frequency
 Taktzyklus	clock cycle
 Befehlsdurchsatz (IPC)	IPC (Instructions Per Clock / Cycle)
 Cache-Hierarchie	cache hierarchy
-L1-Cache	L1 cache
-L2-Cache	L2 cache
+Schnellster, prozessornahester Zwischenspeicher (je Kern)	L1 cache
+Zweiter, größerer Zwischenspeicher zwischen L1 und Hauptspeicher	L2 cache
 L3-Cache / Last-Level-Cache	L3 cache / LLC (Last-Level Cache)
 Cache-Kohärenz	cache coherence
 Kohärenzprotokoll	coherence protocol (MESI, MOESI)
@@ -249,12 +249,12 @@ Speichercontroller	memory controller
 Speicherbus	memory bus
 DDR-Speicher	DDR (Double Data Rate) memory
 HBM (Speicher mit hoher Bandbreite)	HBM (High Bandwidth Memory)
-CXL (Compute Express Link)	CXL (Compute Express Link)
+Offener Interconnect-Standard für kohärenten Speicherzugriff zwischen CPU und Beschleunigern	CXL (Compute Express Link)
 PCIe (Peripheral Component Interconnect Express)	PCIe (PCI Express)
-NVMe (Non-Volatile Memory Express)	NVMe (Non-Volatile Memory Express)
+Hochgeschwindigkeits-Speicherschnittstelle für SSDs über PCIe	NVMe (Non-Volatile Memory Express)
 Dauerhafter Speicher / Persistent Memory	persistent memory (PMEM)
 Chiplet / Chiplet-Architektur	chiplet (architecture)
-Interposer / Zwischenträger	interposer
+Verbindungsschicht zwischen Chips in einem Multi-Die-Paket	interposer
 Multi-Die-Paket	multi-die package (MDP)
 Thermische Entwurfsleistung (TDP)	TDP (Thermal Design Power)
 Leistung pro Watt	performance per watt
@@ -265,7 +265,7 @@ Leistung pro Watt	performance per watt
 
 Quantencomputer	quantum computer
 Qubit (Quantenbit)	qubit (quantum bit)
-Superposition	superposition
+Überlagerung mehrerer Quantenzustände gleichzeitig	superposition
 Verschränkung / Quantenverschränkung	entanglement / quantum entanglement
 Quantengatter	quantum gate
 Hadamard-Gatter	Hadamard gate
@@ -281,10 +281,10 @@ Physikalisches Qubit	physical qubit
 Quantenüberlegenheit / Quantum Supremacy	quantum supremacy / quantum advantage
 Quantenvorteil	quantum advantage
 Rauschintensiver Zwischen-Quantencomputer	NISQ (Noisy Intermediate-Scale Quantum)
-Shors Algorithmus	Shor's algorithm
-Grovers Algorithmus	Grover's algorithm
+Quantenalgorithmus zur effizienten Primfaktorzerlegung	Shor's algorithm
+Quantenalgorithmus für beschleunigte Suche in unsortierten Daten	Grover's algorithm
 Variationsquantenalgorithmus	VQE (Variational Quantum Eigensolver)
-QAOA	QAOA (Quantum Approximate Optimization Algorithm)
+Quantenalgorithmus für kombinatorische Optimierungsprobleme	QAOA (Quantum Approximate Optimization Algorithm)
 Quantenannealing	quantum annealing
 Quantensimulation	quantum simulation
 Quantenkryptographie	quantum cryptography
@@ -317,21 +317,21 @@ Identitätsmorphismus	identity morphism
 Funktor	functor
 Endofunktor	endofunctor
 Natürliche Transformation	natural transformation
-Monade	monad
+Kompositionsstruktur zum Verketten von Berechnungen in Kategorientheorie	monad
 Monadengesetze	monad laws (left identity, right identity, associativity)
 Applikativer Funktor	applicative functor
-Monoid	monoid
+Algebraische Struktur mit assoziativer Verknüpfung und neutralem Element	monoid
 Halbgruppe	semigroup
 Gruppentheorie	group theory
-Ring (Algebra)	ring (algebra)
-Isomorphismus	isomorphism
-Homomorphismus	homomorphism
-Epimorphismus	epimorphism
-Monomorphismus	monomorphism
+Algebraische Struktur mit Addition und Multiplikation (kommutativ, assoziativ)	ring (algebra)
+Strukturerhaltende Abbildung zwischen algebraischen Strukturen	isomorphism
+Strukturerhaltende Abbildung zwischen algebraischen Strukturen	homomorphism
+Surjektiver Morphismus (Abbildung auf alle Elemente)	epimorphism
+Injektiver Morphismus (Abbildung ohne Zusammenfallen)	monomorphism
 Produkt (Kategorientheorie)	product (category theory)
 Koprodukt / Summe	coproduct / sum
 Adjunktion	adjunction
-Yoneda-Lemma	Yoneda lemma
+Fundamentalsatz der Kategorientheorie über natürliche Transformationen	Yoneda lemma
 Freie Monade	free monad
 Kofreie Komonade	cofree comonad
 Kleisli-Kategorie	Kleisli category
@@ -344,7 +344,7 @@ Höherkindiger Typ	higher-kinded type (HKT)
 Abhängiger Typ	dependent type
 Linearer Typ	linear type
 Affiner Typ	affine type
-Phantomtyp	phantom type
+Typparameter ohne Laufzeitrepräsentation (nur für Typsicherheit)	phantom type
 Existenztyp	existential type
 Universalquantor (∀)	universal quantifier (∀ / forall)
 Existenzquantor (∃)	existential quantifier (∃ / exists)
@@ -356,7 +356,7 @@ Koinduktiver Typ	coinductive type
 Rekursionsschema	recursion scheme
 Katamorphismus	catamorphism (fold)
 Anamorphismus	anamorphism (unfold)
-Hylomorphismus	hylomorphism
+Zusammensetzung aus Anamorphismus und Katamorphismus (Aufbau + Abbau)	hylomorphism
 Fixpunktkombinator	fixed-point combinator (Y combinator)
 Terminierungsprüfung	termination checker
 
@@ -413,7 +413,7 @@ Zukunftssicherheit	future-proofing
 Technologieradar	technology radar
 Technologiebewertung	technology evaluation / technology assessment
 Architektur-Review	architecture review
-Design-Review	design review
+Formale Prüfung eines Entwurfs durch Fachkollegen	design review
 Technische Tragfähigkeit	technical feasibility
 Technischer Kompromiss	technical compromise
 Sorgfaltspflicht	due diligence
@@ -437,8 +437,8 @@ Edge Computing / Randberechnung	edge computing
 Fog Computing / Nebelberechnung	fog computing
 Konfidentielles Rechnen	confidential computing
 Homomorphes Rechnen	homomorphic computing
-Unikernel	unikernel
-WebAssembly (Wasm)	WebAssembly (Wasm)
+Minimal-Betriebssystem, das nur eine einzige Anwendung ausführt	unikernel
+Binäres Befehlsformat für leistungsstarke Webanwendungen im Browser	WebAssembly (Wasm)
 WASI (WebAssembly-Systemschnittstelle)	WASI (WebAssembly System Interface)
 Komponentenmodell (Wasm)	component model (Wasm)
 eBPF-basierte Netzwerkfunktionen	eBPF-based networking
@@ -508,10 +508,10 @@ Präventiv	preventive / preventative
 Korrektiv	corrective
 Kompensatorisch	compensatory
 Komplementär	complementary
-Redundant	redundant
+Mehrfach vorhanden zur Ausfallsicherheit	redundant
 Überflüssig	superfluous
 Inkrementell	incremental
-Iterativ	iterative
+Schrittweise wiederholend bis zur Lösung	iterative
 Rekursiv	recursive
 Reentranzfähig / Wiedereintrittsfähig	reentrant
 Threadsicher	thread-safe
@@ -524,7 +524,7 @@ Fortschrittgarantierend	progress-guaranteeing
 Feingranular	fine-grained
 Grobgranular	coarse-grained
 Deklarativ	declarative
-Imperativ	imperative
+Befehlsorientiert: Schritt für Schritt sagend, was zu tun ist	imperative
 Komposierbar / Zusammensetzbar	composable
 Zerlegbar	decomposable
 Wiederverwendbar	reusable
