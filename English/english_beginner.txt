@@ -1,0 +1,225 @@
+# Technical English — Beginner (DE → EN)
+# Format: Front (Deutsch)	Back (English)
+
+# ============================================================
+# Section 1: Hardware & Computer Basics
+# ============================================================
+
+Prozessor / Hauptprozessor	CPU (Central Processing Unit)
+Arbeitsspeicher	RAM (Random Access Memory)
+Festplatte	hard drive / hard disk
+Solid-State-Laufwerk	SSD (Solid State Drive)
+Hauptplatine / Mainboard	motherboard
+Grafikkarte	GPU (Graphics Processing Unit) / graphics card
+Netzteil	PSU (Power Supply Unit)
+Gehäuse (Computer)	case / chassis
+Lüfter / Kühler	fan / cooler / heatsink
+Bildschirm / Monitor	monitor / display / screen
+Tastatur	keyboard
+Maus	mouse
+Drucker	printer
+Scanner	scanner
+Anschluss / Schnittstelle	port / interface / connector
+USB-Anschluss	USB port
+Netzwerkkarte	network interface card (NIC)
+Hochfahren / Starten (Computer)	to boot / to boot up / to start up
+Herunterfahren	to shut down
+Neu starten	to restart / to reboot
+Einstecken / Anschließen	to plug in / to connect
+Aufrüsten / Erweitern	to upgrade
+Byte	byte
+Kilobyte	kilobyte (KB)
+Megabyte	megabyte (MB)
+Gigabyte	gigabyte (GB)
+Terabyte	terabyte (TB)
+Taktfrequenz	clock speed / clock rate
+Kern (Prozessor)	core
+Mehrkernprozessor	multi-core processor
+Zwischenspeicher (Prozessor)	cache
+Eingabegerät	input device
+Ausgabegerät	output device
+
+# ============================================================
+# Section 2: Software & Operating Systems
+# ============================================================
+
+Software	software
+Anwendung / Programm	application / app
+Betriebssystem	operating system (OS)
+Firmware	firmware
+Treiber	driver
+Hilfsprogramm / Dienstprogramm	utility
+Installieren	to install
+Deinstallieren	to uninstall
+Aktualisieren	to update
+Patch / Fehlerkorrektur einspielen	to patch
+Einrichten / Konfigurieren	to configure / to set up
+Starten (Programm)	to launch / to run / to execute
+Lizenz	license
+Quelloffene Software	open source software
+Proprietäre Software	proprietary software
+Kostenlose Software	freeware
+Schreibtischoberfläche / Desktop	desktop
+Taskleiste	taskbar
+Dateimanager	file manager
+Kommandozeile / Terminal	terminal / command line
+Shell	shell
+Benutzeroberfläche	user interface (UI)
+Grafische Benutzeroberfläche	graphical user interface (GUI)
+Benachrichtigung	notification
+Standardeinstellung	default setting
+Einstellungen / Konfiguration	settings / configuration / preferences
+Verknüpfung	shortcut / link
+Zwischenablage	clipboard
+Rechte / Berechtigungen	permissions
+
+# ============================================================
+# Section 3: Files & Data
+# ============================================================
+
+Datei	file
+Ordner / Verzeichnis	folder / directory
+Erstellen (Datei)	to create
+Speichern	to save
+Löschen	to delete / to remove
+Kopieren	to copy
+Verschieben	to move
+Umbenennen	to rename
+Komprimieren / Packen	to compress / to zip
+Entpacken / Extrahieren	to extract / to unzip
+Textdatei	text file
+Binärdatei	binary file
+Ausführbare Datei	executable (file)
+Archiv (Datei)	archive
+Bilddatei	image file
+Tabellenkalkulation	spreadsheet
+Dateierweiterung / Dateiendung	file extension
+Dateigröße	file size
+Dateipfad	file path
+Sicherung / Sicherungskopie	backup
+Wiederherstellen	to restore
+Synchronisieren	to sync / to synchronize
+Beschädigt (Datei)	corrupt / corrupted
+Daten wiederherstellen	to recover data
+Formatieren	to format
+Schreibgeschützt	read-only
+Versteckte Datei	hidden file
+Verknüpfung (Datei)	link / shortcut
+Symbolischer Link	symbolic link / symlink
+Prüfsumme	checksum
+
+# ============================================================
+# Section 4: Internet & Web Basics
+# ============================================================
+
+Browser / Webbrowser	browser / web browser
+Webadresse / URL	URL (Uniform Resource Locator)
+Domäne / Domain	domain
+IP-Adresse	IP address
+DNS (Namensauflösung)	DNS (Domain Name System)
+Bandbreite	bandwidth
+Webseite (einzelne Seite)	web page
+Website (gesamter Auftritt)	website
+Hyperlink / Verweis	hyperlink / link
+Herunterladen	to download
+Hochladen	to upload
+Streamen	to stream / streaming
+E-Mail	email
+Anhang (E-Mail)	attachment
+Spam / unerwünschte E-Mail	spam
+Phishing	phishing
+Passwort	password
+Authentifizierung	authentication
+Verschlüsselung	encryption
+Firewall	firewall
+VPN (Virtuelles Privates Netzwerk)	VPN (Virtual Private Network)
+Lesezeichen / Favorit	bookmark / favorite
+Suchmaschine	search engine
+Cookie	cookie
+Sitzung	session
+Server	server
+Client	client
+Anmelden / Einloggen	to log in / to sign in
+Abmelden / Ausloggen	to log out / to sign out
+Benutzername	username
+Zwei-Faktor-Authentifizierung	two-factor authentication (2FA)
+
+# ============================================================
+# Section 5: Basic Programming Concepts
+# ============================================================
+
+Variable	variable
+Konstante	constant
+Datentyp	data type
+Zeichenkette	string
+Ganzzahl	integer
+Gleitkommazahl	float / floating-point number
+Wahrheitswert / Boolescher Wert	boolean
+Feld / Array	array
+Liste	list
+Zustand / Status	state / status
+Bedingung	condition
+Schleife	loop
+Wiederholung / Iteration	iteration
+Verzweigung	branch / conditional branch
+Abbruch (Schleife)	break
+Weiter (nächste Schleifeniteration)	continue
+Funktion	function
+Methode	method
+Parameter	parameter
+Argument / Übergabewert	argument
+Rückgabewert	return value
+Klasse	class
+Objekt	object
+Instanz	instance
+Eigenschaft	property / attribute
+Konstruktor	constructor
+Vererbung	inheritance
+Schnittstelle (Programmierung)	interface
+Fehler	error / bug
+Ausnahme / Exception	exception
+Syntaxfehler	syntax error
+Laufzeitfehler	runtime error
+Fehler suchen / Debuggen	to debug
+Logischer Fehler	logic error
+Stapel / Stack	stack
+Warteschlange / Queue	queue
+Zeiger / Pointer	pointer
+Referenz	reference
+Null / Nichts	null / nil / None
+Typ-Umwandlung	type casting / type conversion
+
+# ============================================================
+# Section 6: Development Tools & Workflow
+# ============================================================
+
+Entwicklungsumgebung (IDE)	IDE (Integrated Development Environment)
+Editor / Texteditor	editor / text editor
+Compiler	compiler
+Interpreter	interpreter
+Debugger	debugger
+Linter / Codeprüfer	linter
+Versionsverwaltung	version control
+Repository / Projektarchiv	repository (repo)
+Commit / Änderung festschreiben	commit
+Push / Hochladen (Repo)	to push
+Pull / Herunterladen (Repo)	to pull
+Zusammenführen (Branches)	to merge
+Zweig / Branch	branch
+Klonen (Repository)	to clone
+Kompilieren / Übersetzen	to compile
+Linken / Verknüpfen (Objektdateien)	to link
+Build / Erstellen	to build
+Bereitstellen / Deployen	to deploy
+Veröffentlichung / Release	release
+Abhängigkeit	dependency
+Paketmanager	package manager
+Kommentar (im Code)	comment
+Dokumentation	documentation
+Änderungsprotokoll	changelog
+Spezifikation	specification (spec)
+Quellcode	source code
+Versionsnummer	version number
+Fehlerticket / Issue	issue / bug report
+Fehlerbehebung	bugfix / fix
+Codeausschnitt / Snippet	snippet

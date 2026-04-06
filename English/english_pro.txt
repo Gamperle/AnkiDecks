@@ -1,0 +1,230 @@
+# Technical English — Pro (DE → EN)
+# Format: Front (Deutsch)	Back (English)
+
+# ============================================================
+# Section 13: Software Architecture
+# ============================================================
+
+Microservices / Mikrodienste	microservices
+Monolith / Monolithische Architektur	monolith / monolithic architecture
+Ereignisgesteuerte Architektur	event-driven architecture
+Serverlose Architektur	serverless architecture
+Hexagonale Architektur	hexagonal architecture / ports and adapters
+Schichtenarchitektur	layered architecture
+Kopplung (eng / lose)	coupling (tight / loose)
+Kohäsion (hoch / niedrig)	cohesion (high / low)
+Trennung der Zuständigkeiten	separation of concerns
+Einzelverantwortungsprinzip	single responsibility principle (SRP)
+Eventuelle Konsistenz	eventual consistency
+Idempotenz	idempotency
+Schutzschalter-Muster	circuit breaker (pattern)
+Saga-Muster	saga pattern
+Synchron	synchronous
+Asynchron	asynchronous
+Nachrichtenwarteschlange	message queue
+Publish/Subscribe (Veröffentlichen/Abonnieren)	pub/sub (publish/subscribe)
+Ereignisbus	event bus
+CQRS (Befehls-Abfrage-Trennung)	CQRS (Command Query Responsibility Segregation)
+Domänengesteuertes Design	domain-driven design (DDD)
+Begrenzter Kontext	bounded context
+Domäne	domain
+Entität	entity
+Wertobjekt	value object
+Aggregat	aggregate
+Orchestrierung	orchestration
+Choreographie	choreography
+Diensterkennung	service discovery
+API-Gateway	API gateway
+
+# ============================================================
+# Section 14: Security Vocabulary
+# ============================================================
+
+Sicherheitslücke / Schwachstelle	vulnerability
+Exploit / Ausnutzung einer Schwachstelle	exploit
+Zero-Day-Schwachstelle	zero-day (vulnerability)
+Angriffsvektor	attack vector
+Bedrohungsmodellierung	threat modeling
+Injection-Angriff / Einschleusung	injection (attack)
+SQL-Injection	SQL injection
+Cross-Site-Scripting (XSS)	cross-site scripting (XSS)
+Cross-Site-Request-Forgery (CSRF)	cross-site request forgery (CSRF)
+Dienstverweigerungsangriff	denial of service (DoS)
+Verteilter Dienstverweigerungsangriff	distributed denial of service (DDoS)
+Brute-Force-Angriff	brute force (attack)
+Man-in-the-Middle-Angriff	man-in-the-middle attack (MITM)
+Härtung (System)	hardening
+Penetrationstest	penetration testing (pen test)
+Sicherheitsprüfung / Audit	(security) audit
+Compliance / Regelkonformität	compliance
+Vorfallreaktion	incident response
+Hashwert / Hashfunktion	hash / hash function
+Salt (kryptographisch)	salt
+Chiffre / Verschlüsselungsalgorithmus	cipher
+Zertifikat (digital)	(digital) certificate
+Öffentlicher Schlüssel	public key
+Privater Schlüssel	private key
+Digitale Signatur	digital signature
+Zertifizierungsstelle	certificate authority (CA)
+Vertrauenskette	chain of trust
+Rechteausweitung	privilege escalation
+Zugriffskontrolle	access control
+Rollenbasierte Zugriffskontrolle	RBAC (Role-Based Access Control)
+Geringstmögliche Berechtigung	principle of least privilege
+Angriffsflächenreduzierung	attack surface reduction
+Sichere Softwareentwicklung	secure software development lifecycle (SDLC)
+
+# ============================================================
+# Section 15: Cloud & Infrastructure
+# ============================================================
+
+IaaS (Infrastruktur als Dienst)	IaaS (Infrastructure as a Service)
+PaaS (Plattform als Dienst)	PaaS (Platform as a Service)
+SaaS (Software als Dienst)	SaaS (Software as a Service)
+FaaS (Funktion als Dienst)	FaaS (Function as a Service)
+Verwalteter Dienst	managed service
+Serverlos	serverless
+Automatische Skalierung	auto-scaling
+Horizontale Skalierung	horizontal scaling (scaling out)
+Vertikale Skalierung	vertical scaling (scaling up)
+Elastizität (Cloud)	elasticity
+Hohe Verfügbarkeit	high availability (HA)
+Fehlertoleranz	fault tolerance
+Notfallwiederherstellung	disaster recovery (DR)
+Failover / Automatische Umschaltung	failover
+Dienstgütevereinbarung	SLA (Service Level Agreement)
+Nutzungsbasierte Abrechnung	pay-as-you-go
+Reservierte Instanz	reserved instance
+Spot-Instanz / Preisoptimierte Instanz	spot instance
+Kostenoptimierung	cost optimization
+Mandantenfähigkeit	multi-tenancy
+Einzelner Mandant	single tenant
+Bereitstellung / Provisionierung	provisioning
+Orchestrierung (Cloud)	orchestration
+Lastverteilung	load balancing
+Inhaltsverteilungsnetzwerk	CDN (Content Delivery Network)
+Objektspeicher	object storage
+Blockspeicher	block storage
+Dateispeicher	file storage
+Kontingent / Quote	quota
+Drosselung / Throttling	throttling
+Unveränderliche Infrastruktur	immutable infrastructure
+Deklarative Konfiguration	declarative configuration
+
+# ============================================================
+# Section 16: Performance & Optimization
+# ============================================================
+
+Antwortzeit	response time
+Durchsatz	throughput
+Latenz / Verzögerung	latency
+Perzentil (p50, p95, p99)	percentile (p50, p95, p99)
+Engpass / Flaschenhals	bottleneck
+Speicherleck	memory leak
+Verklemmung / Deadlock	deadlock
+Wettlaufsituation / Race Condition	race condition
+Aushungerung / Starvation	starvation
+Zwischenspeicherung / Caching	caching
+Cache-Treffer	cache hit
+Cache-Fehltreffer	cache miss
+Indizierung (Datenbank)	indexing
+Lazy Loading / Verzögertes Laden	lazy loading
+Eager Loading / Sofortiges Laden	eager loading
+Verbindungspool	connection pool / connection pooling
+Profiling / Leistungsanalyse	profiling
+Benchmarking / Leistungsvergleich	benchmarking
+Lastentest	load testing
+Stresstest	stress testing
+Flammendiagramm	flame graph
+Ressourcenverbrauch	resource consumption / resource usage
+Speicherverbrauch	memory usage / memory consumption
+CPU-Auslastung	CPU utilization / CPU usage
+Stapelverarbeitung	batch processing
+Nebenläufigkeit	concurrency
+Parallelität	parallelism
+Asynchrone Verarbeitung	asynchronous processing
+Optimierung	optimization
+Vorabladen / Prefetching	prefetching
+Komprimierung	compression
+Minifizierung (Code)	minification
+Bündelung / Bundling	bundling
+
+# ============================================================
+# Section 17: Technical Communication & Documentation
+# ============================================================
+
+Spezifikation	specification (spec)
+Vorschlag / Proposal	proposal
+RFC (Bitte um Kommentare)	RFC (Request for Comments)
+Architekturentscheidung (ADR)	ADR (Architecture Decision Record)
+Nachbesprechung / Post-Mortem	postmortem
+Betriebshandbuch / Runbook	runbook
+Technische Dokumentation	technical documentation
+Architekturdokumentation	architecture documentation
+Standup / Tägliche Kurzbesprechung	standup (meeting) / daily standup
+Retrospektive	retrospective
+Demo / Vorführung	demo / demonstration
+Abstimmung / Sync-Meeting	sync (meeting) / alignment meeting
+Kick-off / Projektstart	kick-off (meeting)
+Abwägung / Trade-off	trade-off
+Einschränkung / Constraint	constraint
+Annahme / Voraussetzung	assumption
+Vorbehalt / Einschränkung	caveat
+Voraussetzung	prerequisite
+Blocker / Hindernis	blocker
+Genehmigen / Freigeben	to approve
+Ablehnen / Zurückweisen	to reject
+Änderungen anfordern	to request changes
+Vorschlagen	to suggest / to propose
+Eskalieren	to escalate
+Technischer Redakteur	technical writer
+Zielgruppe	target audience
+Glossar	glossary
+FAQ (Häufig gestellte Fragen)	FAQ (Frequently Asked Questions)
+Freigabe / Sign-off	sign-off / approval
+Entwurf / Draft	draft
+
+# ============================================================
+# Section 18: Common Verbs & Phrases in Tech
+# ============================================================
+
+Bereitstellen / Deployen	to deploy
+Provisionieren / Einrichten	to provision
+Bootstrappen / Initialisieren	to bootstrap
+Hochfahren / Starten (Instanz)	to spin up
+Herunterfahren / Abbauen	to tear down
+Als veraltet markieren / Deprecaten	to deprecate
+Einstellen / Außer Betrieb nehmen	to sunset / to decommission
+Reproduzieren (Fehler)	to reproduce
+Isolieren (Problem)	to isolate
+Nachverfolgen / Tracen	to trace
+Diagnostizieren	to diagnose
+Grundursache	root cause
+Umgehungslösung / Workaround	workaround
+Hotfix / Sofort-Fehlerbehebung	hotfix
+Einarbeiten / Onboarding	to onboard / onboarding
+Übergeben / Weitergeben	to hand off / handover
+Pair Programming / Paarprogrammierung	pair programming
+Quietscheenten-Debugging	rubber duck debugging
+Außerhalb des Geltungsbereichs	out of scope
+In Arbeit / Work in Progress	work in progress (WIP)
+Erledigt / Fertig	done / completed
+Blockiert	blocked
+Zurückgestellt / Pausiert	on hold
+Veraltet / Deprecated	deprecated
+Abwärtskompatibel	backward compatible
+Aufwärtskompatibel	forward compatible
+Plattformübergreifend	cross-platform
+Betriebssystemunabhängig	platform-independent / OS-agnostic
+Produktionsreif	production-ready
+Skalierbar	scalable
+Wartbar	maintainable
+Deterministisch	deterministic
+Nicht-deterministisch	non-deterministic
+Zustandslos	stateless
+Zustandsbehaftet	stateful
+Fehlertolerant	fault-tolerant / resilient
+Ausfallsicher	failsafe
+Quelloffene Software	open source (software)
+Herstellersperre / Vendor Lock-in	vendor lock-in
+Technische Schulden abbauen	to pay off technical debt / to reduce technical debt

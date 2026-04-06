@@ -1,0 +1,224 @@
+# Technical English — Intermediate (DE → EN)
+# Format: Front (Deutsch)	Back (English)
+
+# ============================================================
+# Section 7: Software Engineering Terms
+# ============================================================
+
+Softwarearchitektur	software architecture
+Entwurfsmuster / Design Pattern	design pattern
+Refactoring / Codeumstrukturierung	refactoring
+Abstraktion	abstraction
+Kapselung	encapsulation
+Kopplung (zwischen Modulen)	coupling
+Zusammenhalt / Kohäsion	cohesion
+Trennung der Zuständigkeiten	separation of concerns
+Einzelverantwortungsprinzip	single responsibility principle
+Agile Softwareentwicklung	agile (software development)
+Scrum	Scrum
+Sprint	sprint
+Backlog / Aufgabenliste	backlog
+User Story / Benutzergeschichte	user story
+Akzeptanzkriterien	acceptance criteria
+Code-Review / Code-Überprüfung	code review
+Technische Schulden	technical debt
+Wartbarkeit	maintainability
+Skalierbarkeit	scalability
+Sauberer Code / Clean Code	clean code
+Interessenvertreter / Stakeholder	stakeholder
+Anforderung	requirement
+Umfang / Geltungsbereich	scope
+Meilenstein	milestone
+Frist / Termin	deadline
+Liefergegenstand / Ergebnis	deliverable
+Prototyp	prototype
+Machbarkeitsstudie	feasibility study
+Proof of Concept (PoC)	proof of concept (PoC)
+Minimum Viable Product	MVP (Minimum Viable Product)
+Rückstand / Legacy-Code	legacy code
+Ablaufdiagramm	flowchart
+Anwendungsfall	use case
+Beschränkung / Randbedingung	constraint
+
+# ============================================================
+# Section 8: Databases & Data Management
+# ============================================================
+
+Datenbank	database
+Tabelle (Datenbank)	table
+Zeile / Datensatz	row / record
+Spalte / Feld	column / field
+Schema (Datenbank)	schema
+Index (Datenbank)	index
+Abfrage	query
+Einfügen (Daten)	to insert
+Aktualisieren (Daten)	to update
+Löschen (Daten)	to delete
+Verknüpfung / Join	join
+Aggregieren / Zusammenfassen	to aggregate
+Filtern	to filter
+Sortieren	to sort
+Gruppieren	to group by
+Primärschlüssel	primary key
+Fremdschlüssel	foreign key
+Eindeutiger Schlüssel	unique key / unique constraint
+Relationale Datenbank	relational database
+NoSQL-Datenbank	NoSQL database
+Schlüssel-Wert-Speicher	key-value store
+Dokumentendatenbank	document store / document database
+Graphdatenbank	graph database
+Migration (Datenbank)	migration
+Ausgangsdaten / Seed-Daten	seed data
+Replikation	replication
+Sharding / Horizontale Partitionierung	sharding
+Partitionierung	partitioning
+Transaktion	transaction
+ACID-Eigenschaften	ACID properties (Atomicity, Consistency, Isolation, Durability)
+Normalisierung	normalization
+Denormalisierung	denormalization
+Stored Procedure / Gespeicherte Prozedur	stored procedure
+Sicht / View	view
+Cursor (Datenbank)	cursor
+ORM (Objekt-Relationale Abbildung)	ORM (Object-Relational Mapping)
+
+# ============================================================
+# Section 9: Networking & Infrastructure
+# ============================================================
+
+Protokoll	protocol
+TCP (Übertragungssteuerungsprotokoll)	TCP (Transmission Control Protocol)
+UDP (Benutzerdatagrammprotokoll)	UDP (User Datagram Protocol)
+HTTP / HTTPS	HTTP (Hypertext Transfer Protocol) / HTTPS (HTTP Secure)
+FTP (Dateiübertragungsprotokoll)	FTP (File Transfer Protocol)
+SSH (Sichere Shell)	SSH (Secure Shell)
+SMTP (E-Mail-Versandprotokoll)	SMTP (Simple Mail Transfer Protocol)
+DHCP (Dynamisches Hostkonfigurationsprotokoll)	DHCP (Dynamic Host Configuration Protocol)
+Router	router
+Switch / Netzwerkschalter	switch
+Gateway	gateway
+Lastverteiler / Load Balancer	load balancer
+Proxy-Server	proxy server
+Reverse Proxy	reverse proxy
+Latenz / Verzögerung	latency
+Durchsatz	throughput
+Paket (Netzwerk)	packet
+Port	port
+Socket / Netzwerkbuchse	socket
+Handshake (Verbindungsaufbau)	handshake
+Virtuelle Maschine	virtual machine (VM)
+Container	container
+Instanz (Cloud)	instance
+Cluster	cluster
+Region (Cloud)	region
+Verfügbarkeitszone	availability zone
+Netzwerkverkehr	network traffic
+Paketverlust	packet loss
+Zeitüberschreitung / Timeout	timeout
+DNS-Auflösung	DNS resolution
+Subnetz	subnet
+VLAN (Virtuelles LAN)	VLAN (Virtual Local Area Network)
+
+# ============================================================
+# Section 10: Testing & Quality Assurance
+# ============================================================
+
+Test	test
+Unit-Test / Einzeltest	unit test
+Integrationstest	integration test
+End-to-End-Test	end-to-end test (E2E test)
+Regressionstest	regression test
+Smoke-Test / Grundfunktionstest	smoke test
+Testfall	test case
+Testsuite / Testsammlung	test suite
+Behauptung / Assertion	assertion
+Mock-Objekt / Attrappe	mock
+Stub / Platzhalter	stub
+Fixture / Testvorrichtung	fixture
+Testabdeckung / Code Coverage	code coverage / test coverage
+Testgetriebene Entwicklung	test-driven development (TDD)
+Abnahmetest	acceptance test
+Grenzwerttest	boundary testing / boundary value analysis
+Bestanden (Test)	pass / passed
+Fehlgeschlagen (Test)	fail / failed
+Instabiler Test / Flaky Test	flaky test
+Falsch-Positiv	false positive
+Falsch-Negativ	false negative
+Grenzfall / Sonderfall	edge case / corner case
+Lastentest	load test / load testing
+Stresstest	stress test
+Performanztest	performance test
+Testumgebung	test environment
+Testdaten	test data
+Erwartetes Ergebnis	expected result / expected outcome
+Tatsächliches Ergebnis	actual result / actual outcome
+Fehlerbericht	bug report / defect report
+
+# ============================================================
+# Section 11: DevOps & CI/CD
+# ============================================================
+
+Kontinuierliche Integration	continuous integration (CI)
+Kontinuierliche Auslieferung	continuous delivery (CD)
+Kontinuierliche Bereitstellung	continuous deployment
+Build-Pipeline	build pipeline
+Artefakt (Build-Ergebnis)	artifact
+Staging-Umgebung	staging environment
+Produktionsumgebung	production environment
+Zurückrollen / Rollback	to roll back / rollback
+Canary-Release / Schrittweise Einführung	canary release
+Blau-Grün-Bereitstellung	blue-green deployment
+Feature-Flag / Feature-Schalter	feature flag / feature toggle
+A/B-Test	A/B test
+Gesundheitsprüfung / Health Check	health check
+Container-Orchestrierung	container orchestration
+Infrastruktur als Code	infrastructure as code (IaC)
+Überwachung / Monitoring	monitoring
+Alarmierung / Alerting	alerting
+Protokollierung / Logging	logging
+Verfügbarkeit	availability
+Ausfallzeit / Downtime	downtime
+Betriebszeit / Uptime	uptime
+Bereitstellung / Deployment	deployment
+Paketverwaltung / Paketierung	packaging
+Konfigurationsmanagement	configuration management
+Automatisierung	automation
+Vorfallmanagement	incident management
+Dienstgütevereinbarung	SLA (Service Level Agreement)
+Betriebshandbuch / Runbook	runbook
+Nachbesprechung / Post-Mortem	postmortem / post-incident review
+
+# ============================================================
+# Section 12: APIs & Integration
+# ============================================================
+
+Programmierschnittstelle / API	API (Application Programming Interface)
+Endpunkt	endpoint
+Anfrage (API)	request
+Antwort (API)	response
+Statuscode	status code
+Nutzlast / Payload	payload
+Kopfzeile / Header	header
+REST (Representational State Transfer)	REST / RESTful API
+GraphQL	GraphQL
+RPC (Fernprozeduraufruf)	RPC (Remote Procedure Call)
+Webhook	webhook
+WebSocket	WebSocket
+Abfragen / Polling	polling
+JSON (JavaScript-Objektnotation)	JSON (JavaScript Object Notation)
+XML (Erweiterbare Auszeichnungssprache)	XML (Extensible Markup Language)
+YAML	YAML (YAML Ain't Markup Language)
+CSV (Kommagetrennte Werte)	CSV (Comma-Separated Values)
+Serialisierung	serialization
+Deserialisierung	deserialization
+API-Schlüssel	API key
+OAuth (Offene Autorisierung)	OAuth (Open Authorization)
+Token / Zugriffstoken	token / access token
+Bearer-Token	bearer token
+Ratenbegrenzung	rate limiting
+Drosselung	throttling
+Versionierung (API)	API versioning
+Abwärtskompatibilität	backward compatibility
+Veraltete Schnittstelle / Deprecated	deprecated
+SDK (Software-Entwicklungsbausatz)	SDK (Software Development Kit)
+Wrapper / Hüllklasse	wrapper
+Middleware	middleware
