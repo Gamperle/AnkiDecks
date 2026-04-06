@@ -1,6 +1,6 @@
 # AnkiDecks
 
-A collection of Anki flashcard decks for learning and reviewing **Java**, **C++**, and **Android** development.
+A collection of Anki flashcard decks for learning and reviewing **Java**, **C++**, **Android**, and **Security** topics.
 
 ## Repository Structure
 
@@ -8,16 +8,18 @@ A collection of Anki flashcard decks for learning and reviewing **Java**, **C++*
 AnkiDecks/
 ├── Java/          # Flashcard decks for Java programming
 ├── Cpp/           # Flashcard decks for C++ programming
-└── Android/       # Flashcard decks for Android development
+├── Android/       # Flashcard decks for Android development
+└── Security/      # Flashcard decks for cybersecurity fundamentals
 ```
 
 ## Topics Covered
 
-| Folder    | Description |
-|-----------|-------------|
-| `Java/`   | Core Java concepts, OOP, collections, concurrency, JVM internals, and more |
-| `Cpp/`    | C++ fundamentals, STL, memory management, templates, modern C++ features |
-| `Android/`| Android SDK, Activities, Fragments, Jetpack components, Kotlin interop |
+| Folder | Description |
+|---|---|
+| `Java/` | Core Java, OOP, collections, concurrency, JVM internals, networking, cryptography, web frameworks, and more (35+ decks) |
+| `Cpp/` | C++ fundamentals, STL, memory management, OOP, modern C++ features |
+| `Android/` | Android app development, AOSP internals, Android Automotive OS (AAOS), AAOS security — beginner through pro (12 decks) |
+| `Security/` | Cybersecurity fundamentals — beginner, intermediate, and pro levels |
 
 ## Deck Format
 
