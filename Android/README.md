@@ -656,3 +656,6 @@ Front (question or term)[TAB]Back (answer or definition)
 | Beginner | `aaos_beginner.txt` | Automotive OS Beginner (3.1–3.2) |
 | Intermediate | `aaos_intermediate.txt` | Automotive OS Intermediate (3.3–3.9) + Cross-Cutting Intermediate (4.1–4.3) |
 | Pro | `aaos_pro.txt` | Automotive OS Pro (3.10–3.15) + Cross-Cutting Pro (4.4–4.6) |
+| Beginner | `aaos_security_beginner.txt` | AAOS Security Beginner (5.1) |
+| Intermediate | `aaos_security_intermediate.txt` | AAOS Security Intermediate (5.2) |
+| Pro | `aaos_security_pro.txt` | AAOS Security Pro (5.3) |
