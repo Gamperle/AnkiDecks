@@ -26,16 +26,16 @@ Obere Schranke	upper bound
 Untere Schranke	lower bound
 Asymptotische Komplexität	asymptotic complexity
 O-Notation / Landau-Notation	Big-O notation / asymptotic notation
-Amortisierte Analyse	amortized analysis
+Amortisierte Analyse	amortized analysis — averages cost of operations over a sequence, showing cheap average despite occasional expensive ones
 Berechenbarkeit	computability
 Entscheidbarkeit	decidability
 Unentscheidbarkeit	undecidability
-Halteproblem	halting problem
+Halteproblem	halting problem — undecidable problem: no algorithm can determine whether an arbitrary program will halt
 Turingmaschine	Turing machine
 Nichtdeterminismus	nondeterminism
-NP-Vollständigkeit	NP-completeness
+NP-Vollständigkeit	NP-completeness — class of problems that are both in NP and NP-hard; no known polynomial-time solution
 NP-Schwere	NP-hardness
-Reduktion (Komplexitätstheorie)	reduction (complexity theory)
+Reduktion (Komplexitätstheorie)	reduction (complexity theory) — transforming one problem into another to prove relative difficulty
 Polynomialzeit	polynomial time
 Exponentialzeit	exponential time
 Approximationsalgorithmus	approximation algorithm
@@ -79,14 +79,14 @@ Bester Fall	best case
 Schlechtester Fall	worst case
 Durchschnittlicher Fall	average case
 Teile-und-Herrsche	divide and conquer
-Dynamische Programmierung	dynamic programming
+Dynamische Programmierung	dynamic programming — solves problems by breaking them into overlapping subproblems and caching results
 Gierige Methode / Greedy-Algorithmus	greedy algorithm
 Rückverfolgung / Backtracking	backtracking
 Verzweigen und Begrenzen	branch and bound
 Verfahren zur Lösung von Problemen auf Knoten-Kanten-Strukturen	graph algorithm
 Kürzester-Pfad-Algorithmus	shortest path algorithm
 Minimaler Spannbaum	minimum spanning tree (MST)
-Topologische Sortierung	topological sorting
+Topologische Sortierung	topological sorting — linear ordering of DAG vertices such that every edge points forward
 Tiefensuche	DFS (Depth-First Search)
 Breitensuche	BFS (Breadth-First Search)
 Zusammenhangskomponente	connected component
@@ -97,14 +97,14 @@ Planarer Graph	planar graph
 Adjazenzmatrix	adjacency matrix
 Adjazenzliste	adjacency list
 Hashtabelle	hash table / hash map
-Kollisionsauflösung	collision resolution
+Kollisionsauflösung	collision resolution — strategy for handling two keys that hash to the same slot
 Offene Adressierung	open addressing
 Verkettung / Chaining	chaining (hash table)
 B-Baum	B-tree
 Rot-Schwarz-Baum	red-black tree
 AVL-Baum	AVL tree
 Mehrstufige, verkettete Datenstruktur für schnelle Suche (O(log n))	skip list
-Trie / Präfixbaum	trie / prefix tree
+Trie / Präfixbaum	trie / prefix tree — tree where each path from root to leaf represents a key, enabling fast prefix lookups
 Suffixbaum	suffix tree
 Sortiertes Feld aller Suffixe eines Textes für schnelle Mustersuche	suffix array
 Probabilistische Datenstruktur zur Mengenzugehörigkeitsprüfung (falsch-positiv möglich)	Bloom filter
@@ -124,8 +124,8 @@ Stabile Zuordnung / Matching	stable matching
 Flussnetzwerk	flow network
 Lineare Programmierung	linear programming
 Ganzzahlige Programmierung	integer programming
-Konvexe Optimierung	convex optimization
-Gradientenabstieg	gradient descent
+Konvexe Optimierung	convex optimization — optimization where any local minimum is also the global minimum
+Gradientenabstieg	gradient descent — iteratively moves in the direction of steepest decrease to minimize a function
 Stochastischer Gradientenabstieg	SGD (Stochastic Gradient Descent)
 
 # ============================================================
@@ -136,9 +136,9 @@ Symmetrisches Verschlüsselungsverfahren	symmetric cipher
 Blockchiffre	block cipher
 Stromchiffre	stream cipher
 Weit verbreiteter symmetrischer Verschlüsselungsstandard (128/192/256 Bit)	AES (Advanced Encryption Standard)
-Betriebsmodus (Verschlüsselung)	mode of operation (e.g., CBC, CTR, GCM)
+Betriebsmodus (Verschlüsselung)	mode of operation (e.g., CBC, CTR, GCM) — defines how a block cipher encrypts data larger than one block
 Initialisierungsvektor (IV)	IV (Initialization Vector)
-Nonce (Einmalwert)	nonce
+Nonce (Einmalwert)	nonce — number used only once to prevent replay attacks and ensure ciphertext uniqueness
 Auffüllung / Padding (Kryptographie)	padding (cryptography)
 Padding-Orakel-Angriff	padding oracle attack
 Asymmetrisches Verschlüsselungsverfahren	asymmetric cipher / public-key cryptography
@@ -146,8 +146,8 @@ Asymmetrisches Verschlüsselungsverfahren auf Basis großer Primzahlen	RSA algor
 Elliptische-Kurven-Kryptographie	ECC (Elliptic Curve Cryptography)
 Diffie-Hellman-Schlüsselaustausch	Diffie-Hellman key exchange
 Diskreter Logarithmus	discrete logarithm
-Einwegfunktion	one-way function
-Falltürfunktion	trapdoor function
+Einwegfunktion	one-way function — easy to compute but computationally infeasible to invert
+Falltürfunktion	trapdoor function — one-way function that becomes invertible with knowledge of a secret (the trapdoor)
 Schlüsselableitung / Key Derivation	key derivation (KDF)
 Standardisierte, iterative Schlüsselableitungsfunktion für Passwörter	PBKDF2 (Password-Based Key Derivation Function 2)
 Speicherresistente Passwort-Hashfunktion (Gewinner des PHC 2015)	Argon2
@@ -166,19 +166,19 @@ Public-Key-Infrastruktur	PKI (Public Key Infrastructure)
 Schlüsselzeremonien	key ceremony
 Hardware-Sicherheitsmodul	HSM (Hardware Security Module)
 Vertrauenswürdige Ausführungsumgebung	TEE (Trusted Execution Environment)
-Sichere Enklave	secure enclave
-Attestierung	attestation
+Sichere Enklave	secure enclave — hardware-isolated area of a processor for protecting sensitive computations
+Attestierung	attestation — cryptographic proof that software/hardware is in a known trusted state
 Wissensfreier Beweis / Zero-Knowledge-Beweis	zero-knowledge proof (ZKP)
 Interaktiver Beweis	interactive proof
 Nicht-interaktiver Beweis	non-interactive proof
-zk-SNARK	zk-SNARK (Zero-Knowledge Succinct Non-Interactive Argument of Knowledge)
+zk-SNARK	zk-SNARK (Zero-Knowledge Succinct Non-Interactive Argument of Knowledge) — compact proof verifiable without interaction or revealing the witness
 Homomorphe Verschlüsselung	homomorphic encryption
 Vollständig homomorphe Verschlüsselung	FHE (Fully Homomorphic Encryption)
-Sichere Mehrparteienberechnung	MPC (Secure Multi-Party Computation)
-Schwellenwert-Kryptographie	threshold cryptography
+Sichere Mehrparteienberechnung	MPC (Secure Multi-Party Computation) — parties jointly compute a function without revealing their private inputs
+Schwellenwert-Kryptographie	threshold cryptography — requires t-of-n parties to cooperate for decryption or signing
 Geheimnisteilung / Secret Sharing	secret sharing (e.g., Shamir's)
 Kryptographisches Protokoll zum Übertragen eines von N Geheimnissen, ohne preiszugeben, welches gewählt wurde	oblivious transfer
-Differenzielle Privatheit	differential privacy
+Differenzielle Privatheit	differential privacy — adds calibrated noise so individual records cannot be identified in aggregate results
 Post-Quanten-Kryptographie	post-quantum cryptography
 Gitterbasierte Kryptographie	lattice-based cryptography
 Schlüsselkapselungsmechanismus	KEM (Key Encapsulation Mechanism)
@@ -189,7 +189,7 @@ Sitzungswiederaufnahme	session resumption (TLS)
 0-RTT (Null-Roundtrip-Time)	0-RTT (Zero Round-Trip Time)
 Zufallszahlengenerator	RNG (Random Number Generator)
 Kryptographisch sicherer Zufallsgenerator	CSPRNG (Cryptographically Secure PRNG)
-Entropie	entropy
+Entropie	entropy — measure of randomness or unpredictability in data or a cryptographic key
 Entropiequelle	entropy source
 
 # ============================================================
@@ -210,10 +210,10 @@ Befehlsabruf	instruction fetch
 Befehlsdekodierung	instruction decode
 Befehlsausführung	instruction execution
 Rückschreibphase	write-back (stage)
-Sprungvorhersage	branch prediction
+Sprungvorhersage	branch prediction — CPU guesses which branch will be taken to keep the pipeline full
 Sprungvorhersagefehler	branch misprediction
 Spekulative Ausführung	speculative execution
-Außerordentliche Ausführung	out-of-order execution (OoOE)
+Außerordentliche Ausführung	out-of-order execution (OoOE) — CPU executes instructions as operands become available, not in program order
 Registerumbenennung	register renaming
 Reorder-Puffer	reorder buffer (ROB)
 Reservierungsstation	reservation station
@@ -242,7 +242,7 @@ Cache-Hierarchie	cache hierarchy
 Schnellster, prozessornahester Zwischenspeicher (je Kern)	L1 cache
 Zweiter, größerer Zwischenspeicher zwischen L1 und Hauptspeicher	L2 cache
 L3-Cache / Last-Level-Cache	L3 cache / LLC (Last-Level Cache)
-Cache-Kohärenz	cache coherence
+Cache-Kohärenz	cache coherence — ensures all CPU cores see a consistent view of shared memory
 Kohärenzprotokoll	coherence protocol (MESI, MOESI)
 Nicht-einheitlicher Speicherzugriff (NUMA)	NUMA (Non-Uniform Memory Access)
 Speichercontroller	memory controller
@@ -266,7 +266,7 @@ Leistung pro Watt	performance per watt
 Quantencomputer	quantum computer
 Qubit (Quantenbit)	qubit (quantum bit)
 Überlagerung mehrerer Quantenzustände gleichzeitig	superposition
-Verschränkung / Quantenverschränkung	entanglement / quantum entanglement
+Verschränkung / Quantenverschränkung	entanglement / quantum entanglement — correlated qubits whose states are linked regardless of distance
 Quantengatter	quantum gate
 Hadamard-Gatter	Hadamard gate
 CNOT-Gatter (Kontrolliert-NICHT)	CNOT gate (Controlled-NOT)
@@ -274,8 +274,8 @@ Toffoli-Gatter	Toffoli gate
 Pauli-Gatter (X, Y, Z)	Pauli gates (X, Y, Z)
 Quantenschaltkreis	quantum circuit
 Messung (Quantenmechanik)	measurement (quantum mechanics)
-Dekohärenz	decoherence
-Quantenfehlerkorrektur	quantum error correction (QEC)
+Dekohärenz	decoherence — loss of quantum state due to interaction with the environment
+Quantenfehlerkorrektur	quantum error correction (QEC) — encodes logical qubits across multiple physical qubits to detect and fix errors
 Logisches Qubit	logical qubit
 Physikalisches Qubit	physical qubit
 Quantenüberlegenheit / Quantum Supremacy	quantum supremacy / quantum advantage
@@ -316,7 +316,7 @@ Komposition	composition
 Identitätsmorphismus	identity morphism
 Funktor	functor
 Endofunktor	endofunctor
-Natürliche Transformation	natural transformation
+Natürliche Transformation	natural transformation — a family of morphisms mapping between two functors while preserving structure
 Kompositionsstruktur zum Verketten von Berechnungen in Kategorientheorie	monad
 Monadengesetze	monad laws (left identity, right identity, associativity)
 Applikativer Funktor	applicative functor
@@ -330,9 +330,9 @@ Surjektiver Morphismus (Abbildung auf alle Elemente)	epimorphism
 Injektiver Morphismus (Abbildung ohne Zusammenfallen)	monomorphism
 Produkt (Kategorientheorie)	product (category theory)
 Koprodukt / Summe	coproduct / sum
-Adjunktion	adjunction
+Adjunktion	adjunction — pair of functors (left/right adjoints) forming a universal relationship between categories
 Fundamentalsatz der Kategorientheorie über natürliche Transformationen	Yoneda lemma
-Freie Monade	free monad
+Freie Monade	free monad — separates the description of a computation from its interpretation, enabling testable DSLs
 Kofreie Komonade	cofree comonad
 Kleisli-Kategorie	Kleisli category
 Pfeilnotation / Do-Notation	do-notation / arrow notation
@@ -340,8 +340,8 @@ Effektsystem	effect system
 Algebraischer Effekt	algebraic effect
 Typklasse	type class
 Typkonstruktor	type constructor
-Höherkindiger Typ	higher-kinded type (HKT)
-Abhängiger Typ	dependent type
+Höherkindiger Typ	higher-kinded type (HKT) — a type constructor that takes another type constructor as a parameter (e.g., F[_])
+Abhängiger Typ	dependent type — type that depends on a value (e.g., Vec n: a vector of exactly n elements)
 Linearer Typ	linear type
 Affiner Typ	affine type
 Typparameter ohne Laufzeitrepräsentation (nur für Typsicherheit)	phantom type
@@ -354,10 +354,10 @@ Taktik (Beweisassistent)	tactic (proof assistant)
 Induktiver Typ	inductive type
 Koinduktiver Typ	coinductive type
 Rekursionsschema	recursion scheme
-Katamorphismus	catamorphism (fold)
-Anamorphismus	anamorphism (unfold)
+Katamorphismus	catamorphism (fold) — recursion scheme that collapses a data structure into a single value
+Anamorphismus	anamorphism (unfold) — recursion scheme that builds up a data structure from a seed value
 Zusammensetzung aus Anamorphismus und Katamorphismus (Aufbau + Abbau)	hylomorphism
-Fixpunktkombinator	fixed-point combinator (Y combinator)
+Fixpunktkombinator	fixed-point combinator (Y combinator) — enables recursion in lambda calculus by finding a function’s fixed point
 Terminierungsprüfung	termination checker
 
 # ============================================================
@@ -435,7 +435,7 @@ Serverlose Datenbank	serverless database
 Serverlose Edge-Berechnung	serverless edge computing
 Edge Computing / Randberechnung	edge computing
 Fog Computing / Nebelberechnung	fog computing
-Konfidentielles Rechnen	confidential computing
+Konfidentielles Rechnen	confidential computing — protects data in use via hardware-based trusted execution environments
 Homomorphes Rechnen	homomorphic computing
 Minimal-Betriebssystem, das nur eine einzige Anwendung ausführt	unikernel
 Binäres Befehlsformat für leistungsstarke Webanwendungen im Browser	WebAssembly (Wasm)
@@ -457,10 +457,10 @@ Richtlinie als Code	policy as code
 Open Policy Agent (OPA)	OPA (Open Policy Agent)
 Service-Level-Ziel	SLO (Service Level Objective)
 Service-Level-Indikator	SLI (Service Level Indicator)
-Fehlerbudget	error budget
+Fehlerbudget	error budget — allowed amount of downtime/errors before reliability targets are violated (SRE concept)
 Standortzuverlässigkeitstechnik	SRE (Site Reliability Engineering)
 Toil / Mühsame Routinearbeit	toil (SRE)
-Chaos Engineering / Chaostechnik	chaos engineering
+Chaos Engineering / Chaostechnik	chaos engineering — deliberately injecting failures in production to test system resilience
 Spieltag / Game Day	game day (chaos engineering)
 Fehlereingabe / Fault Injection	fault injection
 Leistungsfähigkeitsprüfstand	performance testbed
@@ -468,12 +468,12 @@ Synthetischer Datenverkehr	synthetic traffic
 Nachrichtengesteuerte Architektur	message-driven architecture
 Reaktive Systeme	reactive systems
 Reaktives Manifest	Reactive Manifesto
-Aktorenmodell	actor model
-Software-Transaktionsspeicher	STM (Software Transactional Memory)
+Aktorenmodell	actor model — concurrency model where actors communicate via message passing, each with private state
+Software-Transaktionsspeicher	STM (Software Transactional Memory) — composable memory transactions without explicit locks
 Persistenter Datenstrukturen	persistent data structures (immutable)
 Append-Only-Protokoll	append-only log
 Unveränderliches Protokoll	immutable log
-Merkle-Baum	Merkle tree
+Merkle-Baum	Merkle tree — hash tree where each leaf is hashed and parents are hashes of children, enabling efficient verification
 Gerichteter azyklischer Graph (DAG, Blockchain)	DAG (directed acyclic graph, in blockchain/DLT context)
 Verteiltes Hauptbuch / Distributed Ledger	distributed ledger
 Konsensprotokoll (Blockchain)	consensus protocol (blockchain)

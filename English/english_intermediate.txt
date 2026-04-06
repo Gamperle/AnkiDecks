@@ -39,8 +39,8 @@ Rückstand / Legacy-Code	legacy code
 Ablaufdiagramm	flowchart
 Anwendungsfall	use case
 Beschränkung / Randbedingung	constraint
-Abhängigkeitsinjektion	dependency injection
-Umkehrung der Steuerung	inversion of control (IoC)
+Abhängigkeitsinjektion	dependency injection — supplying an object’s dependencies from outside rather than creating them internally
+Umkehrung der Steuerung	inversion of control (IoC) — framework calls your code instead of your code calling the framework
 Entwurfsprinzip	design principle
 Offen-Geschlossen-Prinzip	open-closed principle (OCP)
 Liskovsches Substitutionsprinzip	Liskov substitution principle (LSP)
@@ -78,7 +78,7 @@ Werkzeugkette / Toolchain	toolchain
 Werkzeug zum automatischen Kompilieren und Paketieren von Software	build system
 Paketverwaltung	package management
 Abhängigkeitsbaum	dependency tree
-Semantische Versionierung	semantic versioning (SemVer)
+Semantische Versionierung	semantic versioning (SemVer) — MAJOR.MINOR.PATCH: major = breaking, minor = feature, patch = fix
 Breaking Change / Inkompatible Änderung	breaking change
 Rückwärtskompatibel	backward compatible
 Vorwärtskompatibel	forward compatible
@@ -126,20 +126,20 @@ Replikation	replication
 Sharding / Horizontale Partitionierung	sharding
 Partitionierung	partitioning
 Transaktion	transaction
-ACID-Eigenschaften	ACID properties (Atomicity, Consistency, Isolation, Durability)
+ACID-Eigenschaften	ACID properties (Atomicity, Consistency, Isolation, Durability) — guarantees for reliable database transactions
 Normalisierung	normalization
 Denormalisierung	denormalization
 Stored Procedure / Gespeicherte Prozedur	stored procedure
 Sicht / View	view
 Cursor (Datenbank)	cursor
-ORM (Objekt-Relationale Abbildung)	ORM (Object-Relational Mapping)
+ORM (Objekt-Relationale Abbildung)	ORM (Object-Relational Mapping) — maps database rows to programming-language objects automatically
 Verbindungszeichenfolge	connection string
 Verbindungspool (Datenbank)	connection pool
 Datenbanksperre	database lock
 Lesesperre	read lock / shared lock
 Schreibsperre	write lock / exclusive lock
-Optimistisches Sperren	optimistic locking
-Pessimistisches Sperren	pessimistic locking
+Optimistisches Sperren	optimistic locking — assumes no conflict; checks version at commit time and fails if data changed
+Pessimistisches Sperren	pessimistic locking — acquires a lock before reading, blocking others until the transaction completes
 Isolationsstufe	isolation level
 Isolationsstufe: nur bestätigte Änderungen werden gelesen	read committed
 Wiederholbares Lesen	repeatable read
@@ -166,15 +166,15 @@ Auto-Increment / Automatische Nummerierung	auto-increment
 Sequenz (Datenbank)	sequence
 Batch-Einfügung	batch insert / bulk insert
 Upsert (Einfügen oder Aktualisieren)	upsert (insert or update)
-ETL (Extrahieren, Transformieren, Laden)	ETL (Extract, Transform, Load)
+ETL (Extrahieren, Transformieren, Laden)	ETL (Extract, Transform, Load) — pipeline that extracts data from sources, transforms it, and loads it into a target store
 Data Warehouse / Datenlager	data warehouse
 Data Lake / Datenpool	data lake
-Sternschema	star schema
+Sternschema	star schema — data warehouse design with a central fact table linked to dimension tables
 Zeitreihendatenbank	time-series database
 Spaltenorientierte Datenbank	columnar database
 In-Memory-Datenbank	in-memory database
 Zwischenspeicher (Redis, Memcached)	cache (Redis, Memcached)
-Cache-Invalidierung	cache invalidation
+Cache-Invalidierung	cache invalidation — removing or updating stale cached data when the source of truth changes
 Datenmodell	data model
 Entity-Relationship-Diagramm	entity-relationship diagram (ERD)
 Kardinalität	cardinality
@@ -275,7 +275,7 @@ Mock-Objekt / Attrappe	mock
 Stub / Platzhalter	stub
 Fixture / Testvorrichtung	fixture
 Testabdeckung / Code Coverage	code coverage / test coverage
-Testgetriebene Entwicklung	test-driven development (TDD)
+Testgetriebene Entwicklung	test-driven development (TDD) — write a failing test first, then implement code to make it pass
 Abnahmetest	acceptance test
 Grenzwerttest	boundary testing / boundary value analysis
 Bestanden (Test)	pass / passed
@@ -294,7 +294,7 @@ Tatsächliches Ergebnis	actual result / actual outcome
 Fehlerbericht	bug report / defect report
 Verhaltensgetriebene Entwicklung	behavior-driven development (BDD)
 Vertragstests	contract testing
-Mutationstest	mutation testing
+Mutationstest	mutation testing — introduces small code changes (mutants) to verify that tests catch them
 Snapshot-Test	snapshot testing
 Sicherheitstest	security testing
 Barrierefreiheitstest	accessibility testing
@@ -343,9 +343,9 @@ Artefakt (Build-Ergebnis)	artifact
 Staging-Umgebung	staging environment
 Produktionsumgebung	production environment
 Zurückrollen / Rollback	to roll back / rollback
-Canary-Release / Schrittweise Einführung	canary release
-Blau-Grün-Bereitstellung	blue-green deployment
-Feature-Flag / Feature-Schalter	feature flag / feature toggle
+Canary-Release / Schrittweise Einführung	canary release — rolling out a change to a small subset of users first to detect issues early
+Blau-Grün-Bereitstellung	blue-green deployment — two identical environments; traffic switches from blue (old) to green (new) instantly
+Feature-Flag / Feature-Schalter	feature flag / feature toggle — runtime switch to enable or disable features without redeploying
 Vergleichstest zweier Varianten zur Ermittlung der besseren	A/B test
 Gesundheitsprüfung / Health Check	health check
 Container-Orchestrierung	container orchestration
@@ -477,9 +477,9 @@ Ausgabeformatierung	output formatting / response formatting
 Fehlerbehandlung (API)	error handling
 Fehlerantwort	error response
 Wiederholungsversuch	retry
-Exponentielles Backoff	exponential backoff
+Exponentielles Backoff	exponential backoff — retry delay doubles after each failure to avoid overwhelming the target
 Zeitüberschreitung (API)	timeout
-Kurzschluss / Circuit Breaker	circuit breaker
+Kurzschluss / Circuit Breaker	circuit breaker — stops calling a failing service after repeated errors to prevent cascading failures
 Seiteneffekt	side effect
 Callback / Rückruffunktion	callback
 Promise / Versprechen (asynchron)	promise
@@ -525,7 +525,7 @@ Abhängigkeitsinjektion (Java)	dependency injection (DI)
 Anmerkung / Annotation	annotation
 Markierungsschnittstelle	marker interface
 Generische Klasse	generic class
-Typ-Löschung	type erasure
+Typ-Löschung	type erasure — generic type info is removed at compile time; only raw types exist at runtime
 Platzhaltertyp	wildcard type
 Eingeschränkter Typ	bounded type
 Ungeprüfte Typumwandlung	unchecked cast
@@ -561,7 +561,7 @@ Startmodus (Activity)	launch mode
 Konfigurationsänderung	configuration change
 Zustandserhaltung	state preservation / state restoration
 Neuzusammensetzung (Compose)	recomposition (Jetpack Compose)
-Zustandsanhebung	state hoisting
+Zustandsanhebung	state hoisting — moving state up to a parent composable so children become stateless and reusable
 Datenbindung	data binding
 Ansichtsmodell / ViewModel	ViewModel
 Lebenszyklusbewusstes, beobachtbares Datenobjekt (Android Jetpack)	LiveData
@@ -593,8 +593,8 @@ CIA-Dreiklang	CIA triad (Confidentiality, Integrity, Availability)
 Vertraulichkeit	confidentiality
 Integrität	integrity
 Verfügbarkeit (Sicherheit)	availability (security)
-Verteidigung in der Tiefe	defense in depth
-Schadensradius	blast radius
+Verteidigung in der Tiefe	defense in depth — layered security: multiple controls so one failure does not compromise the system
+Schadensradius	blast radius — the scope of impact when a failure or security breach occurs
 Berechtigungsausuferung	privilege creep
 Zugriffsüberprüfung	access recertification / access review
 Salzen (Passwort)	salting (password)

@@ -9,11 +9,11 @@ Lexikalische Analyse / Tokenisierung	lexical analysis / tokenization
 Kleinste bedeutungstragende Einheit im Quellcode	token / lexeme
 Parser / Syntaxanalysator	parser
 Abstrakter Syntaxbaum (AST)	abstract syntax tree (AST)
-Kontextfreie Grammatik	context-free grammar (CFG)
+Kontextfreie Grammatik	context-free grammar (CFG) — formal grammar where each production rule has a single non-terminal on the left
 Formale Grammatiknotation zur Beschreibung von Syntaxregeln	BNF (Backus-Naur Form)
 Erweiterte Backus-Naur-Form	EBNF (Extended Backus-Naur Form)
 Semantische Analyse	semantic analysis
-Zwischencode / Intermediate Representation	intermediate representation (IR)
+Zwischencode / Intermediate Representation	intermediate representation (IR) — compiler-internal code form between source and machine code, enabling optimization
 Codeerzeugung	code generation
 Codeoptimierung	code optimization
 Kompilierzeit	compile time
@@ -23,15 +23,15 @@ Ahead-of-Time-Kompilierung	AOT (Ahead-of-Time) compilation
 Vom Compiler erzeugter Zwischencode (Maschinenunabhängig)	bytecode
 Maschinencode	machine code / native code
 Befehlssatzarchitektur	ISA (Instruction Set Architecture)
-Registerallokation	register allocation
+Registerallokation	register allocation — mapping virtual variables to a limited set of CPU registers
 Schleifenabrollung	loop unrolling
 Inline-Ersetzung / Inlining	inlining / inline expansion
-Tote-Code-Eliminierung	dead code elimination
-Konstantenfaltung	constant folding
+Tote-Code-Eliminierung	dead code elimination — removes code that can never be reached or whose results are unused
+Konstantenfaltung	constant folding — evaluates constant expressions at compile time instead of runtime
 Konstantenweitergabe	constant propagation
 Escape-Analyse	escape analysis
-Devirtualisierung	devirtualization
-Typinferenz	type inference
+Devirtualisierung	devirtualization — replaces virtual dispatch with a direct call when the target type is known
+Typinferenz	type inference — compiler automatically deduces types without explicit annotations
 Typsystem	type system
 Starke Typisierung	strong typing
 Schwache Typisierung	weak typing
@@ -41,24 +41,24 @@ Typensicherheit	type safety
 Generische Programmierung	generic programming / generics
 Kovarianz	covariance
 Kontravarianz	contravariance
-Algebraischer Datentyp	algebraic data type (ADT)
+Algebraischer Datentyp	algebraic data type (ADT) — composite type formed by combining sum types (OR) and product types (AND)
 Summentyp	sum type / tagged union
 Produkttyp	product type
 Musterabgleich	pattern matching
 Kompositionsstruktur in funktionaler Programmierung zum Verketten von Berechnungen	monad
 Funktor (funktionale Programmierung)	functor
-Referenzielle Transparenz	referential transparency
+Referenzielle Transparenz	referential transparency — an expression can be replaced by its value without changing program behavior
 Reine Funktion	pure function
 Seiteneffektfreiheit	side-effect-free / pure
-Träge Auswertung / Lazy Evaluation	lazy evaluation
+Träge Auswertung / Lazy Evaluation	lazy evaluation — delays computation until the result is actually needed
 Gierige Auswertung / Eager Evaluation	eager evaluation
-Teilanwendung	partial application
+Teilanwendung	partial application — fixing some arguments of a function, producing a new function with fewer parameters
 Umwandlung einer Funktion mit mehreren Parametern in verschachtelte Einzelparameter-Funktionen	currying
 Funktionen höherer Ordnung	higher-order functions
-Abschluss / Closure	closure
+Abschluss / Closure	closure — function that captures and retains access to variables from its enclosing scope
 Lambda-Ausdruck	lambda expression
 Endrekursion	tail recursion
-Endrekursionsoptimierung	tail call optimization (TCO)
+Endrekursionsoptimierung	tail call optimization (TCO) — compiler reuses the current stack frame for tail-recursive calls, preventing stack overflow
 Automatische Speicherbereinigung nicht mehr referenzierter Objekte	garbage collection algorithm
 Referenzzählung	reference counting
 GC-Verfahren: Erreichbare Objekte markieren, Rest freigeben	mark-and-sweep (algorithm)
@@ -73,7 +73,7 @@ Kernel / Betriebssystemkern	kernel
 Benutzermodus	user mode / user space
 Kernelmodus	kernel mode / kernel space
 Systemaufruf / Syscall	system call (syscall)
-Kontextwechsel	context switch
+Kontextwechsel	context switch — saving one process’s state and loading another’s to share the CPU
 Prozessplanung / Scheduling	scheduling
 Planungsalgorithmus	scheduling algorithm
 Zeitscheibe	time slice / time quantum
@@ -84,7 +84,7 @@ Prozesssteuerungsblock	PCB (Process Control Block)
 Elternprozess	parent process
 Kindprozess	child process
 Verwaister Prozess	orphan process
-Zombieprozess	zombie process
+Zombieprozess	zombie process — terminated process whose exit status has not yet been read by its parent
 Daemon / Hintergrundprozess	daemon
 Fork (Prozessgabelung)	fork
 Exec (Prozessersetzung)	exec
@@ -104,12 +104,12 @@ Zeichengerät	character device
 Gerätetreiber	device driver
 Interrupt / Unterbrechung	interrupt
 Interrupt-Handler / Unterbrechungsroutine	interrupt handler / ISR (Interrupt Service Routine)
-DMA (Direkter Speicherzugriff)	DMA (Direct Memory Access)
+DMA (Direkter Speicherzugriff)	DMA (Direct Memory Access) — hardware transfers data between I/O devices and memory without CPU involvement
 Seitentabelle	page table
 Seitenfehler	page fault
 Virtuelle Speicheradresse	virtual memory address
 Physische Speicheradresse	physical memory address
-Adressübersetzungspuffer / TLB	TLB (Translation Lookaside Buffer)
+Adressübersetzungspuffer / TLB	TLB (Translation Lookaside Buffer) — CPU cache of recent virtual-to-physical address translations for faster lookups
 Auslagerung / Swapping	swapping
 Auslagerungsdatei / Swap	swap (file / partition)
 Speicherschutz	memory protection
@@ -137,19 +137,19 @@ Verteilter Algorithmus	distributed algorithm
 Knotenausfall	node failure
 Netzwerkpartitionierung	network partition
 Teilversagen / Partial Failure	partial failure
-Byzantine Fehler	Byzantine fault
+Byzantine Fehler	Byzantine fault — a node behaves arbitrarily or maliciously, sending conflicting information
 Byzantinische Fehlertoleranz	Byzantine fault tolerance (BFT)
 Absturzfehlertoleranz	crash fault tolerance (CFT)
 Fehlermodell	failure model
 Fehlererkennung	failure detection
 Herzschlag / Heartbeat	heartbeat
 Zeitüberschreitung (Verteilte Systeme)	timeout (distributed systems)
-Phi-Vermutungsbasierter Fehlerdetektor	phi accrual failure detector
+Phi-Vermutungsbasierter Fehlerdetektor	phi accrual failure detector — outputs a suspicion level instead of binary alive/dead, adapting to network conditions
 Konsensalgorithmus für verteilte Systeme (Leslie Lamport)	Paxos (algorithm)
 Verständlicherer Konsensalgorithmus als Alternative zu Paxos	Raft (algorithm)
 Zustandsmaschinen-Replikation	replicated state machine
 Verteilter Hash-Tabelle (DHT)	DHT (Distributed Hash Table)
-Konsistentes Hashing	consistent hashing
+Konsistentes Hashing	consistent hashing — hash ring that minimizes key redistribution when nodes join or leave
 Datenversionierung	data versioning
 Lese-Quorum	read quorum
 Schreib-Quorum	write quorum
@@ -160,7 +160,7 @@ Starke Konsistenz	strong consistency
 Schwache Konsistenz	weak consistency
 Uhr-Skew / Zeitversatz	clock skew
 Logische Uhr	logical clock
-Lamport-Zeitstempel	Lamport timestamp
+Lamport-Zeitstempel	Lamport timestamp — logical counter ensuring a partial causal ordering of events across nodes
 Happens-Before-Beziehung	happens-before relation
 Kausale Ordnung	causal ordering
 Totale Ordnung	total ordering
@@ -168,23 +168,23 @@ Partielle Ordnung	partial ordering
 Selbstorganisiertes Informationsverteilungsprotokoll zwischen Knoten	gossip protocol
 Epidemisches Protokoll	epidemic protocol
 Mitgliedschaftsprotokoll	membership protocol
-Splitbrain / Geteiltes Gehirn	split-brain
+Splitbrain / Geteiltes Gehirn	split-brain — partition causes two halves of a cluster to operate independently, risking data divergence
 Fechtung / Fencing	fencing
 Eindeutiger Schutzwert gegen veraltete Sperr-Übernahmen in verteilten Systemen	fencing token
 Idempotenter Empfänger	idempotent receiver
 Genau-einmal-Zustellung	exactly-once delivery
 Mindestens-einmal-Zustellung	at-least-once delivery
 Höchstens-einmal-Zustellung	at-most-once delivery
-Outbox-Muster	outbox pattern
+Outbox-Muster	outbox pattern — writes events to a local outbox table in the same transaction, then publishes asynchronously
 Transaktionales Postfach	transactional outbox
 Abrufmuster / Polling-Publisher	polling publisher
 Transaktionsprotokoll-Tailing	transaction log tailing
-Change Data Capture (Änderungsdatenerfassung)	CDC (Change Data Capture)
+Change Data Capture (Änderungsdatenerfassung)	CDC (Change Data Capture) — captures row-level changes from a database log and streams them to consumers
 Stream-Verarbeitung	stream processing
 Mikro-Batch-Verarbeitung	micro-batch processing
 Ereigniszeitfenster	event time window
 Verarbeitungszeitfenster	processing time window
-Wasserzeichen (Stream-Verarbeitung)	watermark (stream processing)
+Wasserzeichen (Stream-Verarbeitung)	watermark (stream processing) — timestamp threshold indicating all earlier events have been received
 Spätankommende Daten	late-arriving data
 Zustandsbehaftete Verarbeitung	stateful processing
 Zustandslose Verarbeitung	stateless processing
@@ -216,7 +216,7 @@ Kontrollgruppe	cgroup (control group)
 Kontrollgruppen-Controller	cgroup controller
 Speicherbegrenzung (cgroup)	memory limit (cgroup)
 CPU-Gewichtung (cgroup)	CPU weight / CPU shares (cgroup)
-OOM-Killer	OOM killer (Out-of-Memory killer)
+OOM-Killer	OOM killer (Out-of-Memory killer) — kernel process that terminates processes when the system runs out of memory
 OOM-Punkte / OOM-Score	OOM score
 Speicherüberbelegung	memory overcommit
 Seitenrückforderung	page reclaim
@@ -243,11 +243,11 @@ Atomare Operationen	atomic operations
 Compare-and-Swap / Vergleichen-und-Tauschen	CAS (Compare-and-Swap)
 Speicherordnungs-Semantik	memory ordering semantics
 Koheränzprotokoll (Cache)	cache coherence protocol
-MESI-Protokoll	MESI protocol (Modified, Exclusive, Shared, Invalid)
+MESI-Protokoll	MESI protocol (Modified, Exclusive, Shared, Invalid) — cache coherence protocol tracking line state across CPU cores
 Cache-Zeile	cache line
 Leistungseinbruch durch ständiges Verdrängen und Neuladen von Cache-Einträgen	cache thrashing
 Falsche Teilung / False Sharing	false sharing
-Spekulative Ausführung	speculative execution
+Spekulative Ausführung	speculative execution — CPU executes instructions ahead of time on a predicted branch, rolling back if wrong
 Seitenkanalangriff	side-channel attack
 CPU-Sicherheitslücken durch spekulative Ausführung (Seitenkanalangriffe)	Meltdown / Spectre
 eBPF (erweiterter Berkeley-Paketfilter)	eBPF (extended Berkeley Packet Filter)
@@ -264,7 +264,7 @@ Systemzustandsbericht	system activity report (sar)
 # ============================================================
 
 Formale Verifikation	formal verification
-Modellprüfung / Model Checking	model checking
+Modellprüfung / Model Checking	model checking — exhaustively verifies that a finite-state model satisfies a specification
 Zustandsraum	state space
 Zustandsexplosion	state space explosion
 Temporale Logik	temporal logic
@@ -286,16 +286,16 @@ Sicherheit / Safety (formale Eigenschaft)	safety (property)
 TLA+ (Temporale Logik der Aktionen)	TLA+ (Temporal Logic of Actions)
 Alloy (Modellierungssprache)	Alloy (modeling language)
 Mathematische Spezifikationssprache für formale Software-Modellierung	Z notation
-Hoare-Logik	Hoare logic
-Hoare-Tripel	Hoare triple
+Hoare-Logik	Hoare logic — formal system for reasoning about program correctness using preconditions and postconditions
+Hoare-Tripel	Hoare triple — {P} C {Q}: if precondition P holds and command C executes, postcondition Q holds
 Spezifikationssprache	specification language
 Vertrag / Design by Contract	design by contract
 Vor- und Nachbedingungen (Vertrag)	preconditions and postconditions (contract)
-Eigenschaftsbasiertes Testen	property-based testing
+Eigenschaftsbasiertes Testen	property-based testing — generates random inputs to verify that properties hold for all cases
 Werkzeug zum automatischen Generieren von Testfällen aus Eigenschaften (Haskell)	QuickCheck
 Automatisiertes Testen mit zufällig erzeugten Eingabedaten	fuzzing / fuzz testing
-Symbolische Ausführung	symbolic execution
-Abstrakte Interpretation	abstract interpretation
+Symbolische Ausführung	symbolic execution — explores all paths using symbolic inputs to find bugs and verify properties
+Abstrakte Interpretation	abstract interpretation — approximates program semantics to statically infer properties without running it
 Statische Analyse	static analysis
 Datenflussanalyse	data flow analysis
 Kontrollflussanalyse	control flow analysis
@@ -334,7 +334,7 @@ OSPF (Offener Kürzester-Pfad-Zuerst)	OSPF (Open Shortest Path First)
 Autonomes System (AS)	autonomous system (AS)
 Netzwerkpeering	network peering
 Internet Exchange Point (IXP)	IXP (Internet Exchange Point)
-QUIC-Protokoll	QUIC protocol
+QUIC-Protokoll	QUIC protocol — UDP-based transport with built-in TLS 1.3, multiplexing, and 0-RTT connection setup
 Leistungsstarke HTTP-Version mit Multiplexing und Server-Push	HTTP/2
 HTTP basierend auf QUIC statt TCP für schnellere Verbindungen	HTTP/3
 Vom Server initiierte Datenübertragung ohne Client-Anfrage (HTTP/2)	server push (HTTP/2)
@@ -351,12 +351,12 @@ Jitter / Laufzeitschwankung	jitter
 QoS (Dienstgüte)	QoS (Quality of Service)
 Verkehrsformung	traffic shaping
 Verkehrsrichtlinie	traffic policy
-Tiefe Paketinspektion	DPI (Deep Packet Inspection)
+Tiefe Paketinspektion	DPI (Deep Packet Inspection) — examines packet payload beyond headers to filter, detect, or shape traffic
 Netzwerkpaketvermittlung	packet switching
 Leitungsvermittlung	circuit switching
 Overlay-Netzwerk	overlay network
 Underlay-Netzwerk	underlay network
-VXLAN (Virtuelles erweiterbares LAN)	VXLAN (Virtual Extensible LAN)
+VXLAN (Virtuelles erweiterbares LAN)	VXLAN (Virtual Extensible LAN) — overlay encapsulation enabling L2 networks over L3 infrastructure
 Software-Defined Networking (SDN)	SDN (Software-Defined Networking)
 Netzwerkfunktionsvirtualisierung	NFV (Network Functions Virtualization)
 
@@ -369,7 +369,7 @@ Datenaufnahme / Ingestion	data ingestion
 Datentransformation	data transformation
 Datenbereinigung	data cleansing / data cleaning
 Datenqualität	data quality
-Datenherkunft / Data Lineage	data lineage
+Datenherkunft / Data Lineage	data lineage — tracks data from origin through transformations to its final destination
 Datenkatalog	data catalog
 Metadatenverwaltung	metadata management
 Daten-Governance	data governance
@@ -415,7 +415,7 @@ Datenanreicherung	data enrichment
 Nachschlagetabelle / Lookup	lookup table
 Dimensionstabelle	dimension table
 Faktentabelle	fact table
-Langsam ändernde Dimension	SCD (Slowly Changing Dimension)
+Langsam ändernde Dimension	SCD (Slowly Changing Dimension) — dimension table strategy for tracking historical changes (Type 1/2/3)
 Datenüberprüfung / Datenvalidierung	data validation
 Datenvertrag	data contract
 
@@ -497,7 +497,7 @@ Ende der Unterstützung	end of support / EOS
 Dominanzbaum (Heap-Analyse)	dominator tree
 Einbehaltener Speicher	retained heap
 Flacher Speicher (Heap)	shallow heap
-Austausch auf dem Stack	on-stack replacement (OSR)
+Austausch auf dem Stack	on-stack replacement (OSR) — JIT replaces an interpreted loop with compiled code while it is running
 Monomorphe Aufrufstelle	monomorphic call site
 Bimorphe Aufrufstelle	bimorphic call site
 Megamorphe Aufrufstelle	megamorphic call site
@@ -506,13 +506,13 @@ Dünne Sperre vs. Dicker Monitor	thin lock vs. fat monitor
 Klassendatenfreigabe (CDS)	class data sharing (CDS)
 AOT-Klassenladen	AOT class loading (JEP 483)
 AOT-Methodenprofiling	AOT method profiling (JEP 490)
-Erreichbarkeits-Metadaten (GraalVM)	reachability metadata
+Erreichbarkeits-Metadaten (GraalVM)	reachability metadata — configuration telling native-image which classes, methods, and resources to include
 Intrinsische Methoden	intrinsic methods (JVM-optimized)
 Klasse entladen	class unloading
 Benutzerdefinierter Klassenlader	custom classloader
 Java-Modulsystem (JPMS)	Java Platform Module System (JPMS)
 --add-opens-Flag	--add-opens flag (reflection access)
-invokedynamic-Befehl	invokedynamic bytecode instruction
+invokedynamic-Befehl	invokedynamic bytecode instruction — enables flexible method dispatch used for lambdas and string concatenation
 VarHandle-Zugriffsmodi	VarHandle access modes
 Referenz-Warteschlange	ReferenceQueue
 Gutartiger Rennwettbewerb	benign race
@@ -554,14 +554,14 @@ Sicherer Start	secure boot
 dm-verity (Partitionsprüfung)	dm-verity (block integrity verification)
 Android Verified Boot (AVB)	AVB (Android Verified Boot)
 StrongBox-Schlüsselspeicher	StrongBox Keystore
-Exploit-Minderung	exploit mitigation (ASLR, DEP, CFI)
+Exploit-Minderung	exploit mitigation (ASLR, DEP, CFI) — OS/compiler techniques that make exploitation harder
 Weiterentwicklung des CAN-Bus mit höherer, flexibler Datenrate	CAN-FD (CAN with Flexible Data-Rate)
 LIN-Bus	LIN bus (Local Interconnect Network)
 Deterministisches Hochgeschwindigkeits-Bussystem für sicherheitskritische Fahrzeugfunktionen	FlexRay (high-speed automotive bus)
 Diensteorientierte Middleware für Ethernet-Kommunikation im Fahrzeug	SOME/IP (Scalable service-Oriented Middleware over IP)
 DoIP (Diagnose über IP)	DoIP (Diagnostics over IP)
 UDS (einheitliche Diagnose)	UDS (Unified Diagnostic Services)
-OTA-Aktualisierung	OTA update (over-the-air)
+OTA-Aktualisierung	OTA update (over-the-air) — firmware/software update delivered wirelessly without physical access
 Zonale Fahrzeugarchitektur	zonal vehicle architecture
 Durchsichtige Projektionsfläche für Informationen im Sichtfeld	HUD (head-up display)
 Kombiinstrument	instrument cluster
@@ -616,7 +616,7 @@ Inhalts-Sicherheitsrichtlinie	CSP (Content Security Policy)
 FIDO2/WebAuthn (passwortlos)	FIDO2/WebAuthn (passwordless auth)
 Risiko-basierte Authentifizierung	risk-based / adaptive authentication
 Schrittweise Authentifizierung	step-up authentication
-PKCE (Nachweis für Code-Austausch)	PKCE (Proof Key for Code Exchange)
+PKCE (Nachweis für Code-Austausch)	PKCE (Proof Key for Code Exchange) — OAuth 2.0 extension preventing authorization code interception on public clients
 DPoP (Besitznachweis)	DPoP (Demonstration of Proof-of-Possession)
 Token-Bindung	token binding
 Geräte-Bindung	device binding
@@ -624,7 +624,7 @@ Geräte-Bindung	device binding
 # ============================================================
 # Section 26d: Advanced C++ Internals
 # ============================================================
-CRTP (Rekurrentes Template-Muster)	CRTP (Curiously Recurring Template Pattern)
+CRTP (Rekurrentes Template-Muster)	CRTP (Curiously Recurring Template Pattern) — class inherits from a template parameterized by itself, enabling static polymorphism
 Explizite Spezialisierung	explicit (full) template specialization
 consteval (C++20)	consteval (forced compile-time evaluation)
 constinit (C++20)	constinit (constant initialization)
@@ -662,7 +662,7 @@ Deltifizieren	to deltify (delta compression)
 Symbolische Referenz	symbolic reference (HEAD → refs/heads/main)
 Direkte Referenz	direct reference (points to SHA)
 Oktopus-Merge	octopus merge (3+ branches)
-Rerere (Konflikt-Wiederverwendung)	rerere (reuse recorded resolution)
+Rerere (Konflikt-Wiederverwendung)	rerere (reuse recorded resolution) — Git remembers how you resolved a conflict and auto-applies it next time
 Einheitliches Diff	unified diff
 Format-Patch	format-patch (mbox patches)
 Umbenennung-Erkennung	rename detection
@@ -702,8 +702,8 @@ ftrace (Kernel-Verfolgung)	ftrace (function tracer)
 kprobe / kretprobe	kprobe / kretprobe (kernel function tracing)
 uprobe / uretprobe	uprobe / uretprobe (user-space tracing)
 BPF-Typenformat	BTF (BPF Type Format)
-CO-RE (einmal kompilieren)	CO-RE (Compile Once, Run Everywhere)
-seccomp-BPF	seccomp-bpf (syscall filtering)
+CO-RE (einmal kompilieren)	CO-RE (Compile Once, Run Everywhere) — eBPF programs adapt to different kernel struct layouts at load time
+seccomp-BPF	seccomp-bpf (syscall filtering) — restricts which system calls a process may invoke, reducing attack surface
 BPF-LSM (dynamische Sicherheit)	BPF LSM (eBPF security module)
 Linux-Fähigkeit	Linux capability (fine-grained privilege)
 CAP_SYS_ADMIN	CAP_SYS_ADMIN (system admin capability)

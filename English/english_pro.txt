@@ -9,24 +9,24 @@ Microservices / Mikrodienste	microservices
 Monolith / Monolithische Architektur	monolith / monolithic architecture
 Ereignisgesteuerte Architektur	event-driven architecture
 Serverlose Architektur	serverless architecture
-Hexagonale Architektur	hexagonal architecture / ports and adapters
+Hexagonale Architektur	hexagonal architecture / ports and adapters — isolates core logic from external systems via defined interfaces
 Schichtenarchitektur	layered architecture
 Kopplung (eng / lose)	coupling (tight / loose)
 Kohäsion (hoch / niedrig)	cohesion (high / low)
 Trennung der Zuständigkeiten	separation of concerns
 Einzelverantwortungsprinzip	single responsibility principle (SRP)
-Eventuelle Konsistenz	eventual consistency
+Eventuelle Konsistenz	eventual consistency — all replicas will converge to the same state given enough time
 Idempotenz	idempotency
-Schutzschalter-Muster	circuit breaker (pattern)
-Saga-Muster	saga pattern
+Schutzschalter-Muster	circuit breaker (pattern) — stops calling a failing service after repeated failures to allow recovery
+Saga-Muster	saga pattern — manages distributed transactions via a sequence of local transactions with compensating actions
 Synchron	synchronous
 Asynchron	asynchronous
 Nachrichtenwarteschlange	message queue
 Publish/Subscribe (Veröffentlichen/Abonnieren)	pub/sub (publish/subscribe)
 Ereignisbus	event bus
-CQRS (Befehls-Abfrage-Trennung)	CQRS (Command Query Responsibility Segregation)
+CQRS (Befehls-Abfrage-Trennung)	CQRS (Command Query Responsibility Segregation) — separates read and write models for independent optimization
 Domänengesteuertes Design	domain-driven design (DDD)
-Begrenzter Kontext	bounded context
+Begrenzter Kontext	bounded context — boundary within which a specific domain model is defined and consistent
 Domäne	domain
 Entität	entity
 Wertobjekt	value object
@@ -35,37 +35,37 @@ Orchestrierung	orchestration
 Choreographie	choreography
 Diensterkennung	service discovery
 Zentraler Eingangspunkt für API-Anfragen (Routing, Auth, Ratenbegrenzung)	API gateway
-Seitenwagencontainer / Sidecar	sidecar (pattern)
-Service Mesh / Dienstvermittlungsnetz	service mesh
+Seitenwagencontainer / Sidecar	sidecar (pattern) — auxiliary container alongside the main one, providing cross-cutting features
+Service Mesh / Dienstvermittlungsnetz	service mesh — dedicated infrastructure layer handling service-to-service communication (e.g., Istio, Linkerd)
 Rückverfolgbarkeit / Tracing	distributed tracing
 Beobachtbarkeit	observability
 Telemetrie	telemetry
 Korrelations-ID	correlation ID
 Ablaufverfolgung / Span	span (tracing)
 Lastabwurf / Load Shedding	load shedding
-Rückstaudruck / Backpressure	backpressure
+Rückstaudruck / Backpressure	backpressure — mechanism where a consumer signals the producer to slow down
 Wiederholungsstrategie	retry strategy
 Zeitüberschreitung / Timeout-Muster	timeout (pattern)
-Bulkhead-Muster / Schottmuster	bulkhead (pattern)
+Bulkhead-Muster / Schottmuster	bulkhead (pattern) — isolates components so a failure in one does not cascade to others
 Ausfallsicherer Rückfall / Fallback	fallback
-Anti-Korruptions-Schicht	anti-corruption layer
+Anti-Korruptions-Schicht	anti-corruption layer — translation layer preventing external models from leaking into your domain
 Domänenereignis	domain event
 Befehl / Command (CQRS)	command (CQRS)
 Abfrage / Query (CQRS)	query (CQRS)
 Projektion	projection
 Ereignisspeicher / Event Store	event store
-Ereignisbeschaffung / Event Sourcing	event sourcing
+Ereignisbeschaffung / Event Sourcing	event sourcing — persists state as an append-only sequence of events instead of mutable records
 Materialisierende Sicht	materialized view
-Strangler-Fig-Muster	strangler fig pattern
+Strangler-Fig-Muster	strangler fig pattern — incrementally replaces a legacy system by routing traffic to new components
 Servicevertrag	service contract
 Verbrauchergetriebene Vertragstests	consumer-driven contract testing
 Abwärtskompatible Änderung	backward-compatible change
 Vorwärtskompatible Änderung	forward-compatible change
 Weiterentwicklung eines Datenschemas bei bestehenden Verbrauchern	schema evolution
 Nachrichtenumschlag / Message Envelope	message envelope
-Totbriefwarteschlange	dead letter queue (DLQ)
-Kompensationstransaktion	compensating transaction
-Zweiphasen-Commit	two-phase commit (2PC)
+Totbriefwarteschlange	dead letter queue (DLQ) — queue storing messages that failed processing for later inspection
+Kompensationstransaktion	compensating transaction — reverses the effect of a previously committed transaction on failure
+Zweiphasen-Commit	two-phase commit (2PC) — protocol ensuring all participants commit or all roll back
 Mindestanzahl an Knoten für eine gültige Entscheidung in verteilten Systemen	quorum
 Konsensalgorithmus	consensus algorithm
 Leiterwahl / Leader Election	leader election
@@ -73,10 +73,10 @@ Verteilte Sperre	distributed lock
 CAP-Theorem	CAP theorem (Consistency, Availability, Partition tolerance)
 BASE-Prinzipien	BASE (Basically Available, Soft state, Eventually consistent)
 Dauerhaftigkeit / Durability	durability
-Linearisierbarkeit	linearizability
+Linearisierbarkeit	linearizability — strongest consistency guarantee: every operation appears instantaneous and globally ordered
 Kausale Konsistenz	causal consistency
-Vektoruhr	vector clock
-Konfliktfreie replizierte Datentypen (CRDT)	CRDT (Conflict-free Replicated Data Types)
+Vektoruhr	vector clock — logical clock using per-node counters to track causality in distributed systems
+Konfliktfreie replizierte Datentypen (CRDT)	CRDT (Conflict-free Replicated Data Types) — data structures that merge automatically without coordination
 Multi-Region-Bereitstellung	multi-region deployment
 Active-Active-Konfiguration	active-active configuration
 Active-Passive-Konfiguration	active-passive configuration
@@ -88,9 +88,9 @@ Geo-Routing	geo-routing / geographic routing
 
 Sicherheitslücke / Schwachstelle	vulnerability
 Exploit / Ausnutzung einer Schwachstelle	exploit
-Zero-Day-Schwachstelle	zero-day (vulnerability)
+Zero-Day-Schwachstelle	zero-day (vulnerability) — a flaw exploitable before the vendor is aware or has issued a patch
 Angriffsvektor	attack vector
-Bedrohungsmodellierung	threat modeling
+Bedrohungsmodellierung	threat modeling — systematic identification and prioritization of potential security threats
 Injection-Angriff / Einschleusung	injection (attack)
 Einschleusung von Datenbankbefehlen über Benutzereingaben	SQL injection
 Einschleusung von Schadskripten in Webseiten über Benutzereingaben	cross-site scripting (XSS)
@@ -122,7 +122,7 @@ Sichere Softwareentwicklung	secure software development lifecycle (SDLC)
 Sicherheitsrichtlinie	security policy
 Einbruchserkennungssystem	IDS (Intrusion Detection System)
 Einbruchsverhinderungssystem	IPS (Intrusion Prevention System)
-Honigtopf / Honeypot	honeypot
+Honigtopf / Honeypot	honeypot — decoy system designed to attract and detect attackers
 Sandbox / Isolierter Ausführungsbereich	sandbox
 Webanwendungs-Firewall	WAF (Web Application Firewall)
 Sitzungsübernahme	session hijacking
@@ -134,7 +134,7 @@ Befehlseinschleusung	command injection
 Angriff, bei dem der Server zu ungewollten Anfragen verleitet wird	SSRF (Server-Side Request Forgery)
 Sicherheitsheader	security headers
 HTTP-Header, der erlaubte Inhaltsquellen einer Webseite festlegt	CSP (Content Security Policy)
-Herkunftsrichtlinie / Same-Origin-Policy	same-origin policy
+Herkunftsrichtlinie / Same-Origin-Policy	same-origin policy — browser security rule restricting scripts from accessing resources of a different origin
 Ressourcenteilung über Herkunftsgrenzen	CORS (Cross-Origin Resource Sharing)
 Signiertes Token zur Übertragung von Identitätsdaten im JSON-Format	JWT (JSON Web Token)
 Multifaktor-Authentifizierung	MFA (Multi-Factor Authentication)
@@ -147,7 +147,7 @@ Kryptographische Streuwertfunktion	cryptographic hash function
 Symmetrische Verschlüsselung	symmetric encryption
 Asymmetrische Verschlüsselung	asymmetric encryption
 Schlüsselaustausch	key exchange
-Perfekte Vorwärtsgeheimhaltung	perfect forward secrecy (PFS)
+Perfekte Vorwärtsgeheimhaltung	perfect forward secrecy (PFS) — compromising a long-term key does not expose past session keys
 Geheimnisrotation	secret rotation
 Tresor für Geheimnisse	vault / secrets vault
 Sicherheitsbewertung	security assessment
@@ -196,7 +196,7 @@ Blockspeicher	block storage
 Dateispeicher	file storage
 Kontingent / Quote	quota
 Drosselung / Throttling	throttling
-Unveränderliche Infrastruktur	immutable infrastructure
+Unveränderliche Infrastruktur	immutable infrastructure — servers are never modified after deployment; changes require full replacement
 Deklarative Konfiguration	declarative configuration
 Imperative Konfiguration	imperative configuration
 Öffentliche Cloud	public cloud
@@ -204,7 +204,7 @@ Cloud-Angebot ausschließlich für eine Organisation	private cloud
 Kombination aus öffentlicher und privater Cloud	hybrid cloud
 Nutzung mehrerer Cloud-Anbieter gleichzeitig	multi-cloud
 Für Cloud-Betrieb entworfene Anwendungsarchitektur	cloud-native
-Zwölf-Faktoren-App	twelve-factor app
+Zwölf-Faktoren-App	twelve-factor app — methodology of 12 principles for building scalable, portable SaaS applications
 Kontrolleben / Control Plane	control plane
 Datenebene / Data Plane	data plane
 API-Server (Kubernetes)	API server
@@ -236,7 +236,7 @@ Infrastrukturanwenden	infrastructure apply
 Drift-Erkennung	drift detection
 Konfigurations-Repository	configuration repository / GitOps repo
 Infrastrukturverwaltung über Git-Repository als Single Source of Truth	GitOps
-Abstimmungsschleife	reconciliation loop
+Abstimmungsschleife	reconciliation loop — continuously compares desired state with actual state and corrects drift
 Servicekonto	service account
 IDaaS (Identität als Dienst)	IDaaS (Identity as a Service)
 Cloud-Sicherheitsgruppierung	security group
@@ -272,7 +272,7 @@ Profiling / Leistungsanalyse	profiling
 Benchmarking / Leistungsvergleich	benchmarking
 Lastentest	load testing
 Stresstest	stress testing
-Flammendiagramm	flame graph
+Flammendiagramm	flame graph — visualization of profiled stack traces showing where CPU time is spent
 Ressourcenverbrauch	resource consumption / resource usage
 Speicherverbrauch	memory usage / memory consumption
 CPU-Auslastung	CPU utilization / CPU usage
@@ -288,14 +288,14 @@ Bündelung / Bundling	bundling
 Seitenauslagerung / Paging	paging
 Speicherfragmentierung	memory fragmentation
 Garbage Collection / Speicherbereinigung	garbage collection (GC)
-GC-Pause	GC pause / stop-the-world pause
+GC-Pause	GC pause / stop-the-world pause — all application threads are halted while the garbage collector runs
 Heapspeicher	heap (memory)
 Stapelspeicher	stack (memory)
 Pufferüberlauf	buffer overflow
 Speicherzuweisung	memory allocation
 Speicherfreigabe	memory deallocation
 Objektpool	object pool
-Null-Kopie-Übertragung	zero-copy transfer
+Null-Kopie-Übertragung	zero-copy transfer — data moves without copying between kernel and user-space buffers
 Speicherabgebildete Datei	memory-mapped file
 Änderungsprotokoll, das vor dem eigentlichen Schreibvorgang persistiert wird	write-ahead log (WAL)
 Schreibverstärkung	write amplification
@@ -308,18 +308,18 @@ Speicher-Tiering	storage tiering
 SSD-Abnutzung	SSD wear (write endurance)
 IOPS (Ein-/Ausgabeoperationen pro Sekunde)	IOPS (Input/Output Operations Per Second)
 Abfrageoptimierung	query optimization
-N+1-Abfrageproblem	N+1 query problem
+N+1-Abfrageproblem	N+1 query problem — executing one query per related record instead of a single batched query
 Langsame Abfrage	slow query
 Abfrage-Profiler	query profiler
-Fensterungsfunktion (SQL)	window function
+Fensterungsfunktion (SQL)	window function — SQL function that operates on a set of rows related to the current row without collapsing them
 Materialisierte Sicht	materialized view
-Ereignisschleife / Event Loop	event loop
+Ereignisschleife / Event Loop	event loop — single-threaded loop processing I/O events and callbacks asynchronously
 Nicht-blockierende E/A	non-blocking I/O
 Reaktive Programmierung	reactive programming
 Gegendruck / Backpressure	backpressure
 Vorausschauende Skalierung	predictive scaling
 Lastspitzenbewältigung	peak load handling
-Kaltstart (Lambda / Serverless)	cold start
+Kaltstart (Lambda / Serverless)	cold start — initial latency when a new function instance must be provisioned and initialized
 Aufwärmphase	warm-up phase
 Vertikale Partitionierung	vertical partitioning
 Horizontale Partitionierung	horizontal partitioning / sharding
@@ -486,8 +486,8 @@ Rückblickend analysieren	to conduct a retrospective / to do a post-incident rev
 Müllsammlung / Speicherbereinigung	garbage collection (GC)
 Junge Generation (GC)	young generation
 Alte Generation (GC)	old generation / tenured generation
-Fluchtanalyse	escape analysis
-Falsches Sharing (CPU-Cache)	false sharing
+Fluchtanalyse	escape analysis — JIT optimization determining if an object can be stack-allocated instead of heap-allocated
+Falsches Sharing (CPU-Cache)	false sharing — performance degradation when unrelated data on the same cache line is modified by different cores
 Just-In-Time-Kompilierung	JIT compilation
 Gestufte Kompilierung	tiered compilation
 Entoptimierung	deoptimization
@@ -501,7 +501,7 @@ Invarianz	invariance
 Virtuelle Fäden	virtual threads
 Ankern (Virtual Threads)	pinning
 Trägerfaden	carrier thread
-Strukturierte Parallelität	structured concurrency
+Strukturierte Parallelität	structured concurrency — child tasks are scoped to a parent, ensuring all complete before the parent finishes
 Bereichsbezogene Werte	scoped values
 Vergleichen-und-Austauschen (CAS)	compare-and-swap (CAS)
 Nebenläufigkeitsfalle: CAS erkennt A→B→A nicht als Änderung	ABA problem
@@ -519,11 +519,11 @@ Weiche Referenz	soft reference
 Phantom-Referenz	phantom reference
 Sicherer Punkt (GC)	safepoint
 Thread-lokaler Zuweisungspuffer	TLAB (thread-local allocation buffer)
-Happens-Before-Beziehung	happens-before relationship
+Happens-Before-Beziehung	happens-before relationship — guarantees one action’s effects are visible to another across threads
 Speicherbarriere	memory barrier / memory fence
 Klassenlader-Hierarchie	classloader hierarchy
 Elterliche Delegation (ClassLoader)	parent delegation
-Aspektorientierte Programmierung	aspect-oriented programming (AOP)
+Aspektorientierte Programmierung	aspect-oriented programming (AOP) — modularizes cross-cutting concerns (logging, security) into separate units
 Schnittpunkt / Ratschlag (AOP)	pointcut / advice
 Stapelabwicklung	stack unwinding
 Geprüfte Ausnahme	checked exception
@@ -533,13 +533,13 @@ Versuchen-mit-Ressourcen	try-with-resources
 # ============================================================
 # Section 18b: Android & AAOS Domain Vocabulary
 # ============================================================
-Binder-Interprozess-Kommunikation	Binder IPC
+Binder-Interprozess-Kommunikation	Binder IPC — Android’s high-performance IPC mechanism for cross-process method calls
 Paketierbar (Android)	Parcelable
 Inhaltsanbieter	content provider
 Fragment-Lebenszyklus	fragment lifecycle
 Fragment-Transaktion	fragment transaction
 Rück-Stapel (Navigation)	back stack
-Anwendung antwortet nicht	ANR (Application Not Responding)
+Anwendung antwortet nicht	ANR (Application Not Responding) — dialog shown when the main thread is blocked for >5 seconds
 Strenger Modus (Android)	StrictMode
 Bildtakt-Synchronisation	frame pacing
 Ruckeln (Leistung)	jank
@@ -567,12 +567,12 @@ Arbeitsverwalter	WorkManager
 Rückkehr-Strategie (Arbeit)	backoff policy
 Biometrische Authentifizierung	biometric authentication
 Krypto-Objekt	CryptoObject
-Vertrauenswürdige Ausführungsumgebung	TEE (Trusted Execution Environment)
+Vertrauenswürdige Ausführungsumgebung	TEE (Trusted Execution Environment) — isolated hardware area for processing sensitive data securely
 Hardware-Schlüsselspeicher	hardware-backed KeyStore
 Schlüsselbestätigung	key attestation
-Zertifikatverankerung	certificate pinning
+Zertifikatverankerung	certificate pinning — app accepts only specific certificates, preventing MITM with forged certs
 Neukomposition (Compose)	recomposition
-Grundlinienprofil	baseline profile
+Grundlinienprofil	baseline profile — precompiled method list that eliminates JIT warm-up on first launch
 App-Bündel (AAB)	Android App Bundle (AAB)
 Dynamisches Feature-Modul	dynamic feature module
 Dex-Schrumpfung	Dex shrinking (R8)
@@ -591,9 +591,9 @@ Zonale Architektur	zonal architecture
 # Section 18c: Security Domain Vocabulary
 # ============================================================
 TLS-1.3-Handschlag	TLS 1.3 handshake
-Schlüsselableitungsfunktion	key derivation function (KDF / HKDF)
+Schlüsselableitungsfunktion	key derivation function (KDF / HKDF) — derives one or more secret keys from a master key or password
 Perfekte Vorwärtsgeheimhaltung	perfect forward secrecy (PFS)
-Ephemerer Schlüsselaustausch	ephemeral key exchange (ECDHE)
+Ephemerer Schlüsselaustausch	ephemeral key exchange (ECDHE) — uses short-lived keys so each session has unique keying material
 Sitzungswiederaufnahme (TLS)	TLS session resumption
 Sitzungsticket	session ticket
 Zertifikatkette	certificate chain
@@ -602,8 +602,8 @@ Selbstsigniertes Zertifikat	self-signed certificate
 Zertifikatstransparenz	certificate transparency (CT)
 Nachquantenkryptographie	post-quantum cryptography
 Gitterbasierte Kryptographie	lattice-based cryptography
-Homomorphe Verschlüsselung	homomorphic encryption
-Nullwissensbeweis	zero-knowledge proof (ZKP)
+Homomorphe Verschlüsselung	homomorphic encryption — allows computation on encrypted data without decrypting it
+Nullwissensbeweis	zero-knowledge proof (ZKP) — proves knowledge of a secret without revealing the secret itself
 Geheimnisverteilung (Shamir)	Shamir's secret sharing
 Elliptische Kurve	elliptic curve
 HMAC (Nachrichten-Integrität)	HMAC (hash-based message authentication code)
@@ -648,9 +648,9 @@ Datenexfiltration	data exfiltration
 # ============================================================
 # Section 18d: C++ Domain Vocabulary
 # ============================================================
-Verschiebe-Semantik	move semantics
+Verschiebe-Semantik	move semantics — transfers ownership of resources instead of copying, avoiding expensive deep copies
 rvalue-Referenz	rvalue reference
-Perfekte Weitergabe	perfect forwarding
+Perfekte Weitergabe	perfect forwarding — template function preserves the value category (lvalue/rvalue) of its arguments
 Rückgabewert-Optimierung	RVO (return value optimization)
 Benannte Rückgabewert-Optimierung	NRVO (named RVO)
 Referenzzählung	reference counting
@@ -662,7 +662,7 @@ Rein virtuelle Funktion	pure virtual function
 Dynamische Versendung	dynamic dispatch
 Template-Spezialisierung	template specialization
 Teilweise Spezialisierung	partial specialization
-Template-Metaprogrammierung	template metaprogramming
+Template-Metaprogrammierung	template metaprogramming — using templates to perform computations at compile time
 Konzept (C++20)	concept (C++20)
 Requires-Klausel	requires clause
 constexpr-Auswertung	constexpr evaluation
@@ -681,14 +681,14 @@ Zuteiler (Speicher)	allocator
 Ausnahme-Sicherheit	exception safety
 Starke Ausnahme-Sicherheit	strong exception safety
 noexcept-Spezifikator	noexcept specifier
-Undefiniertes Verhalten	undefined behavior (UB)
+Undefiniertes Verhalten	undefined behavior (UB) — code whose behavior the standard does not define; compiler may do anything
 C++-Speichermodell	C++ memory model
 Speicher-Ordnung (Atomics)	memory ordering (relaxed, acquire, release)
 Baumelnder Zeiger	dangling pointer
 Doppel-Löschung	double delete
 Pufferüberlauf	buffer overflow
 Benutzung-nach-Freigabe	use-after-free
-Link-Zeit-Optimierung	link-time optimization (LTO)
+Link-Zeit-Optimierung	link-time optimization (LTO) — optimizes across translation units at link time for better code generation
 Vektorisierung (SIMD)	vectorization (SIMD)
 Binäre Kompatibilität	binary compatibility
 ABI (binäre Schnittstelle)	ABI (application binary interface)
@@ -698,7 +698,7 @@ Kopie-Auslassung	copy elision
 # ============================================================
 # Section 18e: Git Domain Vocabulary
 # ============================================================
-Inhaltsadressierter Speicher	content-addressable storage
+Inhaltsadressierter Speicher	content-addressable storage — objects are stored and retrieved by the hash of their content
 Blob-Objekt	blob (file content object)
 Baum-Objekt	tree (directory listing object)
 Deltakette	delta chain
@@ -716,12 +716,12 @@ Konfliktlösung	conflict resolution
 Merge-Treiber	merge driver
 Verstecken (Änderungen)	to stash
 Beschuldigung (Zeilen)	blame
-Halbieren (Fehlersuche)	to bisect
+Halbieren (Fehlersuche)	to bisect — binary search through commit history to find the commit that introduced a bug
 Verlaufsbereiniger	filter-repo / BFG repo-cleaner
 Flacher Klon	shallow clone
 Teilweiser Klon	partial clone
 Blobloser Klon	blobless clone
-Spärlicher Checkout	sparse checkout
+Spärlicher Checkout	sparse checkout — checks out only a subset of the repository tree, reducing working-copy size
 Commit-Diagramm	commit-graph
 Erreichbarkeits-Bitmap	reachability bitmap
 Große Dateiverwaltung	LFS (Large File Storage)
@@ -746,7 +746,7 @@ Benutzerraum	user space
 Systemaufruf	system call (syscall)
 Kontextwechsel	context switch
 Prozess-Deskriptor	task_struct (process descriptor)
-Völlig fairer Planer	CFS (Completely Fair Scheduler)
+Völlig fairer Planer	CFS (Completely Fair Scheduler) — Linux’s default CPU scheduler using a red-black tree of virtual runtimes
 Virtuelle Laufzeit	virtual runtime (vruntime)
 Nette-Wert (Priorität)	nice value
 Echtzeit-Planung	real-time scheduling (SCHED_FIFO, SCHED_RR)
@@ -755,7 +755,7 @@ NUMA-Architektur	NUMA (Non-Uniform Memory Access)
 Seitentabelle	page table
 TLB-Leerung	TLB flush
 Seitenfehler	page fault
-Kopie-bei-Schreiben	copy-on-write (CoW)
+Kopie-bei-Schreiben	copy-on-write (CoW) — defers data duplication until a write occurs, saving memory for read-only forks
 Plattenzuteiler	slab allocator
 Kumpelsystem (Speicher)	buddy system allocator
 VFS-Abstraktionsschicht	VFS (Virtual Filesystem Switch)
@@ -786,9 +786,9 @@ Dynamische Spannungs-/Frequenzskalierung	DVFS (Dynamic Voltage and Frequency Sca
 Riesenseiten	huge pages
 Transparente Riesenseiten	transparent huge pages (THP)
 E/A-Planer	I/O scheduler (mq-deadline, bfq)
-TCP-Überlastungskontrolle	TCP congestion control (CUBIC, BBR)
+TCP-Überlastungskontrolle	TCP congestion control (CUBIC, BBR) — algorithms that prevent network overload by adjusting send rate
 Flammendiagramm	flame graph
-eBPF (erweiterter BPF)	eBPF (extended Berkeley Packet Filter)
+eBPF (erweiterter BPF)	eBPF (extended Berkeley Packet Filter) — safely runs sandboxed programs in the Linux kernel for tracing, networking, and security
 BPF-Verifizierer	BPF verifier
 Tracepoint (Kernel)	tracepoint
 XDP (Frühpaketverarbeitung)	XDP (eXpress Data Path)
@@ -796,5 +796,5 @@ Nachladbarer Betriebssystem-Baustein für Treiber und Dateisysteme	kernel module
 Kernel-Befehlszeile	kernel command line
 Kernelprotokoll	dmesg (kernel log)
 Drehsperre	spinlock
-RCU (Lesen-Kopieren-Aktualisieren)	RCU (Read-Copy-Update)
+RCU (Lesen-Kopieren-Aktualisieren)	RCU (Read-Copy-Update) — lock-free synchronization allowing concurrent reads while writers update a copy
 Speicherbarriere (Kernel)	memory barrier (smp_wmb, smp_rmb, smp_mb)
