@@ -160,6 +160,20 @@ Front (question or term)[TAB]Back (answer or definition)
 - Repository maintenance: gc, prune, repack, maintenance run
 - Alternates and shared object stores
 
+#### 18. Broader Concepts & Theory Behind Git
+- Data structures: DAGs, Merkle trees, fanout tables
+- Graph theory: topological sorting, reachability, lowest common ancestor
+- Cryptographic hashing: SHA-1/SHA-256 properties, collision resistance
+- Content-addressable storage (CAS)
+- Snapshot vs delta storage model
+- Diff algorithms: Myers, patience, histogram
+- Merge algorithms: three-way merge, recursive, ORT
+- Compression: zlib/DEFLATE, delta encoding in packfiles
+- Distributed systems: optimistic concurrency, eventual consistency, CAP theorem
+- Immutability, garbage collection (mark-and-sweep), generation numbers
+- Binary search in bisect and packfile index
+- Software engineering principles: idempotency, referential transparency, single-writer principle
+
 ---
 
 ## Deck File Plan
@@ -168,4 +182,4 @@ Front (question or term)[TAB]Back (answer or definition)
 |---|---|---|
 | Beginner | `git_beginner.txt` | Fundamentals, basics, branching, remotes, undoing (1–5) |
 | Intermediate | `git_intermediate.txt` | Rebase, stash, workflows, hooks, submodules, tags, reflog (6–12) |
-| Pro | `git_pro.txt` | Internals, history manipulation, scale, security, server admin (13–17) |
+| Pro | `git_pro.txt` | Internals, history manipulation, scale, security, server admin, broader concepts (13–18) |
