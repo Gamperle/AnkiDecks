@@ -490,3 +490,241 @@ Kandidatenversion	release candidate (RC)
 Langzeitunterstützung	LTS (Long-Term Support)
 Ende der Lebensdauer	EOL (End of Life)
 Ende der Unterstützung	end of support / EOS
+
+# ============================================================
+# Section 26a: Advanced Java / JVM Internals
+# ============================================================
+Dominanzbaum (Heap-Analyse)	dominator tree
+Einbehaltener Speicher	retained heap
+Flacher Speicher (Heap)	shallow heap
+Austausch auf dem Stack	on-stack replacement (OSR)
+Monomorphe Aufrufstelle	monomorphic call site
+Bimorphe Aufrufstelle	bimorphic call site
+Megamorphe Aufrufstelle	megamorphic call site
+Vorgespannte Verriegelung	biased locking
+Dünne Sperre vs. Dicker Monitor	thin lock vs. fat monitor
+Klassendatenfreigabe (CDS)	class data sharing (CDS)
+AOT-Klassenladen	AOT class loading (JEP 483)
+AOT-Methodenprofiling	AOT method profiling (JEP 490)
+Erreichbarkeits-Metadaten (GraalVM)	reachability metadata
+Intrinsische Methoden	intrinsic methods (JVM-optimized)
+Klasse entladen	class unloading
+Benutzerdefinierter Klassenlader	custom classloader
+Java-Modulsystem (JPMS)	Java Platform Module System (JPMS)
+--add-opens-Flag	--add-opens flag (reflection access)
+invokedynamic-Befehl	invokedynamic bytecode instruction
+VarHandle-Zugriffsmodi	VarHandle access modes
+Referenz-Warteschlange	ReferenceQueue
+Gutartiger Rennwettbewerb	benign race
+Daten-Rennwettbewerb	data race
+Begrenzung (Thread-Sicherheit)	confinement (thread safety)
+String-Internierung	string interning
+String-Deduplizierung	string deduplication (-XX:+UseStringDeduplication)
+Flammendiagramm (JVM)	flame graph
+Zuweisungs-Profiling	allocation profiling
+Kontinuierliches Profiling	continuous profiling
+JIT-Aufwärmphase	JIT warm-up phase
+Fabrik-Methode-Muster	factory method pattern
+Erbauer-Muster	builder pattern
+Dekorator-Muster	decorator pattern
+Proxy-Muster (JDK/CGLIB/ByteBuddy)	proxy pattern
+Beobachter-Muster	observer pattern
+Besucher-Muster	visitor pattern
+Fliegengewicht-Muster	flyweight pattern
+Verantwortungskette-Muster	chain of responsibility pattern
+Schablonenmethode-Muster	template method pattern
+
+# ============================================================
+# Section 26b: Advanced Android / AAOS Automotive
+# ============================================================
+AIDL-HAL	AIDL HAL (interface-based HAL)
+VINTF-Manifest	VINTF (vendor interface manifest)
+SELinux-Domäne (Android)	SELinux domain
+App-Sandbox (Android)	app sandbox
+Laufzeitberechtigungen	runtime permissions
+Bereichsbezogener Speicher	scoped storage
+CTS (Kompatibilitätstest)	CTS (Compatibility Test Suite)
+VTS (Anbietertest)	VTS (Vendor Test Suite)
+JNI (Java-Native-Schnittstelle)	JNI (Java Native Interface)
+NDK (Native-Entwicklungskit)	NDK (Native Development Kit)
+Verwaltete-Sprachen-Barriere	managed language barrier (JNI)
+Hardware-Sicherheitsmodul	HSM (Hardware Security Module)
+RPMB (Wiederholungsgeschützter Speicher)	RPMB (Replay Protected Memory Block)
+Sicherer Start	secure boot
+dm-verity (Partitionsprüfung)	dm-verity (block integrity verification)
+Android Verified Boot (AVB)	AVB (Android Verified Boot)
+StrongBox-Schlüsselspeicher	StrongBox Keystore
+Exploit-Minderung	exploit mitigation (ASLR, DEP, CFI)
+CAN-FD	CAN-FD (CAN with Flexible Data-Rate)
+LIN-Bus	LIN bus (Local Interconnect Network)
+FlexRay	FlexRay (high-speed automotive bus)
+SOME/IP	SOME/IP (Scalable service-Oriented Middleware over IP)
+DoIP (Diagnose über IP)	DoIP (Diagnostics over IP)
+UDS (einheitliche Diagnose)	UDS (Unified Diagnostic Services)
+OTA-Aktualisierung	OTA update (over-the-air)
+Zonale Fahrzeugarchitektur	zonal vehicle architecture
+Head-Up-Display	HUD (head-up display)
+Kombiinstrument	instrument cluster
+V2X-Kommunikation	V2X (Vehicle-to-Everything) communication
+Gegenseitiges TLS	mTLS (mutual TLS)
+UWB (Ultrabreitband)	UWB (Ultra-Wideband)
+Pseudonym-Zertifikat (V2X)	pseudonym certificate
+Play-Integritäts-API	Play Integrity API
+Compose-Slot-Tabelle	Compose slot table
+Stabilisierung (Compose)	stabilization (skip recomposition)
+Perfetto (Systemverfolgung)	Perfetto (system-wide tracing)
+Makro-Benchmark	Macrobenchmark
+ANR-Spurverfolgung	ANR trace analysis
+
+# ============================================================
+# Section 26c: Advanced Security & Cryptography
+# ============================================================
+Verschlüsselter Client-Hello (ECH)	Encrypted Client Hello (ECH)
+ALPN-Verhandlung	ALPN (Application-Layer Protocol Negotiation)
+0-RTT-Frühdaten	0-RTT early data (replay risk)
+Transkript-Hash (TLS)	transcript hash
+OCSP-Anheftung	OCSP stapling
+Zertifikatsperrliste	CRL (certificate revocation list)
+Delegierte Anmeldedaten	delegated credentials
+ML-KEM (Kyber)	ML-KEM (lattice-based key encapsulation)
+ML-DSA (Dilithium)	ML-DSA (lattice-based digital signatures)
+Vollständig homomorphe Verschlüsselung	fully homomorphic encryption (FHE)
+Geheimnis-Verteilungsschema	secret sharing scheme
+Diskretes-Logarithmus-Problem	discrete logarithm problem
+Edwards-Kurven-Signatur	EdDSA (Edwards-curve digital signature)
+OAEP-Polsterung (RSA)	OAEP padding (optimal asymmetric encryption)
+PSS-Polsterung (RSA-Signatur)	PSS padding (probabilistic signature scheme)
+GMAC-Modus	GMAC (Galois MAC)
+Sprung-orientierte Programmierung	JOP (jump-oriented programming)
+DNS-Umleitung (Rebinding)	DNS rebinding
+TOCTOU-Rennwettbewerb	TOCTOU (time-of-check to time-of-use)
+Verwirrtes-Deputy-Problem	confused deputy problem
+Informationsoffenlegung	information disclosure
+PASTA-Bedrohungsmodell	PASTA (Process for Attack Simulation and Threat Analysis)
+Taktiken, Techniken, Verfahren	TTPs (Tactics, Techniques, Procedures)
+Polymorphe Malware	polymorphic malware
+Rootkit	rootkit
+Hintertür	backdoor
+Befehls-und-Kontroll-Infrastruktur	C2 (Command & Control) infrastructure
+Botnetz	botnet
+Speichen-Phishing	spear phishing
+Walfang (Phishing)	whaling
+Vorwand (Social Engineering)	pretexting
+Sitzungsfixierung	session fixation
+Sitzungsentführung	session hijacking
+Inhalts-Sicherheitsrichtlinie	CSP (Content Security Policy)
+FIDO2/WebAuthn (passwortlos)	FIDO2/WebAuthn (passwordless auth)
+Risiko-basierte Authentifizierung	risk-based / adaptive authentication
+Schrittweise Authentifizierung	step-up authentication
+PKCE (Nachweis für Code-Austausch)	PKCE (Proof Key for Code Exchange)
+DPoP (Besitznachweis)	DPoP (Demonstration of Proof-of-Possession)
+Token-Bindung	token binding
+Geräte-Bindung	device binding
+
+# ============================================================
+# Section 26d: Advanced C++ Internals
+# ============================================================
+CRTP (Rekurrentes Template-Muster)	CRTP (Curiously Recurring Template Pattern)
+Explizite Spezialisierung	explicit (full) template specialization
+consteval (C++20)	consteval (forced compile-time evaluation)
+constinit (C++20)	constinit (constant initialization)
+std::optional (Optionalwert)	std::optional (maybe-type)
+std::variant (Typensichere Union)	std::variant (type-safe union)
+std::span (Sicht auf Daten, C++20)	std::span (non-owning contiguous view)
+std::string_view (Zeichenkettenansicht)	std::string_view (non-owning string reference)
+Sentinel (C++20)	sentinel (end marker different from iterator)
+Projektion (C++20)	projection (key extraction for comparison)
+std::pmr (Polymorpher Zuteiler)	std::pmr (polymorphic allocator)
+Aggregate-Initialisierung	aggregate initialization
+Einheitliche Initialisierung	uniform initialization ({} syntax)
+std::enable_if (SFINAE-Aktivierung)	std::enable_if (conditional overload)
+std::decay (Typ-Abklingen)	std::decay (remove references/cv-qualifiers)
+std::is_same (Typ-Vergleich)	std::is_same (type comparison trait)
+Rekursive Sperre	std::recursive_mutex
+Leser-Schreiber-Sperre	std::shared_mutex (reader-writer lock)
+Bedingungsvariable	std::condition_variable
+Verriegelung (C++20)	std::latch (one-time barrier)
+Barriere (C++20)	std::barrier (reusable barrier)
+Semaphor (C++20)	std::semaphore
+Leck-Detektor	leak sanitizer (LSan)
+Faden-Detektor	thread sanitizer (TSan)
+Ganzprogramm-Optimierung	whole program optimization (WPO)
+Trivialer Typ	trivial type
+Standard-Anordnung (Typ)	standard layout type
+POD-Typ	POD (Plain Old Data) type
+
+# ============================================================
+# Section 26e: Advanced Git Internals
+# ============================================================
+Lose Objekte	loose objects (.git/objects/)
+Gepackte Objekte	packed objects (.pack files)
+Deltifizieren	to deltify (delta compression)
+Symbolische Referenz	symbolic reference (HEAD → refs/heads/main)
+Direkte Referenz	direct reference (points to SHA)
+Oktopus-Merge	octopus merge (3+ branches)
+Rerere (Konflikt-Wiederverwendung)	rerere (reuse recorded resolution)
+Einheitliches Diff	unified diff
+Format-Patch	format-patch (mbox patches)
+Umbenennung-Erkennung	rename detection
+Pfropfung (History)	graft (splicing histories)
+Baumloser Klon	treeless clone
+Kegel-Modus (Sparse)	cone mode (sparse-checkout)
+Generationsnummer (DAG)	generation number (ancestor queries)
+Multi-Pack-Index	MIDX (multi-pack-index)
+Dateisystem-Monitor	FSMonitor (change notifications)
+Wachsamer Modus (GitHub)	vigilant mode (unsigned = unverified)
+SSH-Signierung	SSH signing (Git 2.34+)
+Veraltete Genehmigung verwerfen	dismiss stale approvals
+Git-Protokoll v2	Git protocol v2 (efficient wire protocol)
+Fetch-Verhandlung	fetch negotiation
+Aggressive Müllsammlung	aggressive GC (full repack + prune)
+Baumelnde Objekte	dangling objects (lost commits)
+Reflog-Ablauf	reflog expiration
+Alternative Objektspeicher	alternate objects (shared store)
+Verwaister Zweig	orphan branch (--orphan)
+Verfolgungszweig	tracking branch (upstream)
+
+# ============================================================
+# Section 26f: Advanced Linux Kernel & Systems
+# ============================================================
+Initramfs (Anfangs-RAM-Dateisystem)	initramfs (initial RAM filesystem)
+pivot_root (Wurzelwechsel)	pivot_root / switch_root
+PID 1 (Init-Prozess)	PID 1 (init / systemd)
+start_kernel (Kernel-Einstieg)	start_kernel (entry point)
+Kernel-Modul laden/entladen	modprobe / rmmod (load/unload module)
+DKMS (Dynamisches Kernel-Modul)	DKMS (Dynamic Kernel Module Support)
+printk (Kernel-Protokollierung)	printk (kernel logging)
+SysRq-Taste	SysRq key (magic key for emergencies)
+Kernel-Panik	kernel panic
+Oops (Kernel-Fehler)	kernel oops (non-fatal error)
+kdump (Kernel-Speicherabzug)	kdump (kernel crash dump)
+ftrace (Kernel-Verfolgung)	ftrace (function tracer)
+kprobe / kretprobe	kprobe / kretprobe (kernel function tracing)
+uprobe / uretprobe	uprobe / uretprobe (user-space tracing)
+BPF-Typenformat	BTF (BPF Type Format)
+CO-RE (einmal kompilieren)	CO-RE (Compile Once, Run Everywhere)
+seccomp-BPF	seccomp-bpf (syscall filtering)
+BPF-LSM (dynamische Sicherheit)	BPF LSM (eBPF security module)
+Linux-Fähigkeit	Linux capability (fine-grained privilege)
+CAP_SYS_ADMIN	CAP_SYS_ADMIN (system admin capability)
+Umgebungsfähigkeit	ambient capability
+Vererbliche Fähigkeit	inheritable capability
+UEFI Secure Boot	UEFI Secure Boot
+Shim (Erstlader)	shim (signed first-stage bootloader)
+Zeichengerät-Treiber	character device driver
+Blockgerät-Treiber	block device driver
+ioctl-Steueraufruf	ioctl (device control operation)
+Drehsperre (Kernel)	spinlock (busy-wait lock)
+Mutex (Kernel)	mutex (sleeping lock)
+RCU-Lesesperre	rcu_read_lock (lock-free reads)
+Synchronize-RCU	synchronize_rcu (wait for readers)
+Rot-Schwarz-Baum (Kernel)	red-black tree (rbtree)
+Radix-Baum (Kernel)	radix tree (integer-to-object mapping)
+Vergleichen-und-Austauschen (Kernel)	cmpxchg (atomic compare-and-exchange)
+Preemption deaktivieren	preempt_disable / preempt_enable
+Lokale Interrupts sichern	local_irq_save / local_irq_restore
+Cgroup v1 vs. v2	cgroup v1 vs v2 (single unified hierarchy)
+Cgroup-Regler	cgroup controller (cpu, memory, io, pids)
+CPU-Gouverneur	CPU governor (performance, powersave, schedutil)
+vm.swappiness	vm.swappiness (swap preference tunable)
+vm.overcommit_memory	vm.overcommit_memory (overcommit policy)

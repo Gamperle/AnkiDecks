@@ -479,3 +479,322 @@ Einen Engpass identifizieren	to identify a bottleneck
 Die Grundursache ermitteln	to perform root cause analysis (RCA)
 Einen Vorfall dokumentieren	to document an incident
 Rückblickend analysieren	to conduct a retrospective / to do a post-incident review
+
+# ============================================================
+# Section 18a: Java Domain Vocabulary
+# ============================================================
+Müllsammlung / Speicherbereinigung	garbage collection (GC)
+Junge Generation (GC)	young generation
+Alte Generation (GC)	old generation / tenured generation
+Fluchtanalyse	escape analysis
+Falsches Sharing (CPU-Cache)	false sharing
+Just-In-Time-Kompilierung	JIT compilation
+Gestufte Kompilierung	tiered compilation
+Entoptimierung	deoptimization
+Methoden-Einlagerung	method inlining
+Typ-Löschung (Generics)	type erasure
+Brückenmethode	bridge method
+Heap-Verschmutzung	heap pollution
+Kovarianter Rückgabetyp	covariant return type
+Kontravarianz	contravariance
+Invarianz	invariance
+Virtuelle Fäden	virtual threads
+Ankern (Virtual Threads)	pinning
+Trägerfaden	carrier thread
+Strukturierte Parallelität	structured concurrency
+Bereichsbezogene Werte	scoped values
+Vergleichen-und-Austauschen (CAS)	compare-and-swap (CAS)
+ABA-Problem	ABA problem
+Sperren-freier Algorithmus	lock-free algorithm
+Warte-freier Algorithmus	wait-free algorithm
+Datensatz (Java 16)	record
+Versiegelte Klasse (Java 17)	sealed class
+Mustererkennung (Java 21)	pattern matching
+Annotationsverarbeitung	annotation processing
+Bytecode-Manipulation	bytecode manipulation
+Methodengriff	method handle
+GraalVM-natives Abbild	GraalVM native image
+Schwache Referenz	weak reference
+Weiche Referenz	soft reference
+Phantom-Referenz	phantom reference
+Sicherer Punkt (GC)	safepoint
+Thread-lokaler Zuweisungspuffer	TLAB (thread-local allocation buffer)
+Happens-Before-Beziehung	happens-before relationship
+Speicherbarriere	memory barrier / memory fence
+Klassenlader-Hierarchie	classloader hierarchy
+Elterliche Delegation (ClassLoader)	parent delegation
+Aspektorientierte Programmierung	aspect-oriented programming (AOP)
+Schnittpunkt / Ratschlag (AOP)	pointcut / advice
+Stapelabwicklung	stack unwinding
+Geprüfte Ausnahme	checked exception
+Ungeprüfte Ausnahme	unchecked exception
+Versuchen-mit-Ressourcen	try-with-resources
+
+# ============================================================
+# Section 18b: Android & AAOS Domain Vocabulary
+# ============================================================
+Binder-Interprozess-Kommunikation	Binder IPC
+Paketierbar (Android)	Parcelable
+Inhaltsanbieter	content provider
+Fragment-Lebenszyklus	fragment lifecycle
+Fragment-Transaktion	fragment transaction
+Rück-Stapel (Navigation)	back stack
+Anwendung antwortet nicht	ANR (Application Not Responding)
+Strenger Modus (Android)	StrictMode
+Bildtakt-Synchronisation	frame pacing
+Ruckeln (Leistung)	jank
+GPU-Überzeichnung	GPU overdraw
+Rendern-Faden	RenderThread
+Vertikale Synchronisation	VSYNC (vertical sync)
+Choreograph (Android)	Choreographer
+Ansichtsbindung	ViewBinding
+Datenbindung	data binding
+Koroutinen	coroutines
+Aussetzbare Funktion	suspend function
+Fortsetzung (Coroutine)	continuation
+Verteiler (Dispatchers)	dispatchers (Main, Default, IO)
+Fluss (Kotlin)	Flow (cold stream)
+Zustandsfluss	StateFlow
+Gemeinsamer Fluss	SharedFlow
+Rückdruck	backpressure
+Raum-Migration (DB)	Room migration
+Datenzugriffsobjekt	DAO (Data Access Object)
+Lager-Muster	repository pattern
+Paginierung	pagination
+Benachrichtigungskanal	notification channel
+Vordergrunddienst	foreground service
+Arbeitsverwalter	WorkManager
+Rückkehr-Strategie (Arbeit)	backoff policy
+Biometrische Authentifizierung	biometric authentication
+Krypto-Objekt	CryptoObject
+Vertrauenswürdige Ausführungsumgebung	TEE (Trusted Execution Environment)
+Hardware-Schlüsselspeicher	hardware-backed KeyStore
+Schlüsselbestätigung	key attestation
+Zertifikatverankerung	certificate pinning
+Neukomposition (Compose)	recomposition
+Grundlinienprofil	baseline profile
+App-Bündel (AAB)	Android App Bundle (AAB)
+Dynamisches Feature-Modul	dynamic feature module
+Dex-Schrumpfung	Dex shrinking (R8)
+ProGuard-Regeln	ProGuard rules
+Fahrzeugdienst (AAOS)	CarService
+Fahrzeug-HAL	Vehicle HAL (VHAL)
+Fahrzeugeigenschaft	VehicleProperty
+CAN-Bus	CAN bus (Controller Area Network)
+Steuergerät	ECU (Electronic Control Unit)
+Gateway-Steuergerät	gateway ECU
+Digitaler Fahrzeugschlüssel	digital key
+Sichere Bordkommunikation	SecOC (Secure Onboard Communication)
+Zonale Architektur	zonal architecture
+
+# ============================================================
+# Section 18c: Security Domain Vocabulary
+# ============================================================
+TLS-1.3-Handschlag	TLS 1.3 handshake
+Schlüsselableitungsfunktion	key derivation function (KDF / HKDF)
+Perfekte Vorwärtsgeheimhaltung	perfect forward secrecy (PFS)
+Ephemerer Schlüsselaustausch	ephemeral key exchange (ECDHE)
+Sitzungswiederaufnahme (TLS)	TLS session resumption
+Sitzungsticket	session ticket
+Zertifikatkette	certificate chain
+Stammzertifizierungsstelle	root certificate authority (CA)
+Selbstsigniertes Zertifikat	self-signed certificate
+Zertifikatstransparenz	certificate transparency (CT)
+Nachquantenkryptographie	post-quantum cryptography
+Gitterbasierte Kryptographie	lattice-based cryptography
+Homomorphe Verschlüsselung	homomorphic encryption
+Nullwissensbeweis	zero-knowledge proof (ZKP)
+Geheimnisverteilung (Shamir)	Shamir's secret sharing
+Elliptische Kurve	elliptic curve
+HMAC (Nachrichten-Integrität)	HMAC (hash-based message authentication code)
+AES-GCM (authentifizierte Verschlüsselung)	AES-GCM (authenticated encryption)
+Polster-Oracle-Angriff	padding oracle attack
+Rückgabeorientierte Programmierung	return-oriented programming (ROP)
+Gadget-Kette	gadget chain
+XXE-Injektion	XXE (XML external entity) injection
+Befehls-Injektion	command injection
+Pfad-Traversierung	path traversal
+Template-Injektion	template injection
+Deserialisierungsangriff	deserialization attack
+Rechteeskalation	privilege escalation
+Horizontale Rechteeskalation	horizontal privilege escalation
+Bedrohungsmodellierung (STRIDE)	STRIDE threat modeling
+Angriffsfläche	attack surface
+Angriffsbaum	attack tree
+Bedrohungsintelligenz	threat intelligence
+Kompromissindikator	indicator of compromise (IoC)
+MITRE-ATT&CK-Rahmenwerk	MITRE ATT&CK framework
+Abtötkette	kill chain
+Verteidigung in der Tiefe	defense in depth
+Prinzip der geringsten Berechtigung	principle of least privilege
+Aufgabentrennung	separation of duties
+Null-Vertrauens-Architektur	zero trust architecture
+Mikrosegmentierung	micro-segmentation
+Abdeckungsgeleitetes Fuzzing	coverage-guided fuzzing
+Statische Anwendungssicherheitsprüfung	SAST (static application security testing)
+Dynamische Anwendungssicherheitsprüfung	DAST (dynamic application security testing)
+Software-Zusammensetzungsanalyse	SCA (software composition analysis)
+Penetrationstest	penetration test
+Rotes Team / Blaues Team	red team / blue team
+Schwachstellenverwaltung	vulnerability management
+Verantwortungsvolle Offenlegung	responsible disclosure
+Vorfallsreaktion	incident response
+Forensik (IT)	digital forensics
+Beweiskette	chain of custody
+Ursachenanalyse	root cause analysis (RCA)
+Seitwärtsbewegung (Angriff)	lateral movement
+Datenexfiltration	data exfiltration
+
+# ============================================================
+# Section 18d: C++ Domain Vocabulary
+# ============================================================
+Verschiebe-Semantik	move semantics
+rvalue-Referenz	rvalue reference
+Perfekte Weitergabe	perfect forwarding
+Rückgabewert-Optimierung	RVO (return value optimization)
+Benannte Rückgabewert-Optimierung	NRVO (named RVO)
+Referenzzählung	reference counting
+Kontrollblock (shared_ptr)	control block
+Referenzzyklus	reference cycle
+Positionierungs-new	placement new
+Virtueller Destruktor	virtual destructor
+Rein virtuelle Funktion	pure virtual function
+Dynamische Versendung	dynamic dispatch
+Template-Spezialisierung	template specialization
+Teilweise Spezialisierung	partial specialization
+Template-Metaprogrammierung	template metaprogramming
+Konzept (C++20)	concept (C++20)
+Requires-Klausel	requires clause
+constexpr-Auswertung	constexpr evaluation
+Strukturierte Bindungen	structured bindings (C++17)
+Falt-Ausdruck	fold expression (C++17)
+Variadische Templates	variadic templates
+Parameterpakt	parameter pack
+Lambda-Ausdruck	lambda expression
+Capture-Klausel	capture clause
+SFINAE	SFINAE (substitution failure is not an error)
+Typ-Merkmale	type traits
+Iterator-Kategorie	iterator category
+Bereiche (C++20)	ranges (C++20)
+Sichten (C++20)	views (C++20)
+Zuteiler (Speicher)	allocator
+Ausnahme-Sicherheit	exception safety
+Starke Ausnahme-Sicherheit	strong exception safety
+noexcept-Spezifikator	noexcept specifier
+Undefiniertes Verhalten	undefined behavior (UB)
+C++-Speichermodell	C++ memory model
+Speicher-Ordnung (Atomics)	memory ordering (relaxed, acquire, release)
+Baumelnder Zeiger	dangling pointer
+Doppel-Löschung	double delete
+Pufferüberlauf	buffer overflow
+Benutzung-nach-Freigabe	use-after-free
+Link-Zeit-Optimierung	link-time optimization (LTO)
+Vektorisierung (SIMD)	vectorization (SIMD)
+Binäre Kompatibilität	binary compatibility
+ABI (binäre Schnittstelle)	ABI (application binary interface)
+ODR-Verstoß	ODR violation (one definition rule)
+Kopie-Auslassung	copy elision
+
+# ============================================================
+# Section 18e: Git Domain Vocabulary
+# ============================================================
+Inhaltsadressierter Speicher	content-addressable storage
+Blob-Objekt	blob (file content object)
+Baum-Objekt	tree (directory listing object)
+Deltakette	delta chain
+Packdatei	packfile
+Bereitstellungsbereich	staging area / index
+Referenzprotokoll	reflog
+Losgelöster Kopf	detached HEAD
+Schnellspulen-Merge	fast-forward merge
+Drei-Wege-Merge	three-way merge
+Handverlese (Commit)	cherry-pick
+Umbasen	to rebase
+Interaktive Umbasung	interactive rebase
+Zusammenquetschen	to squash
+Konfliktlösung	conflict resolution
+Merge-Treiber	merge driver
+Verstecken (Änderungen)	to stash
+Beschuldigung (Zeilen)	blame
+Halbieren (Fehlersuche)	to bisect
+Verlaufsbereiniger	filter-repo / BFG repo-cleaner
+Flacher Klon	shallow clone
+Teilweiser Klon	partial clone
+Blobloser Klon	blobless clone
+Spärlicher Checkout	sparse checkout
+Commit-Diagramm	commit-graph
+Erreichbarkeits-Bitmap	reachability bitmap
+Große Dateiverwaltung	LFS (Large File Storage)
+Bündel (Git)	bundle
+Signierung (Commits/Tags)	signing (GPG / SSH)
+Zweigschutz	branch protection
+Erzwungener Push mit Absicherung	force push with lease (--force-with-lease)
+Empfangs-Hooks	receive hooks (pre-receive, post-receive)
+Untermodul	submodule
+Unterbaum	subtree
+Arbeitsbaum	worktree
+Verwaiste Objekte	dangling objects / unreachable objects
+Müllsammlung (Git)	garbage collection (git gc)
+Integritätsprüfung (Git)	fsck
+
+# ============================================================
+# Section 18f: Linux Domain Vocabulary
+# ============================================================
+Monolithischer Kernel	monolithic kernel
+Kernelraum	kernel space
+Benutzerraum	user space
+Systemaufruf	system call (syscall)
+Kontextwechsel	context switch
+Prozess-Deskriptor	task_struct (process descriptor)
+Völlig fairer Planer	CFS (Completely Fair Scheduler)
+Virtuelle Laufzeit	virtual runtime (vruntime)
+Nette-Wert (Priorität)	nice value
+Echtzeit-Planung	real-time scheduling (SCHED_FIFO, SCHED_RR)
+CPU-Affinität	CPU affinity
+NUMA-Architektur	NUMA (Non-Uniform Memory Access)
+Seitentabelle	page table
+TLB-Leerung	TLB flush
+Seitenfehler	page fault
+Kopie-bei-Schreiben	copy-on-write (CoW)
+Plattenzuteiler	slab allocator
+Kumpelsystem (Speicher)	buddy system allocator
+VFS-Abstraktionsschicht	VFS (Virtual Filesystem Switch)
+Inode (Dateimetadaten)	inode
+Verzeichniseintrag-Cache	dentry cache
+Seitencache	page cache
+Rückschreiben (Dirty Pages)	writeback
+Schmutze Seiten	dirty pages
+Interrupt-Handler	interrupt handler
+Obere Hälfte (Interrupt)	top-half handler
+Untere Hälfte (Interrupt)	bottom-half handler (softirq, tasklet, workqueue)
+Zeichengerät	character device
+Blockgerät	block device
+Geräteknoten	device node (/dev/)
+Haupt-/Nebennummer	major/minor number
+Namensräume (Kernel)	namespaces (PID, network, mount)
+PID-Namensraum	PID namespace
+Netzwerk-Namensraum	network namespace
+Benutzer-Namensraum	user namespace
+Steuergruppen	cgroups (control groups)
+Speicherlimit (Cgroup)	memory.max / memory limit
+CPU-Bandbreite (Cgroup)	CPU bandwidth (cpu.max)
+Systemd-Unit-Datei	systemd unit file
+USE-Methode (Analyse)	USE method (Utilization, Saturation, Errors)
+Auslastung	utilization
+Sättigung	saturation
+Dynamische Spannungs-/Frequenzskalierung	DVFS (Dynamic Voltage and Frequency Scaling)
+Riesenseiten	huge pages
+Transparente Riesenseiten	transparent huge pages (THP)
+E/A-Planer	I/O scheduler (mq-deadline, bfq)
+TCP-Überlastungskontrolle	TCP congestion control (CUBIC, BBR)
+Flammendiagramm	flame graph
+eBPF (erweiterter BPF)	eBPF (extended Berkeley Packet Filter)
+BPF-Verifizierer	BPF verifier
+Tracepoint (Kernel)	tracepoint
+XDP (Frühpaketverarbeitung)	XDP (eXpress Data Path)
+Kernel-Modul	kernel module (LKM)
+Kernel-Befehlszeile	kernel command line
+Kernelprotokoll	dmesg (kernel log)
+Drehsperre	spinlock
+RCU (Lesen-Kopieren-Aktualisieren)	RCU (Read-Copy-Update)
+Speicherbarriere (Kernel)	memory barrier (smp_wmb, smp_rmb, smp_mb)

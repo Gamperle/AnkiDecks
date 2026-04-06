@@ -18,6 +18,7 @@ Front (German term / Beschreibung)[TAB]Back (English translation)
 | `english_intermediate.txt` | Fortgeschritten: Software Engineering, Datenbanken, Netzwerk, DevOps, Testing |
 | `english_pro.txt` | Experte: Architektur, Security, Cloud, Performance, fachliche Kommunikation |
 | `english_expert.txt` | Spezialist: Compiler-Theorie, OS-Internals, verteilte Systeme, Kernel/Hardware, formale Methoden, Netzwerkprotokolle, Data Engineering, Fachadjektive |
+| `english_master.txt` | Meister: Forschungsvokabular, Komplexitätstheorie, Kryptographie, Chiparchitektur, Quantencomputing, Kategorientheorie, Tech-Leadership, Emerging Tech |
 
 ---
 
@@ -102,6 +103,12 @@ Front (German term / Beschreibung)[TAB]Back (English translation)
 - Data formats: JSON, XML, YAML, CSV, serialization, deserialization
 - Auth: API key, OAuth, token, bearer token, rate limiting, throttling
 
+#### 12a–12d. Domain-Specific Vocabulary (Intermediate)
+- **12a Java**: threads, concurrency basics, collections, streams, records, generics
+- **12b Android**: Activity, Fragment, Intent, Compose, permissions, build system
+- **12c Security**: CIA triad, XSS, CSRF, SQL injection, rainbow tables, clickjacking
+- **12d C++**: pointers, smart pointers, RAII, move semantics basics, templates, vtable, UB
+
 ---
 
 ### Pro
@@ -141,6 +148,14 @@ Front (German term / Beschreibung)[TAB]Back (English translation)
 - Debugging: reproduce, isolate, trace, diagnose, root cause, workaround, hotfix
 - Collaboration: onboard, hand off, pair programming, rubber duck debugging
 - Status: out of scope, work in progress, done, blocked, on hold, deprecated
+
+#### 18a–18f. Domain-Specific Vocabulary (Pro)
+- **18a Java**: GC generations, escape analysis, JIT, virtual threads, CAS, sealed classes, pattern matching, AOP, classloader hierarchy
+- **18b Android/AAOS**: Binder IPC, Coroutines, ViewBinding, WorkManager, CarService, VHAL, CAN bus, ECU, SecOC, zonal architecture
+- **18c Security**: TLS 1.3, PFS, certificate chains, post-quantum crypto, ROP, STRIDE, MITRE ATT&CK, zero trust, SAST/DAST, forensics, incident response
+- **18d C++**: move semantics, perfect forwarding, RVO, template metaprogramming, concepts, ranges, exception safety, memory model, sanitizers, LTO, ABI
+- **18e Git**: content-addressable storage, delta chains, packfiles, reflog, interactive rebase, sparse checkout, commit-graph, LFS, signing, branch protection, worktree
+- **18f Linux**: monolithic kernel, syscalls, CFS, NUMA, page tables, CoW, slab allocator, VFS, namespaces, cgroups, systemd, eBPF, RCU, kernel modules
 
 ---
 
@@ -193,3 +208,74 @@ Front (German term / Beschreibung)[TAB]Back (English translation)
 - Performance: low-latency, high-throughput, CPU-bound, I/O-bound, memory-intensive
 - Lifecycle: GA, pre-release, release candidate, LTS, end of life, deprecated
 - Descriptions: comprehensive, negligible, crucial, transient, persistent, interoperable
+
+#### 26a–26f. Domain-Specific Vocabulary (Expert)
+- **26a Java/JVM**: dominator tree, retained heap, OSR, biased locking, CDS, AOT class loading, invokedynamic, VarHandle, string interning, design patterns (factory, builder, decorator, proxy, visitor, flyweight)
+- **26b Android/AAOS**: AIDL HAL, VINTF, SELinux domains, CTS/VTS, JNI/NDK, HSM, RPMB, dm-verity, AVB, CAN-FD, LIN, FlexRay, SOME/IP, DoIP, UDS, OTA, V2X, mTLS, UWB, Compose slot table, Perfetto
+- **26c Security/Crypto**: ECH, ALPN, 0-RTT, OCSP stapling, ML-KEM, ML-DSA, FHE, EdDSA, OAEP/PSS padding, JOP, DNS rebinding, TOCTOU, polymorphic malware, rootkits, C2, FIDO2/WebAuthn, PKCE, DPoP, token binding
+- **26d C++**: CRTP, consteval/constinit, std::optional/variant/span, SFINAE helpers, polymorphic allocator, condition_variable, latch/barrier/semaphore, sanitizers, WPO, trivial/standard-layout types
+- **26e Git**: loose/packed objects, deltify, symbolic refs, octopus merge, rerere, format-patch, treeless clone, generation numbers, MIDX, FSMonitor, SSH signing, vigilant mode, Git protocol v2, aggressive GC
+- **26f Linux Kernel**: initramfs, pivot_root, PID 1, printk, SysRq, kdump, ftrace, kprobe/uprobe, BTF, CO-RE, seccomp-bpf, BPF LSM, Linux capabilities, UEFI Secure Boot, spinlock, mutex, RCU, rbtree, cmpxchg, CPU governor
+
+---
+
+### Master
+
+#### 27. Academic CS & Research Paper Vocabulary
+- Publishing: paper, peer review, preprint, conference proceedings, journal article
+- Structure: abstract, related work, state of the art, contribution, evaluation
+- Theory: theorem, lemma, corollary, proof, notation, upper/lower bound
+- Complexity: NP-completeness, reduction, polynomial/exponential time, Turing machine
+- Statistics: confidence interval, statistical significance, ablation study, ground truth
+
+#### 28. Computational Complexity & Algorithm Design
+- Paradigms: divide and conquer, dynamic programming, greedy, backtracking, branch and bound
+- Graph algorithms: DFS, BFS, shortest path, MST, topological sort, max flow
+- Data structures: B-tree, red-black tree, skip list, trie, suffix tree, Bloom filter
+- Probabilistic: HyperLogLog, Count-Min sketch, randomized algorithms
+- Optimization: linear programming, integer programming, convex optimization, gradient descent
+
+#### 29. Cryptography & Protocol Design
+- Primitives: block/stream cipher, AES, modes of operation, nonce, IV, padding
+- Asymmetric: RSA, ECC, Diffie-Hellman, key derivation, digital signatures
+- PKI: certificate chains, revocation, OCSP, certificate pinning, transparency
+- Advanced: zero-knowledge proofs, homomorphic encryption, MPC, secret sharing
+- Post-quantum: lattice-based crypto, KEM, post-quantum cryptography
+
+#### 30. Hardware Architecture & Chip Design
+- ISA: CISC, RISC, RISC-V, ARM, x86
+- Pipeline: fetch, decode, execute, write-back, branch prediction, speculative execution
+- Parallelism: superscalar, VLIW, SIMD, MIMD, vector units, AVX, NEON
+- Accelerators: GPU, GPGPU, CUDA, TPU, FPGA, ASIC, DPU, SmartNIC
+- Memory: cache hierarchy, DDR, HBM, CXL, PCIe, NVMe, persistent memory, chiplets
+
+#### 31. Quantum Computing
+- Fundamentals: qubit, superposition, entanglement, quantum gates, measurement, decoherence
+- Algorithms: Shor's, Grover's, VQE, QAOA, quantum annealing
+- Error correction: QEC, logical vs physical qubits, gate fidelity, coherence time
+- Cryptography: QKD, BB84, quantum teleportation, post-quantum implications
+
+#### 32. Category Theory & Abstract Math for Programmers
+- Foundations: category, morphism, functor, natural transformation, monad, monoid
+- Type theory: higher-kinded types, dependent types, linear types, phantom types
+- Recursion: catamorphism, anamorphism, hylomorphism, fixed-point combinator
+- Proofs: Curry-Howard correspondence, proof assistants (Coq, Lean, Agda)
+
+#### 33. Tech Leadership & Strategic Communication
+- Strategy: technical vision, roadmap, architectural principles, guardrails, decision framework
+- Business: ROI, TCO, opportunity cost, time-to-market, value proposition
+- Leadership: alignment, consensus building, ownership, accountability, delegation, mentoring
+- Culture: blameless culture, psychological safety, fail fast, engineering culture
+
+#### 34. Niche Systems & Emerging Technology
+- Compute: disaggregated memory, processing-in-memory, confidential computing, unikernels
+- WebAssembly: Wasm, WASI, component model
+- Platform engineering: IDP, developer experience, golden path, self-service infrastructure
+- SRE: SLO, SLI, error budget, chaos engineering, fault injection, toil
+- Distributed: actor model, STM, Merkle trees, append-only logs, reactive systems
+
+#### 35. Rare & Precise Technical Adjectives
+- Correctness: well-defined, underspecified, ambiguous, orthogonal, non-trivial
+- Concurrency: reentrant, thread-safe, lock-free, wait-free, obstruction-free
+- Style: opinionated, declarative, imperative, composable, pluggable
+- Compatibility: wire-compatible, source-compatible, binary-compatible, ABI-compatible

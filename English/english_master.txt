@@ -1,0 +1,544 @@
+# Technical English — Master (DE → EN)
+# Format: Front (Deutsch)	Back (English)
+
+# ============================================================
+# Section 27: Academic CS & Research Paper Vocabulary
+# ============================================================
+
+Wissenschaftliche Veröffentlichung	(research) paper / publication
+Peer-Review / Fachbegutachtung	peer review
+Vorabdruck / Preprint	preprint
+Konferenzbeitrag	conference paper / proceedings paper
+Zeitschriftenartikel	journal article
+Zusammenfassung / Abstract	abstract
+Verwandte Arbeiten	related work
+Stand der Technik / Stand der Forschung	state of the art
+Neuartig / Neuheitswert	novel / novelty
+Beitrag (wissenschaftlich)	contribution
+Hypothese	hypothesis
+These / Behauptung	thesis / claim
+Beweis	proof
+Lemma / Hilfssatz	lemma
+Satz / Theorem	theorem
+Korollar / Folgesatz	corollary
+Notation	notation
+Obere Schranke	upper bound
+Untere Schranke	lower bound
+Asymptotische Komplexität	asymptotic complexity
+O-Notation / Landau-Notation	Big-O notation / asymptotic notation
+Amortisierte Analyse	amortized analysis
+Berechenbarkeit	computability
+Entscheidbarkeit	decidability
+Unentscheidbarkeit	undecidability
+Halteproblem	halting problem
+Turingmaschine	Turing machine
+Nichtdeterminismus	nondeterminism
+NP-Vollständigkeit	NP-completeness
+NP-Schwere	NP-hardness
+Reduktion (Komplexitätstheorie)	reduction (complexity theory)
+Polynomialzeit	polynomial time
+Exponentialzeit	exponential time
+Approximationsalgorithmus	approximation algorithm
+Approximationsverhältnis	approximation ratio
+Heuristik	heuristic
+Metaheuristik	metaheuristic
+Randomisierter Algorithmus	randomized algorithm
+Wahrscheinlichkeitsverteilung	probability distribution
+Erwartungswert	expected value
+Varianz	variance
+Stichprobe	sample
+Konfidenzintervall	confidence interval
+Statistische Signifikanz	statistical significance
+Reproduzierbarkeit (Forschung)	reproducibility (research)
+Ablationsstudie	ablation study
+Grundwahrheit / Ground Truth	ground truth
+Benchmark-Datensatz	benchmark dataset
+Experimenteller Aufbau	experimental setup
+Auswertung / Evaluation	evaluation
+Metrik (Bewertung)	metric (evaluation)
+Grundlinie / Baseline	baseline
+Vergleichsarbeit	comparative study
+Empirische Studie	empirical study
+Fallstudie	case study
+Whitepaper	white paper
+Technischer Bericht	technical report
+Quellenangabe / Zitat	citation / reference
+Zitierindex	citation index
+DOI (Digitaler Objektbezeichner)	DOI (Digital Object Identifier)
+Vorabveröffentlichung	early access / preprint
+Begutachtungsverfahren	review process
+Blindbegutachtung	blind review / double-blind review
+
+# ============================================================
+# Section 28: Computational Complexity & Algorithm Design
+# ============================================================
+
+Zeitkomplexität	time complexity
+Raumkomplexität / Platzkomplexität	space complexity
+Bester Fall	best case
+Schlechtester Fall	worst case
+Durchschnittlicher Fall	average case
+Teile-und-Herrsche	divide and conquer
+Dynamische Programmierung	dynamic programming
+Gierige Methode / Greedy-Algorithmus	greedy algorithm
+Rückverfolgung / Backtracking	backtracking
+Verzweigen und Begrenzen	branch and bound
+Graphalgorithmus	graph algorithm
+Kürzester-Pfad-Algorithmus	shortest path algorithm
+Minimaler Spannbaum	minimum spanning tree (MST)
+Topologische Sortierung	topological sorting
+Tiefensuche	DFS (Depth-First Search)
+Breitensuche	BFS (Breadth-First Search)
+Zusammenhangskomponente	connected component
+Stark zusammenhängende Komponente	SCC (Strongly Connected Component)
+Maximaler Fluss / Maximum Flow	maximum flow
+Bipartiter Graph	bipartite graph
+Planarer Graph	planar graph
+Adjazenzmatrix	adjacency matrix
+Adjazenzliste	adjacency list
+Hashtabelle	hash table / hash map
+Kollisionsauflösung	collision resolution
+Offene Adressierung	open addressing
+Verkettung / Chaining	chaining (hash table)
+B-Baum	B-tree
+Rot-Schwarz-Baum	red-black tree
+AVL-Baum	AVL tree
+Skip-Liste	skip list
+Trie / Präfixbaum	trie / prefix tree
+Suffixbaum	suffix tree
+Suffixarray	suffix array
+Bloom-Filter	Bloom filter
+Count-Min-Sketch	Count-Min sketch
+HyperLogLog	HyperLogLog
+Probabilistische Datenstruktur	probabilistic data structure
+Gewichteter Graph	weighted graph
+Ungerichteter Graph	undirected graph
+Gerichteter Graph	directed graph
+Gerichteter azyklischer Graph (DAG)	DAG (Directed Acyclic Graph)
+Eulerweg / Eulerpfad	Eulerian path
+Hamiltonpfad	Hamiltonian path
+Rundreiseproblem / TSP	TSP (Traveling Salesman Problem)
+Rucksackproblem	knapsack problem
+Schedulingproblem	scheduling problem
+Stabile Zuordnung / Matching	stable matching
+Flussnetzwerk	flow network
+Lineare Programmierung	linear programming
+Ganzzahlige Programmierung	integer programming
+Konvexe Optimierung	convex optimization
+Gradientenabstieg	gradient descent
+Stochastischer Gradientenabstieg	SGD (Stochastic Gradient Descent)
+
+# ============================================================
+# Section 29: Cryptography & Protocol Design
+# ============================================================
+
+Symmetrisches Verschlüsselungsverfahren	symmetric cipher
+Blockchiffre	block cipher
+Stromchiffre	stream cipher
+AES (Advanced Encryption Standard)	AES (Advanced Encryption Standard)
+Betriebsmodus (Verschlüsselung)	mode of operation (e.g., CBC, CTR, GCM)
+Initialisierungsvektor (IV)	IV (Initialization Vector)
+Nonce (Einmalwert)	nonce
+Auffüllung / Padding (Kryptographie)	padding (cryptography)
+Padding-Orakel-Angriff	padding oracle attack
+Asymmetrisches Verschlüsselungsverfahren	asymmetric cipher / public-key cryptography
+RSA-Algorithmus	RSA algorithm
+Elliptische-Kurven-Kryptographie	ECC (Elliptic Curve Cryptography)
+Diffie-Hellman-Schlüsselaustausch	Diffie-Hellman key exchange
+Diskreter Logarithmus	discrete logarithm
+Einwegfunktion	one-way function
+Falltürfunktion	trapdoor function
+Schlüsselableitung / Key Derivation	key derivation (KDF)
+PBKDF2	PBKDF2 (Password-Based Key Derivation Function 2)
+Argon2	Argon2
+bcrypt	bcrypt
+scrypt	scrypt
+HMAC (Schlüsselgebundener Hash)	HMAC (Hash-based Message Authentication Code)
+Nachrichtenauthentifizierungscode	MAC (Message Authentication Code)
+Digitale Signatur (Algorithmus)	digital signature algorithm (DSA / ECDSA / EdDSA)
+Zertifikatskette	certificate chain
+Zertifikatsperrung	certificate revocation
+Zertifikatssperrliste	CRL (Certificate Revocation List)
+Online-Zertifikatsstatusprüfung	OCSP (Online Certificate Status Protocol)
+Certificate Pinning / Zertifikatsfixierung	certificate pinning
+Zertifikatstransparenz	certificate transparency (CT)
+Public-Key-Infrastruktur	PKI (Public Key Infrastructure)
+Schlüsselzeremonien	key ceremony
+Hardware-Sicherheitsmodul	HSM (Hardware Security Module)
+Vertrauenswürdige Ausführungsumgebung	TEE (Trusted Execution Environment)
+Sichere Enklave	secure enclave
+Attestierung	attestation
+Wissensfreier Beweis / Zero-Knowledge-Beweis	zero-knowledge proof (ZKP)
+Interaktiver Beweis	interactive proof
+Nicht-interaktiver Beweis	non-interactive proof
+zk-SNARK	zk-SNARK (Zero-Knowledge Succinct Non-Interactive Argument of Knowledge)
+Homomorphe Verschlüsselung	homomorphic encryption
+Vollständig homomorphe Verschlüsselung	FHE (Fully Homomorphic Encryption)
+Sichere Mehrparteienberechnung	MPC (Secure Multi-Party Computation)
+Schwellenwert-Kryptographie	threshold cryptography
+Geheimnisteilung / Secret Sharing	secret sharing (e.g., Shamir's)
+Oblivious Transfer	oblivious transfer
+Differenzielle Privatheit	differential privacy
+Post-Quanten-Kryptographie	post-quantum cryptography
+Gitterbasierte Kryptographie	lattice-based cryptography
+Schlüsselkapselungsmechanismus	KEM (Key Encapsulation Mechanism)
+Authentifiziertes Schlüsselaustauschprotokoll	authenticated key exchange (AKE)
+TLS-Handshake (im Detail)	TLS handshake (ClientHello, ServerHello, key exchange, Finished)
+Vorwärtsgeheimhaltung	forward secrecy / perfect forward secrecy (PFS)
+Sitzungswiederaufnahme	session resumption (TLS)
+0-RTT (Null-Roundtrip-Time)	0-RTT (Zero Round-Trip Time)
+Zufallszahlengenerator	RNG (Random Number Generator)
+Kryptographisch sicherer Zufallsgenerator	CSPRNG (Cryptographically Secure PRNG)
+Entropie	entropy
+Entropiequelle	entropy source
+
+# ============================================================
+# Section 30: Hardware Architecture & Chip Design
+# ============================================================
+
+Befehlssatzarchitektur (ISA)	ISA (Instruction Set Architecture)
+CISC (Komplexer Befehlssatz)	CISC (Complex Instruction Set Computing)
+RISC (Reduzierter Befehlssatz)	RISC (Reduced Instruction Set Computing)
+RISC-V	RISC-V
+ARM-Architektur	ARM architecture
+x86-Architektur	x86 architecture
+Mikroprozessor	microprocessor
+Mikroarchitektur	microarchitecture
+Pipeline (Prozessor)	pipeline (processor)
+Pipeline-Stufe	pipeline stage
+Befehlsabruf	instruction fetch
+Befehlsdekodierung	instruction decode
+Befehlsausführung	instruction execution
+Rückschreibphase	write-back (stage)
+Sprungvorhersage	branch prediction
+Sprungvorhersagefehler	branch misprediction
+Spekulative Ausführung	speculative execution
+Außerordentliche Ausführung	out-of-order execution (OoOE)
+Registerumbenennung	register renaming
+Reorder-Puffer	reorder buffer (ROB)
+Reservierungsstation	reservation station
+Superskalarer Prozessor	superscalar processor
+VLIW (Sehr langer Befehlswort)	VLIW (Very Long Instruction Word)
+SIMD (Einzelbefehl, Mehrfachdaten)	SIMD (Single Instruction, Multiple Data)
+MIMD (Mehrfachbefehl, Mehrfachdaten)	MIMD (Multiple Instruction, Multiple Data)
+Vektorprozessor / Vektoreinheit	vector processor / vector unit
+AVX (Erweiterte Vektorbefehle)	AVX (Advanced Vector Extensions)
+NEON (ARM-Vektorbefehle)	NEON (ARM SIMD)
+GPU (Grafikprozessor)	GPU (Graphics Processing Unit)
+GPGPU (Allzweck-GPU-Berechnung)	GPGPU (General-Purpose GPU computing)
+Shader	shader
+CUDA	CUDA (Compute Unified Device Architecture)
+OpenCL	OpenCL (Open Computing Language)
+Tensorprozessor / TPU	TPU (Tensor Processing Unit)
+Neuronaler Netzwerk-Beschleuniger	neural network accelerator / NPU
+FPGA (Feldprogrammierbares Gate-Array)	FPGA (Field-Programmable Gate Array)
+ASIC (Anwendungsspezifische Integrierte Schaltung)	ASIC (Application-Specific Integrated Circuit)
+SoC (System-on-a-Chip)	SoC (System on a Chip)
+Fertigungsprozess / Prozesstechnologie	process node / fabrication process (e.g., 5nm, 3nm)
+Taktrate	clock rate / clock frequency
+Taktzyklus	clock cycle
+Befehlsdurchsatz (IPC)	IPC (Instructions Per Clock / Cycle)
+Cache-Hierarchie	cache hierarchy
+L1-Cache	L1 cache
+L2-Cache	L2 cache
+L3-Cache / Last-Level-Cache	L3 cache / LLC (Last-Level Cache)
+Cache-Kohärenz	cache coherence
+Kohärenzprotokoll	coherence protocol (MESI, MOESI)
+Nicht-einheitlicher Speicherzugriff (NUMA)	NUMA (Non-Uniform Memory Access)
+Speichercontroller	memory controller
+Speicherbus	memory bus
+DDR-Speicher	DDR (Double Data Rate) memory
+HBM (Speicher mit hoher Bandbreite)	HBM (High Bandwidth Memory)
+CXL (Compute Express Link)	CXL (Compute Express Link)
+PCIe (Peripheral Component Interconnect Express)	PCIe (PCI Express)
+NVMe (Non-Volatile Memory Express)	NVMe (Non-Volatile Memory Express)
+Dauerhafter Speicher / Persistent Memory	persistent memory (PMEM)
+Chiplet / Chiplet-Architektur	chiplet (architecture)
+Interposer / Zwischenträger	interposer
+Multi-Die-Paket	multi-die package (MDP)
+Thermische Entwurfsleistung (TDP)	TDP (Thermal Design Power)
+Leistung pro Watt	performance per watt
+
+# ============================================================
+# Section 31: Quantum Computing
+# ============================================================
+
+Quantencomputer	quantum computer
+Qubit (Quantenbit)	qubit (quantum bit)
+Superposition	superposition
+Verschränkung / Quantenverschränkung	entanglement / quantum entanglement
+Quantengatter	quantum gate
+Hadamard-Gatter	Hadamard gate
+CNOT-Gatter (Kontrolliert-NICHT)	CNOT gate (Controlled-NOT)
+Toffoli-Gatter	Toffoli gate
+Pauli-Gatter (X, Y, Z)	Pauli gates (X, Y, Z)
+Quantenschaltkreis	quantum circuit
+Messung (Quantenmechanik)	measurement (quantum mechanics)
+Dekohärenz	decoherence
+Quantenfehlerkorrektur	quantum error correction (QEC)
+Logisches Qubit	logical qubit
+Physikalisches Qubit	physical qubit
+Quantenüberlegenheit / Quantum Supremacy	quantum supremacy / quantum advantage
+Quantenvorteil	quantum advantage
+Rauschintensiver Zwischen-Quantencomputer	NISQ (Noisy Intermediate-Scale Quantum)
+Shors Algorithmus	Shor's algorithm
+Grovers Algorithmus	Grover's algorithm
+Variationsquantenalgorithmus	VQE (Variational Quantum Eigensolver)
+QAOA	QAOA (Quantum Approximate Optimization Algorithm)
+Quantenannealing	quantum annealing
+Quantensimulation	quantum simulation
+Quantenkryptographie	quantum cryptography
+Quantenschlüsselverteilung (QKD)	QKD (Quantum Key Distribution)
+BB84-Protokoll	BB84 protocol
+Quantenteleportation	quantum teleportation
+Quantenzustandstomographie	quantum state tomography
+Bloch-Kugel	Bloch sphere
+Quantenregister	quantum register
+Quantenparallelismus	quantum parallelism
+Quanteninterferenz	quantum interference
+Orakel (Quantenalgorithmus)	oracle (quantum algorithm)
+Quantencompiler	quantum compiler
+Transpilation (Quantenschaltkreis)	transpilation (quantum circuit)
+Konnektivitätsgraph (Qubit)	connectivity graph (qubit topology)
+Gate-Treue / Gate Fidelity	gate fidelity
+Kohärenzzeit	coherence time
+T1-Zeit (Relaxationszeit)	T1 time (relaxation time)
+T2-Zeit (Dephasierungszeit)	T2 time (dephasing time)
+
+# ============================================================
+# Section 32: Category Theory & Abstract Math for Programmers
+# ============================================================
+
+Kategorie	category
+Objekt (Kategorientheorie)	object (category theory)
+Morphismus / Pfeil	morphism / arrow
+Komposition	composition
+Identitätsmorphismus	identity morphism
+Funktor	functor
+Endofunktor	endofunctor
+Natürliche Transformation	natural transformation
+Monade	monad
+Monadengesetze	monad laws (left identity, right identity, associativity)
+Applikativer Funktor	applicative functor
+Monoid	monoid
+Halbgruppe	semigroup
+Gruppentheorie	group theory
+Ring (Algebra)	ring (algebra)
+Isomorphismus	isomorphism
+Homomorphismus	homomorphism
+Epimorphismus	epimorphism
+Monomorphismus	monomorphism
+Produkt (Kategorientheorie)	product (category theory)
+Koprodukt / Summe	coproduct / sum
+Adjunktion	adjunction
+Yoneda-Lemma	Yoneda lemma
+Freie Monade	free monad
+Kofreie Komonade	cofree comonad
+Kleisli-Kategorie	Kleisli category
+Pfeilnotation / Do-Notation	do-notation / arrow notation
+Effektsystem	effect system
+Algebraischer Effekt	algebraic effect
+Typklasse	type class
+Typkonstruktor	type constructor
+Höherkindiger Typ	higher-kinded type (HKT)
+Abhängiger Typ	dependent type
+Linearer Typ	linear type
+Affiner Typ	affine type
+Phantomtyp	phantom type
+Existenztyp	existential type
+Universalquantor (∀)	universal quantifier (∀ / forall)
+Existenzquantor (∃)	existential quantifier (∃ / exists)
+Curry-Howard-Isomorphismus	Curry-Howard correspondence / isomorphism
+Beweisassistent / Proof Assistant	proof assistant (e.g., Coq, Lean, Agda, Isabelle)
+Taktik (Beweisassistent)	tactic (proof assistant)
+Induktiver Typ	inductive type
+Koinduktiver Typ	coinductive type
+Rekursionsschema	recursion scheme
+Katamorphismus	catamorphism (fold)
+Anamorphismus	anamorphism (unfold)
+Hylomorphismus	hylomorphism
+Fixpunktkombinator	fixed-point combinator (Y combinator)
+Terminierungsprüfung	termination checker
+
+# ============================================================
+# Section 33: Tech Leadership & Strategic Communication
+# ============================================================
+
+Technische Vision	technical vision
+Technische Strategie	technical strategy
+Technische Roadmap	technical roadmap
+Architekturprinzipien	architectural principles
+Leitplanken / Guardrails	guardrails
+Entscheidungsrahmen	decision framework
+Technische Due Diligence	technical due diligence
+Risikominderung	risk mitigation
+Risikotoleranz	risk tolerance / risk appetite
+Risikoakzeptanz	risk acceptance
+Opportunitätskosten	opportunity cost
+Kapitalrendite / Return on Investment	ROI (Return on Investment)
+Gesamtbetriebskosten	TCO (Total Cost of Ownership)
+Amortisationszeit	payback period
+Wertversprechen	value proposition
+Markteinführungszeit	time-to-market
+Markteinführung	go-to-market (GTM)
+Wettbewerbsvorteil	competitive advantage
+Differenzierungsmerkmal	differentiator
+Hebelwirkung / Leverage	leverage
+Befähigen / Ermächtigen	to empower / to enable
+Vorantreiben / Fördern	to drive / to champion
+Angleichen / Ausrichten	to align
+Priorisieren	to prioritize
+Konsens herstellen	to build consensus / to reach alignment
+Abwägen / Güterabwägung treffen	to weigh trade-offs / to evaluate trade-offs
+Einfluss nehmen	to influence / to advocate
+Sichtbarkeit schaffen	to create visibility
+Verantwortung übernehmen	to take ownership / to own
+Rechenschaftspflicht	accountability
+Eigenverantwortung	ownership
+Befugnisübertragung	delegation
+Mentoring / Betreuung	mentoring
+Sponsoring / Förderung (Karriere)	sponsoring
+Wissensaustausch	knowledge sharing
+Technische Exzellenz	technical excellence
+Ingenieurkultur	engineering culture
+Blameless Culture / Schuldfreie Kultur	blameless culture
+Psychologische Sicherheit	psychological safety
+Datengestützte Entscheidung	data-driven decision
+Anekdotische Evidenz	anecdotal evidence
+Rückkopplung / Feedback-Schleife	feedback loop
+Schnell scheitern	to fail fast
+Experimentierfreudigkeit	culture of experimentation
+Baustein / Building Block	building block
+Zukunftssicherheit	future-proofing
+Technologieradar	technology radar
+Technologiebewertung	technology evaluation / technology assessment
+Architektur-Review	architecture review
+Design-Review	design review
+Technische Tragfähigkeit	technical feasibility
+Technischer Kompromiss	technical compromise
+Sorgfaltspflicht	due diligence
+Regulatorische Anforderung	regulatory requirement
+Branchenstandard	industry standard
+Best Practice / Bewährte Methode	best practice
+Anti-Pattern / Anti-Muster	anti-pattern
+
+# ============================================================
+# Section 34: Niche Systems & Emerging Technology
+# ============================================================
+
+Disaggregierter Speicher	disaggregated memory
+Speiher-Fabric	memory fabric
+Rechennaher Speicher	near-memory computing
+Speicherinterne Berechnung	in-memory computing
+Berechnung im Speicher	processing-in-memory (PIM) / compute-in-memory
+Serverlose Datenbank	serverless database
+Serverlose Edge-Berechnung	serverless edge computing
+Edge Computing / Randberechnung	edge computing
+Fog Computing / Nebelberechnung	fog computing
+Konfidentielles Rechnen	confidential computing
+Homomorphes Rechnen	homomorphic computing
+Unikernel	unikernel
+WebAssembly (Wasm)	WebAssembly (Wasm)
+WASI (WebAssembly-Systemschnittstelle)	WASI (WebAssembly System Interface)
+Komponentenmodell (Wasm)	component model (Wasm)
+eBPF-basierte Netzwerkfunktionen	eBPF-based networking
+Cilium (eBPF-basiertes Networking)	Cilium
+SmartNIC / Intelligente Netzwerkkarte	SmartNIC (Smart Network Interface Card)
+DPU (Datenverarbeitungseinheit)	DPU (Data Processing Unit)
+Infrastruktur-Prozessierungseinheit (IPU)	IPU (Infrastructure Processing Unit)
+Datenzentrierte Architektur	data-centric architecture
+Datenvermaschung / Data Mesh	data mesh
+Plattformtechnik / Platform Engineering	platform engineering
+Interne Entwicklerplattform	IDP (Internal Developer Platform)
+Entwicklererfahrung	developer experience (DX)
+Goldener Pfad / Golden Path	golden path / paved path
+Selbstbedienungsinfrastruktur	self-service infrastructure
+Richtlinie als Code	policy as code
+Open Policy Agent (OPA)	OPA (Open Policy Agent)
+Service-Level-Ziel	SLO (Service Level Objective)
+Service-Level-Indikator	SLI (Service Level Indicator)
+Fehlerbudget	error budget
+Standortzuverlässigkeitstechnik	SRE (Site Reliability Engineering)
+Toil / Mühsame Routinearbeit	toil (SRE)
+Chaos Engineering / Chaostechnik	chaos engineering
+Spieltag / Game Day	game day (chaos engineering)
+Fehlereingabe / Fault Injection	fault injection
+Leistungsfähigkeitsprüfstand	performance testbed
+Synthetischer Datenverkehr	synthetic traffic
+Nachrichtengesteuerte Architektur	message-driven architecture
+Reaktive Systeme	reactive systems
+Reaktives Manifest	Reactive Manifesto
+Aktorenmodell	actor model
+Software-Transaktionsspeicher	STM (Software Transactional Memory)
+Persistenter Datenstrukturen	persistent data structures (immutable)
+Append-Only-Protokoll	append-only log
+Unveränderliches Protokoll	immutable log
+Merkle-Baum	Merkle tree
+Gerichteter azyklischer Graph (DAG, Blockchain)	DAG (directed acyclic graph, in blockchain/DLT context)
+Verteiltes Hauptbuch / Distributed Ledger	distributed ledger
+Konsensprotokoll (Blockchain)	consensus protocol (blockchain)
+Intelligenter Vertrag / Smart Contract	smart contract
+Gasgebühr / Gas Fee	gas fee (blockchain)
+Dezentrale Anwendung (dApp)	dApp (decentralized application)
+Tokenisierung (Blockchain)	tokenization (blockchain)
+
+# ============================================================
+# Section 35: Rare & Precise Technical Adjectives
+# ============================================================
+
+Kontraproduktiv	counterproductive
+Trivial / Unbedeutend	trivial
+Nicht-trivial	non-trivial
+Vernachlässigbar	negligible
+Marginal / Geringfügig	marginal
+Wohldefiniert	well-defined
+Schlecht definiert	ill-defined / poorly defined
+Unterspezifiziert	underspecified
+Überspezifiziert	overspecified / over-constrained
+Mehrdeutig	ambiguous
+Eindeutig	unambiguous
+Orthogonal (unabhängig voneinander)	orthogonal
+Querschnittlich / Querschnittsbelang	cross-cutting (concern)
+Eigenwillig / Opinionated (Framework)	opinionated
+Meinungslos / Unopinionated (Framework)	unopinionated
+Rückwirkend	retroactive
+Proaktiv	proactive
+Reaktiv	reactive
+Präventiv	preventive / preventative
+Korrektiv	corrective
+Kompensatorisch	compensatory
+Komplementär	complementary
+Redundant	redundant
+Überflüssig	superfluous
+Inkrementell	incremental
+Iterativ	iterative
+Rekursiv	recursive
+Reentranzfähig / Wiedereintrittsfähig	reentrant
+Threadsicher	thread-safe
+Nicht-threadsicher	non-thread-safe / thread-unsafe
+Speichersicher	memory-safe
+Lock-frei	lock-free
+Wartefrei	wait-free
+Obstruktionsfrei	obstruction-free
+Fortschrittgarantierend	progress-guaranteeing
+Feingranular	fine-grained
+Grobgranular	coarse-grained
+Deklarativ	declarative
+Imperativ	imperative
+Komposierbar / Zusammensetzbar	composable
+Zerlegbar	decomposable
+Wiederverwendbar	reusable
+Austauschbar / Einsteckbar	pluggable
+Eigenständig / Autark	self-contained
+Eingebettet	embedded
+Eingebaut / Nativ	built-in / native
+Benutzerdefiniert	custom / user-defined
+Werksseitig / Standardmäßig	out-of-the-box / default
+Konfigurierbar	configurable
+Anpassbar	customizable
+Überschreibbar	overridable
+Erweiterbar	extensible
+Abwärtskompatibel (streng)	strictly backward-compatible
+Drahtkompatibel	wire-compatible
+Quellkompatibel	source-compatible
+Binärkompatibel	binary-compatible / ABI-compatible

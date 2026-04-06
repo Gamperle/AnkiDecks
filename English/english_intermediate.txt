@@ -493,3 +493,179 @@ Thema / Topic (Nachricht)	topic
 Abonnent / Subscriber	subscriber
 Herausgeber / Publisher	publisher
 Ereignis / Event	event
+
+# ============================================================
+# Section 12a: Java Domain Vocabulary
+# ============================================================
+
+Faden / Thread	thread
+Fadenbecken / Thread-Pool	thread pool
+Sperre (Java)	lock
+Monitor (Java)	monitor
+Eingebaute Sperre	intrinsic lock / monitor lock
+Gegenseitiger Ausschluss	mutual exclusion (mutex)
+Flüchtig (volatile)	volatile
+Barriere (Concurrency)	barrier
+Falsches Aufwecken	spurious wake-up
+Arbeitsentzug / Work-Stealing	work-stealing
+Lastfaktor (HashMap)	load factor
+Hashkollision	hash collision
+Neuverteilung / Rehashing	rehashing
+Fach / Bucket (HashMap)	bucket (HashMap)
+Schnell-fehlschlagend (Iterator)	fail-fast (iterator)
+Ausfallsicher (Iterator)	fail-safe (iterator)
+Natürliche Ordnung	natural ordering
+Einfügereihenfolge	insertion order
+Zugriffsreihenfolge	access order
+Baumwandlung (HashMap)	treeification
+Unveränderliche Sammlung	immutable collection / unmodifiable collection
+Gegendruck / Backpressure (Reactive)	backpressure
+Lebenszyklus	lifecycle
+Abhängigkeitsinjektion (Java)	dependency injection (DI)
+Anmerkung / Annotation	annotation
+Markierungsschnittstelle	marker interface
+Generische Klasse	generic class
+Typ-Löschung	type erasure
+Platzhaltertyp	wildcard type
+Eingeschränkter Typ	bounded type
+Ungeprüfte Typumwandlung	unchecked cast
+Funktionale Schnittstelle	functional interface
+Stream-Verarbeitung (Java)	stream processing (Java Streams)
+Optionalwert / Optional	Optional (wrapper type)
+Datensatzklasse / Record	record (class)
+Versiegelte Klasse	sealed class
+Textblock	text block
+Lokale Variable Typinferenz	local variable type inference (var)
+Modulsystem (Java)	module system (JPMS)
+Klassenpfad	classpath
+Modulpfad	module path
+
+# ============================================================
+# Section 12b: Android Domain Vocabulary
+# ============================================================
+
+Aktivität / Activity	Activity
+Fragment	Fragment
+Dienst / Service (Android)	Service (Android)
+Inhaltsanbieter	Content Provider
+Sendungsempfänger	Broadcast Receiver
+Ansichtshierarchie	view hierarchy
+Layoutdatei	layout file
+Manifest-Datei	manifest file (AndroidManifest.xml)
+Absicht / Intent	Intent
+Explizite Absicht	explicit Intent
+Implizite Absicht	implicit Intent
+Zurück-Stapel	back stack
+Aufgaben-Stapel	task stack
+Startmodus (Activity)	launch mode
+Konfigurationsänderung	configuration change
+Zustandserhaltung	state preservation / state restoration
+Neuzusammensetzung (Compose)	recomposition (Jetpack Compose)
+Zustandsanhebung	state hoisting
+Datenbindung	data binding
+Ansichtsmodell / ViewModel	ViewModel
+LiveData	LiveData
+Zustandsfluss / StateFlow	StateFlow
+Bereichsbezogener Speicher	scoped storage
+Berechtigungsmodell	permission model
+Laufzeitberechtigung	runtime permission
+Vordergrund-Dienst	foreground service
+Arbeitsmanager / WorkManager	WorkManager
+Benachrichtigungskanal	notification channel
+Rand-zu-Rand-Darstellung	edge-to-edge (display)
+Fenstereinschnitte	window insets
+Tiefenlink / Deep Link	deep link
+App-Verknüpfung	app link / app shortcut
+ProGuard / R8 (Code-Verschleierung)	ProGuard / R8 (code shrinking / obfuscation)
+APK (Android-Paketdatei)	APK (Android Package)
+AAB (Android-App-Bundle)	AAB (Android App Bundle)
+Gradle-Build-Skript	Gradle build script
+Build-Variante	build variant
+Produktvariante	product flavor
+Build-Typ	build type
+ADB (Android Debug Bridge)	ADB (Android Debug Bridge)
+
+# ============================================================
+# Section 12c: Security Domain Vocabulary (Grundlagen)
+# ============================================================
+
+CIA-Dreiklang	CIA triad (Confidentiality, Integrity, Availability)
+Vertraulichkeit	confidentiality
+Integrität	integrity
+Verfügbarkeit (Sicherheit)	availability (security)
+Verteidigung in der Tiefe	defense in depth
+Schadensradius	blast radius
+Berechtigungsausuferung	privilege creep
+Zugriffsüberprüfung	access recertification / access review
+Salzen (Passwort)	salting (password)
+Pfeffer (Passwort-Zusatz)	pepper (password)
+Regenbogentabelle	rainbow table
+Arbeitsfaktor (bcrypt)	work factor (bcrypt)
+SIM-Tausch-Angriff	SIM swapping (attack)
+Verschlüsselungssuite	cipher suite
+Umschlagverschlüsselung	envelope encryption
+Seitenübergreifendes Skripting (XSS)	cross-site scripting (XSS)
+Seitenübergreifende Anfragefälschung (CSRF)	cross-site request forgery (CSRF)
+SQL-Einschleusung	SQL injection
+Klickentführung	clickjacking
+Offene Weiterleitung	open redirect
+Massenzuweisung	mass assignment
+Eingabevalidierung	input validation
+Ausgabekodierung	output encoding
+Datei-Upload-Schwachstelle	file upload vulnerability
+Unsichere direkte Objektreferenz	IDOR (Insecure Direct Object Reference)
+
+# ============================================================
+# Section 12d: C++ Domain Vocabulary
+# ============================================================
+
+Zeiger / Pointer	pointer
+Referenz (C++)	reference (C++)
+Intelligenter Zeiger	smart pointer
+Eindeutiger Zeiger / Unique Pointer	unique pointer (std::unique_ptr)
+Geteilter Zeiger / Shared Pointer	shared pointer (std::shared_ptr)
+Schwacher Zeiger / Weak Pointer	weak pointer (std::weak_ptr)
+Roher Zeiger	raw pointer
+Baumelnder Zeiger	dangling pointer
+Nullzeiger	null pointer / nullptr
+Speicherzuweisung (C++)	memory allocation (new / malloc)
+Speicherfreigabe (C++)	memory deallocation (delete / free)
+Konstruktor	constructor
+Destruktor	destructor
+Kopierkonstruktor	copy constructor
+Verschiebekonstruktor	move constructor
+Kopierzuweisungsoperator	copy assignment operator
+Verschiebesemantik	move semantics
+R-Wert-Referenz	rvalue reference (&&)
+L-Wert-Referenz	lvalue reference (&)
+Perfektes Weiterleiten	perfect forwarding
+RAII (Ressourcenbeschaffung ist Initialisierung)	RAII (Resource Acquisition Is Initialization)
+Stapelspeicher / Stack (C++)	stack memory
+Haldenspeicher / Heap (C++)	heap memory
+Pufferüberlauf	buffer overflow
+Verwendung nach Freigabe	use-after-free
+Doppelte Freigabe	double free
+Speicherzugriffsfehler	segmentation fault (segfault)
+Nullzeiger-Dereferenzierung	null pointer dereference
+Undefiniertes Verhalten	undefined behavior (UB)
+Vorlagen / Templates	templates
+Vorlagenspezialisierung	template specialization
+Variadische Vorlage	variadic template
+Konzepte (C++20)	concepts (C++20)
+Konstanter Ausdruck / constexpr	constexpr (constant expression)
+Automatische Typableitung / auto	auto (type deduction)
+Bereichsbasierte For-Schleife	range-based for loop
+Lambda-Ausdruck (C++)	lambda expression (C++)
+Namensraum	namespace
+Kopfdatei / Header-Datei	header file
+Übersetzungseinheit	translation unit
+Vorwärtsdeklaration	forward declaration
+Einbindungsschutz	include guard / header guard
+Mehrfachvererbung	multiple inheritance
+Virtuelle Funktion	virtual function
+Rein virtuelle Funktion	pure virtual function
+Abstrakte Klasse (C++)	abstract class (C++)
+Polymorphie (C++)	polymorphism (C++)
+Virtuelle Funktionstabelle (vtable)	vtable (virtual function table)
+Operator-Überladung	operator overloading
+Funktionsüberladung	function overloading
