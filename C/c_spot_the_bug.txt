@@ -1,0 +1,79 @@
+# C Spot the Bug
+# Format: Front[TAB]Back
+# Each front shows a short snippet or scenario; the back identifies the bug and the fix.
+
+# 3.1 Memory Errors
+Spot the bug: `free(p); printf("%d", *p);`	Use-after-free: `p` is dereferenced after its memory was released, which is undefined behavior (the memory may be reused or unmapped). Fix: do not use `p` after `free`; set `p = NULL;` right after freeing so accidental reuse crashes deterministically instead of silently corrupting.
+Spot the bug: `free(p); free(p);`	Double free: freeing the same pointer twice corrupts the heap allocator's bookkeeping and is exploitable. Fix: free once, then set `p = NULL;` — calling `free(NULL)` is a well-defined no-op, so a redundant free becomes harmless.
+Spot the bug: `int *p; *p = 5;`	Uninitialized-pointer dereference: `p` holds indeterminate garbage, so writing through it corrupts random memory (UB). Fix: point it at valid storage first, e.g. `int x; int *p = &x;` or `int *p = malloc(sizeof *p);` (then check for `NULL`).
+Spot the bug: `char buf[8]; strcpy(buf, "this is too long");`	Stack buffer overflow: the 16-byte source (plus `\0`) overruns the 8-byte array, corrupting the stack (potentially the return address). Fix: size the buffer to the data, or use a bounded copy: `snprintf(buf, sizeof buf, "%s", src);`.
+Spot the bug: `char *p = malloc(n); ... strcpy(p, src);` where `strlen(src) == n`	Heap buffer overflow by one: `strcpy` also writes the `\0`, needing `n+1` bytes, but only `n` were allocated. Fix: allocate `strlen(src) + 1`, or `malloc(n + 1)`.
+Spot the bug: `p = realloc(p, n);` used directly	If `realloc` fails it returns `NULL`, and assigning it to `p` overwrites (and leaks) the still-valid original block, then likely dereferences `NULL`. Fix: `tmp = realloc(p, n); if (tmp) p = tmp; else handle_error();`.
+Spot the bug: `int* f(void){ int x = 42; return &x; }`	Returning the address of a local: `x`'s lifetime ends at return, so the caller holds a dangling pointer into reclaimed stack space (UB). Fix: return by value, allocate on the heap, or use a `static`/caller-provided buffer.
+Spot the bug: `for (int i = 0; i <= n; i++) a[i] = 0;` for `int a[n]`	Off-by-one: valid indices are `0..n-1`, but `i <= n` writes one past the end (`a[n]`), an out-of-bounds write. Fix: use `i < n`.
+Spot the bug: `void f(int *arr){ int k = sizeof(arr)/sizeof(arr[0]); }`	`sizeof` on a decayed pointer: inside the function `arr` is a pointer, so `sizeof(arr)` is the pointer size (e.g. 8), giving the wrong element count. Fix: pass the length as a separate parameter; `sizeof` only gives array size in the scope where the array is declared.
+
+# 3.2 String & Format Bugs
+Spot the bug: `char d[5]; strncpy(d, "hello", 5);` then `printf("%s", d);`	Missing terminator: `strncpy` copies exactly 5 chars and writes no `\0`, so `printf("%s")` reads past the buffer. Fix: reserve room and terminate — `char d[6]; strncpy(d, src, 5); d[5] = '\0';`.
+Spot the bug: `char buf[64]; gets(buf);`	`gets` has no bounds check and will overflow `buf` for any input longer than 63 chars — it was removed from C11 for this reason. Fix: `fgets(buf, sizeof buf, stdin);`.
+Spot the bug: `printf(msg);` where `msg` is user input	Format string vulnerability: `%`-sequences in `msg` are interpreted, leaking memory (`%x`/`%s`) or writing to it (`%n`). Fix: `printf("%s", msg);` — always use a literal format string with untrusted data.
+Spot the bug: `scanf("%s", name);` for `char name[32]`	Unbounded read: `%s` copies until whitespace with no size limit, overflowing `name`. Fix: bound the field width to one less than the buffer: `scanf("%31s", name);`.
+Spot the bug: `long x = ...; printf("%d", x);`	Format/type mismatch: `%d` expects an `int`, but a `long` is passed — undefined behavior, and it prints wrong values on platforms where `long` is wider. Fix: `printf("%ld", x);`.
+Spot the bug: `strtok("a,b,c", ",");`	Modifying a string literal: `strtok` writes `\0` over delimiters, but the literal is read-only memory (UB). Fix: tokenize a writable copy — `char s[] = "a,b,c"; strtok(s, ",");`.
+Spot the bug: `if (s1 == s2) puts("equal");` for two `char*`	Comparing pointers, not contents: `==` tests whether they point to the same address, not whether the strings match. Fix: `if (strcmp(s1, s2) == 0)`.
+Spot the bug: `char *d = malloc(strlen(s)); strcpy(d, s);`	Off-by-one allocation: `strlen` excludes the `\0`, so `strcpy` writes one byte past the buffer. Fix: `malloc(strlen(s) + 1)`.
+
+# 3.3 Pointer & Type Bugs
+Spot the bug: `char *p = buf; p += sizeof(int);`	Wrong arithmetic units: this advances `p` by `sizeof(int)` (e.g. 4) *elements* of `char` = 4 bytes, which happens to be intended here, but the idiom is confusing. To advance one int-sized step clearly, cast to the right type or just add the byte count you mean. (If `p` were `int*`, `p += sizeof(int)` would jump 16 bytes — a classic mistake.)
+Spot the bug: reading a `short` via `*(short*)(charbuf + 1)`	Alignment/aliasing violation: `charbuf + 1` may be misaligned for a `short`, and accessing `char` bytes through a `short*` breaks strict aliasing (both UB on strict platforms). Fix: `short v; memcpy(&v, charbuf + 1, sizeof v);`.
+Spot the bug: `void *p = base; p++;`	`void*` arithmetic is illegal in standard C (`void` has no size); it only compiles as a GCC extension treating it as byte-sized. Fix: cast to a concrete type, e.g. `char *cp = base; cp++;`.
+Spot the bug: `const int c = 5; int *m = (int*)&c; *m = 6;`	Casting away `const` and writing: modifying an object that was defined `const` is undefined behavior (it may live in read-only memory). Fix: don't — if it must change, it should not be `const`.
+Spot the bug: `if (fopen("f","r")) fread(...)` without storing/checking the pointer	Ignoring the `FILE*` return and possibly using a null stream: `fopen` returns `NULL` on failure. Fix: `FILE *fp = fopen("f","r"); if (!fp) { perror("fopen"); return; }`.
+
+# 3.4 Integer & Arithmetic Bugs
+Spot the bug: `int x = INT_MAX; x++;`	Signed integer overflow: incrementing past `INT_MAX` is undefined behavior — not guaranteed to wrap, and the optimizer may assume it can't happen. Fix: check before (`if (x < INT_MAX) x++;`) or use an unsigned type if wraparound is intended.
+Spot the bug: `unsigned x = 0; x--; if (x < 0) ...`	The condition is always false: unsigned values are never negative; `x--` wraps to `UINT_MAX`, not below 0. Fix: use a signed type if you need negatives, or test the wraparound explicitly.
+Spot the bug: `int n = get_len(); if (n < MAX) memcpy(dst, src, n);` with attacker-controlled `n`	Signed bounds bypass: a negative `n` passes `n < MAX`, then `memcpy`'s `size_t` parameter converts it to a huge value → massive overflow. Fix: use an unsigned type and check both bounds: `if (n > 0 && (size_t)n < MAX)`.
+Spot the bug: `char c = getchar(); if (c == EOF) ...`	`EOF` (−1) truncation: storing `getchar`'s result in `char` loses the ability to distinguish `EOF` from byte `0xFF`, so the loop may never end (or end early). Fix: store the result in an `int`.
+Spot the bug: `size_t n = count * size; buf = malloc(n);` with untrusted `count`	Integer overflow → undersized allocation: `count * size` can wrap `size_t`, so `malloc` returns a small buffer that later writes overflow. Fix: check `if (count > SIZE_MAX / size) fail();` first, or use `calloc(count, size)`.
+Spot the bug: `int r = INT_MIN / -1;`	Overflow: `-INT_MIN` is not representable in `int`, so `INT_MIN / -1` (and `INT_MIN % -1`) is undefined behavior even though division "looks" safe. Fix: special-case `INT_MIN`/`-1` before dividing.
+
+# 3.5 Floating-Point Bugs
+Spot the bug: `if (total == 0.3) ...` after `total = 0.1 + 0.2;`	Exact float comparison fails: `0.1 + 0.2` is not exactly `0.3` in binary floating point. Fix: compare within a tolerance, `if (fabs(total - 0.3) < 1e-9)`.
+Spot the bug: `float avg = sum / 2;` where `sum` is an `int` `1`	Integer division before conversion: `1 / 2` computes in `int` = 0, then converts to `0.0f`. Fix: make an operand floating point — `sum / 2.0` or `(float)sum / 2`.
+Spot the bug: `if (x == x) ok();` used to test validity	If `x` is `NaN`, `x == x` is false (NaN is unordered), so this rejects valid-looking data or is a confusing NaN test. Fix: use `isnan(x)` explicitly to check for NaN.
+
+# 3.6 Control Flow Bugs
+Spot the bug: a `switch` where `case 1:` does work but has no `break` before `case 2:`	Unintended fall-through: after `case 1`, execution continues into `case 2`'s body. Fix: add `break;` at the end of each case (or annotate deliberate fall-through with `[[fallthrough]]`).
+Spot the bug: `if (x > 0);` followed by `{ do_thing(); }`	Stray semicolon: `if (x > 0);` has an empty body, so the following block runs unconditionally. Fix: remove the `;` — `if (x > 0) { do_thing(); }`.
+Spot the bug: `if (flags & MASK == 0)`	Precedence: `==` binds tighter than `&`, so this is `flags & (MASK == 0)`, not the intended `(flags & MASK) == 0`. Fix: add parentheses: `(flags & MASK) == 0`.
+Spot the bug: nested loops both using `int i` declared in the inner block	Shadowing: the inner `int i` hides the outer loop's `i`, so updates don't affect the outer counter and the outer loop may misbehave. Fix: use distinct names (`i`, `j`) or don't redeclare.
+
+# 3.7 Preprocessor & Macro Bugs
+Spot the bug: `#define SQUARE(x) x*x` used as `SQUARE(a+1)`	No parentheses: expands to `a+1*a+1` = `a + a + 1`, not `(a+1)²`. Fix: `#define SQUARE(x) ((x)*(x))` — parenthesize each parameter and the whole expansion.
+Spot the bug: `#define MAX(a,b) ((a)>(b)?(a):(b))` used as `MAX(i++, j++)`	Double evaluation: the winning argument is evaluated twice, so `i`/`j` increments more than intended. Fix: use an inline function (evaluates each argument once) or GCC statement-expression with temporaries.
+Spot the bug: a header with declarations but no include guard, included twice	Redefinition errors: types/inline definitions get processed twice in one translation unit. Fix: wrap in `#ifndef HDR_H / #define HDR_H / ... / #endif` or use `#pragma once`.
+Spot the bug: `#define INIT() a = 0;` used as `if (cond) INIT(); else foo();`	The trailing semicolon breaks the `if/else`: the macro's `;` plus the statement's `;` leaves a stray empty statement so `else` fails to attach. Fix: wrap multi-statement macros in `do { ... } while (0)`.
+
+# 3.8 Resource & File Handling Bugs
+Spot the bug: `fp = fopen(...); if (error) return; fclose(fp);`	Leak on the error path: the early `return` skips `fclose`, leaking the file descriptor. Fix: `goto cleanup;` that closes `fp`, or close before returning on every path.
+Spot the bug: `fclose(fp);` with the return value ignored after buffered writes	`fclose` can fail while flushing buffered data (e.g. disk full), and ignoring it silently loses data/errors. Fix: check `if (fclose(fp) != 0) handle_error();`, especially for files you wrote.
+Spot the bug: `tmpnam(name); fp = fopen(name, "w");`	TOCTOU race: between generating the name and opening it, an attacker can create/symlink that path (predictable name). Fix: use `mkstemp`, which atomically creates and opens a unique file, or `open` with `O_CREAT|O_EXCL`.
+Spot the bug: `sprintf(cmd, "rm %s", userfile); system(cmd);`	Command injection: shell metacharacters in `userfile` (e.g. `"; rm -rf ~"`) execute arbitrary commands. Fix: avoid the shell — use `fork`+`execv("/bin/rm", ...)` with the filename as a separate argument, and validate the input.
+
+# 3.9 Concurrency & Signal Bugs
+Spot the bug: `while (!done) {}` with `done` set in a signal handler as a plain `int`	Missing `volatile`/atomicity: the compiler may cache `done` in a register and never see the handler's update, or the access may not be atomic. Fix: declare `volatile sig_atomic_t done;`.
+Spot the bug: calling `printf` inside a signal handler	`printf` is not async-signal-safe: if the signal interrupts another `printf`/`malloc`, internal locks/state are inconsistent → UB or deadlock. Fix: set a flag in the handler and print from the main loop, or use only async-signal-safe calls like `write`.
+Spot the bug: two threads both doing `counter++` without a lock	Data race: `counter++` is a read-modify-write, not atomic, so increments are lost and the behavior is UB. Fix: guard with a mutex or make `counter` an `atomic_int` and use `atomic_fetch_add`.
+Spot the bug: thread A locks `m1` then `m2`; thread B locks `m2` then `m1`	Deadlock from inconsistent lock ordering: each thread holds one lock and waits for the other's. Fix: establish a global lock-ordering rule so all threads acquire `m1` before `m2`.
+
+# 3.10 Security Vulnerabilities & Exploitation
+Spot the vulnerability: an unbounded `strcpy` into a fixed stack buffer of user input	Classic stack smashing: the overflow can overwrite the saved return address, letting an attacker redirect execution (to shellcode or via ROP). Fix: bound the copy (`snprintf`/`strlcpy`) and compile with `-fstack-protector-strong`.
+Spot the vulnerability: a server replies with `memcpy(out, buf, client_len)` trusting `client_len`	Buffer over-read / information disclosure (the Heartbleed pattern): if `client_len` exceeds the real data length, the reply leaks adjacent memory (keys, other users' data). Fix: validate `client_len` against the actual received payload length.
+Spot the vulnerability: sending a `struct` over the network without initializing its padding	Uninitialized-memory disclosure: padding bytes and unset fields contain stale stack/heap data that leak to the peer. Fix: `memset(&s, 0, sizeof s)` before filling, or serialize field-by-field rather than dumping raw struct bytes.
+Spot the vulnerability: `return table[user_index];` with no bounds check on `user_index`	Out-of-bounds read from an untrusted index → memory disclosure or crash. Fix: validate `if (user_index >= 0 && (size_t)user_index < table_len)` before indexing (mind signed/unsigned).
+Spot the vulnerability: `fopen(user_path, "r")` with `user_path` containing `../../etc/passwd`	Path traversal: `../` escapes the intended directory, exposing arbitrary files. Fix: canonicalize with `realpath` and verify the result stays within the allowed base directory; reject paths containing `..` or absolute prefixes.
+Spot the vulnerability: a setuid-root program calls `system("helper")` relying on `$PATH`	Environment/PATH trust → privilege escalation: an attacker sets `PATH` so a malicious `helper` runs as root. Fix: drop privileges before running external programs, use absolute paths, sanitize the environment (`PATH`, `IFS`, `LD_*`), and avoid `system`.
+Spot the vulnerability: `setuid(getuid());` return value ignored	If `setuid` fails, privileges are *not* dropped, and the following "unprivileged" code still runs as root. Fix: check the return value and abort on failure before doing anything else.
+Spot the vulnerability: session tokens generated with `srand(time(NULL)); id = rand();`	Predictable randomness: `rand` seeded by time is guessable, so an attacker can predict/forge session IDs. Fix: use a CSPRNG (`getrandom`, `/dev/urandom`, `arc4random`) for anything security-sensitive.
+Spot the vulnerability: `if (memcmp(input_mac, real_mac, len) == 0) accept();`	Timing side-channel: `memcmp` returns early on the first mismatch, leaking how many leading bytes were correct — enabling a byte-by-byte forgery of the MAC/password. Fix: use a constant-time comparison that always inspects every byte.

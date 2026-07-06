@@ -1,0 +1,87 @@
+# C Standard Library Usage
+# Format: Front[TAB]Back
+# Standard library function usage across major headers, including secure-coding alternatives.
+
+# 2.1 <stdio.h> — I/O
+What is the difference between `printf`, `fprintf`, `sprintf`, and `snprintf`?	`printf` writes to `stdout`; `fprintf` writes to a given `FILE*`; `sprintf` writes into a `char` buffer (no size limit — overflow-prone); `snprintf(buf, size, ...)` writes into a buffer but never exceeds `size` bytes and always null-terminates. Prefer `snprintf` for any fixed buffer.
+Why prefer `snprintf` over `sprintf`?	`sprintf` writes as many bytes as the formatted output needs, with no knowledge of the destination size — untrusted or long input overflows the buffer. `snprintf(buf, sizeof buf, ...)` caps the write at the buffer size and returns how many bytes *would* have been written, so you can detect truncation.
+What do the `fopen` mode strings mean?	`"r"` read (must exist), `"w"` write (truncate/create), `"a"` append (create if absent), `"r+"` read/write existing, `"w+"` read/write truncating, `"a+"` read/append. Add `"b"` (e.g. `"rb"`) for binary mode, which matters on Windows to avoid `\r\n` translation.
+How do you read a whole file into a buffer with `fread`?	`size_t n = fread(buf, 1, bufsize, fp);` reads up to `bufsize` bytes and returns the count actually read. Check the return against what you expected and use `feof`/`ferror` to distinguish end-of-file from an error. For binary data always open with `"rb"`.
+How should you check the return value of `fgets`?	`fgets(buf, size, fp)` returns `buf` on success and `NULL` on end-of-file or error. Always test for `NULL` before using the buffer: `while (fgets(buf, sizeof buf, fp)) { ... }`. Unlike `gets`, it stops at `size-1` chars and null-terminates, so it is bounds-safe.
+What are the three stream buffering modes?	Fully buffered (data flushed when the buffer fills — typical for files), line buffered (flushed on newline — typical for an interactive `stdout`), and unbuffered (each write goes out immediately — `stderr`). Control with `setvbuf`; force a flush with `fflush`.
+Why is `printf(user_input)` dangerous?	If `user_input` contains `%` conversions, `printf` interprets them as a format string, reading arguments that were never passed (stack disclosure via `%x`/`%s`, arbitrary write via `%n`). Always use a literal format: `printf("%s", user_input)`.
+
+# 2.2 <stdlib.h> — Memory, Conversion, Process
+What is the difference between `malloc` and `calloc`?	`malloc(n)` allocates `n` uninitialized bytes. `calloc(count, size)` allocates `count*size` bytes *and zero-initializes* them, and it internally checks `count*size` for overflow (returning `NULL` on overflow) — safer than `malloc(count*size)` for computed sizes.
+What is the safe `realloc` pattern?	Assign to a temporary: `char *tmp = realloc(p, n); if (!tmp) { /* handle, p still valid */ } else { p = tmp; }`. Writing `p = realloc(p, n)` leaks the original block if `realloc` returns `NULL`, since you have overwritten the only pointer to it.
+Why prefer `strtol` over `atoi`?	`atoi` has no error reporting: it returns 0 for both `"0"` and invalid input, and overflow is undefined. `strtol(str, &end, base)` reports where parsing stopped (`end`), and signals overflow via `errno == ERANGE`, so you can validate untrusted input robustly.
+What is the comparator signature for `qsort`?	`int cmp(const void *a, const void *b)` returning negative/0/positive for a<b/a==b/a>b. Cast the void pointers to the element type: `const int *x = a, *y = b; return (*x > *y) - (*x < *y);`. Avoid `*x - *y` for ints — it can overflow.
+Why is `system()` a security risk?	It passes its argument to a shell (`/bin/sh -c`), so any shell metacharacters (`;`, `|`, `` ` ``, `$()`) in untrusted data run arbitrary commands (command injection). Prefer `fork` + `exec*` with an explicit argument array, which does not involve a shell.
+What do `exit`, `_Exit`, and `atexit` do?	`exit(status)` terminates the program, running `atexit`-registered handlers and flushing/closing streams. `_Exit(status)` terminates immediately without running handlers or flushing. `atexit(func)` registers a function to run at normal termination (LIFO order).
+
+# 2.3 <string.h> — String & Memory
+What is the danger of `strcpy` and `strcat`?	Neither checks the destination size, so a source longer than the buffer overflows it. Use `snprintf`, or the bounded `strncpy`/`strncat` (with care), or BSD `strlcpy`/`strlcat`, and always ensure room for the `\0`.
+Does `strncpy` guarantee a null-terminated result?	No. `strncpy(dst, src, n)` copies at most `n` bytes; if `src` is `n` or more chars long, `dst` is left *without* a terminator. Always terminate manually: `strncpy(dst, src, n-1); dst[n-1] = '\0';`. (It also zero-pads short sources up to `n`, which can waste time.)
+Why is `strtok` considered unsafe/awkward?	It modifies its input string in place (writing `\0` over delimiters), so it cannot tokenize string literals or const data, and it keeps state in a hidden static variable — not reentrant. Use `strtok_r` (POSIX) which takes a `char **saveptr`, making it safe across threads and nested loops.
+What is the difference between `memcpy` and `memmove`?	Both copy `n` bytes, but `memcpy` requires the regions not to overlap (overlap is UB), while `memmove` handles overlapping regions correctly. Use `memmove` when shifting data within a single buffer.
+How do you zero out a struct?	`memset(&s, 0, sizeof s);` sets every byte to 0. Note this zeroes padding too, and it is byte-fill only — `memset(arr, 1, n)` fills with `0x01` bytes, not the integer 1. To securely wipe secrets that the compiler might optimize away, use `explicit_bzero`/`memset_s`, not plain `memset`.
+Why is `memcmp` unsuitable for comparing secrets?	`memcmp` typically returns as soon as it finds the first differing byte, so its running time leaks how many leading bytes matched — a timing side-channel usable to guess a password/MAC byte-by-byte. Use a constant-time comparison that always examines every byte.
+
+# 2.4 <math.h> — Math
+Why should you never compare floats with `==`?	Rounding makes many values inexact (e.g. `0.1 + 0.2 != 0.3`), so exact equality usually fails unexpectedly. Compare within a tolerance: `fabs(a - b) < 1e-9`, or a relative epsilon for large magnitudes. Use `isnan`/`isinf` to check special values.
+How do you check for NaN and infinity from a math call?	Use the classification macros `isnan(x)`, `isinf(x)`, `isfinite(x)` from `<math.h>`. `NaN` compares false to everything (even itself), and operations like `log(-1)` or `0.0/0.0` produce it; `INFINITY`/`HUGE_VAL` come from overflow like `pow(10, 400)`.
+Why do you link with `-lm` for math functions?	On most Unix systems the math library is separate from the C runtime, so functions like `sqrt`, `pow`, `sin` require linking `libm` explicitly with the `-lm` flag. Omitting it gives "undefined reference" linker errors.
+
+# 2.5 <ctype.h> — Character Classification
+Why must you cast to `unsigned char` before calling `isdigit`, `toupper`, etc.?	These functions are defined only for values representable as `unsigned char` or `EOF`. On platforms where plain `char` is signed, passing a negative `char` (e.g. a byte ≥ 0x80) is undefined behavior. Use `isdigit((unsigned char)c)`.
+What does `tolower`/`toupper` do to non-letters?	Nothing — if the argument is not an uppercase (for `tolower`) or lowercase (for `toupper`) letter, it is returned unchanged. Their behavior can also shift under a non-C locale via `setlocale`.
+
+# 2.6 <time.h> — Date & Time
+Why prefer `localtime_r` / `gmtime_r` over `localtime` / `gmtime`?	The non-`_r` versions return a pointer to a single shared static `struct tm`, so concurrent or nested calls clobber each other's result — unsafe in multithreaded code. The `_r` (reentrant) variants write into a caller-supplied `struct tm`.
+How do you format a `struct tm` as a string?	Use `strftime(buf, sizeof buf, "%Y-%m-%d %H:%M:%S", &tm)`, which is bounds-checked and locale-aware. Avoid `asctime`/`ctime` — they are deprecated, non-reentrant, and historically prone to buffer overflows with crafted `struct tm` fields.
+
+# 2.7 <errno.h> & <assert.h> — Errors & Debugging
+Why should you not use `assert` for input validation in production?	`assert(expr)` is compiled out entirely when `NDEBUG` is defined (typical release builds), so any security or input check inside it silently disappears. Use `assert` only for catching programmer bugs/invariants; validate untrusted input with real `if` checks that stay in the release binary.
+What is the difference between `assert` and `static_assert`?	`assert` is a runtime check that aborts if false (and is stripped by `NDEBUG`). `static_assert(cond, msg)` / `_Static_assert` is evaluated at compile time and fails the build if false, with zero runtime cost — ideal for checking type sizes and struct layouts.
+
+# 2.8 <stddef.h> — Common Definitions
+What is `size_t` and why use it for sizes and indices?	`size_t` is the unsigned integer type returned by `sizeof` and used by memory/string functions for sizes and counts. Using it consistently for lengths/indices avoids signed/unsigned mismatch warnings and bugs, and guarantees it can represent the size of any object.
+What does `offsetof(type, member)` give you?	The byte offset of `member` within `type`, from `<stddef.h>`. It underlies the "container_of" idiom (recovering the enclosing struct pointer from a member pointer), serialization code, and hardware register layout definitions.
+
+# 2.9 <stdint.h> & <inttypes.h> — Portable Integers
+When should you use fixed-width types like `int32_t`/`uint8_t`?	When the exact size and representation matter: on-disk file formats, network protocols, hardware registers, and bit manipulation. They remove ambiguity that `int`/`long` (whose widths vary by platform) would introduce.
+How do you portably `printf` a fixed-width integer?	Use the format macros from `<inttypes.h>`: `printf("%" PRId32 "\n", x)` for an `int32_t`, `PRIu64` for `uint64_t`, `PRIx64` for hex. These expand to the correct length modifier for the platform, avoiding format/type mismatch UB.
+How do you check for multiplication overflow before allocating?	Compare against the type's max: `if (count > SIZE_MAX / elem_size) { /* would overflow */ }` before `malloc(count * elem_size)`. Or use a checked builtin like `__builtin_mul_overflow`. `calloc` performs this check internally.
+
+# 2.10 <stdarg.h> — Variadic Arguments
+How do you write a function that forwards its variadic args to `vprintf`?	Take the `va_list` and pass it through: `void log_msg(const char *fmt, ...) { va_list ap; va_start(ap, fmt); vfprintf(stderr, fmt, ap); va_end(ap); }`. The `v*` family (`vprintf`, `vsnprintf`) exists precisely to accept a `va_list`.
+What type must you request from `va_arg` for a `char` or `float` argument?	The promoted type: `int` for any integer type narrower than `int` (including `char`/`short`), and `double` for `float`, because default argument promotions apply to variadic arguments. `va_arg(ap, char)` or `va_arg(ap, float)` is undefined behavior.
+
+# 2.11 <signal.h> — Signal Handling
+What is the only type safe to modify in a signal handler, and why?	`volatile sig_atomic_t`. A handler can interrupt the main flow at any point, so a shared flag must be read/written atomically (`sig_atomic_t`) and not cached by the compiler (`volatile`). Most other operations, including calling `printf`/`malloc`, are not async-signal-safe and are UB in a handler.
+Why prefer `sigaction` over `signal`?	`signal` has historically inconsistent semantics across systems (handler reset after firing, unclear masking). `sigaction` gives portable, explicit control: which signals are blocked during the handler, whether interrupted syscalls restart (`SA_RESTART`), and reliable one-shot vs persistent behavior.
+
+# 2.12 <setjmp.h> — Non-local Jumps
+What do `setjmp` and `longjmp` do?	`setjmp(env)` saves the current execution context and returns 0. A later `longjmp(env, val)` restores it, making `setjmp` appear to return again with value `val` (non-zero). It implements error recovery that unwinds multiple stack frames at once without manual return propagation.
+What is the `setjmp`/`longjmp` pitfall with local variables?	Non-`volatile` local variables that are modified between `setjmp` and a `longjmp` have indeterminate values after the jump back (the compiler may have kept them in registers). Declare any locals you rely on after the jump as `volatile`.
+
+# 2.13 <stdbool.h>, <limits.h>, <float.h>
+What does `<stdbool.h>` provide?	The `bool` type plus `true` and `false` macros (aliases for `_Bool`, 1, and 0). Since C23 these are proper keywords and the header is unnecessary. Using `bool` documents intent better than `int` for logical flags.
+How do you write a portable overflow check using `<limits.h>`?	Use the named limits instead of magic numbers, e.g. `if (a > 0 && b > INT_MAX - a) { /* a + b overflows */ }`. `<limits.h>` provides `INT_MAX`, `INT_MIN`, `UINT_MAX`, `LONG_MAX`, `CHAR_BIT`, etc., portably across platforms.
+
+# 2.14 Concurrency: <threads.h> & <pthread.h>
+How do you protect shared state with a mutex?	Lock before touching the shared data and unlock after, keeping the critical section small: `pthread_mutex_lock(&m); shared++; pthread_mutex_unlock(&m);` (or C11 `mtx_lock`/`mtx_unlock`). Every access to that data — reads included — must hold the same lock to avoid a data race (which is UB).
+Why must a condition-variable wait use a `while` loop, not `if`?	Because of spurious wakeups (a wait can return without a signal) and lost/stolen wakeups (another thread may have changed the state first). Re-test the predicate in a loop: `while (!ready) cond_wait(&cv, &m);`. An `if` would proceed on a false wakeup.
+When is an atomic preferable to a mutex?	For simple shared scalars — counters, flags, single-word state — an atomic (`atomic_fetch_add`, `atomic_load`/`store`) is lock-free and cheaper than a full mutex. Use a mutex when you must update several fields together or perform a multi-step invariant-preserving operation.
+
+# 2.15 Specialized & Platform Headers
+How do you create a file race-free so an attacker can't pre-create it?	Open with `O_CREAT | O_EXCL` (via `open` in `<fcntl.h>`): the call fails if the file already exists, so creation-and-ownership is atomic. For temp files use `mkstemp`, which does this with a unique name. This defeats symlink/pre-creation attacks that plague `fopen`/`tmpnam`.
+Why use `fork`+`exec*` instead of `system()`?	`fork` duplicates the process and `execv(path, argv)` replaces the child's image with a new program, passing arguments as a *vector* — no shell is involved, so shell metacharacters in the arguments cannot inject commands. `system()` runs a shell and is vulnerable to injection.
+Why convert integers with `htons`/`htonl` before sending over a socket?	Different machines have different byte orders (endianness). Network byte order is big-endian, so you convert host-to-network (`htons` for 16-bit, `htonl` for 32-bit) before sending and network-to-host (`ntohs`/`ntohl`) after receiving, ensuring both ends agree regardless of architecture.
+What is the difference between real, effective, and saved UID?	The real UID is who launched the process; the effective UID (EUID) governs permission checks; the saved UID lets a setuid program temporarily drop and later regain privilege. A setuid-root binary runs with EUID 0 — it should drop privileges (`setuid` to the real UID) before doing risky work.
+
+# 2.16 Secure Coding — Safer Alternatives
+Why was `gets` removed from the C standard?	It reads a line with no bounds check whatsoever, so any input longer than the buffer overflows it — an unconditional vulnerability. It was deprecated in C99 and removed in C11. Use `fgets(buf, sizeof buf, stdin)`, which takes a size limit.
+How do you securely erase a secret from memory?	A plain `memset(key, 0, n)` right before `free` is often optimized away by the compiler as a "dead store". Use `explicit_bzero` (BSD/glibc), `memset_s` (C11 Annex K), or `SecureZeroMemory` (Windows), which are guaranteed not to be elided, to wipe keys/passwords.
+Why is `rand()` unsuitable for security tokens?	`rand()` is a predictable pseudo-random generator, often seeded with the current time, so its output can be reproduced or guessed — fatal for session IDs, keys, or nonces. Use a cryptographically secure source: `getrandom`, `/dev/urandom`, `arc4random`, or a platform crypto API.
+Name key compiler hardening flags for C.	`-D_FORTIFY_SOURCE=2` (compile-time buffer checks on known-size destinations), `-fstack-protector-strong` (stack canaries), `-fPIE -pie` (ASLR for the executable), `-Wl,-z,relro,-z,now` (read-only GOT), and `-Wformat -Wformat-security -Wall -Wextra` (catch format-string and other bugs). Add `-fsanitize=address,undefined` in testing/CI.
