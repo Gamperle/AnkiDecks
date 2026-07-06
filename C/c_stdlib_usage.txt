@@ -239,3 +239,43 @@ Why prefer `mkstemp` over `tmpnam`/`tmpfile` naming?	`tmpnam` only produces a pr
 How does canonicalizing paths with `realpath` help security?	`realpath` resolves `..`, symlinks, and redundant separators to an absolute canonical path, which you can then verify stays within an allowed base directory — defeating `../` path-traversal that would otherwise escape a sandbox.
 Why check every `malloc`, size-arithmetic, and privilege-change result?	Treating these as "can't fail" is a recurring root cause of real CVEs: an unchecked `malloc` NULL leads to a crash/UAF, unchecked size arithmetic overflows to an undersized buffer, and an unchecked `setuid` leaves privileges undropped. Validate each.
 Name useful compiler hardening flags for C.	`-D_FORTIFY_SOURCE=2` (compile-time buffer checks), `-fstack-protector-strong` (stack canaries), `-Wformat -Wformat-security` (catch format-string bugs), and `-Wall -Wextra`. Add `-fPIE -pie`, `-Wl,-z,relro,-z,now`, and `-fsanitize=address,undefined` in testing/CI.
+
+# 2.17 <tgmath.h> — Type-Generic Math
+What does <tgmath.h> provide?	Type-generic macros that automatically dispatch math calls (sin, sqrt, etc.) to the float, double, or long double variant based on the argument's type. sin(x) selects sinf, sin, or sinl automatically — no manual f/l suffixes needed.
+When should you include <tgmath.h> instead of <math.h>?	When writing precision-generic code where the operation should follow the argument type automatically — e.g. a macro or template-like helper that works equally on float and double arrays without code duplication.
+
+# 2.18 <dirent.h> (POSIX) — Directory Traversal
+What do opendir, readdir, and closedir do?	opendir(path) opens a directory stream (returns DIR*, NULL on error). readdir(dir) returns a struct dirent* for the next entry or NULL at end/error. closedir(dir) releases the stream. Together they are the standard POSIX directory-listing API.
+How do you distinguish end-of-directory from a read error in readdir?	Set errno = 0 before the loop. When readdir returns NULL, check errno != 0 — non-zero means error; still-zero means normal end-of-directory. Never rely on NULL alone to mean end of directory.
+What are the key fields of struct dirent?	d_name (null-terminated file name), d_ino (inode number), d_type (DT_REG, DT_DIR, DT_LNK, DT_UNKNOWN, etc.). d_type is not reliable on all filesystems (tmpfs, NFS may return DT_UNKNOWN) — fall back to lstat when needed.
+Why must you skip . and .. in a readdir loop?	Every directory contains . (itself) and .. (parent). A recursive traversal that doesn't skip them loops forever or processes the wrong subtree. Filter: strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0.
+What does scandir do?	scandir(dir, &namelist, filter, compar) reads an entire directory, applies an optional filter callback, sorts with a comparator, and stores results in a struct dirent ** array. The caller must free each entry and the array. alphasort and versionsort are ready-made comparators.
+
+# 2.19 <regex.h> (POSIX) — Regular Expressions
+What does regcomp do?	Compiles a pattern string into an opaque regex_t. Returns 0 on success. Key cflags: REG_EXTENDED (ERE syntax), REG_ICASE (case-insensitive), REG_NOSUB (skip subexpression tracking).
+What does regexec do and what does pmatch contain?	regexec(preg, string, nmatch, pmatch, 0) matches the compiled pattern. Returns 0 on match, REG_NOMATCH otherwise. pmatch[0] holds rm_so/rm_eo byte offsets of the whole match; pmatch[1], [2], ... hold subexpression offsets.
+What is the difference between POSIX BRE and ERE?	BRE (default): (, ), {, }, +, ?, | must be escaped to be metacharacters. ERE (REG_EXTENDED): those characters are metacharacters unescaped — closer to modern regex syntax and generally preferred for readability.
+Why must you always call regfree?	A successful regcomp allocates memory inside the regex_t. Not calling regfree leaks that memory. Call it even if regexec was never called — once regcomp succeeds you own the resources.
+
+# 2.20 <glob.h> & <fnmatch.h> — Pathname Expansion & Wildcard Matching
+What does glob do?	glob(pattern, flags, errfunc, &pglob) expands a shell-style wildcard pattern (*, ?, [...]) against the real filesystem and stores the sorted matching paths in pglob.gl_pathv. Call globfree afterward to release memory.
+What does fnmatch do and how is it different from glob?	fnmatch(pattern, string, flags) tests whether a single string matches a wildcard pattern — it does not access the filesystem at all. Use fnmatch to filter readdir results; use glob to expand patterns to actual filesystem paths.
+What does FNM_PATHNAME do?	Prevents * and ? from matching /, so *.c matches foo.c but not dir/foo.c. Without it * matches any character including directory separators, which can be surprising for filename-only matching.
+
+# 2.21 <termios.h> (POSIX) — Terminal I/O Control
+What does struct termios represent?	The full set of terminal I/O parameters: c_iflag (input modes), c_oflag (output modes), c_cflag (control modes including baud rate), c_lflag (local/line-discipline modes including echo and canonical processing), and c_cc[] (control characters like VMIN, VTIME, VINTR).
+How do tcgetattr and tcsetattr work?	tcgetattr(fd, &tios) reads current terminal settings. tcsetattr(fd, when, &tios) applies new settings. when: TCSANOW (immediate), TCSADRAIN (after output drains), TCSAFLUSH (drain and discard pending input).
+How do you put a terminal into raw mode?	Save the original termios. Clear ICANON and ECHO in c_lflag, set c_cc[VMIN]=1 and c_cc[VTIME]=0, then call tcsetattr(TCSANOW). Restore original settings via an atexit handler and a SIGINT/SIGTERM handler.
+Why must you restore terminal settings before exit?	Raw-mode changes persist in the kernel after the program exits — the user's shell is left with no echo and no line editing. Always register an atexit handler that calls tcsetattr to restore the saved original settings.
+
+# 2.22 <sys/wait.h> & <sys/resource.h>
+What do WIFEXITED and WEXITSTATUS do?	WIFEXITED(status) is non-zero if the child exited normally. WEXITSTATUS(status) extracts the 8-bit exit code. Always check WIFEXITED first — WEXITSTATUS is meaningless if the child was killed by a signal.
+What do WIFSIGNALED and WTERMSIG do?	WIFSIGNALED(status) is non-zero if the child was killed by an unhandled signal. WTERMSIG(status) extracts the signal number. Use these to detect crashes (SIGSEGV, SIGABRT) in a child process.
+Why must you waitpid for every forked child?	A child that exits before the parent collects it becomes a zombie — its process-table entry persists until waited for. Many zombies exhaust the PID space. Use waitpid(-1, &s, WNOHANG) in a SIGCHLD handler to reap children asynchronously.
+What does WNOHANG do in waitpid?	Makes waitpid return immediately (with 0) if no child has changed state yet, instead of blocking. Essential in a SIGCHLD handler or polling loop where you want to reap finished children without stalling the parent.
+What does getrlimit do, and how is it used for sandboxing?	getrlimit(resource, &rlim) queries the soft and hard limits (RLIMIT_NOFILE, RLIMIT_AS, RLIMIT_NPROC, etc.). Before exec-ing an untrusted child, lower these limits to bound how much damage it can do — a lightweight sandboxing measure.
+What does getrusage provide?	User and system CPU time (as struct timeval), maximum resident set size, page fault counts, and voluntary/involuntary context switches. RUSAGE_SELF gives current process stats; RUSAGE_CHILDREN gives aggregated stats for all waited-for children.
+
+# 2.23 Minimal Standard Headers
+What does <iso646.h> provide?	Alternative spellings for C operators: and (&&), or (||), not (!), bitand (&), bitor (|), xor (^), compl (~), and_eq (&=), or_eq (|=), xor_eq (^=), not_eq (!=). Intended for keyboards that lack &, |, !, ^, ~.
+What do <stdalign.h> and <stdnoreturn.h> provide?	<stdalign.h> (C11) defines alignas and alignof as macros expanding to _Alignas/_Alignof. <stdnoreturn.h> (C11) defines noreturn expanding to _Noreturn. Both are thin convenience wrappers so you can use keyword-like names without the _-prefixed forms.
