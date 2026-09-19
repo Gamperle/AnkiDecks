@@ -1,0 +1,172 @@
+# Technical English — Pro: Cloud & Performance
+# Format: Front[TAB]Back
+# Part 2 of 5 (split from english_pro.txt): sections 15-16 - Cloud & Infrastructure, Performance & Optimization.
+
+# Section 15: Cloud & Infrastructure
+# ============================================================
+
+IaaS (Infrastruktur als Dienst)	IaaS (Infrastructure as a Service)
+PaaS (Plattform als Dienst)	PaaS (Platform as a Service)
+SaaS (Software als Dienst)	SaaS (Software as a Service)
+FaaS (Funktion als Dienst)	FaaS (Function as a Service)
+Verwalteter Dienst	managed service
+Serverlos	serverless
+Automatische Skalierung	auto-scaling
+Horizontale Skalierung	horizontal scaling (scaling out)
+Vertikale Skalierung	vertical scaling (scaling up)
+Elastizität (Cloud)	elasticity
+Hohe Verfügbarkeit	high availability (HA)
+Fehlertoleranz	fault tolerance
+Notfallwiederherstellung	disaster recovery (DR)
+Failover / Automatische Umschaltung	failover
+Dienstgütevereinbarung	SLA (Service Level Agreement)
+Nutzungsbasierte Abrechnung	pay-as-you-go
+Reservierte Instanz	reserved instance
+Spot-Instanz / Preisoptimierte Instanz	spot instance
+Kostenoptimierung	cost optimization
+Mandantenfähigkeit	multi-tenancy
+Einzelner Mandant	single tenant
+Bereitstellung / Provisionierung	provisioning
+Orchestrierung (Cloud)	orchestration
+Lastverteilung	load balancing
+Inhaltsverteilungsnetzwerk	CDN (Content Delivery Network)
+Objektspeicher	object storage
+Blockspeicher	block storage
+Dateispeicher	file storage
+Kontingent / Quote	quota
+Drosselung / Throttling	throttling
+Unveränderliche Infrastruktur	immutable infrastructure — servers are never modified after deployment; changes require full replacement
+Deklarative Konfiguration	declarative configuration
+Imperative Konfiguration	imperative configuration
+Öffentliche Cloud	public cloud
+Cloud-Angebot ausschließlich für eine Organisation	private cloud
+Kombination aus öffentlicher und privater Cloud	hybrid cloud
+Nutzung mehrerer Cloud-Anbieter gleichzeitig	multi-cloud
+Für Cloud-Betrieb entworfene Anwendungsarchitektur	cloud-native
+Zwölf-Faktoren-App	twelve-factor app — methodology of 12 principles for building scalable, portable SaaS applications
+Kontrolleben / Control Plane	control plane
+Datenebene / Data Plane	data plane
+API-Server (Kubernetes)	API server
+Prozessplaner, der Pods auf Knoten verteilt (Kubernetes)	scheduler
+Knotenpool	node pool
+Automatische Skalierung (Pods)	horizontal pod autoscaler (HPA)
+Kubernetes-Ressource, die genau einen Pod pro Knoten ausführt	DaemonSet
+Kubernetes-Ressource für zustandsbehaftete Anwendungen mit stabiler Identität	StatefulSet
+Kubernetes-Objekt zum Speichern von Konfigurationsdaten	ConfigMap
+Geheimnisse (Kubernetes)	secrets (Kubernetes)
+Persistenter Speicher	persistent volume (PV)
+Speicheranforderung	persistent volume claim (PVC)
+Speicherklasse	storage class
+Eingangssteuerung / Ingress Controller	ingress controller
+Diensttyp (ClusterIP, NodePort, LoadBalancer)	service type (ClusterIP, NodePort, LoadBalancer)
+Netzwerkrichtlinie (Kubernetes)	network policy
+Ressourcenkontingent	resource quota
+Ressourcenanforderung	resource request
+Ressourcenlimit	resource limit
+Lebenszeichenprüfung	liveness probe
+Bereitschaftsprüfung	readiness probe
+Anlaufprüfung	startup probe
+Blaupause / CloudFormation-Stack	stack (CloudFormation)
+Zustandsdatei (Terraform)	state file (Terraform)
+Anbieter / Provider (Terraform)	provider (Terraform)
+Modul (Terraform)	module (Terraform)
+Infrastrukturplan	infrastructure plan
+Infrastrukturanwenden	infrastructure apply
+Drift-Erkennung	drift detection
+Konfigurations-Repository	configuration repository / GitOps repo
+Infrastrukturverwaltung über Git-Repository als Single Source of Truth	GitOps
+Abstimmungsschleife	reconciliation loop — continuously compares desired state with actual state and corrects drift
+Servicekonto	service account
+IDaaS (Identität als Dienst)	IDaaS (Identity as a Service)
+Cloud-Sicherheitsgruppierung	security group
+Netzwerk-ACL	network ACL (Access Control List)
+VPC (Virtuelle Private Cloud)	VPC (Virtual Private Cloud)
+Vernetzung zweier Netzwerke zum direkten Datenaustausch	peering
+Zentraler Netzwerkknoten zur Verbindung mehrerer VPCs/Netzwerke	transit gateway
+Lasten- und Kostenverteilung	cost allocation / cost attribution
+Abrechnungskennzeichnung	billing tag / cost tag
+Kontingentüberschreitung	quota exceeded
+
+# ============================================================
+
+# Section 16: Performance & Optimization
+# ============================================================
+
+Antwortzeit	response time
+Durchsatz	throughput
+Latenz / Verzögerung	latency
+Perzentil (p50, p95, p99)	percentile (p50, p95, p99)
+Engpass / Flaschenhals	bottleneck
+Speicherleck	memory leak
+Verklemmung / Deadlock	deadlock
+Wettlaufsituation / Race Condition	race condition
+Aushungerung / Starvation	starvation
+Zwischenspeicherung / Caching	caching
+Cache-Treffer	cache hit
+Cache-Fehltreffer	cache miss
+Indizierung (Datenbank)	indexing
+Lazy Loading / Verzögertes Laden	lazy loading
+Eager Loading / Sofortiges Laden	eager loading
+Verbindungspool	connection pool / connection pooling
+Profiling / Leistungsanalyse	profiling
+Benchmarking / Leistungsvergleich	benchmarking
+Lastentest	load testing
+Stresstest	stress testing
+Flammendiagramm	flame graph — visualization of profiled stack traces showing where CPU time is spent
+Ressourcenverbrauch	resource consumption / resource usage
+Speicherverbrauch	memory usage / memory consumption
+CPU-Auslastung	CPU utilization / CPU usage
+Stapelverarbeitung	batch processing
+Nebenläufigkeit	concurrency
+Parallelität	parallelism
+Asynchrone Verarbeitung	asynchronous processing
+Optimierung	optimization
+Vorabladen / Prefetching	prefetching
+Komprimierung	compression
+Minifizierung (Code)	minification
+Bündelung / Bundling	bundling
+Seitenauslagerung / Paging	paging
+Speicherfragmentierung	memory fragmentation
+Garbage Collection / Speicherbereinigung	garbage collection (GC)
+GC-Pause	GC pause / stop-the-world pause — all application threads are halted while the garbage collector runs
+Heapspeicher	heap (memory)
+Stapelspeicher	stack (memory)
+Pufferüberlauf	buffer overflow
+Speicherzuweisung	memory allocation
+Speicherfreigabe	memory deallocation
+Objektpool	object pool
+Null-Kopie-Übertragung	zero-copy transfer — data moves without copying between kernel and user-space buffers
+Speicherabgebildete Datei	memory-mapped file
+Änderungsprotokoll, das vor dem eigentlichen Schreibvorgang persistiert wird	write-ahead log (WAL)
+Schreibverstärkung	write amplification
+Leseverstärkung	read amplification
+Abfragecache	query cache
+Ergebniszwischenspeicherung	result caching
+Zwischenspeicher auf weltweit verteilten Auslieferungsservern	CDN cache
+Zwischenspeicherung von Inhalten nahe am Endnutzer (Randknoten)	edge caching
+Speicher-Tiering	storage tiering
+SSD-Abnutzung	SSD wear (write endurance)
+IOPS (Ein-/Ausgabeoperationen pro Sekunde)	IOPS (Input/Output Operations Per Second)
+Abfrageoptimierung	query optimization
+N+1-Abfrageproblem	N+1 query problem — executing one query per related record instead of a single batched query
+Langsame Abfrage	slow query
+Abfrage-Profiler	query profiler
+Fensterungsfunktion (SQL)	window function — SQL function that operates on a set of rows related to the current row without collapsing them
+Materialisierte Sicht	materialized view
+Ereignisschleife / Event Loop	event loop — single-threaded loop processing I/O events and callbacks asynchronously
+Nicht-blockierende E/A	non-blocking I/O
+Reaktive Programmierung	reactive programming
+Gegendruck / Backpressure	backpressure
+Vorausschauende Skalierung	predictive scaling
+Lastspitzenbewältigung	peak load handling
+Kaltstart (Lambda / Serverless)	cold start — initial latency when a new function instance must be provisioned and initialized
+Aufwärmphase	warm-up phase
+Vertikale Partitionierung	vertical partitioning
+Horizontale Partitionierung	horizontal partitioning / sharding
+Lesekonsistenz	read consistency
+Schreibkonsistenz	write consistency
+Abtastung / Sampling	sampling
+Telemetriedaten	telemetry data
+Verteilte Ablaufverfolgung	distributed tracing
+
+# ============================================================

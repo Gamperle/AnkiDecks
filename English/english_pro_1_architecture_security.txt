@@ -1,0 +1,166 @@
+# Technical English — Pro: Architecture & Security
+# Format: Front[TAB]Back
+# Part 1 of 5 (split from english_pro.txt): sections 13-14 - Software Architecture, Security Vocabulary.
+
+# Section 13: Software Architecture
+# ============================================================
+
+Microservices / Mikrodienste	microservices
+Monolith / Monolithische Architektur	monolith / monolithic architecture
+Ereignisgesteuerte Architektur	event-driven architecture
+Serverlose Architektur	serverless architecture
+Hexagonale Architektur	hexagonal architecture / ports and adapters — isolates core logic from external systems via defined interfaces
+Schichtenarchitektur	layered architecture
+Kopplung (eng / lose)	coupling (tight / loose)
+Kohäsion (hoch / niedrig)	cohesion (high / low)
+Trennung der Zuständigkeiten	separation of concerns
+Einzelverantwortungsprinzip	single responsibility principle (SRP)
+Eventuelle Konsistenz	eventual consistency — all replicas will converge to the same state given enough time
+Idempotenz	idempotency
+Schutzschalter-Muster	circuit breaker (pattern) — stops calling a failing service after repeated failures to allow recovery
+Saga-Muster	saga pattern — manages distributed transactions via a sequence of local transactions with compensating actions
+Synchron	synchronous
+Asynchron	asynchronous
+Nachrichtenwarteschlange	message queue
+Publish/Subscribe (Veröffentlichen/Abonnieren)	pub/sub (publish/subscribe)
+Ereignisbus	event bus
+CQRS (Befehls-Abfrage-Trennung)	CQRS (Command Query Responsibility Segregation) — separates read and write models for independent optimization
+Domänengesteuertes Design	domain-driven design (DDD)
+Begrenzter Kontext	bounded context — boundary within which a specific domain model is defined and consistent
+Domäne	domain
+Entität	entity
+Wertobjekt	value object
+Zusammengefasste Einheit verwandter Objekte in DDD	aggregate
+Orchestrierung	orchestration
+Choreographie	choreography
+Diensterkennung	service discovery
+Zentraler Eingangspunkt für API-Anfragen (Routing, Auth, Ratenbegrenzung)	API gateway
+Seitenwagencontainer / Sidecar	sidecar (pattern) — auxiliary container alongside the main one, providing cross-cutting features
+Service Mesh / Dienstvermittlungsnetz	service mesh — dedicated infrastructure layer handling service-to-service communication (e.g., Istio, Linkerd)
+Rückverfolgbarkeit / Tracing	distributed tracing
+Beobachtbarkeit	observability
+Telemetrie	telemetry
+Korrelations-ID	correlation ID
+Ablaufverfolgung / Span	span (tracing)
+Lastabwurf / Load Shedding	load shedding
+Rückstaudruck / Backpressure	backpressure — mechanism where a consumer signals the producer to slow down
+Wiederholungsstrategie	retry strategy
+Zeitüberschreitung / Timeout-Muster	timeout (pattern)
+Bulkhead-Muster / Schottmuster	bulkhead (pattern) — isolates components so a failure in one does not cascade to others
+Ausfallsicherer Rückfall / Fallback	fallback
+Anti-Korruptions-Schicht	anti-corruption layer — translation layer preventing external models from leaking into your domain
+Domänenereignis	domain event
+Befehl / Command (CQRS)	command (CQRS)
+Abfrage / Query (CQRS)	query (CQRS)
+Projektion	projection
+Ereignisspeicher / Event Store	event store
+Ereignisbeschaffung / Event Sourcing	event sourcing — persists state as an append-only sequence of events instead of mutable records
+Materialisierende Sicht	materialized view
+Strangler-Fig-Muster	strangler fig pattern — incrementally replaces a legacy system by routing traffic to new components
+Servicevertrag	service contract
+Verbrauchergetriebene Vertragstests	consumer-driven contract testing
+Abwärtskompatible Änderung	backward-compatible change
+Vorwärtskompatible Änderung	forward-compatible change
+Weiterentwicklung eines Datenschemas bei bestehenden Verbrauchern	schema evolution
+Nachrichtenumschlag / Message Envelope	message envelope
+Totbriefwarteschlange	dead letter queue (DLQ) — queue storing messages that failed processing for later inspection
+Kompensationstransaktion	compensating transaction — reverses the effect of a previously committed transaction on failure
+Zweiphasen-Commit	two-phase commit (2PC) — protocol ensuring all participants commit or all roll back
+Mindestanzahl an Knoten für eine gültige Entscheidung in verteilten Systemen	quorum
+Konsensalgorithmus	consensus algorithm
+Leiterwahl / Leader Election	leader election
+Verteilte Sperre	distributed lock
+CAP-Theorem	CAP theorem (Consistency, Availability, Partition tolerance)
+BASE-Prinzipien	BASE (Basically Available, Soft state, Eventually consistent)
+Dauerhaftigkeit / Durability	durability
+Linearisierbarkeit	linearizability — strongest consistency guarantee: every operation appears instantaneous and globally ordered
+Kausale Konsistenz	causal consistency
+Vektoruhr	vector clock — logical clock using per-node counters to track causality in distributed systems
+Konfliktfreie replizierte Datentypen (CRDT)	CRDT (Conflict-free Replicated Data Types) — data structures that merge automatically without coordination
+Multi-Region-Bereitstellung	multi-region deployment
+Active-Active-Konfiguration	active-active configuration
+Active-Passive-Konfiguration	active-passive configuration
+Geo-Routing	geo-routing / geographic routing
+
+# ============================================================
+
+# Section 14: Security Vocabulary
+# ============================================================
+
+Sicherheitslücke / Schwachstelle	vulnerability
+Exploit / Ausnutzung einer Schwachstelle	exploit
+Zero-Day-Schwachstelle	zero-day (vulnerability) — a flaw exploitable before the vendor is aware or has issued a patch
+Angriffsvektor	attack vector
+Bedrohungsmodellierung	threat modeling — systematic identification and prioritization of potential security threats
+Injection-Angriff / Einschleusung	injection (attack)
+Einschleusung von Datenbankbefehlen über Benutzereingaben	SQL injection
+Einschleusung von Schadskripten in Webseiten über Benutzereingaben	cross-site scripting (XSS)
+Untergeschobene Anfrage im Namen eines eingeloggten Nutzers	cross-site request forgery (CSRF)
+Dienstverweigerungsangriff	denial of service (DoS)
+Verteilter Dienstverweigerungsangriff	distributed denial of service (DDoS)
+Brute-Force-Angriff	brute force (attack)
+Man-in-the-Middle-Angriff	man-in-the-middle attack (MITM)
+Härtung (System)	hardening
+Penetrationstest	penetration testing (pen test)
+Sicherheitsprüfung / Audit	(security) audit
+Compliance / Regelkonformität	compliance
+Vorfallreaktion	incident response
+Hashwert / Hashfunktion	hash / hash function
+Kryptographischer Zusatzwert, der vor dem Hashen dem Passwort beigefügt wird	salt
+Chiffre / Verschlüsselungsalgorithmus	cipher
+Zertifikat (digital)	(digital) certificate
+Öffentlicher Schlüssel	public key
+Privater Schlüssel	private key
+Digitale Signatur	digital signature
+Zertifizierungsstelle	certificate authority (CA)
+Vertrauenskette	chain of trust
+Rechteausweitung	privilege escalation
+Zugriffskontrolle	access control
+Rollenbasierte Zugriffskontrolle	RBAC (Role-Based Access Control)
+Geringstmögliche Berechtigung	principle of least privilege
+Angriffsflächenreduzierung	attack surface reduction
+Sichere Softwareentwicklung	secure software development lifecycle (SDLC)
+Sicherheitsrichtlinie	security policy
+Einbruchserkennungssystem	IDS (Intrusion Detection System)
+Einbruchsverhinderungssystem	IPS (Intrusion Prevention System)
+Honigtopf / Honeypot	honeypot — decoy system designed to attract and detect attackers
+Sandbox / Isolierter Ausführungsbereich	sandbox
+Webanwendungs-Firewall	WAF (Web Application Firewall)
+Sitzungsübernahme	session hijacking
+Sitzungsfixierung	session fixation
+Deserialisierungsangriff	deserialization attack
+Verzeichnisdurchquerung	directory traversal / path traversal
+Dateieinbindung (lokal/remote)	file inclusion (LFI / RFI)
+Befehlseinschleusung	command injection
+Angriff, bei dem der Server zu ungewollten Anfragen verleitet wird	SSRF (Server-Side Request Forgery)
+Sicherheitsheader	security headers
+HTTP-Header, der erlaubte Inhaltsquellen einer Webseite festlegt	CSP (Content Security Policy)
+Herkunftsrichtlinie / Same-Origin-Policy	same-origin policy — browser security rule restricting scripts from accessing resources of a different origin
+Ressourcenteilung über Herkunftsgrenzen	CORS (Cross-Origin Resource Sharing)
+Signiertes Token zur Übertragung von Identitätsdaten im JSON-Format	JWT (JSON Web Token)
+Multifaktor-Authentifizierung	MFA (Multi-Factor Authentication)
+Einmalanmeldung / Single Sign-On	SSO (Single Sign-On)
+Identitätsanbieter	identity provider (IdP)
+Verzeichnisdienst	directory service (e.g., LDAP, Active Directory)
+Zugriffstoken-Erneuerung	token refresh / token rotation
+Sitzungsablauf	session expiration / session timeout
+Kryptographische Streuwertfunktion	cryptographic hash function
+Symmetrische Verschlüsselung	symmetric encryption
+Asymmetrische Verschlüsselung	asymmetric encryption
+Schlüsselaustausch	key exchange
+Perfekte Vorwärtsgeheimhaltung	perfect forward secrecy (PFS) — compromising a long-term key does not expose past session keys
+Geheimnisrotation	secret rotation
+Tresor für Geheimnisse	vault / secrets vault
+Sicherheitsbewertung	security assessment
+Risikoanalyse	risk analysis
+CVE (Gemeinsame Schwachstellenaufzählung)	CVE (Common Vulnerabilities and Exposures)
+CVSS (Bewertungssystem für Schwachstellen)	CVSS (Common Vulnerability Scoring System)
+Null-Vertrauen / Zero Trust	zero trust (architecture / model)
+Datenverschleierung / Obfuskation	obfuscation
+Datenmaskierung	data masking
+Datenklassifizierung	data classification
+Sicherheitsvorfall	security incident
+Forensik (IT)	(digital) forensics
+Protokollprüfung / Audit-Trail	audit trail / audit log
+
+# ============================================================

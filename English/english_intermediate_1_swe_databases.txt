@@ -1,0 +1,184 @@
+# Technical English — Intermediate: Software Engineering & Databases
+# Format: Front[TAB]Back
+# Part 1 of 4 (split from english_intermediate.txt): sections 7-8 - Software Engineering Terms, Databases & Data Management.
+
+# Section 7: Software Engineering Terms
+# ============================================================
+
+Softwarearchitektur	software architecture
+Entwurfsmuster / Design Pattern	design pattern
+Refactoring / Codeumstrukturierung	refactoring
+Abstraktion	abstraction
+Kapselung	encapsulation
+Kopplung (zwischen Modulen)	coupling
+Zusammenhalt / Kohäsion	cohesion
+Trennung der Zuständigkeiten	separation of concerns
+Einzelverantwortungsprinzip	single responsibility principle
+Agile Softwareentwicklung	agile (software development)
+Agiles Rahmenwerk mit Sprints, Rollen und Zeremonien	Scrum
+Festgelegter Arbeitszeitraum (1–4 Wochen) in Scrum	sprint
+Backlog / Aufgabenliste	backlog
+User Story / Benutzergeschichte	user story
+Akzeptanzkriterien	acceptance criteria
+Code-Review / Code-Überprüfung	code review
+Technische Schulden	technical debt
+Wartbarkeit	maintainability
+Skalierbarkeit	scalability
+Sauberer Code / Clean Code	clean code
+Interessenvertreter / Stakeholder	stakeholder
+Anforderung	requirement
+Umfang / Geltungsbereich	scope
+Meilenstein	milestone
+Frist / Termin	deadline
+Liefergegenstand / Ergebnis	deliverable
+Erster Entwurf eines Produkts zum Testen und Lernen	prototype
+Machbarkeitsstudie	feasibility study
+Machbarkeitsnachweis durch einen praktischen Prototyp	proof of concept (PoC)
+Einfachste funktionsfähige Version eines Produkts	MVP (Minimum Viable Product)
+Rückstand / Legacy-Code	legacy code
+Ablaufdiagramm	flowchart
+Anwendungsfall	use case
+Beschränkung / Randbedingung	constraint
+Abhängigkeitsinjektion	dependency injection — supplying an object’s dependencies from outside rather than creating them internally
+Umkehrung der Steuerung	inversion of control (IoC) — framework calls your code instead of your code calling the framework
+Entwurfsprinzip	design principle
+Offen-Geschlossen-Prinzip	open-closed principle (OCP)
+Liskovsches Substitutionsprinzip	Liskov substitution principle (LSP)
+Schnittstellentrennungsprinzip	interface segregation principle (ISP)
+SOLID-Prinzipien	SOLID principles
+DRY-Prinzip (Wiederhole dich nicht)	DRY (Don't Repeat Yourself)
+KISS-Prinzip (Halte es einfach)	KISS (Keep It Simple, Stupid)
+YAGNI-Prinzip (Du wirst es nicht brauchen)	YAGNI (You Ain't Gonna Need It)
+Schätzung (Aufwand)	estimation
+Relative Schätzeinheit für Aufwand in agilen Teams	story points
+Geschwindigkeit (Scrum)	velocity
+Visuelles Aufgabenboard mit Spalten (To Do, In Progress, Done)	Kanban board
+Produktinhaber	product owner
+Moderator und Prozesshüter im Scrum-Team	Scrum Master
+Impediment / Hindernis (Scrum)	impediment
+Burndown-Diagramm	burndown chart
+Vereinbarte Kriterien, wann eine Aufgabe als fertig gilt	definition of done (DoD)
+Kriterien, wann ein Backlog-Eintrag bereit zur Bearbeitung ist	definition of ready (DoR)
+Technische Anforderung	technical requirement
+Funktionale Anforderung	functional requirement
+Nicht-funktionale Anforderung	non-functional requirement
+Architekturentscheidung	architectural decision
+Codeabdeckung	code coverage
+Statische Codeanalyse	static code analysis
+Codegeruch / Code Smell	code smell
+Toter Code	dead code
+Duplizierter Code	duplicated code / code duplication
+Umgebungsvariable	environment variable
+Feature Branch / Funktionszweig	feature branch
+Pull Request / Zusammenführungsanfrage	pull request (PR) / merge request (MR)
+Codebesitzer	code owner
+Pair Programming / Paarprogrammierung	pair programming
+Mob Programming / Teamprogrammierung	mob programming / ensemble programming
+Werkzeugkette / Toolchain	toolchain
+Werkzeug zum automatischen Kompilieren und Paketieren von Software	build system
+Paketverwaltung	package management
+Abhängigkeitsbaum	dependency tree
+Semantische Versionierung	semantic versioning (SemVer) — MAJOR.MINOR.PATCH: major = breaking, minor = feature, patch = fix
+Breaking Change / Inkompatible Änderung	breaking change
+Rückwärtskompatibel	backward compatible
+Vorwärtskompatibel	forward compatible
+Wiederholungsdurchlauf in einem iterativen Prozess	iteration
+Inkrement	increment
+Epik / Epic (großes Feature)	epic
+Aufgabe / Task	task
+Unteraufgabe	subtask
+Fehlerbehebungszyklus	bug lifecycle
+Priorisierung	prioritization
+Risikobewertung	risk assessment
+Auswirkungsanalyse	impact analysis
+Übergabe / Handover	handover / handoff
+
+# ============================================================
+
+# Section 8: Databases & Data Management
+# ============================================================
+
+Datenbank	database
+Tabelle (Datenbank)	table
+Zeile / Datensatz	row / record
+Spalte / Feld	column / field
+Abbildung einer Datenbankstruktur (Tabellen, Spalten, Beziehungen)	schema
+Datenstruktur für schnellere Suche in Datenbanken	index
+Abfrage	query
+Einfügen (Daten)	to insert
+Aktualisieren (Daten)	to update
+Löschen (Daten)	to delete
+Verknüpfung / Join	join
+Aggregieren / Zusammenfassen	to aggregate
+Filtern	to filter
+Sortieren	to sort
+Gruppieren	to group by
+Primärschlüssel	primary key
+Fremdschlüssel	foreign key
+Eindeutiger Schlüssel	unique key / unique constraint
+Relationale Datenbank	relational database
+NoSQL-Datenbank	NoSQL database
+Schlüssel-Wert-Speicher	key-value store
+Dokumentendatenbank	document store / document database
+Graphdatenbank	graph database
+Migration (Datenbank)	migration
+Ausgangsdaten / Seed-Daten	seed data
+Replikation	replication
+Sharding / Horizontale Partitionierung	sharding
+Partitionierung	partitioning
+Transaktion	transaction
+ACID-Eigenschaften	ACID properties (Atomicity, Consistency, Isolation, Durability) — guarantees for reliable database transactions
+Normalisierung	normalization
+Denormalisierung	denormalization
+Stored Procedure / Gespeicherte Prozedur	stored procedure
+Sicht / View	view
+Cursor (Datenbank)	cursor
+ORM (Objekt-Relationale Abbildung)	ORM (Object-Relational Mapping) — maps database rows to programming-language objects automatically
+Verbindungszeichenfolge	connection string
+Verbindungspool (Datenbank)	connection pool
+Datenbanksperre	database lock
+Lesesperre	read lock / shared lock
+Schreibsperre	write lock / exclusive lock
+Optimistisches Sperren	optimistic locking — assumes no conflict; checks version at commit time and fails if data changed
+Pessimistisches Sperren	pessimistic locking — acquires a lock before reading, blocking others until the transaction completes
+Isolationsstufe	isolation level
+Isolationsstufe: nur bestätigte Änderungen werden gelesen	read committed
+Wiederholbares Lesen	repeatable read
+Serialisierbar (Isolationsstufe)	serializable
+Phantom-Lesen	phantom read
+Dirty Read / Unsauberes Lesen	dirty read
+Trigger (Datenbank)	trigger
+Zwischenspeicher / Cache (Datenbank)	database cache
+Abfrageoptimierung	query optimization
+Ausführungsplan	execution plan / query plan
+Volltextsuche	full-text search
+Sicherung (Datenbank)	database backup
+Punkt-in-Zeit-Wiederherstellung	point-in-time recovery
+Failover (Datenbank)	database failover
+Primärer Knoten	primary node / master
+Sekundärer Knoten	secondary node / replica
+Lese-Replikat	read replica
+Konsistenz (Daten)	data consistency
+Datenintegrität	data integrity
+Referenzielle Integrität	referential integrity
+Nullwert	null value
+Standardwert	default value
+Auto-Increment / Automatische Nummerierung	auto-increment
+Sequenz (Datenbank)	sequence
+Batch-Einfügung	batch insert / bulk insert
+Upsert (Einfügen oder Aktualisieren)	upsert (insert or update)
+ETL (Extrahieren, Transformieren, Laden)	ETL (Extract, Transform, Load) — pipeline that extracts data from sources, transforms it, and loads it into a target store
+Data Warehouse / Datenlager	data warehouse
+Data Lake / Datenpool	data lake
+Sternschema	star schema — data warehouse design with a central fact table linked to dimension tables
+Zeitreihendatenbank	time-series database
+Spaltenorientierte Datenbank	columnar database
+In-Memory-Datenbank	in-memory database
+Zwischenspeicher (Redis, Memcached)	cache (Redis, Memcached)
+Cache-Invalidierung	cache invalidation — removing or updating stale cached data when the source of truth changes
+Datenmodell	data model
+Entity-Relationship-Diagramm	entity-relationship diagram (ERD)
+Kardinalität	cardinality
+Beziehung (1:1, 1:n, n:m)	relationship (one-to-one, one-to-many, many-to-many)
+
+# ============================================================

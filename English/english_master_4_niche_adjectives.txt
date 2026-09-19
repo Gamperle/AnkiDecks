@@ -1,0 +1,124 @@
+# Technical English — Master: Niche Systems & Rare Adjectives
+# Format: Front[TAB]Back
+# Part 4 of 4 (split from english_master.txt): sections 34-35 - Niche Systems & Emerging Technology, Rare & Precise Technical Adjectives.
+
+# Section 34: Niche Systems & Emerging Technology
+# ============================================================
+
+Disaggregierter Speicher	disaggregated memory
+Speiher-Fabric	memory fabric
+Rechennaher Speicher	near-memory computing
+Speicherinterne Berechnung	in-memory computing
+Berechnung im Speicher	processing-in-memory (PIM) / compute-in-memory
+Serverlose Datenbank	serverless database
+Serverlose Edge-Berechnung	serverless edge computing
+Edge Computing / Randberechnung	edge computing
+Fog Computing / Nebelberechnung	fog computing
+Konfidentielles Rechnen	confidential computing — protects data in use via hardware-based trusted execution environments
+Homomorphes Rechnen	homomorphic computing
+Minimal-Betriebssystem, das nur eine einzige Anwendung ausführt	unikernel
+Binäres Befehlsformat für leistungsstarke Webanwendungen im Browser	WebAssembly (Wasm)
+WASI (WebAssembly-Systemschnittstelle)	WASI (WebAssembly System Interface)
+Komponentenmodell (Wasm)	component model (Wasm)
+eBPF-basierte Netzwerkfunktionen	eBPF-based networking
+Cilium (eBPF-basiertes Networking)	Cilium
+SmartNIC / Intelligente Netzwerkkarte	SmartNIC (Smart Network Interface Card)
+DPU (Datenverarbeitungseinheit)	DPU (Data Processing Unit)
+Infrastruktur-Prozessierungseinheit (IPU)	IPU (Infrastructure Processing Unit)
+Datenzentrierte Architektur	data-centric architecture
+Datenvermaschung / Data Mesh	data mesh
+Plattformtechnik / Platform Engineering	platform engineering
+Interne Entwicklerplattform	IDP (Internal Developer Platform)
+Entwicklererfahrung	developer experience (DX)
+Goldener Pfad / Golden Path	golden path / paved path
+Selbstbedienungsinfrastruktur	self-service infrastructure
+Richtlinie als Code	policy as code
+Open Policy Agent (OPA)	OPA (Open Policy Agent)
+Service-Level-Ziel	SLO (Service Level Objective)
+Service-Level-Indikator	SLI (Service Level Indicator)
+Fehlerbudget	error budget — allowed amount of downtime/errors before reliability targets are violated (SRE concept)
+Standortzuverlässigkeitstechnik	SRE (Site Reliability Engineering)
+Toil / Mühsame Routinearbeit	toil (SRE)
+Chaos Engineering / Chaostechnik	chaos engineering — deliberately injecting failures in production to test system resilience
+Spieltag / Game Day	game day (chaos engineering)
+Fehlereingabe / Fault Injection	fault injection
+Leistungsfähigkeitsprüfstand	performance testbed
+Synthetischer Datenverkehr	synthetic traffic
+Nachrichtengesteuerte Architektur	message-driven architecture
+Reaktive Systeme	reactive systems
+Reaktives Manifest	Reactive Manifesto
+Aktorenmodell	actor model — concurrency model where actors communicate via message passing, each with private state
+Software-Transaktionsspeicher	STM (Software Transactional Memory) — composable memory transactions without explicit locks
+Persistenter Datenstrukturen	persistent data structures (immutable)
+Append-Only-Protokoll	append-only log
+Unveränderliches Protokoll	immutable log
+Merkle-Baum	Merkle tree — hash tree where each leaf is hashed and parents are hashes of children, enabling efficient verification
+Gerichteter azyklischer Graph (DAG, Blockchain)	DAG (directed acyclic graph, in blockchain/DLT context)
+Verteiltes Hauptbuch / Distributed Ledger	distributed ledger
+Konsensprotokoll (Blockchain)	consensus protocol (blockchain)
+Intelligenter Vertrag / Smart Contract	smart contract
+Gasgebühr / Gas Fee	gas fee (blockchain)
+Dezentrale Anwendung (dApp)	dApp (decentralized application)
+Tokenisierung (Blockchain)	tokenization (blockchain)
+
+# ============================================================
+
+# Section 35: Rare & Precise Technical Adjectives
+# ============================================================
+
+Kontraproduktiv	counterproductive
+Trivial / Unbedeutend	trivial
+Nicht-trivial	non-trivial
+Vernachlässigbar	negligible
+Marginal / Geringfügig	marginal
+Wohldefiniert	well-defined
+Schlecht definiert	ill-defined / poorly defined
+Unterspezifiziert	underspecified
+Überspezifiziert	overspecified / over-constrained
+Mehrdeutig	ambiguous
+Eindeutig	unambiguous
+Orthogonal (unabhängig voneinander)	orthogonal
+Querschnittlich / Querschnittsbelang	cross-cutting (concern)
+Eigenwillig / Opinionated (Framework)	opinionated
+Meinungslos / Unopinionated (Framework)	unopinionated
+Rückwirkend	retroactive
+Proaktiv	proactive
+Reaktiv	reactive
+Präventiv	preventive / preventative
+Korrektiv	corrective
+Kompensatorisch	compensatory
+Komplementär	complementary
+Mehrfach vorhanden zur Ausfallsicherheit	redundant
+Überflüssig	superfluous
+Inkrementell	incremental
+Schrittweise wiederholend bis zur Lösung	iterative
+Rekursiv	recursive
+Reentranzfähig / Wiedereintrittsfähig	reentrant
+Threadsicher	thread-safe
+Nicht-threadsicher	non-thread-safe / thread-unsafe
+Speichersicher	memory-safe
+Lock-frei	lock-free
+Wartefrei	wait-free
+Obstruktionsfrei	obstruction-free
+Fortschrittgarantierend	progress-guaranteeing
+Feingranular	fine-grained
+Grobgranular	coarse-grained
+Deklarativ	declarative
+Befehlsorientiert: Schritt für Schritt sagend, was zu tun ist	imperative
+Komposierbar / Zusammensetzbar	composable
+Zerlegbar	decomposable
+Wiederverwendbar	reusable
+Austauschbar / Einsteckbar	pluggable
+Eigenständig / Autark	self-contained
+Eingebettet	embedded
+Eingebaut / Nativ	built-in / native
+Benutzerdefiniert	custom / user-defined
+Werksseitig / Standardmäßig	out-of-the-box / default
+Konfigurierbar	configurable
+Anpassbar	customizable
+Überschreibbar	overridable
+Erweiterbar	extensible
+Abwärtskompatibel (streng)	strictly backward-compatible
+Drahtkompatibel	wire-compatible
+Quellkompatibel	source-compatible
+Binärkompatibel	binary-compatible / ABI-compatible

@@ -1,0 +1,136 @@
+# Technical English — Master: Cryptography & Hardware Architecture
+# Format: Front[TAB]Back
+# Part 2 of 4 (split from english_master.txt): sections 29-30 - Cryptography & Protocol Design, Hardware Architecture & Chip Design.
+
+# Section 29: Cryptography & Protocol Design
+# ============================================================
+
+Symmetrisches Verschlüsselungsverfahren	symmetric cipher
+Blockchiffre	block cipher
+Stromchiffre	stream cipher
+Weit verbreiteter symmetrischer Verschlüsselungsstandard (128/192/256 Bit)	AES (Advanced Encryption Standard)
+Betriebsmodus (Verschlüsselung)	mode of operation (e.g., CBC, CTR, GCM) — defines how a block cipher encrypts data larger than one block
+Initialisierungsvektor (IV)	IV (Initialization Vector)
+Nonce (Einmalwert)	nonce — number used only once to prevent replay attacks and ensure ciphertext uniqueness
+Auffüllung / Padding (Kryptographie)	padding (cryptography)
+Padding-Orakel-Angriff	padding oracle attack
+Asymmetrisches Verschlüsselungsverfahren	asymmetric cipher / public-key cryptography
+Asymmetrisches Verschlüsselungsverfahren auf Basis großer Primzahlen	RSA algorithm
+Elliptische-Kurven-Kryptographie	ECC (Elliptic Curve Cryptography)
+Diffie-Hellman-Schlüsselaustausch	Diffie-Hellman key exchange
+Diskreter Logarithmus	discrete logarithm
+Einwegfunktion	one-way function — easy to compute but computationally infeasible to invert
+Falltürfunktion	trapdoor function — one-way function that becomes invertible with knowledge of a secret (the trapdoor)
+Schlüsselableitung / Key Derivation	key derivation (KDF)
+Standardisierte, iterative Schlüsselableitungsfunktion für Passwörter	PBKDF2 (Password-Based Key Derivation Function 2)
+Speicherresistente Passwort-Hashfunktion (Gewinner des PHC 2015)	Argon2
+Passwort-Hashfunktion basierend auf Blowfish mit einstellbarem Arbeitsfaktor	bcrypt
+Speicher- und rechenintensive Schlüsselableitungsfunktion	scrypt
+HMAC (Schlüsselgebundener Hash)	HMAC (Hash-based Message Authentication Code)
+Nachrichtenauthentifizierungscode	MAC (Message Authentication Code)
+Digitale Signatur (Algorithmus)	digital signature algorithm (DSA / ECDSA / EdDSA)
+Zertifikatskette	certificate chain
+Zertifikatsperrung	certificate revocation
+Zertifikatssperrliste	CRL (Certificate Revocation List)
+Online-Zertifikatsstatusprüfung	OCSP (Online Certificate Status Protocol)
+Certificate Pinning / Zertifikatsfixierung	certificate pinning
+Zertifikatstransparenz	certificate transparency (CT)
+Public-Key-Infrastruktur	PKI (Public Key Infrastructure)
+Schlüsselzeremonien	key ceremony
+Hardware-Sicherheitsmodul	HSM (Hardware Security Module)
+Vertrauenswürdige Ausführungsumgebung	TEE (Trusted Execution Environment)
+Sichere Enklave	secure enclave — hardware-isolated area of a processor for protecting sensitive computations
+Attestierung	attestation — cryptographic proof that software/hardware is in a known trusted state
+Wissensfreier Beweis / Zero-Knowledge-Beweis	zero-knowledge proof (ZKP)
+Interaktiver Beweis	interactive proof
+Nicht-interaktiver Beweis	non-interactive proof
+zk-SNARK	zk-SNARK (Zero-Knowledge Succinct Non-Interactive Argument of Knowledge) — compact proof verifiable without interaction or revealing the witness
+Homomorphe Verschlüsselung	homomorphic encryption
+Vollständig homomorphe Verschlüsselung	FHE (Fully Homomorphic Encryption)
+Sichere Mehrparteienberechnung	MPC (Secure Multi-Party Computation) — parties jointly compute a function without revealing their private inputs
+Schwellenwert-Kryptographie	threshold cryptography — requires t-of-n parties to cooperate for decryption or signing
+Geheimnisteilung / Secret Sharing	secret sharing (e.g., Shamir's)
+Kryptographisches Protokoll zum Übertragen eines von N Geheimnissen, ohne preiszugeben, welches gewählt wurde	oblivious transfer
+Differenzielle Privatheit	differential privacy — adds calibrated noise so individual records cannot be identified in aggregate results
+Post-Quanten-Kryptographie	post-quantum cryptography
+Gitterbasierte Kryptographie	lattice-based cryptography
+Schlüsselkapselungsmechanismus	KEM (Key Encapsulation Mechanism)
+Authentifiziertes Schlüsselaustauschprotokoll	authenticated key exchange (AKE)
+TLS-Handshake (im Detail)	TLS handshake (ClientHello, ServerHello, key exchange, Finished)
+Vorwärtsgeheimhaltung	forward secrecy / perfect forward secrecy (PFS)
+Sitzungswiederaufnahme	session resumption (TLS)
+0-RTT (Null-Roundtrip-Time)	0-RTT (Zero Round-Trip Time)
+Zufallszahlengenerator	RNG (Random Number Generator)
+Kryptographisch sicherer Zufallsgenerator	CSPRNG (Cryptographically Secure PRNG)
+Entropie	entropy — measure of randomness or unpredictability in data or a cryptographic key
+Entropiequelle	entropy source
+
+# ============================================================
+
+# Section 30: Hardware Architecture & Chip Design
+# ============================================================
+
+Befehlssatzarchitektur (ISA)	ISA (Instruction Set Architecture)
+CISC (Komplexer Befehlssatz)	CISC (Complex Instruction Set Computing)
+RISC (Reduzierter Befehlssatz)	RISC (Reduced Instruction Set Computing)
+Offene, lizenzfreie Befehlssatzarchitektur	RISC-V
+ARM-Architektur	ARM architecture
+x86-Architektur	x86 architecture
+Mikroprozessor	microprocessor
+Mikroarchitektur	microarchitecture
+Pipeline (Prozessor)	pipeline (processor)
+Pipeline-Stufe	pipeline stage
+Befehlsabruf	instruction fetch
+Befehlsdekodierung	instruction decode
+Befehlsausführung	instruction execution
+Rückschreibphase	write-back (stage)
+Sprungvorhersage	branch prediction — CPU guesses which branch will be taken to keep the pipeline full
+Sprungvorhersagefehler	branch misprediction
+Spekulative Ausführung	speculative execution
+Außerordentliche Ausführung	out-of-order execution (OoOE) — CPU executes instructions as operands become available, not in program order
+Registerumbenennung	register renaming
+Reorder-Puffer	reorder buffer (ROB)
+Reservierungsstation	reservation station
+Superskalarer Prozessor	superscalar processor
+VLIW (Sehr langer Befehlswort)	VLIW (Very Long Instruction Word)
+SIMD (Einzelbefehl, Mehrfachdaten)	SIMD (Single Instruction, Multiple Data)
+MIMD (Mehrfachbefehl, Mehrfachdaten)	MIMD (Multiple Instruction, Multiple Data)
+Vektorprozessor / Vektoreinheit	vector processor / vector unit
+AVX (Erweiterte Vektorbefehle)	AVX (Advanced Vector Extensions)
+NEON (ARM-Vektorbefehle)	NEON (ARM SIMD)
+GPU (Grafikprozessor)	GPU (Graphics Processing Unit)
+GPGPU (Allzweck-GPU-Berechnung)	GPGPU (General-Purpose GPU computing)
+GPU-Programm für Pixel-, Vertex- oder Geometrieberechnungen	shader
+NVIDIA-Plattform für parallele GPU-Berechnungen	CUDA (Compute Unified Device Architecture)
+Offener Standard für parallele Berechnungen auf CPU/GPU/FPGA	OpenCL (Open Computing Language)
+Tensorprozessor / TPU	TPU (Tensor Processing Unit)
+Neuronaler Netzwerk-Beschleuniger	neural network accelerator / NPU
+FPGA (Feldprogrammierbares Gate-Array)	FPGA (Field-Programmable Gate Array)
+ASIC (Anwendungsspezifische Integrierte Schaltung)	ASIC (Application-Specific Integrated Circuit)
+Komplettes System (CPU, RAM, I/O) auf einem einzigen Chip	SoC (System on a Chip)
+Fertigungsprozess / Prozesstechnologie	process node / fabrication process (e.g., 5nm, 3nm)
+Taktrate	clock rate / clock frequency
+Taktzyklus	clock cycle
+Befehlsdurchsatz (IPC)	IPC (Instructions Per Clock / Cycle)
+Cache-Hierarchie	cache hierarchy
+Schnellster, prozessornahester Zwischenspeicher (je Kern)	L1 cache
+Zweiter, größerer Zwischenspeicher zwischen L1 und Hauptspeicher	L2 cache
+L3-Cache / Last-Level-Cache	L3 cache / LLC (Last-Level Cache)
+Cache-Kohärenz	cache coherence — ensures all CPU cores see a consistent view of shared memory
+Kohärenzprotokoll	coherence protocol (MESI, MOESI)
+Nicht-einheitlicher Speicherzugriff (NUMA)	NUMA (Non-Uniform Memory Access)
+Speichercontroller	memory controller
+Speicherbus	memory bus
+DDR-Speicher	DDR (Double Data Rate) memory
+HBM (Speicher mit hoher Bandbreite)	HBM (High Bandwidth Memory)
+Offener Interconnect-Standard für kohärenten Speicherzugriff zwischen CPU und Beschleunigern	CXL (Compute Express Link)
+PCIe (Peripheral Component Interconnect Express)	PCIe (PCI Express)
+Hochgeschwindigkeits-Speicherschnittstelle für SSDs über PCIe	NVMe (Non-Volatile Memory Express)
+Dauerhafter Speicher / Persistent Memory	persistent memory (PMEM)
+Chiplet / Chiplet-Architektur	chiplet (architecture)
+Verbindungsschicht zwischen Chips in einem Multi-Die-Paket	interposer
+Multi-Die-Paket	multi-die package (MDP)
+Thermische Entwurfsleistung (TDP)	TDP (Thermal Design Power)
+Leistung pro Watt	performance per watt
+
+# ============================================================

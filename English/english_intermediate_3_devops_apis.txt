@@ -1,0 +1,168 @@
+# Technical English — Intermediate: DevOps & APIs
+# Format: Front[TAB]Back
+# Part 3 of 4 (split from english_intermediate.txt): sections 11-12 - DevOps & CI/CD, APIs & Integration.
+
+# Section 11: DevOps & CI/CD
+# ============================================================
+
+Kontinuierliche Integration	continuous integration (CI)
+Kontinuierliche Auslieferung	continuous delivery (CD)
+Kontinuierliche Bereitstellung	continuous deployment
+Automatisierbare Schrittfolge von Build, Test und Deployment	build pipeline
+Artefakt (Build-Ergebnis)	artifact
+Staging-Umgebung	staging environment
+Produktionsumgebung	production environment
+Zurückrollen / Rollback	to roll back / rollback
+Canary-Release / Schrittweise Einführung	canary release — rolling out a change to a small subset of users first to detect issues early
+Blau-Grün-Bereitstellung	blue-green deployment — two identical environments; traffic switches from blue (old) to green (new) instantly
+Feature-Flag / Feature-Schalter	feature flag / feature toggle — runtime switch to enable or disable features without redeploying
+Vergleichstest zweier Varianten zur Ermittlung der besseren	A/B test
+Gesundheitsprüfung / Health Check	health check
+Container-Orchestrierung	container orchestration
+Infrastruktur als Code	infrastructure as code (IaC)
+Überwachung / Monitoring	monitoring
+Alarmierung / Alerting	alerting
+Protokollierung / Logging	logging
+Verfügbarkeit	availability
+Ausfallzeit / Downtime	downtime
+Betriebszeit / Uptime	uptime
+Bereitstellung / Deployment	deployment
+Paketverwaltung / Paketierung	packaging
+Konfigurationsmanagement	configuration management
+Automatisierung	automation
+Vorfallmanagement	incident management
+Dienstgütevereinbarung	SLA (Service Level Agreement)
+Betriebshandbuch / Runbook	runbook
+Nachbesprechung / Post-Mortem	postmortem / post-incident review
+Rollforward / Vorwärtskorrektur	roll forward
+Unveränderliches Artefakt	immutable artifact
+Build-Auslöser / Trigger	build trigger
+Automatischer HTTP-Rückruf eines Servers bei einem Ereignis	webhook trigger
+Parallele Pipeline	parallel pipeline
+Pipeline-Stufe	pipeline stage
+Pipeline-Schritt	pipeline step
+Gated Build / Kontrollierter Build	gated build
+Qualitätstor / Quality Gate	quality gate
+Artefakt-Repository	artifact repository
+Zentrales Verzeichnis zum Speichern und Verteilen von Container-Images	container registry
+Image / Abbild (Container)	container image
+Tag / Kennzeichnung (Image)	image tag
+Werkzeug zum Definieren und Starten mehrerer Container als Verbund	Docker Compose
+Orchestrierungsplattform für Container-Anwendungen	Kubernetes (K8s)
+Kleinste Bereitstellungseinheit in Kubernetes	pod
+Knoten / Node (Kubernetes)	node
+Namespace (Kubernetes)	namespace
+Kubernetes-Paketformat mit Templates und Abhängigkeiten	Helm chart
+Deklaratives IaC-Werkzeug zur Infrastrukturdefinition (HashiCorp)	Terraform
+Agentenloses Automatisierungswerkzeug für Konfigurationsmanagement	Ansible
+Anweisungsdatei für automatisierte Konfigurationsschritte	playbook
+Idempotente Konfiguration	idempotent configuration
+Konfigurationsdrift	configuration drift
+Geplante Ausfallzeit	scheduled downtime / maintenance window
+Wartungsfenster	maintenance window
+Blaupause / Template	template / blueprint
+Sicherheitsscanner	security scanner
+Schwachstellenscan	vulnerability scan
+Abhängigkeitsscan	dependency scan
+Lizenzprüfung	license check / license compliance
+Geheimisverwaltung	secrets management
+Umgebungskonfiguration	environment configuration
+Entwicklungsumgebung	development environment
+Testumgebung	test / QA environment
+Vorproduktionsumgebung	pre-production environment / staging
+Produktionsbereitschaft	production readiness
+Bereitschaftsdienst / On-Call	on-call (duty)
+Eskalationsrichtlinie	escalation policy
+Metriken / Kennzahlen	metrics
+Visuelle Übersicht mit Kennzahlen und Diagrammen	dashboard
+Schwellenwert (Alerting)	threshold
+Selbstheilung	self-healing
+Graceful Shutdown / Geordnetes Herunterfahren	graceful shutdown
+Warmstart / Kaltstart	warm start / cold start
+
+# ============================================================
+
+# Section 12: APIs & Integration
+# ============================================================
+
+Programmierschnittstelle / API	API (Application Programming Interface)
+Endpunkt	endpoint
+Anfrage (API)	request
+Antwort (API)	response
+Dreistellige Zahl in der HTTP-Antwort (z.B. 200, 404, 500)	status code
+Nutzlast / Payload	payload
+Kopfzeile / Header	header
+REST (Representational State Transfer)	REST / RESTful API
+API-Abfragesprache, bei der der Client die Datenstruktur bestimmt	GraphQL
+RPC (Fernprozeduraufruf)	RPC (Remote Procedure Call)
+Automatischer HTTP-Rückruf bei einem Ereignis	webhook
+Bidirektionales Echtzeit-Kommunikationsprotokoll über TCP	WebSocket
+Abfragen / Polling	polling
+JSON (JavaScript-Objektnotation)	JSON (JavaScript Object Notation)
+XML (Erweiterbare Auszeichnungssprache)	XML (Extensible Markup Language)
+Datenformat mit Einrückung statt Klammern für Konfigurationsdateien	YAML (YAML Ain't Markup Language)
+CSV (Kommagetrennte Werte)	CSV (Comma-Separated Values)
+Serialisierung	serialization
+Deserialisierung	deserialization
+API-Schlüssel	API key
+OAuth (Offene Autorisierung)	OAuth (Open Authorization)
+Token / Zugriffstoken	token / access token
+Zugangstoken, das dem Inhaber Zugriff gewährt (z.B. im HTTP-Header)	bearer token
+Ratenbegrenzung	rate limiting
+Drosselung	throttling
+Versionierung (API)	API versioning
+Abwärtskompatibilität	backward compatibility
+Veraltete Schnittstelle / Deprecated	deprecated
+SDK (Software-Entwicklungsbausatz)	SDK (Software Development Kit)
+Wrapper / Hüllklasse	wrapper
+Zwischengeschaltete Verarbeitungsschicht in einer Anfragekette	middleware
+Idempotenter Endpunkt	idempotent endpoint
+Paginierung / Seitenumbruch	pagination
+Filterung (API)	filtering
+Sortierung (API)	sorting
+HATEOAS (Hypermedia als Motor des Anwendungszustands)	HATEOAS (Hypermedia as the Engine of Application State)
+Content-Type / Inhaltstyp	content type
+HTTP-Kopfzeile, die dem Server das gewünschte Antwortformat mitteilt	accept header
+Inhaltsvereinbarung	content negotiation
+HTTP-Methoden (GET, POST, PUT, DELETE, PATCH)	HTTP methods (GET, POST, PUT, DELETE, PATCH)
+Ressource (REST)	resource
+URI (Einheitlicher Ressourcenbezeichner)	URI (Uniform Resource Identifier)
+Statuscode 200 (OK)	200 OK
+Statuscode 201 (Erstellt)	201 Created
+Statuscode 204 (Kein Inhalt)	204 No Content
+Statuscode 400 (Ungültige Anfrage)	400 Bad Request
+Statuscode 401 (Nicht autorisiert)	401 Unauthorized
+Statuscode 403 (Verboten)	403 Forbidden
+Statuscode 404 (Nicht gefunden)	404 Not Found
+Statuscode 409 (Konflikt)	409 Conflict
+Statuscode 422 (Nicht verarbeitbar)	422 Unprocessable Entity
+Statuscode 429 (Zu viele Anfragen)	429 Too Many Requests
+Statuscode 500 (Interner Serverfehler)	500 Internal Server Error
+Statuscode 502 (Fehlerhaftes Gateway)	502 Bad Gateway
+Statuscode 503 (Dienst nicht verfügbar)	503 Service Unavailable
+Standardisierte Spezifikation zur Beschreibung von REST-APIs	OpenAPI / Swagger
+API-Dokumentation	API documentation
+Schemavalidierung	schema validation
+Eingabevalidierung	input validation
+Ausgabeformatierung	output formatting / response formatting
+Fehlerbehandlung (API)	error handling
+Fehlerantwort	error response
+Wiederholungsversuch	retry
+Exponentielles Backoff	exponential backoff — retry delay doubles after each failure to avoid overwhelming the target
+Zeitüberschreitung (API)	timeout
+Kurzschluss / Circuit Breaker	circuit breaker — stops calling a failing service after repeated errors to prevent cascading failures
+Seiteneffekt	side effect
+Callback / Rückruffunktion	callback
+Promise / Versprechen (asynchron)	promise
+Async/Await (asynchron/abwarten)	async/await
+Nachrichtenformat	message format
+Protokollpuffer / Protocol Buffers	Protocol Buffers (protobuf)
+Hochleistungs-RPC-Framework mit Protocol Buffers und HTTP/2	gRPC
+Nachrichtenbroker	message broker
+Warteschlange (Nachricht)	message queue
+Thema / Topic (Nachricht)	topic
+Abonnent / Subscriber	subscriber
+Herausgeber / Publisher	publisher
+Ereignis / Event	event
+
+# ============================================================

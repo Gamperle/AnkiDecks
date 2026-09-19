@@ -1,0 +1,156 @@
+# Technical English — Intermediate: Networking & Testing
+# Format: Front[TAB]Back
+# Part 2 of 4 (split from english_intermediate.txt): sections 9-10 - Networking & Infrastructure, Testing & Quality Assurance.
+
+# Section 9: Networking & Infrastructure
+# ============================================================
+
+Protokoll	protocol
+TCP (Übertragungssteuerungsprotokoll)	TCP (Transmission Control Protocol)
+UDP (Benutzerdatagrammprotokoll)	UDP (User Datagram Protocol)
+HTTP / HTTPS	HTTP (Hypertext Transfer Protocol) / HTTPS (HTTP Secure)
+FTP (Dateiübertragungsprotokoll)	FTP (File Transfer Protocol)
+SSH (Sichere Shell)	SSH (Secure Shell)
+SMTP (E-Mail-Versandprotokoll)	SMTP (Simple Mail Transfer Protocol)
+DHCP (Dynamisches Hostkonfigurationsprotokoll)	DHCP (Dynamic Host Configuration Protocol)
+Netzwerkgerät, das Datenpakete zwischen Netzen weiterleitet	router
+Switch / Netzwerkschalter	switch
+Verbindungspunkt zwischen zwei Netzwerken mit unterschiedlichen Protokollen	gateway
+Lastverteiler / Load Balancer	load balancer
+Vermittlungsrechner, der Anfragen stellvertretend weiterleitet	proxy server
+Vermittlungsserver, der eingehende Anfragen an Backend-Server verteilt	reverse proxy
+Latenz / Verzögerung	latency
+Durchsatz	throughput
+Paket (Netzwerk)	packet
+Netzwerkanschluss, über den ein Dienst erreichbar ist (z.B. 80, 443)	port
+Netzwerkkommunikations-Endpunkt (IP + Port)	socket
+Handshake (Verbindungsaufbau)	handshake
+Virtuelle Maschine	virtual machine (VM)
+Leichtgewichtige, isolierte Laufzeitumgebung für Anwendungen	container
+Instanz (Cloud)	instance
+Verbund aus mehreren vernetzten Rechnern, die als Einheit arbeiten	cluster
+Region (Cloud)	region
+Verfügbarkeitszone	availability zone
+Netzwerkverkehr	network traffic
+Paketverlust	packet loss
+Zeitüberschreitung / Timeout	timeout
+DNS-Auflösung	DNS resolution
+Subnetz	subnet
+VLAN (Virtuelles LAN)	VLAN (Virtual Local Area Network)
+Netzwerkschnittstelle	network interface
+MAC-Adresse	MAC address (Media Access Control address)
+ARP (Adressauflösungsprotokoll)	ARP (Address Resolution Protocol)
+ICMP (Internet-Kontrollnachrichtenprotokoll)	ICMP (Internet Control Message Protocol)
+Netzwerkbefehl zur Prüfung der Erreichbarkeit eines Rechners	ping
+Traceroute / Routenverfolgung	traceroute
+Netzwerkmaske / Subnetzmaske	subnet mask / netmask
+CIDR-Notation	CIDR notation (Classless Inter-Domain Routing)
+Netzwerkadressübersetzung (NAT)	NAT (Network Address Translation)
+Portweiterleitung	port forwarding
+Tunnelung	tunneling
+Verschlüsselungsprotokoll für sichere Datenübertragung im Internet	TLS (Transport Layer Security)
+Vorgänger von TLS; veraltetes Verschlüsselungsprotokoll	SSL (Secure Sockets Layer)
+Zertifikat (Netzwerk)	certificate
+Selbstsigniertes Zertifikat	self-signed certificate
+DNS-Eintrag	DNS record
+A-Eintrag	A record
+CNAME-Eintrag	CNAME record (Canonical Name)
+MX-Eintrag	MX record (Mail Exchange)
+TTL (Gültigkeitsdauer)	TTL (Time To Live)
+CDN (Inhaltsverteilungsnetzwerk)	CDN (Content Delivery Network)
+Edge-Server / Randserver	edge server
+Rechenzentrum	data center
+Rack / Serverschrank	rack
+Physischer Server ohne Virtualisierungsschicht	bare-metal server
+Software zur Verwaltung virtueller Maschinen auf physischer Hardware	hypervisor
+Virtualisierung	virtualization
+Netzwerksegmentierung	network segmentation
+Demilitarisierte Zone (DMZ)	DMZ (Demilitarized Zone)
+Bastion-Host / Sprungserver	bastion host / jump server
+Verschlüsselte Verbindung durch ein öffentliches Netz	VPN tunnel
+Konfiguration (Netzwerk)	network configuration
+Netzwerkdurchsatz	network throughput
+Fehlerhafte Pakete	malformed packets
+Round-Robin (Lastverteilung)	round-robin (load balancing)
+Sitzungspersistenz	session persistence / sticky sessions
+SSL-Terminierung	SSL termination / TLS termination
+Dienstvermittlung / Service Mesh	service mesh
+Eingehender Netzwerkverkehr / Zugangssteuerung (Kubernetes)	ingress
+Egress (ausgehender Verkehr)	egress
+Netzwerkrichtlinie	network policy
+
+# ============================================================
+
+# Section 10: Testing & Quality Assurance
+# ============================================================
+
+Prüfung der einzelnen Codeteile	test
+Unit-Test / Einzeltest	unit test
+Integrationstest	integration test
+End-to-End-Test	end-to-end test (E2E test)
+Regressionstest	regression test
+Smoke-Test / Grundfunktionstest	smoke test
+Testfall	test case
+Testsuite / Testsammlung	test suite
+Behauptung / Assertion	assertion
+Mock-Objekt / Attrappe	mock
+Stub / Platzhalter	stub
+Fixture / Testvorrichtung	fixture
+Testabdeckung / Code Coverage	code coverage / test coverage
+Testgetriebene Entwicklung	test-driven development (TDD) — write a failing test first, then implement code to make it pass
+Abnahmetest	acceptance test
+Grenzwerttest	boundary testing / boundary value analysis
+Bestanden (Test)	pass / passed
+Fehlgeschlagen (Test)	fail / failed
+Instabiler Test / Flaky Test	flaky test
+Falsch-Positiv	false positive
+Falsch-Negativ	false negative
+Grenzfall / Sonderfall	edge case / corner case
+Lastentest	load test / load testing
+Belastungstest unter extremen Bedingungen	stress test
+Performanztest	performance test
+Testumgebung	test environment
+Testdaten	test data
+Erwartetes Ergebnis	expected result / expected outcome
+Tatsächliches Ergebnis	actual result / actual outcome
+Fehlerbericht	bug report / defect report
+Verhaltensgetriebene Entwicklung	behavior-driven development (BDD)
+Vertragstests	contract testing
+Mutationstest	mutation testing — introduces small code changes (mutants) to verify that tests catch them
+Snapshot-Test	snapshot testing
+Sicherheitstest	security testing
+Barrierefreiheitstest	accessibility testing
+Kompatibilitätstest	compatibility testing
+Benutzerfreundlichkeitstest	usability testing
+Explorativer Test	exploratory testing
+Manueller Test	manual testing
+Automatisierter Test	automated test
+Testautomatisierungsframework	test automation framework
+Testimplementierung	test implementation
+Dokument mit Teststrategie, Umfang und Zeitrahmen	test plan
+Teststrategie	test strategy
+Testpyramide	test pyramid
+Testverdopplung	test double
+Spy / Testspion	spy (test spy)
+Dummy (Testverdopplung)	dummy (test double)
+Fake (Testverdopplung)	fake (test double)
+Äquivalenzklasse	equivalence class / equivalence partition
+Entscheidungstabelle	decision table
+Zustandsübergangstest	state transition testing
+White-Box-Test	white-box testing
+Black-Box-Test	black-box testing
+Grey-Box-Test	grey-box testing
+Testbarkeit	testability
+Testisolierung	test isolation
+Testparallelisierung	test parallelization
+Testbericht	test report
+Fehlerschwere	defect severity
+Fehlerpriorität	defect priority
+Fehlerdichte	defect density
+Fehlerbehebungsrate	defect resolution rate
+Codeabdeckungsbericht	code coverage report
+Zweigabdeckung	branch coverage
+Anweisungsabdeckung	statement coverage
+Pfadabdeckung	path coverage
+
+# ============================================================

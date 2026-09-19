@@ -1,0 +1,136 @@
+# Technical English — Expert: Distributed Systems & Kernel Vocabulary
+# Format: Front[TAB]Back
+# Part 2 of 5 (split from english_expert.txt): sections 21-22 - Distributed Systems & Consensus, Kernel & Hardware-Level Vocabulary.
+
+# Section 21: Distributed Systems & Consensus
+# ============================================================
+
+Verteiltes System	distributed system
+Verteilter Algorithmus	distributed algorithm
+Knotenausfall	node failure
+Netzwerkpartitionierung	network partition
+Teilversagen / Partial Failure	partial failure
+Byzantine Fehler	Byzantine fault — a node behaves arbitrarily or maliciously, sending conflicting information
+Byzantinische Fehlertoleranz	Byzantine fault tolerance (BFT)
+Absturzfehlertoleranz	crash fault tolerance (CFT)
+Fehlermodell	failure model
+Fehlererkennung	failure detection
+Herzschlag / Heartbeat	heartbeat
+Zeitüberschreitung (Verteilte Systeme)	timeout (distributed systems)
+Phi-Vermutungsbasierter Fehlerdetektor	phi accrual failure detector — outputs a suspicion level instead of binary alive/dead, adapting to network conditions
+Konsensalgorithmus für verteilte Systeme (Leslie Lamport)	Paxos (algorithm)
+Verständlicherer Konsensalgorithmus als Alternative zu Paxos	Raft (algorithm)
+Zustandsmaschinen-Replikation	replicated state machine
+Verteilter Hash-Tabelle (DHT)	DHT (Distributed Hash Table)
+Konsistentes Hashing	consistent hashing — hash ring that minimizes key redistribution when nodes join or leave
+Datenversionierung	data versioning
+Lese-Quorum	read quorum
+Schreib-Quorum	write quorum
+Lese-nach-Schreib-Konsistenz	read-your-writes consistency
+Monotone Lesekonsistenz	monotonic read consistency
+Sitzungskonsistenz	session consistency
+Starke Konsistenz	strong consistency
+Schwache Konsistenz	weak consistency
+Uhr-Skew / Zeitversatz	clock skew
+Logische Uhr	logical clock
+Lamport-Zeitstempel	Lamport timestamp — logical counter ensuring a partial causal ordering of events across nodes
+Happens-Before-Beziehung	happens-before relation
+Kausale Ordnung	causal ordering
+Totale Ordnung	total ordering
+Partielle Ordnung	partial ordering
+Selbstorganisiertes Informationsverteilungsprotokoll zwischen Knoten	gossip protocol
+Epidemisches Protokoll	epidemic protocol
+Mitgliedschaftsprotokoll	membership protocol
+Splitbrain / Geteiltes Gehirn	split-brain — partition causes two halves of a cluster to operate independently, risking data divergence
+Fechtung / Fencing	fencing
+Eindeutiger Schutzwert gegen veraltete Sperr-Übernahmen in verteilten Systemen	fencing token
+Idempotenter Empfänger	idempotent receiver
+Genau-einmal-Zustellung	exactly-once delivery
+Mindestens-einmal-Zustellung	at-least-once delivery
+Höchstens-einmal-Zustellung	at-most-once delivery
+Outbox-Muster	outbox pattern — writes events to a local outbox table in the same transaction, then publishes asynchronously
+Transaktionales Postfach	transactional outbox
+Abrufmuster / Polling-Publisher	polling publisher
+Transaktionsprotokoll-Tailing	transaction log tailing
+Change Data Capture (Änderungsdatenerfassung)	CDC (Change Data Capture) — captures row-level changes from a database log and streams them to consumers
+Stream-Verarbeitung	stream processing
+Mikro-Batch-Verarbeitung	micro-batch processing
+Ereigniszeitfenster	event time window
+Verarbeitungszeitfenster	processing time window
+Wasserzeichen (Stream-Verarbeitung)	watermark (stream processing) — timestamp threshold indicating all earlier events have been received
+Spätankommende Daten	late-arriving data
+Zustandsbehaftete Verarbeitung	stateful processing
+Zustandslose Verarbeitung	stateless processing
+Prüfpunkt / Checkpoint	checkpoint
+Wiederherstellungspunkt	recovery point
+Wiedergabe / Replay	replay
+Zurückspulen / Rewind	rewind
+Offset (Nachrichtenwarteschlange)	offset (message queue)
+Verbrauchergruppe	consumer group
+Partitionsschlüssel	partition key
+Themenpartition	topic partition
+
+# ============================================================
+
+# Section 22: Kernel & Hardware-Level Vocabulary
+# ============================================================
+
+Monolithischer Kernel	monolithic kernel
+Mikrokernel	microkernel
+Ladebare Kernelmodule	loadable kernel modules (LKM)
+Kernelmodul laden	to load a kernel module (insmod / modprobe)
+Kernelmodul entladen	to unload a kernel module (rmmod)
+Kernel-Ringpuffer	kernel ring buffer (dmesg)
+Kernel-Panik	kernel panic
+Kernspeicherabbilddatei	kernel core dump / vmcore
+Kernel-Stackverfolgung	kernel stack trace
+Systemaufruf-Tabelle	syscall table
+Namespace (Kernel)	namespace (PID, net, mnt, user, uts, ipc, cgroup)
+Kontrollgruppe	cgroup (control group)
+Kontrollgruppen-Controller	cgroup controller
+Speicherbegrenzung (cgroup)	memory limit (cgroup)
+CPU-Gewichtung (cgroup)	CPU weight / CPU shares (cgroup)
+OOM-Killer	OOM killer (Out-of-Memory killer) — kernel process that terminates processes when the system runs out of memory
+OOM-Punkte / OOM-Score	OOM score
+Speicherüberbelegung	memory overcommit
+Seitenrückforderung	page reclaim
+Kernel-Slab-Allocator	slab allocator
+Buddy-Algorithmus	buddy allocator / buddy system
+Riesenseiten / Huge Pages	huge pages
+Transparente Riesenseiten	THP (Transparent Huge Pages)
+NUMA-Bewusstsein	NUMA awareness (Non-Uniform Memory Access)
+CPU-Affinität / CPU-Bindung	CPU affinity / CPU pinning
+Isolierte CPUs	isolated CPUs (isolcpus)
+Taktfrequenzregler	CPU frequency governor
+Unterbrechungsverteilung / IRQ-Balancing	IRQ balancing
+Weiche Unterbrechung, die im Kernel verzögert verarbeitet wird	softirq (soft interrupt)
+Leichtgewichtige, dynamisch zuweisbare Kernel-Aufgabe	tasklet
+Arbeitswarteschlange	workqueue
+Zeitgesteuerter Auslöser für verzögerte Aufgaben im Betriebssystem-Kern	kernel timer
+Hochpräzisionstimer	hrtimer (high-resolution timer)
+Lese-Kopier-Aktualisierung (RCU)	RCU (Read-Copy-Update)
+Spinlock / Drehschloss	spinlock
+Lese-/Schreibsperre	read-write lock (rwlock)
+Sequenzsperre	seqlock
+Speicherbarriere (Kernel)	memory barrier (mb, rmb, wmb)
+Atomare Operationen	atomic operations
+Compare-and-Swap / Vergleichen-und-Tauschen	CAS (Compare-and-Swap)
+Speicherordnungs-Semantik	memory ordering semantics
+Koheränzprotokoll (Cache)	cache coherence protocol
+MESI-Protokoll	MESI protocol (Modified, Exclusive, Shared, Invalid) — cache coherence protocol tracking line state across CPU cores
+Cache-Zeile	cache line
+Leistungseinbruch durch ständiges Verdrängen und Neuladen von Cache-Einträgen	cache thrashing
+Falsche Teilung / False Sharing	false sharing
+Spekulative Ausführung	speculative execution — CPU executes instructions ahead of time on a predicted branch, rolling back if wrong
+Seitenkanalangriff	side-channel attack
+CPU-Sicherheitslücken durch spekulative Ausführung (Seitenkanalangriffe)	Meltdown / Spectre
+eBPF (erweiterter Berkeley-Paketfilter)	eBPF (extended Berkeley Packet Filter)
+XDP (Express-Datenpfad)	XDP (eXpress Data Path)
+ftrace (Funktionsverfolgung)	ftrace (function tracer)
+kprobe (Kernel-Sonde)	kprobe (kernel probe)
+uprobe (Benutzersonde)	uprobe (user-space probe)
+Tracepoint / Ablaufverfolgungspunkt	tracepoint
+perf (Leistungsanalyse-Tool)	perf (performance analysis tool)
+Systemzustandsbericht	system activity report (sar)
+
+# ============================================================

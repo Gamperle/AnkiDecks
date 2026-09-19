@@ -1,0 +1,156 @@
+# Technical English — Pro: Communication & Common Verbs
+# Format: Front[TAB]Back
+# Part 3 of 5 (split from english_pro.txt): sections 17-18 - Technical Communication & Documentation, Common Verbs & Phrases in Tech.
+
+# Section 17: Technical Communication & Documentation
+# ============================================================
+
+Spezifikation	specification (spec)
+Vorschlag / Proposal	proposal
+RFC (Bitte um Kommentare)	RFC (Request for Comments)
+Architekturentscheidung (ADR)	ADR (Architecture Decision Record)
+Nachbesprechung / Post-Mortem	postmortem
+Betriebshandbuch / Runbook	runbook
+Technische Dokumentation	technical documentation
+Architekturdokumentation	architecture documentation
+Standup / Tägliche Kurzbesprechung	standup (meeting) / daily standup
+Retrospektive	retrospective
+Demo / Vorführung	demo / demonstration
+Abstimmung / Sync-Meeting	sync (meeting) / alignment meeting
+Kick-off / Projektstart	kick-off (meeting)
+Abwägung / Trade-off	trade-off
+Einschränkung / Constraint	constraint
+Annahme / Voraussetzung	assumption
+Vorbehalt / Einschränkung	caveat
+Voraussetzung	prerequisite
+Blocker / Hindernis	blocker
+Genehmigen / Freigeben	to approve
+Ablehnen / Zurückweisen	to reject
+Änderungen anfordern	to request changes
+Vorschlagen	to suggest / to propose
+Eskalieren	to escalate
+Technischer Redakteur	technical writer
+Zielgruppe	target audience
+Wörterverzeichnis mit Erklärung technischer Fachbegriffe	glossary
+FAQ (Häufig gestellte Fragen)	FAQ (Frequently Asked Questions)
+Freigabe / Sign-off	sign-off / approval
+Entwurf / Draft	draft
+Endgültige Fassung	final version / final draft
+Rückmeldung geben	to give feedback / to provide feedback
+Überarbeitung	revision
+Korrekturlesen	to proofread
+Zusammenfassung	summary / executive summary
+Handlungsanweisung / Aktionspunkt	action item
+Nächste Schritte	next steps
+Tagesordnung	agenda
+Protokoll (Besprechung)	meeting minutes / meeting notes
+Nachfassen / Follow-up	follow-up
+Statusbericht	status report / progress report
+Wochenbericht	weekly report
+Entscheidungsvorlage	decision paper / decision brief
+Architekturdiagramm	architecture diagram
+Sequenzdiagramm	sequence diagram
+Komponentendiagramm	component diagram
+Bereitstellungsdiagramm	deployment diagram
+Datenflussdiagramm	data flow diagram
+Systemübersicht	system overview
+Schnittsteilenbeschreibung	interface description / interface specification
+Vorher-Nachher-Vergleich	before-and-after comparison
+Machbarkeitsbewertung	feasibility assessment
+Technischer Vorschlag	technical proposal
+Lektionen gelernt / Lessons Learned	lessons learned
+Wissenstransfer	knowledge transfer
+Dokumentation pflegen	to maintain documentation
+Veraltete Dokumentation	outdated documentation / stale documentation
+Interne Dokumentation	internal documentation
+Externe Dokumentation	external documentation / public-facing documentation
+API-Referenz	API reference
+Änderungsanforderung	change request (CR)
+Genehmigungsworkflow	approval workflow
+Freigabeprozess	release process / approval process
+
+# ============================================================
+
+# Section 18: Common Verbs & Phrases in Tech
+# ============================================================
+
+Bereitstellen / Deployen	to deploy
+Provisionieren / Einrichten	to provision
+Bootstrappen / Initialisieren	to bootstrap
+Hochfahren / Starten (Instanz)	to spin up
+Herunterfahren / Abbauen	to tear down
+Als veraltet markieren / Deprecaten	to deprecate
+Einstellen / Außer Betrieb nehmen	to sunset / to decommission
+Reproduzieren (Fehler)	to reproduce
+Isolieren (Problem)	to isolate
+Nachverfolgen / Tracen	to trace
+Diagnostizieren	to diagnose
+Grundursache	root cause
+Umgehungslösung / Workaround	workaround
+Hotfix / Sofort-Fehlerbehebung	hotfix
+Einarbeiten / Onboarding	to onboard / onboarding
+Übergeben / Weitergeben	to hand off / handover
+Pair Programming / Paarprogrammierung	pair programming
+Quietscheenten-Debugging	rubber duck debugging
+Außerhalb des Geltungsbereichs	out of scope
+In Arbeit / Work in Progress	work in progress (WIP)
+Erledigt / Fertig	done / completed
+Blockiert	blocked
+Zurückgestellt / Pausiert	on hold
+Veraltet / Deprecated	deprecated
+Abwärtskompatibel	backward compatible
+Aufwärtskompatibel	forward compatible
+Plattformübergreifend	cross-platform
+Betriebssystemunabhängig	platform-independent / OS-agnostic
+Produktionsreif	production-ready
+Skalierbar	scalable
+Wartbar	maintainable
+Deterministisch	deterministic
+Nicht-deterministisch	non-deterministic
+Zustandslos	stateless
+Zustandsbehaftet	stateful
+Fehlertolerant	fault-tolerant / resilient
+Ausfallsicher	failsafe
+Quelloffene Software	open source (software)
+Herstellersperre / Vendor Lock-in	vendor lock-in
+Technische Schulden abbauen	to pay off technical debt / to reduce technical debt
+Etwas von Grund auf neu bauen	to build from scratch
+In Betrieb nehmen	to go live / to launch
+Pilotbetrieb	pilot / pilot run
+Stufenweise Einführung	phased rollout / gradual rollout
+Leistungsrückgang / Degradation	degradation / performance degradation
+Fehlerkaskade	cascading failure
+Selbstheilend	self-healing
+Etwas hart codieren	to hardcode
+Konfigurierbar machen	to make configurable / to externalize
+Umgebungsspezifisch	environment-specific
+Plattformunabhängig	platform-agnostic / platform-independent
+Nicht-invasive Änderung	non-breaking change
+Eine Ebene darüber abstrahieren	to abstract away
+Ausgründen / Auslagern (Code)	to extract / to refactor out
+Zusammenführen / Konsolidieren	to consolidate
+Vereinfachen	to simplify / to streamline
+Ein Feature hinter einem Flag verstecken	to feature-flag / to gate behind a flag
+Durchgehend testen	to test end-to-end
+Automatisiert prüfen	to validate automatically
+Manuell eingreifen	to intervene manually
+Nachträglich beheben	to fix retroactively / to backport a fix
+Auf eine neuere Version migrieren	to migrate / to upgrade
+Seitwärtskompatibel	cross-compatible / interoperable
+Einwegmigration	one-way migration
+Zurückmigrierbar	reversible migration
+Bei Bedarf skalieren	to scale on demand
+Lastverteilt	load-balanced
+Hochverfügbar betreiben	to run in high availability (HA)
+Einen Dienst ausrollen	to roll out a service
+Schrittweise einführen	to incrementally roll out / to canary
+Den Dienst beobachten	to observe / to monitor
+Kennzahlen erheben	to collect metrics / to instrument
+Alarme konfigurieren	to set up alerts / to configure alerting
+Das System unter Last setzen	to put under load / to stress-test
+Einen Engpass identifizieren	to identify a bottleneck
+Die Grundursache ermitteln	to perform root cause analysis (RCA)
+Einen Vorfall dokumentieren	to document an incident
+Rückblickend analysieren	to conduct a retrospective / to do a post-incident review
+
+# ============================================================

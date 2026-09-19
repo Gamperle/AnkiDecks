@@ -1,0 +1,158 @@
+# Technical English — Pro: Domain Vocabulary II (C++, Git, Linux)
+# Format: Front[TAB]Back
+# Part 5 of 5 (split from english_pro.txt): sections 18d-18f - C++, Git, and Linux domain vocabulary.
+
+# Section 18d: C++ Domain Vocabulary
+# ============================================================
+Verschiebe-Semantik	move semantics — transfers ownership of resources instead of copying, avoiding expensive deep copies
+rvalue-Referenz	rvalue reference
+Perfekte Weitergabe	perfect forwarding — template function preserves the value category (lvalue/rvalue) of its arguments
+Rückgabewert-Optimierung	RVO (return value optimization)
+Benannte Rückgabewert-Optimierung	NRVO (named RVO)
+Referenzzählung	reference counting
+Kontrollblock (shared_ptr)	control block
+Referenzzyklus	reference cycle
+Positionierungs-new	placement new
+Virtueller Destruktor	virtual destructor
+Rein virtuelle Funktion	pure virtual function
+Dynamische Versendung	dynamic dispatch
+Template-Spezialisierung	template specialization
+Teilweise Spezialisierung	partial specialization
+Template-Metaprogrammierung	template metaprogramming — using templates to perform computations at compile time
+Konzept (C++20)	concept (C++20)
+Requires-Klausel	requires clause
+constexpr-Auswertung	constexpr evaluation
+Strukturierte Bindungen	structured bindings (C++17)
+Falt-Ausdruck	fold expression (C++17)
+Variadische Templates	variadic templates
+Parameterpakt	parameter pack
+Lambda-Ausdruck	lambda expression
+Capture-Klausel	capture clause
+Codeanalyse zur Auffälligkeitserkennung durch Substitution funktionierender Codeteile	SFINAE (substitution failure is not an error)
+Typ-Merkmale	type traits
+Iterator-Kategorie	iterator category
+Bereiche (C++20)	ranges (C++20)
+Sichten (C++20)	views (C++20)
+Zuteiler (Speicher)	allocator
+Ausnahme-Sicherheit	exception safety
+Starke Ausnahme-Sicherheit	strong exception safety
+noexcept-Spezifikator	noexcept specifier
+Undefiniertes Verhalten	undefined behavior (UB) — code whose behavior the standard does not define; compiler may do anything
+C++-Speichermodell	C++ memory model
+Speicher-Ordnung (Atomics)	memory ordering (relaxed, acquire, release)
+Baumelnder Zeiger	dangling pointer
+Doppel-Löschung	double delete
+Pufferüberlauf	buffer overflow
+Benutzung-nach-Freigabe	use-after-free
+Link-Zeit-Optimierung	link-time optimization (LTO) — optimizes across translation units at link time for better code generation
+Vektorisierung (SIMD)	vectorization (SIMD)
+Binäre Kompatibilität	binary compatibility
+ABI (binäre Schnittstelle)	ABI (application binary interface)
+ODR-Verstoß	ODR violation (one definition rule)
+Kopie-Auslassung	copy elision
+
+# ============================================================
+
+# Section 18e: Git Domain Vocabulary
+# ============================================================
+Inhaltsadressierter Speicher	content-addressable storage — objects are stored and retrieved by the hash of their content
+Blob-Objekt	blob (file content object)
+Baum-Objekt	tree (directory listing object)
+Deltakette	delta chain
+Packdatei	packfile
+Bereitstellungsbereich	staging area / index
+Referenzprotokoll	reflog
+Losgelöster Kopf	detached HEAD
+Schnellspulen-Merge	fast-forward merge
+Drei-Wege-Merge	three-way merge
+Handverlese (Commit)	cherry-pick
+Umbasen	to rebase
+Interaktive Umbasung	interactive rebase
+Zusammenquetschen	to squash
+Konfliktlösung	conflict resolution
+Merge-Treiber	merge driver
+Verstecken (Änderungen)	to stash
+Beschuldigung (Zeilen)	blame
+Halbieren (Fehlersuche)	to bisect — binary search through commit history to find the commit that introduced a bug
+Verlaufsbereiniger	filter-repo / BFG repo-cleaner
+Flacher Klon	shallow clone
+Teilweiser Klon	partial clone
+Blobloser Klon	blobless clone
+Spärlicher Checkout	sparse checkout — checks out only a subset of the repository tree, reducing working-copy size
+Commit-Diagramm	commit-graph
+Erreichbarkeits-Bitmap	reachability bitmap
+Große Dateiverwaltung	LFS (Large File Storage)
+Bündel (Git)	bundle
+Signierung (Commits/Tags)	signing (GPG / SSH)
+Zweigschutz	branch protection
+Erzwungener Push mit Absicherung	force push with lease (--force-with-lease)
+Empfangs-Hooks	receive hooks (pre-receive, post-receive)
+Untermodul	submodule
+Unterbaum	subtree
+Arbeitsbaum	worktree
+Verwaiste Objekte	dangling objects / unreachable objects
+Müllsammlung (Git)	garbage collection (git gc)
+Integritätsprüfung (Git)	fsck
+
+# ============================================================
+
+# Section 18f: Linux Domain Vocabulary
+# ============================================================
+Monolithischer Kernel	monolithic kernel
+Kernelraum	kernel space
+Benutzerraum	user space
+Systemaufruf	system call (syscall)
+Kontextwechsel	context switch
+Prozess-Deskriptor	task_struct (process descriptor)
+Völlig fairer Planer	CFS (Completely Fair Scheduler) — Linux’s default CPU scheduler using a red-black tree of virtual runtimes
+Virtuelle Laufzeit	virtual runtime (vruntime)
+Nette-Wert (Priorität)	nice value
+Echtzeit-Planung	real-time scheduling (SCHED_FIFO, SCHED_RR)
+CPU-Affinität	CPU affinity
+NUMA-Architektur	NUMA (Non-Uniform Memory Access)
+Seitentabelle	page table
+TLB-Leerung	TLB flush
+Seitenfehler	page fault
+Kopie-bei-Schreiben	copy-on-write (CoW) — defers data duplication until a write occurs, saving memory for read-only forks
+Plattenzuteiler	slab allocator
+Kumpelsystem (Speicher)	buddy system allocator
+VFS-Abstraktionsschicht	VFS (Virtual Filesystem Switch)
+Inode (Dateimetadaten)	inode
+Verzeichniseintrag-Cache	dentry cache
+Seitencache	page cache
+Rückschreiben (Dirty Pages)	writeback
+Schmutze Seiten	dirty pages
+Unterbrechungsbehandlungsroutine im Betriebssystem-Kernel	interrupt handler
+Obere Hälfte (Interrupt)	top-half handler
+Untere Hälfte (Interrupt)	bottom-half handler (softirq, tasklet, workqueue)
+Zeichengerät	character device
+Blockgerät	block device
+Geräteknoten	device node (/dev/)
+Haupt-/Nebennummer	major/minor number
+Namensräume (Kernel)	namespaces (PID, network, mount)
+PID-Namensraum	PID namespace
+Netzwerk-Namensraum	network namespace
+Benutzer-Namensraum	user namespace
+Steuergruppen	cgroups (control groups)
+Speicherlimit (Cgroup)	memory.max / memory limit
+CPU-Bandbreite (Cgroup)	CPU bandwidth (cpu.max)
+Systemd-Unit-Datei	systemd unit file
+USE-Methode (Analyse)	USE method (Utilization, Saturation, Errors)
+Auslastung	utilization
+Sättigung	saturation
+Dynamische Spannungs-/Frequenzskalierung	DVFS (Dynamic Voltage and Frequency Scaling)
+Riesenseiten	huge pages
+Transparente Riesenseiten	transparent huge pages (THP)
+E/A-Planer	I/O scheduler (mq-deadline, bfq)
+TCP-Überlastungskontrolle	TCP congestion control (CUBIC, BBR) — algorithms that prevent network overload by adjusting send rate
+Flammendiagramm	flame graph
+eBPF (erweiterter BPF)	eBPF (extended Berkeley Packet Filter) — safely runs sandboxed programs in the Linux kernel for tracing, networking, and security
+BPF-Verifizierer	BPF verifier
+Tracepoint (Kernel)	tracepoint
+XDP (Frühpaketverarbeitung)	XDP (eXpress Data Path)
+Nachladbarer Betriebssystem-Baustein für Treiber und Dateisysteme	kernel module (LKM)
+Kernel-Befehlszeile	kernel command line
+Kernelprotokoll	dmesg (kernel log)
+Drehsperre	spinlock
+RCU (Lesen-Kopieren-Aktualisieren)	RCU (Read-Copy-Update) — lock-free synchronization allowing concurrent reads while writers update a copy
+Speicherbarriere (Kernel)	memory barrier (smp_wmb, smp_rmb, smp_mb)

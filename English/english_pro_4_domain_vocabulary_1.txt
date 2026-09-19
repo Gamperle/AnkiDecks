@@ -1,0 +1,171 @@
+# Technical English — Pro: Domain Vocabulary I (Java, Android, Security)
+# Format: Front[TAB]Back
+# Part 4 of 5 (split from english_pro.txt): sections 18a-18c - Java, Android & AAOS, and Security domain vocabulary.
+
+# Section 18a: Java Domain Vocabulary
+# ============================================================
+Müllsammlung / Speicherbereinigung	garbage collection (GC)
+Junge Generation (GC)	young generation
+Alte Generation (GC)	old generation / tenured generation
+Fluchtanalyse	escape analysis — JIT optimization determining if an object can be stack-allocated instead of heap-allocated
+Falsches Sharing (CPU-Cache)	false sharing — performance degradation when unrelated data on the same cache line is modified by different cores
+Just-In-Time-Kompilierung	JIT compilation
+Gestufte Kompilierung	tiered compilation
+Entoptimierung	deoptimization
+Methoden-Einlagerung	method inlining
+Typ-Löschung (Generics)	type erasure
+Brückenmethode	bridge method
+Heap-Verschmutzung	heap pollution
+Kovarianter Rückgabetyp	covariant return type
+Kontravarianz	contravariance
+Invarianz	invariance
+Virtuelle Fäden	virtual threads
+Ankern (Virtual Threads)	pinning
+Trägerfaden	carrier thread
+Strukturierte Parallelität	structured concurrency — child tasks are scoped to a parent, ensuring all complete before the parent finishes
+Bereichsbezogene Werte	scoped values
+Vergleichen-und-Austauschen (CAS)	compare-and-swap (CAS)
+Nebenläufigkeitsfalle: CAS erkennt A→B→A nicht als Änderung	ABA problem
+Sperren-freier Algorithmus	lock-free algorithm
+Warte-freier Algorithmus	wait-free algorithm
+Datensatz (Java 16)	record
+Versiegelte Klasse (Java 17)	sealed class
+Mustererkennung (Java 21)	pattern matching
+Annotationsverarbeitung	annotation processing
+Programmatische Veränderung von kompiliertem Zwischencode zur Laufzeit	bytecode manipulation
+Methodengriff	method handle
+GraalVM-natives Abbild	GraalVM native image
+Schwache Referenz	weak reference
+Weiche Referenz	soft reference
+Phantom-Referenz	phantom reference
+Sicherer Punkt (GC)	safepoint
+Thread-lokaler Zuweisungspuffer	TLAB (thread-local allocation buffer)
+Happens-Before-Beziehung	happens-before relationship — guarantees one action’s effects are visible to another across threads
+Speicherbarriere	memory barrier / memory fence
+Klassenlader-Hierarchie	classloader hierarchy
+Elterliche Delegation (ClassLoader)	parent delegation
+Aspektorientierte Programmierung	aspect-oriented programming (AOP) — modularizes cross-cutting concerns (logging, security) into separate units
+Schnittpunkt / Ratschlag (AOP)	pointcut / advice
+Stapelabwicklung	stack unwinding
+Geprüfte Ausnahme	checked exception
+Ungeprüfte Ausnahme	unchecked exception
+Versuchen-mit-Ressourcen	try-with-resources
+
+# ============================================================
+
+# Section 18b: Android & AAOS Domain Vocabulary
+# ============================================================
+Binder-Interprozess-Kommunikation	Binder IPC — Android’s high-performance IPC mechanism for cross-process method calls
+Paketierbar (Android)	Parcelable
+Inhaltsanbieter	content provider
+Fragment-Lebenszyklus	fragment lifecycle
+Fragment-Transaktion	fragment transaction
+Rück-Stapel (Navigation)	back stack
+Anwendung antwortet nicht	ANR (Application Not Responding) — dialog shown when the main thread is blocked for >5 seconds
+Strenger Modus (Android)	StrictMode
+Bildtakt-Synchronisation	frame pacing
+Ruckeln (Leistung)	jank
+GPU-Überzeichnung	GPU overdraw
+Rendern-Faden	RenderThread
+Vertikale Synchronisation	VSYNC (vertical sync)
+Choreograph (Android)	Choreographer
+Ansichtsbindung	ViewBinding
+Datenbindung	data binding
+Koroutinen	coroutines
+Aussetzbare Funktion	suspend function
+Fortsetzung (Coroutine)	continuation
+Verteiler (Dispatchers)	dispatchers (Main, Default, IO)
+Fluss (Kotlin)	Flow (cold stream)
+Zustandsfluss	StateFlow
+Gemeinsamer Fluss	SharedFlow
+Rückdruck	backpressure
+Raum-Migration (DB)	Room migration
+Datenzugriffsobjekt	DAO (Data Access Object)
+Lager-Muster	repository pattern
+Paginierung	pagination
+Benachrichtigungskanal	notification channel
+Vordergrunddienst	foreground service
+Arbeitsverwalter	WorkManager
+Rückkehr-Strategie (Arbeit)	backoff policy
+Biometrische Authentifizierung	biometric authentication
+Krypto-Objekt	CryptoObject
+Vertrauenswürdige Ausführungsumgebung	TEE (Trusted Execution Environment) — isolated hardware area for processing sensitive data securely
+Hardware-Schlüsselspeicher	hardware-backed KeyStore
+Schlüsselbestätigung	key attestation
+Zertifikatverankerung	certificate pinning — app accepts only specific certificates, preventing MITM with forged certs
+Neukomposition (Compose)	recomposition
+Grundlinienprofil	baseline profile — precompiled method list that eliminates JIT warm-up on first launch
+App-Bündel (AAB)	Android App Bundle (AAB)
+Dynamisches Feature-Modul	dynamic feature module
+Dex-Schrumpfung	Dex shrinking (R8)
+ProGuard-Regeln	ProGuard rules
+Fahrzeugdienst (AAOS)	CarService
+Fahrzeug-HAL	Vehicle HAL (VHAL)
+Fahrzeugeigenschaft	VehicleProperty
+Serielles Bussystem für Fahrzeugnetzwerke	CAN bus (Controller Area Network)
+Steuergerät	ECU (Electronic Control Unit)
+Gateway-Steuergerät	gateway ECU
+Digitaler Fahrzeugschlüssel	digital key
+Sichere Bordkommunikation	SecOC (Secure Onboard Communication)
+Zonale Architektur	zonal architecture
+
+# ============================================================
+
+# Section 18c: Security Domain Vocabulary
+# ============================================================
+TLS-1.3-Handschlag	TLS 1.3 handshake
+Schlüsselableitungsfunktion	key derivation function (KDF / HKDF) — derives one or more secret keys from a master key or password
+Perfekte Vorwärtsgeheimhaltung	perfect forward secrecy (PFS)
+Ephemerer Schlüsselaustausch	ephemeral key exchange (ECDHE) — uses short-lived keys so each session has unique keying material
+Sitzungswiederaufnahme (TLS)	TLS session resumption
+Sitzungsticket	session ticket
+Zertifikatkette	certificate chain
+Stammzertifizierungsstelle	root certificate authority (CA)
+Selbstsigniertes Zertifikat	self-signed certificate
+Zertifikatstransparenz	certificate transparency (CT)
+Nachquantenkryptographie	post-quantum cryptography
+Gitterbasierte Kryptographie	lattice-based cryptography
+Homomorphe Verschlüsselung	homomorphic encryption — allows computation on encrypted data without decrypting it
+Nullwissensbeweis	zero-knowledge proof (ZKP) — proves knowledge of a secret without revealing the secret itself
+Geheimnisverteilung (Shamir)	Shamir's secret sharing
+Elliptische Kurve	elliptic curve
+HMAC (Nachrichten-Integrität)	HMAC (hash-based message authentication code)
+AES-GCM (authentifizierte Verschlüsselung)	AES-GCM (authenticated encryption)
+Polster-Oracle-Angriff	padding oracle attack
+Rückgabeorientierte Programmierung	return-oriented programming (ROP)
+Gadget-Kette	gadget chain
+XXE-Injektion	XXE (XML external entity) injection
+Befehls-Injektion	command injection
+Pfad-Traversierung	path traversal
+Template-Injektion	template injection
+Deserialisierungsangriff	deserialization attack
+Rechteeskalation	privilege escalation
+Horizontale Rechteeskalation	horizontal privilege escalation
+Bedrohungsmodellierung (STRIDE)	STRIDE threat modeling
+Angriffsfläche	attack surface
+Angriffsbaum	attack tree
+Bedrohungsintelligenz	threat intelligence
+Kompromissindikator	indicator of compromise (IoC)
+MITRE-ATT&CK-Rahmenwerk	MITRE ATT&CK framework
+Abtötkette	kill chain
+Verteidigung in der Tiefe	defense in depth
+Prinzip der geringsten Berechtigung	principle of least privilege
+Aufgabentrennung	separation of duties
+Null-Vertrauens-Architektur	zero trust architecture
+Mikrosegmentierung	micro-segmentation
+Abdeckungsgeleitetes Fuzzing	coverage-guided fuzzing
+Statische Anwendungssicherheitsprüfung	SAST (static application security testing)
+Dynamische Anwendungssicherheitsprüfung	DAST (dynamic application security testing)
+Software-Zusammensetzungsanalyse	SCA (software composition analysis)
+Penetrationstest	penetration test
+Rotes Team / Blaues Team	red team / blue team
+Schwachstellenverwaltung	vulnerability management
+Verantwortungsvolle Offenlegung	responsible disclosure
+Vorfallsreaktion	incident response
+Forensik (IT)	digital forensics
+Beweiskette	chain of custody
+Ursachenanalyse	root cause analysis (RCA)
+Seitwärtsbewegung (Angriff)	lateral movement
+Datenexfiltration	data exfiltration
+
+# ============================================================

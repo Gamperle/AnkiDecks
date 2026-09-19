@@ -1,0 +1,163 @@
+# Technical English — Expert: Adjectives & Domain Vocabulary I (Java, Android)
+# Format: Front[TAB]Back
+# Part 4 of 5 (split from english_expert.txt): sections 26, 26a-26b - Advanced Adjectives/Adverbs/Phrases, Advanced Java/JVM Internals, Advanced Android/AAOS Automotive.
+
+# Section 26: Advanced Adjectives, Adverbs & Phrases
+# ============================================================
+
+Grundlegend / Elementar	fundamental / elementary
+Umfassend / Ganzheitlich	comprehensive / holistic
+Eingehend / Tiefgehend	in-depth / thorough
+Geringfügig / Unwesentlich	negligible / insignificant
+Erheblich / Beträchtlich	significant / substantial
+Entscheidend / Kritisch	crucial / critical
+Unverzichtbar / Unerlässlich	essential / indispensable
+Vorübergehend / Vergänglich	transient / temporary / ephemeral
+Dauerhaft / Persistent	persistent / permanent / durable
+Belastbar / Widerstandsfähig	resilient / robust
+Spröde / Zerbrechlich (System)	brittle / fragile
+Deterministisch	deterministic
+Vorhersagbar	predictable
+Reproduzierbar	reproducible
+Nachvollziehbar / Rückverfolgbar	traceable / auditable
+Durchlässig / unsichtbar für den Benutzer (Systemverhalten)	transparent (system)
+Undurchsichtig / Opak	opaque
+Eng gekoppelt	tightly coupled
+Lose gekoppelt	loosely coupled / decoupled
+Monolithisch	monolithic
+Aus unabhängigen, austauschbaren Bauteilen zusammengesetzt	modular
+Granular / Feinkörnig	granular / fine-grained
+Grobkörnig	coarse-grained
+Zustandslos	stateless
+Zustandsbehaftet	stateful
+Nicht-blockierend	non-blocking
+Blockierend	blocking
+Synchron	synchronous
+Asynchron	asynchronous
+Gleichzeitig / Nebenläufig	concurrent
+Gleichzeitig auf mehreren Prozessoren ablaufend	parallel
+Verteilbar	distributable
+Skalierbar (horizontal)	horizontally scalable
+Skalierbar (vertikal)	vertically scalable
+Mehrfach ausführbar ohne Änderung des Ergebnisses	idempotent
+Atomar	atomic
+Konsistent	consistent
+Isoliert (Transaktion)	isolated (transaction)
+Dauerhaft (Transaktion)	durable (transaction)
+Fehleranfällig	error-prone / failure-prone
+Fehlerresistent	fault-tolerant / failure-resistant
+Selbstheilend	self-healing
+Selbstbeschreibend	self-describing / self-documenting
+Abwärtskompatibel	backward-compatible
+Vorwärtskompatibel	forward-compatible
+Interoperabel	interoperable
+Erweiterbar	extensible / expandable
+Austauschbar	interchangeable / pluggable
+Eingebettet (System)	embedded (system)
+Echtzeitfähig	real-time capable
+Latenzarm	low-latency
+Hochdurchsatz	high-throughput
+Bandbreitenintensiv	bandwidth-intensive
+Rechenintensiv	compute-intensive / CPU-bound
+Speicherintensiv	memory-intensive / memory-bound
+I/O-gebunden	I/O-bound
+Netzwerkgebunden	network-bound
+Von Natur aus unsicher	inherently insecure
+Veraltet / Altlast	legacy / outdated / obsolete
+Modernisieren	to modernize
+Ab sofort verfügbar	available immediately / generally available (GA)
+Vorabversion	pre-release / preview / beta
+Stabile Version	stable release / GA release
+Kandidatenversion	release candidate (RC)
+Langzeitunterstützung	LTS (Long-Term Support)
+Ende der Lebensdauer	EOL (End of Life)
+Ende der Unterstützung	end of support / EOS
+
+# ============================================================
+
+# Section 26a: Advanced Java / JVM Internals
+# ============================================================
+Dominanzbaum (Heap-Analyse)	dominator tree
+Einbehaltener Speicher	retained heap
+Flacher Speicher (Heap)	shallow heap
+Austausch auf dem Stack	on-stack replacement (OSR) — JIT replaces an interpreted loop with compiled code while it is running
+Monomorphe Aufrufstelle	monomorphic call site
+Bimorphe Aufrufstelle	bimorphic call site
+Megamorphe Aufrufstelle	megamorphic call site
+Vorgespannte Verriegelung	biased locking
+Dünne Sperre vs. Dicker Monitor	thin lock vs. fat monitor
+Klassendatenfreigabe (CDS)	class data sharing (CDS)
+AOT-Klassenladen	AOT class loading (JEP 483)
+AOT-Methodenprofiling	AOT method profiling (JEP 490)
+Erreichbarkeits-Metadaten (GraalVM)	reachability metadata — configuration telling native-image which classes, methods, and resources to include
+Intrinsische Methoden	intrinsic methods (JVM-optimized)
+Klasse entladen	class unloading
+Benutzerdefinierter Klassenlader	custom classloader
+Java-Modulsystem (JPMS)	Java Platform Module System (JPMS)
+--add-opens-Flag	--add-opens flag (reflection access)
+invokedynamic-Befehl	invokedynamic bytecode instruction — enables flexible method dispatch used for lambdas and string concatenation
+VarHandle-Zugriffsmodi	VarHandle access modes
+Referenz-Warteschlange	ReferenceQueue
+Gutartiger Rennwettbewerb	benign race
+Daten-Rennwettbewerb	data race
+Begrenzung (Thread-Sicherheit)	confinement (thread safety)
+String-Internierung	string interning
+String-Deduplizierung	string deduplication (-XX:+UseStringDeduplication)
+Flammendiagramm (JVM)	flame graph
+Zuweisungs-Profiling	allocation profiling
+Kontinuierliches Profiling	continuous profiling
+JIT-Aufwärmphase	JIT warm-up phase
+Fabrik-Methode-Muster	factory method pattern
+Erbauer-Muster	builder pattern
+Dekorator-Muster	decorator pattern
+Proxy-Muster (JDK/CGLIB/ByteBuddy)	proxy pattern
+Beobachter-Muster	observer pattern
+Besucher-Muster	visitor pattern
+Fliegengewicht-Muster	flyweight pattern
+Verantwortungskette-Muster	chain of responsibility pattern
+Schablonenmethode-Muster	template method pattern
+
+# ============================================================
+
+# Section 26b: Advanced Android / AAOS Automotive
+# ============================================================
+Schnittstellendefinierte Hardware-Abstraktionsschicht (Nachfolger von HIDL)	AIDL HAL (interface-based HAL)
+VINTF-Manifest	VINTF (vendor interface manifest)
+SELinux-Domäne (Android)	SELinux domain
+App-Sandbox (Android)	app sandbox
+Laufzeitberechtigungen	runtime permissions
+Bereichsbezogener Speicher	scoped storage
+CTS (Kompatibilitätstest)	CTS (Compatibility Test Suite)
+VTS (Anbietertest)	VTS (Vendor Test Suite)
+JNI (Java-Native-Schnittstelle)	JNI (Java Native Interface)
+NDK (Native-Entwicklungskit)	NDK (Native Development Kit)
+Verwaltete-Sprachen-Barriere	managed language barrier (JNI)
+Hardware-Sicherheitsmodul	HSM (Hardware Security Module)
+RPMB (Wiederholungsgeschützter Speicher)	RPMB (Replay Protected Memory Block)
+Sicherer Start	secure boot
+dm-verity (Partitionsprüfung)	dm-verity (block integrity verification)
+Android Verified Boot (AVB)	AVB (Android Verified Boot)
+StrongBox-Schlüsselspeicher	StrongBox Keystore
+Exploit-Minderung	exploit mitigation (ASLR, DEP, CFI) — OS/compiler techniques that make exploitation harder
+Weiterentwicklung des CAN-Bus mit höherer, flexibler Datenrate	CAN-FD (CAN with Flexible Data-Rate)
+LIN-Bus	LIN bus (Local Interconnect Network)
+Deterministisches Hochgeschwindigkeits-Bussystem für sicherheitskritische Fahrzeugfunktionen	FlexRay (high-speed automotive bus)
+Diensteorientierte Middleware für Ethernet-Kommunikation im Fahrzeug	SOME/IP (Scalable service-Oriented Middleware over IP)
+DoIP (Diagnose über IP)	DoIP (Diagnostics over IP)
+UDS (einheitliche Diagnose)	UDS (Unified Diagnostic Services)
+OTA-Aktualisierung	OTA update (over-the-air) — firmware/software update delivered wirelessly without physical access
+Zonale Fahrzeugarchitektur	zonal vehicle architecture
+Durchsichtige Projektionsfläche für Informationen im Sichtfeld	HUD (head-up display)
+Kombiinstrument	instrument cluster
+V2X-Kommunikation	V2X (Vehicle-to-Everything) communication
+Gegenseitiges TLS	mTLS (mutual TLS)
+UWB (Ultrabreitband)	UWB (Ultra-Wideband)
+Pseudonym-Zertifikat (V2X)	pseudonym certificate
+Google-API zur Prüfung, ob ein Gerät echt und nicht manipuliert ist	Play Integrity API
+Compose-Slot-Tabelle	Compose slot table
+Stabilisierung (Compose)	stabilization (skip recomposition)
+Perfetto (Systemverfolgung)	Perfetto (system-wide tracing)
+Leistungstest unter realen App-Bedingungen (Starten, Scrollen, Rendern)	Macrobenchmark
+ANR-Spurverfolgung	ANR trace analysis
+
+# ============================================================

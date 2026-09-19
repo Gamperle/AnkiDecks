@@ -1,0 +1,166 @@
+# Technical English — Expert: Formal Methods, Networking & Data Engineering
+# Format: Front[TAB]Back
+# Part 3 of 5 (split from english_expert.txt): sections 23-25 - Formal Methods & Correctness, Advanced Networking & Protocols, Data Engineering & ML Ops Vocabulary.
+
+# Section 23: Formal Methods & Correctness
+# ============================================================
+
+Formale Verifikation	formal verification
+Modellprüfung / Model Checking	model checking — exhaustively verifies that a finite-state model satisfies a specification
+Zustandsraum	state space
+Zustandsexplosion	state space explosion
+Temporale Logik	temporal logic
+LTL (Lineare Temporale Logik)	LTL (Linear Temporal Logic)
+CTL (Baumtemporale Logik)	CTL (Computation Tree Logic)
+Unveränderliche Eigenschaft, die stets gelten muss	invariant
+Vorbedingung	precondition
+Nachbedingung	postcondition
+Schleifeninvariante	loop invariant
+Assertionsbeweis	assertion proof
+Korrektheitsbeweis	correctness proof
+Partielle Korrektheit	partial correctness
+Totale Korrektheit	total correctness
+Terminierung	termination
+Verklemmungsfreiheit	deadlock freedom
+Verhungerungsfreiheit	starvation freedom / livelock freedom
+Lebendigkeit / Liveness	liveness (property)
+Sicherheit / Safety (formale Eigenschaft)	safety (property)
+TLA+ (Temporale Logik der Aktionen)	TLA+ (Temporal Logic of Actions)
+Alloy (Modellierungssprache)	Alloy (modeling language)
+Mathematische Spezifikationssprache für formale Software-Modellierung	Z notation
+Hoare-Logik	Hoare logic — formal system for reasoning about program correctness using preconditions and postconditions
+Hoare-Tripel	Hoare triple — {P} C {Q}: if precondition P holds and command C executes, postcondition Q holds
+Spezifikationssprache	specification language
+Vertrag / Design by Contract	design by contract
+Vor- und Nachbedingungen (Vertrag)	preconditions and postconditions (contract)
+Eigenschaftsbasiertes Testen	property-based testing — generates random inputs to verify that properties hold for all cases
+Werkzeug zum automatischen Generieren von Testfällen aus Eigenschaften (Haskell)	QuickCheck
+Automatisiertes Testen mit zufällig erzeugten Eingabedaten	fuzzing / fuzz testing
+Symbolische Ausführung	symbolic execution — explores all paths using symbolic inputs to find bugs and verify properties
+Abstrakte Interpretation	abstract interpretation — approximates program semantics to statically infer properties without running it
+Statische Analyse	static analysis
+Datenflussanalyse	data flow analysis
+Kontrollflussanalyse	control flow analysis
+Kontrollfluss-Graph (CFG)	CFG (Control Flow Graph)
+Aufrufgraph	call graph
+Abhängigkeitsgraph	dependency graph
+
+# ============================================================
+
+# Section 24: Advanced Networking & Protocols
+# ============================================================
+
+OSI-Modell (Schichtenmodell)	OSI model (Open Systems Interconnection)
+Physikalische Schicht	physical layer (Layer 1)
+Sicherungsschicht	data link layer (Layer 2)
+Netzwerkschicht	network layer (Layer 3)
+Transportschicht	transport layer (Layer 4)
+Sitzungsschicht	session layer (Layer 5)
+Darstellungsschicht	presentation layer (Layer 6)
+Anwendungsschicht	application layer (Layer 7)
+TCP-Dreiwege-Handshake	TCP three-way handshake (SYN, SYN-ACK, ACK)
+TCP-Fenstergröße	TCP window size
+TCP-Überlastkontrolle	TCP congestion control
+Schneller Neuübertragung	fast retransmit
+Selektive Bestätigung (SACK)	SACK (Selective Acknowledgment)
+Nagle-Algorithmus	Nagle's algorithm
+Dauerhafte Verbindungsprüfung zur Erkennung inaktiver TCP-Sitzungen	TCP keep-alive
+Halb-offene Verbindung	half-open connection
+FIN-Paket	FIN packet
+RST-Paket	RST packet
+Einzelnes, verbindungsloses Datenpaket im UDP-Protokoll	UDP datagram
+Netzwerkübertragung an eine bestimmte Empfängergruppe	multicast
+Netzwerkübertragung an alle Teilnehmer im Netz	broadcast
+Netzwerkadressierung an den nächstgelegenen Empfänger einer Gruppe	anycast
+BGP (Border-Gateway-Protokoll)	BGP (Border Gateway Protocol)
+OSPF (Offener Kürzester-Pfad-Zuerst)	OSPF (Open Shortest Path First)
+Autonomes System (AS)	autonomous system (AS)
+Netzwerkpeering	network peering
+Internet Exchange Point (IXP)	IXP (Internet Exchange Point)
+QUIC-Protokoll	QUIC protocol — UDP-based transport with built-in TLS 1.3, multiplexing, and 0-RTT connection setup
+Leistungsstarke HTTP-Version mit Multiplexing und Server-Push	HTTP/2
+HTTP basierend auf QUIC statt TCP für schnellere Verbindungen	HTTP/3
+Vom Server initiierte Datenübertragung ohne Client-Anfrage (HTTP/2)	server push (HTTP/2)
+Gleichzeitige Übertragung mehrerer Datenströme über eine Verbindung (HTTP/2)	multiplexing (HTTP/2)
+Stream-Priorisierung	stream prioritization
+Kopfkomprimierung (HPACK/QPACK)	header compression (HPACK / QPACK)
+Kontinuierlicher Datentransfer über einen offenen RPC-Kanal	gRPC streaming
+Bidirektionales Streaming	bidirectional streaming
+Server-gesendete Ereignisse	SSE (Server-Sent Events)
+Long Polling / Langes Abfragen	long polling
+Zweiphasen-Handshake (WebSocket)	WebSocket handshake
+Paketverlustrate	packet loss rate
+Jitter / Laufzeitschwankung	jitter
+QoS (Dienstgüte)	QoS (Quality of Service)
+Verkehrsformung	traffic shaping
+Verkehrsrichtlinie	traffic policy
+Tiefe Paketinspektion	DPI (Deep Packet Inspection) — examines packet payload beyond headers to filter, detect, or shape traffic
+Netzwerkpaketvermittlung	packet switching
+Leitungsvermittlung	circuit switching
+Overlay-Netzwerk	overlay network
+Underlay-Netzwerk	underlay network
+VXLAN (Virtuelles erweiterbares LAN)	VXLAN (Virtual Extensible LAN) — overlay encapsulation enabling L2 networks over L3 infrastructure
+Software-Defined Networking (SDN)	SDN (Software-Defined Networking)
+Netzwerkfunktionsvirtualisierung	NFV (Network Functions Virtualization)
+
+# ============================================================
+
+# Section 25: Data Engineering & ML Ops Vocabulary
+# ============================================================
+
+Datenpipeline	data pipeline
+Datenaufnahme / Ingestion	data ingestion
+Datentransformation	data transformation
+Datenbereinigung	data cleansing / data cleaning
+Datenqualität	data quality
+Datenherkunft / Data Lineage	data lineage — tracks data from origin through transformations to its final destination
+Datenkatalog	data catalog
+Metadatenverwaltung	metadata management
+Daten-Governance	data governance
+Hauptdatenverwaltung	master data management (MDM)
+Batch-Verarbeitung	batch processing
+Echtzeitverarbeitung	real-time processing
+Nahe-Echtzeitverarbeitung	near-real-time processing
+Stream-Verarbeitung	stream processing
+Datenverteilungsformat (Parquet, Avro, ORC)	columnar format (Parquet, Avro, ORC)
+Schema-auf-Lesen	schema-on-read
+Schema-auf-Schreiben	schema-on-write
+Schema-Registrierung	schema registry
+Datensee / Data Lake	data lake
+Speichersee für heterogene Rohdaten (strukturiert, unstrukturiert)	lakehouse
+Dezentrales Architekturparadigma: Domänenteams besitzen ihre Datenprodukte	data mesh
+Datenprodukt	data product
+Datenanbieter / Data Producer	data producer
+Datennutzer / Data Consumer	data consumer
+Zentraler Speicher für berechnete Merkmale (ML-Training und Inferenz)	feature store
+Merkmalsextraktion / Feature Engineering	feature engineering
+Trainingspiepeline	training pipeline
+Inferenz / Vorhersage	inference
+Modellbereitstellung	model serving / model deployment
+Modellversionierung	model versioning
+Modellregistrierung	model registry
+Modellüberwachung	model monitoring
+Modellabweichung / Model Drift	model drift
+Datenabweichung / Data Drift	data drift
+A/B-Test (ML)	A/B testing (ML)
+Schattenbereitstellung	shadow deployment
+Canary-Bereitstellung (ML)	canary deployment (ML)
+Protokollierung und Vergleich von ML-Experimenten	experiment tracking
+Hyperparameter-Optimierung	hyperparameter tuning
+Reproduzierbarkeit (ML)	reproducibility (ML)
+Automatisierte Verarbeitungskette für maschinelles Lernen (Daten → Training → Deployment)	ML pipeline
+DAG (Gerichteter azyklischer Graph)	DAG (Directed Acyclic Graph)
+Workflow-Orchestrierung	workflow orchestration
+Aufgabenplaner / Task Scheduler	task scheduler
+Idempotente Aufgabe	idempotent task
+Datenpartitionierung (nach Datum, Region)	data partitioning (by date, region)
+Kompaktierung (Daten)	compaction
+Datenanreicherung	data enrichment
+Nachschlagetabelle / Lookup	lookup table
+Dimensionstabelle	dimension table
+Faktentabelle	fact table
+Langsam ändernde Dimension	SCD (Slowly Changing Dimension) — dimension table strategy for tracking historical changes (Type 1/2/3)
+Datenüberprüfung / Datenvalidierung	data validation
+Datenvertrag	data contract
+
+# ============================================================

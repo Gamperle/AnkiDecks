@@ -12,13 +12,52 @@ Front (German term / Beschreibung)[TAB]Back (English translation)
 
 ## Available Decks
 
-| File | Description |
-|------|-------------|
-| `english_beginner.txt` | Grundbegriffe: Hardware, Software, Dateien, Internet, einfache Programmierung |
-| `english_intermediate.txt` | Fortgeschritten: Software Engineering, Datenbanken, Netzwerk, DevOps, Testing |
-| `english_pro.txt` | Experte: Architektur, Security, Cloud, Performance, fachliche Kommunikation |
-| `english_expert.txt` | Spezialist: Compiler-Theorie, OS-Internals, verteilte Systeme, Kernel/Hardware, formale Methoden, Netzwerkprotokolle, Data Engineering, Fachadjektive |
-| `english_master.txt` | Meister: Forschungsvokabular, Komplexitätstheorie, Kryptographie, Chiparchitektur, Quantencomputing, Kategorientheorie, Tech-Leadership, Emerging Tech |
+Each tier below was originally one file (194-745 cards); each has been split into topic-sized files (~90-170 cards) along the numbered sections used in the Topic Index further down. No card content changed, only how it's grouped into files.
+
+### Beginner — Grundbegriffe: Hardware, Software, Dateien, Internet, einfache Programmierung
+
+| File | Sections | Topics |
+|------|----------|--------|
+| `english_beginner_1_hardware_software_files.txt` | 1-3 | Hardware & Computer Basics, Software & Operating Systems, Files & Data |
+| `english_beginner_2_internet_programming_devtools.txt` | 4-6 | Internet & Web Basics, Basic Programming Concepts, Development Tools & Workflow |
+
+### Intermediate — Fortgeschritten: Software Engineering, Datenbanken, Netzwerk, DevOps, Testing
+
+| File | Sections | Topics |
+|------|----------|--------|
+| `english_intermediate_1_swe_databases.txt` | 7-8 | Software Engineering Terms, Databases & Data Management |
+| `english_intermediate_2_networking_testing.txt` | 9-10 | Networking & Infrastructure, Testing & Quality Assurance |
+| `english_intermediate_3_devops_apis.txt` | 11-12 | DevOps & CI/CD, APIs & Integration |
+| `english_intermediate_4_domain_vocabulary.txt` | 12a-12d | Java, Android, Security, and C++ domain vocabulary |
+
+### Pro — Experte: Architektur, Security, Cloud, Performance, fachliche Kommunikation
+
+| File | Sections | Topics |
+|------|----------|--------|
+| `english_pro_1_architecture_security.txt` | 13-14 | Software Architecture, Security Vocabulary |
+| `english_pro_2_cloud_performance.txt` | 15-16 | Cloud & Infrastructure, Performance & Optimization |
+| `english_pro_3_communication_verbs.txt` | 17-18 | Technical Communication & Documentation, Common Verbs & Phrases in Tech |
+| `english_pro_4_domain_vocabulary_1.txt` | 18a-18c | Java, Android & AAOS, Security domain vocabulary |
+| `english_pro_5_domain_vocabulary_2.txt` | 18d-18f | C++, Git, Linux domain vocabulary |
+
+### Expert — Spezialist: Compiler-Theorie, OS-Internals, verteilte Systeme, Kernel/Hardware, formale Methoden, Netzwerkprotokolle, Data Engineering, Fachadjektive
+
+| File | Sections | Topics |
+|------|----------|--------|
+| `english_expert_1_compiler_os.txt` | 19-20 | Compiler & Language Theory, Operating Systems & Low-Level Concepts |
+| `english_expert_2_distributed_kernel.txt` | 21-22 | Distributed Systems & Consensus, Kernel & Hardware-Level Vocabulary |
+| `english_expert_3_formal_networking_dataeng.txt` | 23-25 | Formal Methods & Correctness, Advanced Networking & Protocols, Data Engineering & ML Ops Vocabulary |
+| `english_expert_4_adjectives_domain_1.txt` | 26, 26a-26b | Advanced Adjectives/Adverbs/Phrases, Java/JVM Internals, Android/AAOS Automotive |
+| `english_expert_5_domain_2.txt` | 26c-26f | Security & Cryptography, C++ Internals, Git Internals, Linux Kernel & Systems |
+
+### Master — Meister: Forschungsvokabular, Komplexitätstheorie, Kryptographie, Chiparchitektur, Quantencomputing, Kategorientheorie, Tech-Leadership, Emerging Tech
+
+| File | Sections | Topics |
+|------|----------|--------|
+| `english_master_1_academic_complexity.txt` | 27-28 | Academic CS & Research Paper Vocabulary, Computational Complexity & Algorithm Design |
+| `english_master_2_crypto_hardware.txt` | 29-30 | Cryptography & Protocol Design, Hardware Architecture & Chip Design |
+| `english_master_3_quantum_category_leadership.txt` | 31-33 | Quantum Computing, Category Theory & Abstract Math, Tech Leadership & Strategic Communication |
+| `english_master_4_niche_adjectives.txt` | 34-35 | Niche Systems & Emerging Technology, Rare & Precise Technical Adjectives |
 
 ---
 

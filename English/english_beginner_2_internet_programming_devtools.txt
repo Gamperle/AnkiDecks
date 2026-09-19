@@ -1,114 +1,7 @@
-# Technical English — Beginner (DE → EN)
-# Format: Front (Deutsch)	Back (English)
+# Technical English — Beginner: Internet, Programming & Dev Tools
+# Format: Front[TAB]Back
+# Part 2 of 2 (split from english_beginner.txt): sections 4-6 - Internet & Web Basics, Basic Programming Concepts, Development Tools & Workflow.
 
-# ============================================================
-# Section 1: Hardware & Computer Basics
-# ============================================================
-
-Prozessor / Hauptprozessor	CPU (Central Processing Unit)
-Arbeitsspeicher	RAM (Random Access Memory)
-Festplatte	hard drive / hard disk
-Solid-State-Laufwerk	SSD (Solid State Drive)
-Hauptplatine / Mainboard	motherboard
-Grafikkarte	GPU (Graphics Processing Unit) / graphics card
-Netzteil	PSU (Power Supply Unit)
-Gehäuse (Computer)	case / chassis
-Lüfter / Kühler	fan / cooler / heatsink
-Bildschirm / Monitor	monitor / display / screen
-Tastatur	keyboard
-Maus	mouse
-Drucker	printer
-Gerät zum Digitalisieren von Dokumenten und Bildern	scanner
-Anschluss / Schnittstelle	port / interface / connector
-USB-Anschluss	USB port
-Netzwerkkarte	network interface card (NIC)
-Hochfahren / Starten (Computer)	to boot / to boot up / to start up
-Herunterfahren	to shut down
-Neu starten	to restart / to reboot
-Einstecken / Anschließen	to plug in / to connect
-Aufrüsten / Erweitern	to upgrade
-Kleinste adressierbare Speichereinheit (8 Bit)	byte
-Speichereinheit: 1.024 Byte	kilobyte (KB)
-Speichereinheit: ca. 1 Million Byte	megabyte (MB)
-Speichereinheit: ca. 1 Milliarde Byte	gigabyte (GB)
-Speichereinheit: ca. 1 Billion Byte	terabyte (TB)
-Taktfrequenz	clock speed / clock rate
-Kern (Prozessor)	core
-Mehrkernprozessor	multi-core processor
-Zwischenspeicher (Prozessor)	cache
-Eingabegerät	input device
-Ausgabegerät	output device
-
-# ============================================================
-# Section 2: Software & Operating Systems
-# ============================================================
-
-Gesamtheit aller Programme und Daten eines Computers	software
-Anwendung / Programm	application / app
-Betriebssystem	operating system (OS)
-Fest eingebaute Steuerungssoftware in Geräten (z.B. BIOS, Router)	firmware
-Treiber	driver
-Hilfsprogramm / Dienstprogramm	utility
-Installieren	to install
-Deinstallieren	to uninstall
-Aktualisieren	to update
-Patch / Fehlerkorrektur einspielen	to patch
-Einrichten / Konfigurieren	to configure / to set up
-Starten (Programm)	to launch / to run / to execute
-Lizenz	license
-Quelloffene Software	open source software
-Proprietäre Software	proprietary software
-Kostenlose Software	freeware
-Schreibtischoberfläche / Desktop	desktop
-Taskleiste	taskbar
-Dateimanager	file manager
-Kommandozeile / Terminal	terminal / command line
-Kommandozeileninterpreter des Betriebssystems	shell
-Benutzeroberfläche	user interface (UI)
-Grafische Benutzeroberfläche	graphical user interface (GUI)
-Benachrichtigung	notification
-Standardeinstellung	default setting
-Einstellungen / Konfiguration	settings / configuration / preferences
-Verknüpfung	shortcut / link
-Zwischenablage	clipboard
-Rechte / Berechtigungen	permissions
-
-# ============================================================
-# Section 3: Files & Data
-# ============================================================
-
-Datei	file
-Ordner / Verzeichnis	folder / directory
-Erstellen (Datei)	to create
-Speichern	to save
-Löschen	to delete / to remove
-Kopieren	to copy
-Verschieben	to move
-Umbenennen	to rename
-Komprimieren / Packen	to compress / to zip
-Entpacken / Extrahieren	to extract / to unzip
-Textdatei	text file
-Binärdatei	binary file
-Ausführbare Datei	executable (file)
-Archiv (Datei)	archive
-Bilddatei	image file
-Tabellenkalkulation	spreadsheet
-Dateierweiterung / Dateiendung	file extension
-Dateigröße	file size
-Dateipfad	file path
-Sicherung / Sicherungskopie	backup
-Wiederherstellen	to restore
-Synchronisieren	to sync / to synchronize
-Beschädigt (Datei)	corrupt / corrupted
-Daten wiederherstellen	to recover data
-Formatieren	to format
-Schreibgeschützt	read-only
-Versteckte Datei	hidden file
-Verknüpfung (Datei)	link / shortcut
-Symbolischer Link	symbolic link / symlink
-Prüfsumme	checksum
-
-# ============================================================
 # Section 4: Internet & Web Basics
 # ============================================================
 
@@ -145,6 +38,7 @@ Benutzername	username
 Zwei-Faktor-Authentifizierung	two-factor authentication (2FA)
 
 # ============================================================
+
 # Section 5: Basic Programming Concepts
 # ============================================================
 
@@ -190,6 +84,7 @@ Null / Nichts	null / nil / None
 Typ-Umwandlung	type casting / type conversion
 
 # ============================================================
+
 # Section 6: Development Tools & Workflow
 # ============================================================
 

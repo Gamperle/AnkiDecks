@@ -1,0 +1,132 @@
+# Technical English — Master: Academic CS & Complexity Theory
+# Format: Front[TAB]Back
+# Part 1 of 4 (split from english_master.txt): sections 27-28 - Academic CS & Research Paper Vocabulary, Computational Complexity & Algorithm Design.
+
+# Section 27: Academic CS & Research Paper Vocabulary
+# ============================================================
+
+Wissenschaftliche Veröffentlichung	(research) paper / publication
+Peer-Review / Fachbegutachtung	peer review
+Vorabdruck / Preprint	preprint
+Konferenzbeitrag	conference paper / proceedings paper
+Zeitschriftenartikel	journal article
+Zusammenfassung / Abstract	abstract
+Verwandte Arbeiten	related work
+Stand der Technik / Stand der Forschung	state of the art
+Neuartig / Neuheitswert	novel / novelty
+Beitrag (wissenschaftlich)	contribution
+Hypothese	hypothesis
+These / Behauptung	thesis / claim
+Beweis	proof
+Lemma / Hilfssatz	lemma
+Satz / Theorem	theorem
+Korollar / Folgesatz	corollary
+Mathematische Schreibweise für Formeln und Ausdrücke	notation
+Obere Schranke	upper bound
+Untere Schranke	lower bound
+Asymptotische Komplexität	asymptotic complexity
+O-Notation / Landau-Notation	Big-O notation / asymptotic notation
+Amortisierte Analyse	amortized analysis — averages cost of operations over a sequence, showing cheap average despite occasional expensive ones
+Berechenbarkeit	computability
+Entscheidbarkeit	decidability
+Unentscheidbarkeit	undecidability
+Halteproblem	halting problem — undecidable problem: no algorithm can determine whether an arbitrary program will halt
+Turingmaschine	Turing machine
+Nichtdeterminismus	nondeterminism
+NP-Vollständigkeit	NP-completeness — class of problems that are both in NP and NP-hard; no known polynomial-time solution
+NP-Schwere	NP-hardness
+Reduktion (Komplexitätstheorie)	reduction (complexity theory) — transforming one problem into another to prove relative difficulty
+Polynomialzeit	polynomial time
+Exponentialzeit	exponential time
+Approximationsalgorithmus	approximation algorithm
+Approximationsverhältnis	approximation ratio
+Heuristik	heuristic
+Metaheuristik	metaheuristic
+Randomisierter Algorithmus	randomized algorithm
+Wahrscheinlichkeitsverteilung	probability distribution
+Erwartungswert	expected value
+Varianz	variance
+Stichprobe	sample
+Konfidenzintervall	confidence interval
+Statistische Signifikanz	statistical significance
+Reproduzierbarkeit (Forschung)	reproducibility (research)
+Ablationsstudie	ablation study
+Grundwahrheit / Ground Truth	ground truth
+Benchmark-Datensatz	benchmark dataset
+Experimenteller Aufbau	experimental setup
+Auswertung / Evaluation	evaluation
+Metrik (Bewertung)	metric (evaluation)
+Grundlinie / Baseline	baseline
+Vergleichsarbeit	comparative study
+Empirische Studie	empirical study
+Fallstudie	case study
+Informelles technisches Dokument zu Produkten oder Methoden	white paper
+Technischer Bericht	technical report
+Quellenangabe / Zitat	citation / reference
+Zitierindex	citation index
+DOI (Digitaler Objektbezeichner)	DOI (Digital Object Identifier)
+Vorabveröffentlichung	early access / preprint
+Begutachtungsverfahren	review process
+Blindbegutachtung	blind review / double-blind review
+
+# ============================================================
+
+# Section 28: Computational Complexity & Algorithm Design
+# ============================================================
+
+Zeitkomplexität	time complexity
+Raumkomplexität / Platzkomplexität	space complexity
+Bester Fall	best case
+Schlechtester Fall	worst case
+Durchschnittlicher Fall	average case
+Teile-und-Herrsche	divide and conquer
+Dynamische Programmierung	dynamic programming — solves problems by breaking them into overlapping subproblems and caching results
+Gierige Methode / Greedy-Algorithmus	greedy algorithm
+Rückverfolgung / Backtracking	backtracking
+Verzweigen und Begrenzen	branch and bound
+Verfahren zur Lösung von Problemen auf Knoten-Kanten-Strukturen	graph algorithm
+Kürzester-Pfad-Algorithmus	shortest path algorithm
+Minimaler Spannbaum	minimum spanning tree (MST)
+Topologische Sortierung	topological sorting — linear ordering of DAG vertices such that every edge points forward
+Tiefensuche	DFS (Depth-First Search)
+Breitensuche	BFS (Breadth-First Search)
+Zusammenhangskomponente	connected component
+Stark zusammenhängende Komponente	SCC (Strongly Connected Component)
+Maximaler Fluss / Maximum Flow	maximum flow
+Bipartiter Graph	bipartite graph
+Planarer Graph	planar graph
+Adjazenzmatrix	adjacency matrix
+Adjazenzliste	adjacency list
+Hashtabelle	hash table / hash map
+Kollisionsauflösung	collision resolution — strategy for handling two keys that hash to the same slot
+Offene Adressierung	open addressing
+Verkettung / Chaining	chaining (hash table)
+B-Baum	B-tree
+Rot-Schwarz-Baum	red-black tree
+AVL-Baum	AVL tree
+Mehrstufige, verkettete Datenstruktur für schnelle Suche (O(log n))	skip list
+Trie / Präfixbaum	trie / prefix tree — tree where each path from root to leaf represents a key, enabling fast prefix lookups
+Suffixbaum	suffix tree
+Sortiertes Feld aller Suffixe eines Textes für schnelle Mustersuche	suffix array
+Probabilistische Datenstruktur zur Mengenzugehörigkeitsprüfung (falsch-positiv möglich)	Bloom filter
+Probabilistische Datenstruktur zur Häufigkeitsschätzung in Datenströmen	Count-Min sketch
+Probabilistische Datenstruktur zur Kardinalitätsschätzung	HyperLogLog
+Probabilistische Datenstruktur	probabilistic data structure
+Gewichteter Graph	weighted graph
+Ungerichteter Graph	undirected graph
+Gerichteter Graph	directed graph
+Gerichteter azyklischer Graph (DAG)	DAG (Directed Acyclic Graph)
+Eulerweg / Eulerpfad	Eulerian path
+Hamiltonpfad	Hamiltonian path
+Rundreiseproblem / TSP	TSP (Traveling Salesman Problem)
+Rucksackproblem	knapsack problem
+Optimierungsproblem: Aufgaben zeitlich einplanen unter Nebenbedingungen	scheduling problem
+Stabile Zuordnung / Matching	stable matching
+Flussnetzwerk	flow network
+Lineare Programmierung	linear programming
+Ganzzahlige Programmierung	integer programming
+Konvexe Optimierung	convex optimization — optimization where any local minimum is also the global minimum
+Gradientenabstieg	gradient descent — iteratively moves in the direction of steepest decrease to minimize a function
+Stochastischer Gradientenabstieg	SGD (Stochastic Gradient Descent)
+
+# ============================================================

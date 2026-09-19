@@ -2,6 +2,44 @@
 
 Comprehensive security topics for coding, web development, and embedded development, classified by difficulty level.
 
+## Format
+
+```
+Front (question or term)[TAB]Back (answer or definition)
+```
+
+---
+
+## Available Decks
+
+Each tier below was originally one file (244-422 cards); each has been split into topic-sized files (~68-102 cards). No card content changed, only how it's grouped into files.
+
+### Beginner
+
+| File | Topics |
+|------|--------|
+| `security_beginner_1_fundamentals_auth_tls.txt` | General Security Fundamentals, Authentication & Authorization Basics, TLS & Transport Security Basics |
+| `security_beginner_2_web_memory_secure_coding.txt` | Web Security Fundamentals, Memory & Process Security Basics, Secure Coding Basics |
+| `security_beginner_3_platform_security.txt` | Unix/Linux, Java, Android, Automotive, and Embedded Security Basics |
+
+### Intermediate
+
+| File | Topics |
+|------|--------|
+| `security_intermediate_1_tls_crypto_web_auth.txt` | TLS & Transport Security (In Depth), Cryptography, Web Application Security (Advanced), Authentication & Session Security (Advanced) |
+| `security_intermediate_2_api_network_memory_sdlc.txt` | API Security, Network & Infrastructure Security, Memory & Process Security (In Depth), Secure Development Lifecycle |
+| `security_intermediate_3_platform_security.txt` | Unix/Linux, Java, Android Security (In Depth) |
+| `security_intermediate_4_automotive_embedded.txt` | Automotive Security (In Depth), Embedded Security (Intermediate) |
+| `security_intermediate_5_consulting_case_studies.txt` | IT Security Consulting Role, Scenario-Based Case Studies (ISO 27001, TISAX, ISO/SAE 21434, UNECE R155) |
+
+### Pro
+
+| File | Topics |
+|------|--------|
+| `security_pro_1_tls_crypto_web_auth.txt` | Advanced TLS & Protocol Security, Advanced Cryptography, Advanced Web & Application Security, Advanced Authentication & Identity |
+| `security_pro_2_memory_platform_security.txt` | Advanced Memory Exploitation & Protection, Unix/Linux, Java, Android Security (Advanced) |
+| `security_pro_3_automotive_offensive_architecture_cloud.txt` | Automotive Security (Advanced), Offensive Security Concepts, Secure Architecture & Design, Advanced Embedded & Hardware Security, Advanced Infrastructure & Cloud Security |
+
 ---
 
 ## Beginner

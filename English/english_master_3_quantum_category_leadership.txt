@@ -1,0 +1,169 @@
+# Technical English — Master: Quantum Computing, Category Theory & Leadership
+# Format: Front[TAB]Back
+# Part 3 of 4 (split from english_master.txt): sections 31-33 - Quantum Computing, Category Theory & Abstract Math for Programmers, Tech Leadership & Strategic Communication.
+
+# Section 31: Quantum Computing
+# ============================================================
+
+Quantencomputer	quantum computer
+Qubit (Quantenbit)	qubit (quantum bit)
+Überlagerung mehrerer Quantenzustände gleichzeitig	superposition
+Verschränkung / Quantenverschränkung	entanglement / quantum entanglement — correlated qubits whose states are linked regardless of distance
+Quantengatter	quantum gate
+Hadamard-Gatter	Hadamard gate
+CNOT-Gatter (Kontrolliert-NICHT)	CNOT gate (Controlled-NOT)
+Toffoli-Gatter	Toffoli gate
+Pauli-Gatter (X, Y, Z)	Pauli gates (X, Y, Z)
+Quantenschaltkreis	quantum circuit
+Messung (Quantenmechanik)	measurement (quantum mechanics)
+Dekohärenz	decoherence — loss of quantum state due to interaction with the environment
+Quantenfehlerkorrektur	quantum error correction (QEC) — encodes logical qubits across multiple physical qubits to detect and fix errors
+Logisches Qubit	logical qubit
+Physikalisches Qubit	physical qubit
+Quantenüberlegenheit / Quantum Supremacy	quantum supremacy / quantum advantage
+Quantenvorteil	quantum advantage
+Rauschintensiver Zwischen-Quantencomputer	NISQ (Noisy Intermediate-Scale Quantum)
+Quantenalgorithmus zur effizienten Primfaktorzerlegung	Shor's algorithm
+Quantenalgorithmus für beschleunigte Suche in unsortierten Daten	Grover's algorithm
+Variationsquantenalgorithmus	VQE (Variational Quantum Eigensolver)
+Quantenalgorithmus für kombinatorische Optimierungsprobleme	QAOA (Quantum Approximate Optimization Algorithm)
+Quantenannealing	quantum annealing
+Quantensimulation	quantum simulation
+Quantenkryptographie	quantum cryptography
+Quantenschlüsselverteilung (QKD)	QKD (Quantum Key Distribution)
+BB84-Protokoll	BB84 protocol
+Quantenteleportation	quantum teleportation
+Quantenzustandstomographie	quantum state tomography
+Bloch-Kugel	Bloch sphere
+Quantenregister	quantum register
+Quantenparallelismus	quantum parallelism
+Quanteninterferenz	quantum interference
+Orakel (Quantenalgorithmus)	oracle (quantum algorithm)
+Quantencompiler	quantum compiler
+Transpilation (Quantenschaltkreis)	transpilation (quantum circuit)
+Konnektivitätsgraph (Qubit)	connectivity graph (qubit topology)
+Gate-Treue / Gate Fidelity	gate fidelity
+Kohärenzzeit	coherence time
+T1-Zeit (Relaxationszeit)	T1 time (relaxation time)
+T2-Zeit (Dephasierungszeit)	T2 time (dephasing time)
+
+# ============================================================
+
+# Section 32: Category Theory & Abstract Math for Programmers
+# ============================================================
+
+Kategorie	category
+Objekt (Kategorientheorie)	object (category theory)
+Morphismus / Pfeil	morphism / arrow
+Komposition	composition
+Identitätsmorphismus	identity morphism
+Funktor	functor
+Endofunktor	endofunctor
+Natürliche Transformation	natural transformation — a family of morphisms mapping between two functors while preserving structure
+Kompositionsstruktur zum Verketten von Berechnungen in Kategorientheorie	monad
+Monadengesetze	monad laws (left identity, right identity, associativity)
+Applikativer Funktor	applicative functor
+Algebraische Struktur mit assoziativer Verknüpfung und neutralem Element	monoid
+Halbgruppe	semigroup
+Gruppentheorie	group theory
+Algebraische Struktur mit Addition und Multiplikation (kommutativ, assoziativ)	ring (algebra)
+Strukturerhaltende Abbildung zwischen algebraischen Strukturen	isomorphism
+Strukturerhaltende Abbildung zwischen algebraischen Strukturen	homomorphism
+Surjektiver Morphismus (Abbildung auf alle Elemente)	epimorphism
+Injektiver Morphismus (Abbildung ohne Zusammenfallen)	monomorphism
+Produkt (Kategorientheorie)	product (category theory)
+Koprodukt / Summe	coproduct / sum
+Adjunktion	adjunction — pair of functors (left/right adjoints) forming a universal relationship between categories
+Fundamentalsatz der Kategorientheorie über natürliche Transformationen	Yoneda lemma
+Freie Monade	free monad — separates the description of a computation from its interpretation, enabling testable DSLs
+Kofreie Komonade	cofree comonad
+Kleisli-Kategorie	Kleisli category
+Pfeilnotation / Do-Notation	do-notation / arrow notation
+Effektsystem	effect system
+Algebraischer Effekt	algebraic effect
+Typklasse	type class
+Typkonstruktor	type constructor
+Höherkindiger Typ	higher-kinded type (HKT) — a type constructor that takes another type constructor as a parameter (e.g., F[_])
+Abhängiger Typ	dependent type — type that depends on a value (e.g., Vec n: a vector of exactly n elements)
+Linearer Typ	linear type
+Affiner Typ	affine type
+Typparameter ohne Laufzeitrepräsentation (nur für Typsicherheit)	phantom type
+Existenztyp	existential type
+Universalquantor (∀)	universal quantifier (∀ / forall)
+Existenzquantor (∃)	existential quantifier (∃ / exists)
+Curry-Howard-Isomorphismus	Curry-Howard correspondence / isomorphism
+Beweisassistent / Proof Assistant	proof assistant (e.g., Coq, Lean, Agda, Isabelle)
+Taktik (Beweisassistent)	tactic (proof assistant)
+Induktiver Typ	inductive type
+Koinduktiver Typ	coinductive type
+Rekursionsschema	recursion scheme
+Katamorphismus	catamorphism (fold) — recursion scheme that collapses a data structure into a single value
+Anamorphismus	anamorphism (unfold) — recursion scheme that builds up a data structure from a seed value
+Zusammensetzung aus Anamorphismus und Katamorphismus (Aufbau + Abbau)	hylomorphism
+Fixpunktkombinator	fixed-point combinator (Y combinator) — enables recursion in lambda calculus by finding a function’s fixed point
+Terminierungsprüfung	termination checker
+
+# ============================================================
+
+# Section 33: Tech Leadership & Strategic Communication
+# ============================================================
+
+Technische Vision	technical vision
+Technische Strategie	technical strategy
+Technische Roadmap	technical roadmap
+Architekturprinzipien	architectural principles
+Leitplanken / Guardrails	guardrails
+Entscheidungsrahmen	decision framework
+Technische Due Diligence	technical due diligence
+Risikominderung	risk mitigation
+Risikotoleranz	risk tolerance / risk appetite
+Risikoakzeptanz	risk acceptance
+Opportunitätskosten	opportunity cost
+Kapitalrendite / Return on Investment	ROI (Return on Investment)
+Gesamtbetriebskosten	TCO (Total Cost of Ownership)
+Amortisationszeit	payback period
+Wertversprechen	value proposition
+Markteinführungszeit	time-to-market
+Markteinführung	go-to-market (GTM)
+Wettbewerbsvorteil	competitive advantage
+Differenzierungsmerkmal	differentiator
+Hebelwirkung / Leverage	leverage
+Befähigen / Ermächtigen	to empower / to enable
+Vorantreiben / Fördern	to drive / to champion
+Angleichen / Ausrichten	to align
+Priorisieren	to prioritize
+Konsens herstellen	to build consensus / to reach alignment
+Abwägen / Güterabwägung treffen	to weigh trade-offs / to evaluate trade-offs
+Einfluss nehmen	to influence / to advocate
+Sichtbarkeit schaffen	to create visibility
+Verantwortung übernehmen	to take ownership / to own
+Rechenschaftspflicht	accountability
+Eigenverantwortung	ownership
+Befugnisübertragung	delegation
+Mentoring / Betreuung	mentoring
+Sponsoring / Förderung (Karriere)	sponsoring
+Wissensaustausch	knowledge sharing
+Technische Exzellenz	technical excellence
+Ingenieurkultur	engineering culture
+Blameless Culture / Schuldfreie Kultur	blameless culture
+Psychologische Sicherheit	psychological safety
+Datengestützte Entscheidung	data-driven decision
+Anekdotische Evidenz	anecdotal evidence
+Rückkopplung / Feedback-Schleife	feedback loop
+Schnell scheitern	to fail fast
+Experimentierfreudigkeit	culture of experimentation
+Baustein / Building Block	building block
+Zukunftssicherheit	future-proofing
+Technologieradar	technology radar
+Technologiebewertung	technology evaluation / technology assessment
+Architektur-Review	architecture review
+Formale Prüfung eines Entwurfs durch Fachkollegen	design review
+Technische Tragfähigkeit	technical feasibility
+Technischer Kompromiss	technical compromise
+Sorgfaltspflicht	due diligence
+Regulatorische Anforderung	regulatory requirement
+Branchenstandard	industry standard
+Best Practice / Bewährte Methode	best practice
+Anti-Pattern / Anti-Muster	anti-pattern
+
+# ============================================================
