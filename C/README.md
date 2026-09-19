@@ -10,6 +10,8 @@ Front (question or term)[TAB]Back (answer or definition)
 
 ---
 
+> Looking for predict-the-output riddles instead of definitional cards? See [`C Code Riddles/`](./C%20Code%20Riddles/README.md).
+
 ## Planned Decks
 
 | File | Description |

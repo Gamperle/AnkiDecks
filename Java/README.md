@@ -5,6 +5,8 @@ All cards target **Java 17+** unless otherwise noted.
 
 ---
 
+> Looking for predict-the-output riddles instead of definitional cards? See [`Java Code Riddles/`](./Java%20Code%20Riddles/README.md).
+
 ## Available Decks
 
 ### Beginner

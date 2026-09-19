@@ -1,0 +1,32 @@
+# Java Riddles — Numbers & Types
+# Format: Front[TAB]Back
+# Predict-the-output riddles on Java's numeric types, autoboxing, overflow, and arithmetic quirks. Read the front, guess the output, then check the back.
+
+# 1. Overflow & Wraparound
+What does this print? `int x = Integer.MAX_VALUE; x++; System.out.println(x);`	`-2147483648` — `int` silently wraps around on overflow (two's complement, no exception thrown), landing exactly on `Integer.MIN_VALUE`. Use `Math.addExact` if you want overflow to throw.
+What does this print? `int million = 1_000_000; System.out.println(million * million);`	`-727379968` — `10^12` overflows 32-bit `int` and wraps modulo 2^32, landing on this specific negative value. The multiplication happens entirely in `int` even though the true mathematical result needs 40 bits; nothing promotes it to `long` for you.
+What does this print? `byte b = (byte) 130;`	Nothing printed, but `b` becomes `-126` — casting an out-of-range `int` to `byte` truncates to the low 8 bits and reinterprets them as signed, so 130 (`0x82`) becomes -126.
+Does this compile? `long x = 3000000000; System.out.println(x);`	No — `3000000000` is parsed as an `int` literal first, and it exceeds `Integer.MAX_VALUE` (~2.1 billion), so it's a compile error before the assignment to `long` even happens. Fix: suffix it `3000000000L`.
+
+# 2. Autoboxing & the Integer Cache
+What does this print? `Integer a = 127, b = 127; System.out.println(a == b);`	`true` — the JVM caches boxed `Integer` values from -128 to 127 (`Integer.valueOf`), so both variables reference the same cached object.
+What does this print? `Integer a = 128, b = 128; System.out.println(a == b);`	`false` — 128 is outside the guaranteed cache range, so autoboxing creates two distinct `Integer` objects. Same logical value, different identity — always use `.equals()` for wrapper comparisons, never `==`.
+What happens here? `Integer x = null; int y = x;`	Throws `NullPointerException` — assigning a `null` `Integer` to a primitive `int` triggers unboxing (`x.intValue()`), and calling a method on `null` fails. The NPE happens at the unboxing point, which is easy to miss since there's no visible method call in the source.
+What happens here? `boolean flag = false; Integer i = null; int result = flag ? 10 : i;`	Throws `NullPointerException`, even though `flag` is `false` and `i` is never "used" in the way you'd expect. The ternary's static result type is `int` (common type of `int` and `Integer`), so the compiler inserts an unboxing conversion on the `Integer` branch regardless of which branch actually executes.
+
+# 3. Char & Mixed Arithmetic
+What does this print? `char a = 'a', b = 'b'; System.out.println(a + b);`	`195` — `char + char` triggers integer promotion to `int` before the addition ('a'=97, 'b'=98), so you get a number, not a concatenated character.
+What does this print? `System.out.println('a' + 1 + "b");`	`98b` — evaluation is strictly left-to-right: `'a' + 1` is plain `int` arithmetic (97+1=98) since no `String` operand is involved yet; only once `"b"` appears does the `+` switch to string concatenation, converting 98 to `"98"`.
+What does this print? `System.out.println("b" + 'a' + 1);`	`ba1` — here `"b" + 'a'` concatenates immediately (a `String` operand is present from the start), producing `"ba"`, then `+ 1` appends the number as text: `"ba1"`.
+Does this compile? `byte b = 10; b += 5;`	Yes — compound assignment operators implicitly cast the result back to the target type, equivalent to `b = (byte)(b + 5)`. Note that the plain form `b = b + 5;` does *not* compile, because `b + 5` is an `int` and there's no implicit narrowing on simple assignment.
+Does this compile? `float f = 1.1;`	No — `1.1` is a `double` literal by default, and assigning a `double` to `float` is a narrowing conversion that requires an explicit cast or the `f` suffix (`1.1f`). Java won't silently narrow floating-point literals the way it does for some integer constant expressions.
+
+# 4. Division, Modulo & Shifts
+What does this print? `System.out.println(5 / 2); System.out.println(5 / 2.0);`	`2` then `2.5` — integer division truncates toward zero when both operands are `int`; introducing a `double` literal (`2.0`) forces floating-point division.
+What does this print? `System.out.println(-7 % 3);`	`-1` — Java's `%` result takes the sign of the dividend, not the divisor. `(-7 / 3) * 3 + (-7 % 3)` must equal -7, and -7/3 truncates to -2, so the remainder is -1.
+What does this print? `System.out.println(-8 >> 1);`	`-4` — `>>` is an *arithmetic* (sign-extending) right shift: the sign bit is copied in from the left, so shifting a negative number right divides it toward negative infinity while preserving its sign.
+What does this print? `System.out.println(-8 >>> 1);`	`2147483644` — `>>>` is the *unsigned* (logical) right shift: it always fills with zero bits regardless of sign, so a negative `int`'s bit pattern gets treated as a huge positive number.
+What does this print? `int x = 5; x <<= 33; System.out.println(x);`	`10` — shift amounts on `int` are implicitly masked to the low 5 bits (`amount & 31`), so shifting by 33 is really shifting by 1. (For `long`, the mask is `& 63`.) This prevents an `ArithmeticException`-style surprise but silently changes what you probably meant.
+
+# 5. Evaluation Order (Java Defines It — C Does Not)
+What does this print? `int i = 5; i = i++ + ++i; System.out.println(i);`	`12` — unlike C, Java strictly specifies left-to-right evaluation order with no undefined behavior here. `i++` yields 5 (then `i` becomes 6); `++i` then makes `i` 7 and yields 7; `5 + 7 = 12` is assigned back to `i`. Every step is deterministic and reproducible on every JVM.
