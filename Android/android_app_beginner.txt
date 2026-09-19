@@ -84,9 +84,7 @@ What does the !! operator do in Kotlin?	The non-null assertion operator — it c
 What is the elvis operator (?:) in Kotlin?	It provides a default value when the left-hand expression is null. Example: val name = user?.name ?: "Unknown"
 What is a data class in Kotlin?	A class that automatically generates equals(), hashCode(), toString(), copy(), and componentN() functions based on properties declared in the primary constructor
 What is a sealed class in Kotlin?	A class with a restricted set of subclasses, all defined in the same file (or module since Kotlin 1.5). Enables exhaustive when expressions. Useful for representing closed state hierarchies.
-What is the difference between sealed class and enum class?	enum class instances are singletons (one instance per constant). sealed class subclasses can have multiple instances and hold different state
-
-. sealed classes are more flexible for modeling complex hierarchies.
+What is the difference between sealed class and enum class?	enum class instances are singletons (one instance per constant). sealed class subclasses can have multiple instances and hold different state. sealed classes are more flexible for modeling complex hierarchies.
 What is an extension function in Kotlin?	A function that adds new behavior to an existing class without modifying its source code. Defined as: fun ClassName.newFunction() { ... }
 Give an example of a useful extension function for Android development.	fun View.visible() { visibility = View.VISIBLE } — extends the View class, making visibility toggling more readable
 Name the five scope functions in Kotlin and their key differences.	let (it, returns lambda result), run (this, returns lambda result), with (this, returns lambda result, non-extension), apply (this, returns receiver), also (it, returns receiver)
