@@ -14,12 +14,46 @@ Front (question or term)[TAB]Back (answer or definition)
 
 ## Planned Decks
 
-| File | Description |
-|------|-------------|
-| `c_code_understanding.txt` | Reading and interpreting C code: types, pointers, memory, UB, expressions, compilation, and security-relevant code patterns |
-| `c_stdlib_usage.txt` | Standard library function usage examples across all major headers, including secure-coding alternatives to unsafe functions |
-| `c_spot_the_bug.txt` | Snippets with bugs or wrong behavior to identify and explain, including exploitable security vulnerabilities |
-| `c_systems_embedded.txt` | Beyond the language: threading depth, embedded/bare-metal conventions, Linux/POSIX systems programming, toolchain, and secure-coding standards |
+Each of the four original decks below was split into topic-sized files (30-65 cards each) once the flat originals grew past 100+ cards apiece. The split follows the numbered sections already used inside each file, so no card content changed — only how it's grouped into files/import decks.
+
+### 1. C Code Understanding
+*Reading and interpreting C code: types, pointers, memory, UB, expressions, compilation, and security-relevant code patterns.*
+
+| File | Sections | Description |
+|------|----------|-------------|
+| `c_code_understanding_1_core_types_memory.txt` | 1.1-1.4 | Variables/types/expressions, storage classes & lifetime, pointers & memory, arrays & strings |
+| `c_code_understanding_2_functions_structs_ub.txt` | 1.5-1.8 | Control flow & functions, structs/unions/enums, advanced pointer patterns, undefined/unspecified/implementation-defined behavior |
+| `c_code_understanding_3_preprocessor_build_errors.txt` | 1.9-1.12 | Preprocessor & compilation, multi-file programs/linkage/build, error-handling idioms, security-relevant code patterns (reading) |
+| `c_code_understanding_4_memory_model_exploits.txt` | 1.13-1.16 | Low-level memory model, exploit mitigations, the abstract machine/sequence points, the C object model |
+| `c_code_understanding_5_advanced_specialized.txt` | 1.17-1.21 | Two's complement/C23, internationalization & multi-byte strings, generic programming idioms, dynamic data structures, C API design conventions |
+
+### 2. Standard Library Usage
+*Standard library function usage examples across all major headers, including secure-coding alternatives to unsafe functions.*
+
+| File | Sections | Description |
+|------|----------|-------------|
+| `c_stdlib_usage_1_stdio_stdlib_string.txt` | 2.1-2.3 | `<stdio.h>` I/O, `<stdlib.h>` memory/conversion/process, `<string.h>` string & memory operations |
+| `c_stdlib_usage_2_math_ctype_time_errno_stddef_stdint.txt` | 2.4-2.9 | `<math.h>`, `<ctype.h>`, `<time.h>`, `<errno.h>`/`<assert.h>`, `<stddef.h>`, `<stdint.h>`/`<inttypes.h>` |
+| `c_stdlib_usage_3_variadics_signals_limits_concurrency.txt` | 2.10-2.16 | `<stdarg.h>`, `<signal.h>`, `<setjmp.h>`, `<stdbool.h>`/`<limits.h>`/`<float.h>`, `<threads.h>`/`<pthread.h>`, specialized/platform headers, secure coding alternatives |
+| `c_stdlib_usage_4_posix_niche_headers.txt` | 2.17-2.23 | `<tgmath.h>`, `<dirent.h>`, `<regex.h>`, `<glob.h>`/`<fnmatch.h>`, `<termios.h>`, `<sys/wait.h>`/`<sys/resource.h>`, minimal standard headers |
+
+### 3. Spot the Bug
+*Snippets with bugs or wrong behavior to identify and explain, including exploitable security vulnerabilities.*
+
+| File | Sections | Description |
+|------|----------|-------------|
+| `c_spot_the_bug_1_memory_string_pointer_numeric.txt` | 3.1-3.5 | Memory errors, string & format bugs, pointer & type bugs, integer & arithmetic bugs, floating-point bugs |
+| `c_spot_the_bug_2_control_flow_macros_resources_concurrency.txt` | 3.6-3.10 | Control flow bugs, operator & precedence bugs, preprocessor & macro bugs, resource & file handling bugs, concurrency & signal bugs |
+| `c_spot_the_bug_3_security_vulnerabilities_api_misuse.txt` | 3.11-3.16 | Security vulnerabilities & exploitation, initialization order & VLA bugs, linkage & declaration bugs, struct/union misuse, const & volatile misuse, API contract bugs |
+
+### 4. Systems, Embedded & Toolchain
+*Beyond the language: threading depth, embedded/bare-metal conventions, Linux/POSIX systems programming, toolchain, and secure-coding standards.*
+
+| File | Sections | Description |
+|------|----------|-------------|
+| `c_systems_embedded_1_standards_concurrency_embedded_rtos_posix.txt` | 4.1-4.5 | Language standards & evolution, concurrency & the C memory model, embedded & bare-metal, RTOS, Linux/POSIX systems programming |
+| `c_systems_embedded_2_toolchain_compiler_memory_hardening.txt` | 4.6-4.10 | Toolchain/debugging/testing/analysis, compiler extensions & inline assembly, custom memory management, secure coding standards & hardening, performance & micro-optimization |
+| `c_systems_embedded_3_portability_ffi_abi_debugging.txt` | 4.11-4.16 | Cross-platform data models & portability, C interoperability (FFI & embedding), Windows-specific C, ABI compatibility in practice, sanitizer-driven development & fuzzing, debugging deep dive |
 
 ---
 

@@ -1,0 +1,63 @@
+# C Spot the Bug — Memory, String, Pointer & Numeric Bugs
+# Format: Front[TAB]Back
+# Part 1 of 3 (split from c_spot_the_bug.txt): sections 3.1-3.5 - memory errors, string & format bugs, pointer & type bugs, integer & arithmetic bugs, floating-point bugs.
+
+# 3.1 Memory Errors
+Spot the bug: `free(p); printf("%d", *p);`	Use-after-free: `p` is dereferenced after its memory was released — undefined behavior (the memory may be reused or unmapped). Fix: don't use `p` after `free`, and set `p = NULL;` so accidental reuse crashes deterministically.
+Spot the bug: `free(p); free(p);`	Double free: freeing the same pointer twice corrupts the allocator's metadata and is exploitable. Fix: free once and set `p = NULL;` afterward — `free(NULL)` is a well-defined no-op, so a redundant free becomes harmless.
+Spot the bug: `int *p; *p = 5;`	Uninitialized-pointer dereference: `p` holds indeterminate garbage, so the write corrupts random memory (UB). Fix: point it at valid storage first — `int x; int *p = &x;` or `int *p = malloc(sizeof *p);` (then check for `NULL`).
+Spot the bug: `char buf[8]; strcpy(buf, "much too long");`	Stack buffer overflow: the source plus `\0` exceeds the 8-byte array, overrunning the stack (potentially the return address). Fix: size the buffer to the data or bound the copy — `snprintf(buf, sizeof buf, "%s", src);`.
+Spot the bug: `char *p = malloc(n); memcpy(p, src, n+1);`	Heap buffer overflow: writing `n+1` bytes into an `n`-byte allocation overruns the block, corrupting heap metadata or a neighbor. Fix: allocate enough (`malloc(n+1)`) or copy only `n` bytes.
+Spot the bug: `p = malloc(n); if (error) return; free(p);`	Memory leak: the early `return` skips `free(p)`, and the only pointer is lost. Fix: free before returning on every path, or use a `goto cleanup;` that frees once at the end.
+Spot the bug: `p = realloc(p, n);` used directly	If `realloc` fails it returns `NULL`, overwriting (and leaking) the still-valid original block, then likely dereferencing `NULL`. Fix: `tmp = realloc(p, n); if (tmp) p = tmp; else handle_error();`.
+Spot the bug: `int *f(void){ int x = 42; return &x; }`	Returning the address of a local: `x`'s lifetime ends at return, so the caller gets a dangling pointer into reclaimed stack (UB). Fix: return by value, allocate on the heap, or use a `static`/caller-supplied buffer.
+Spot the bug: `for (int i = 0; i <= n; i++) a[i] = 0;` for `int a[n]`	Off-by-one: valid indices are `0..n-1`, but `i <= n` writes `a[n]`, one past the end — an out-of-bounds write. Fix: use `i < n`.
+Spot the bug: `void f(int *arr){ int k = sizeof(arr)/sizeof(arr[0]); }`	`sizeof` on a decayed pointer: inside the function `arr` is a pointer, so `sizeof(arr)` is the pointer size, giving the wrong element count. Fix: pass the length as a separate parameter; `sizeof` only yields array size where the array is declared.
+Spot the bug: `char *p = "hi"; free(p);`	Freeing memory not from `malloc`: `p` points at a string literal (static storage), and freeing a non-heap pointer (or an interior/stack pointer) is undefined behavior. Fix: only `free` pointers returned by `malloc`/`calloc`/`realloc`.
+Spot the bug: allocating with a custom pool allocator but releasing with plain `free`	Mismatched allocator/deallocator: memory must be returned to the same allocator that produced it; mixing them corrupts both heaps (UB). Fix: pair `pool_alloc` with `pool_free`, `malloc` with `free`, `new`/`new[]` appropriately, etc.
+
+
+# 3.2 String & Format Bugs
+Spot the bug: `char d[5]; strncpy(d, "hello", 5); printf("%s", d);`	Missing terminator: `strncpy` copies exactly 5 chars and writes no `\0`, so `printf("%s")` reads past the buffer. Fix: reserve room and terminate — `char d[6]; strncpy(d, src, 5); d[5] = '\0';`.
+Spot the bug: `char buf[64]; gets(buf);`	`gets` has no bounds check and overflows `buf` for any input longer than 63 chars — it was removed from C11 for this reason. Fix: `fgets(buf, sizeof buf, stdin);`.
+Spot the bug: `printf(msg);` where `msg` is user input	Format-string vulnerability: `%` sequences in `msg` are interpreted, leaking memory (`%x`/`%s`) or writing it (`%n`). Fix: `printf("%s", msg);` — always use a literal format with untrusted data.
+Spot the bug: `scanf("%s", name);` for `char name[32]`	Unbounded read: `%s` copies until whitespace with no size limit, overflowing `name`. Fix: bound the field width to one less than the buffer — `scanf("%31s", name);`.
+Spot the bug: `long x = ...; printf("%d", x);`	Format/type mismatch: `%d` expects `int`, but a `long` is passed — UB, and it prints wrong values where `long` is wider. Fix: `printf("%ld", x);` (and `%u` for an `unsigned`).
+Spot the bug: `char buf[16]; sprintf(buf, "%s-%d", name, id);`	`sprintf` overflow: with no size limit, a long `name` overruns `buf`. Fix: `snprintf(buf, sizeof buf, "%s-%d", name, id);` and check the return for truncation.
+Spot the bug: `strtok("a,b,c", ",");`	Modifying a string literal: `strtok` writes `\0` over delimiters, but the literal is read-only memory (UB). Fix: tokenize a writable copy — `char s[] = "a,b,c"; strtok(s, ",");`.
+Spot the bug: `if (s1 == s2) puts("equal");` for two `char*`	Comparing pointers, not contents: `==` tests whether they hold the same address, not whether the strings match. Fix: `if (strcmp(s1, s2) == 0)`.
+Spot the bug: `char *d = malloc(strlen(s)); strcpy(d, s);`	Off-by-one allocation: `strlen` excludes the `\0`, so `strcpy` writes one byte past the buffer. Fix: `malloc(strlen(s) + 1)`.
+
+
+# 3.3 Pointer & Type Bugs
+Spot the bug: `int *p = arr; p += sizeof(int);`	Wrong arithmetic units: `p += sizeof(int)` advances by `sizeof(int)` *elements* (e.g. 16 bytes for a 4-byte int), not one int. Fix: to move one element use `p += 1`; pointer arithmetic is already scaled by the element size.
+Spot the bug: reading a `short` via `*(short*)(charbuf + 1)`	Alignment + strict-aliasing violation: `charbuf+1` may be misaligned for a `short`, and reading `char` bytes through a `short*` breaks aliasing rules (both UB). Fix: `short v; memcpy(&v, charbuf + 1, sizeof v);`.
+Spot the bug: `void *p = base; p++;`	`void*` arithmetic is illegal in standard C (`void` has no size); it only compiles as a GCC byte-sized extension. Fix: cast to a concrete type — `char *cp = base; cp++;`.
+Spot the bug: `const int c = 5; *(int*)&c = 6;`	Casting away `const` and writing: modifying an object defined `const` is undefined behavior (it may reside in read-only memory). Fix: don't cast away const to write; if it must change, it should not be `const`.
+Spot the bug: `if (ptr_a < ptr_b)` for pointers into different objects	Pointer comparison across objects: ordering pointers that don't point into the same array (or one-past-end) with `<`/`>` is undefined behavior. Fix: only order pointers within one object; use `==`/`!=` otherwise, or compare `uintptr_t` values if you truly must.
+Spot the bug: `FILE *fp = fopen("f","r"); fread(buf, 1, n, fp);` with no check	Null-pointer dereference: `fopen` returns `NULL` on failure, and passing it to `fread` is UB. Fix: `if (!fp) { perror("fopen"); return; }` before using it. (Same applies to unchecked `malloc`.)
+Spot the bug: `int *p = (int *)42;`	Integer-to-pointer cast without `intptr_t`: an arbitrary integer cast to a pointer may not round-trip or be validly usable on all platforms/alignments. Fix: use `intptr_t`/`uintptr_t` for pointer↔integer conversions, and only convert values that came from real pointers.
+Spot the bug: `int n = sizeof(int *);` when the array element size was intended	`sizeof` type confusion: `sizeof(int *)` is the pointer size (e.g. 8), not `sizeof(int)` (4). Fix: apply `sizeof` to the intended type/expression — `sizeof(int)` or `sizeof arr[0]` — matching what you're measuring.
+Spot the bug: `((void(*)(int))fp)(5);` when `fp` is `void(*)(double)`	Function-pointer type mismatch: calling through an incompatible signature is UB even if it seems to work — argument passing/return conventions may differ. Fix: only call through a pointer whose type matches the function's actual signature.
+
+
+# 3.4 Integer & Arithmetic Bugs
+Spot the bug: `int x = INT_MAX; x++;`	Signed integer overflow: incrementing past `INT_MAX` is undefined behavior (not guaranteed to wrap, and the optimizer assumes it can't happen). Fix: check first (`if (x < INT_MAX) x++;`) or use an unsigned type if wraparound is intended.
+Spot the bug: `unsigned x = 0; x--; if (x < 0) ...`	Always-false condition: unsigned values are never negative; `x--` wraps to `UINT_MAX`, not below 0. Fix: use a signed type if you need negatives, or test the wraparound explicitly (`if (x > SOME_MAX)`).
+Spot the bug: `long big = ...; int n = big;`	Truncation on assignment: storing a `long` into `int` silently drops the high bits when the value exceeds `int`'s range. Fix: keep the wider type, or check the value fits (`big >= INT_MIN && big <= INT_MAX`) before narrowing.
+Spot the bug: `char c = 0xFF; int i = c;`	Sign-extension pitfall: where plain `char` is signed, `0xFF` is −1, so `i` becomes −1, not 255. Fix: use `unsigned char` (or `(unsigned char)c`) when treating bytes as 0–255 values.
+Spot the bug: `int q = a / b;` with `b` from input	Division by zero: if `b` is 0 the `/` (or `%`) is undefined behavior (often a `SIGFPE` crash). Fix: check `if (b == 0) handle_error();` before dividing with any variable denominator.
+Spot the bug: `int r = INT_MIN / -1;`	Overflow via division: `-INT_MIN` is not representable in `int`, so `INT_MIN / -1` (and `INT_MIN % -1`) is undefined behavior despite looking safe. Fix: special-case `INT_MIN`/`-1` before dividing.
+Spot the bug: `uint32_t y = x << 32;` for a 32-bit `x`	Shift out of range: shifting by an amount ≥ the type's width (or negative) is undefined behavior. Fix: keep the shift count in `[0, width-1]`; if you need "shift by width", handle it as a separate case (result 0).
+Spot the bug: `int x = -1; int y = x << 1;`	Left shift of a negative value is undefined behavior in C. Fix: do bit-shifting on unsigned types (`unsigned`/`uint32_t`), where shifts are well-defined modular operations.
+Spot the bug: `int n = -1; if (n < sizeof(arr)) ...`	Signed/unsigned comparison: `sizeof` is unsigned, so `n` is converted to a huge unsigned value and the check passes unexpectedly. Fix: compare with a signed length, or cast carefully after validating `n >= 0`.
+Spot the bug: `buf = malloc(count * size);` with untrusted `count`	Integer overflow → undersized allocation: `count * size` can wrap `size_t` to a small value, so the buffer is too small and later writes overflow the heap. Fix: check `if (count > SIZE_MAX / size) fail();` or use `calloc(count, size)`.
+
+
+# 3.5 Floating-Point Bugs
+Spot the bug: `total = 0.1 + 0.2; if (total == 0.3) ...`	Exact float comparison fails: `0.1 + 0.2` is not exactly `0.3` in binary floating point. Fix: compare within a tolerance — `if (fabs(total - 0.3) < 1e-9)`.
+Spot the bug: summing a million small `float`s into a `float` accumulator	Accumulated rounding error: `float`'s ~7 digits of precision degrade badly over many additions, and small terms get lost. Fix: accumulate in `double`, or use Kahan (compensated) summation.
+Spot the bug: `if (x == x) ok();` used to validate `x`	NaN comparison: if `x` is `NaN`, `x == x` is false (NaN is unordered), so this rejects valid-looking data or is a confusing NaN test. Fix: use `isnan(x)` to test for NaN explicitly.
+Spot the bug: `float avg = 1 / 2;`	Integer division before conversion: `1 / 2` computes in `int` = 0, then converts to `0.0f`. Fix: make an operand floating point — `1 / 2.0` or `(float)a / b`.
+Spot the bug: `float f = some_double_expression;`	Silent `double`→`float` narrowing: assigning a `double` result to a `float` loses precision (and may overflow to infinity). Fix: keep the value as `double` if the precision matters, or narrow deliberately and knowingly.
+Spot the bug: a float result differs between `-O0` and `-O2` builds	Excess intermediate precision / FMA contraction: the compiler may keep intermediates in wider registers or fuse multiply-add, changing rounding across optimization levels. Fix: don't rely on exact float equality; use `-ffp-contract=off` or tolerances if reproducibility is required.

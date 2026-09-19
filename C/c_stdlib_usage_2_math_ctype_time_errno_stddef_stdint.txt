@@ -1,0 +1,95 @@
+# C Standard Library Usage — math, ctype, time, errno, stddef & stdint
+# Format: Front[TAB]Back
+# Part 2 of 4 (split from c_stdlib_usage.txt): sections 2.4-2.9 - <math.h>, <ctype.h>, <time.h>, <errno.h>/<assert.h>, <stddef.h>, <stdint.h>/<inttypes.h>.
+
+# 2.4 <math.h> — Functions
+What do `sqrt` and `cbrt` compute?	`sqrt(x)` returns the square root of `x` (domain error / NaN for negative `x`), and `cbrt(x)` returns the cube root, which is defined for negative values too. Both operate on and return `double` (with `f`/`l` variants for other precisions).
+What does `pow` do, and a precision tip?	`pow(base, exp)` raises `base` to the power `exp` for floating-point values. For exact small integer powers, direct multiplication (`x*x`) is faster and avoids rounding; `pow` can also signal domain/range errors (e.g. `pow(-1, 0.5)`).
+What does `fabs` do, and how does it differ from `abs`?	`fabs(x)` returns the absolute value of a `double` (`fabsf`/`fabsl` for other precisions), while `abs` is for `int`. Using `abs` on a floating value truncates it to `int` first — a common bug; use `fabs` for floats.
+What do `ceil`, `floor`, `round`, `trunc`, `nearbyint`, and `rint` do?	`ceil` rounds up, `floor` down, `round` to nearest (halves away from zero), `trunc` toward zero. `nearbyint`/`rint` round using the current rounding mode (`rint` may raise the inexact flag). All return a `double`, not an integer type.
+What do `fmod` and `remainder` compute?	`fmod(x, y)` returns the floating-point remainder of `x/y` with the sign of `x`; `remainder(x, y)` returns the IEEE remainder rounded to the nearest integer quotient (result can be negative). Use `fmod` for a positive-style modulo of floats.
+What do `exp`, `log`, `log2`, and `log10` compute (plus `expm1`/`log1p`)?	`exp(x)` is e^x, `log` is natural log, `log2`/`log10` are base-2/base-10 logs. `expm1(x)` computes e^x−1 and `log1p(x)` computes log(1+x) accurately for small `x`, avoiding cancellation error near zero.
+What trigonometric functions does `<math.h>` provide?	`sin`, `cos`, `tan` and their inverses `asin`, `acos`, `atan`, plus `atan2(y, x)` which returns the angle of the point (x, y) using both signs to get the correct quadrant. Arguments/results are in radians.
+What are the hyperbolic functions `sinh`, `cosh`, `tanh`?	They compute the hyperbolic sine, cosine, and tangent (`(e^x±e^-x)/2`, etc.), used in physics, catenary curves, and activation functions. Large arguments to `sinh`/`cosh` can overflow to `HUGE_VAL`.
+What do the floating-point classification macros do?	`isnan(x)` tests for NaN, `isinf(x)` for infinity, `isfinite(x)` for a normal/subnormal/zero value, `isnormal(x)` excludes zero/subnormal/NaN/inf, and `signbit(x)` reports the sign bit (even for -0.0). They safely classify results without tricky comparisons.
+What are `HUGE_VAL`, `NAN`, and `INFINITY`?	`HUGE_VAL` is the value math functions return on overflow (typically infinity); `INFINITY` is a positive-infinity constant; `NAN` is a quiet not-a-number constant. Use them with the classification macros, not `==`, since NaN never compares equal.
+What does `fma` provide over `a*b + c`?	`fma(a, b, c)` computes `a*b + c` with a single rounding step (the product is not rounded before adding), giving better accuracy and often mapping to a hardware fused-multiply-add instruction. Important in numerical code where rounding accumulates.
+Why link with `-lm`?	On most Unix systems the math functions live in a separate library (`libm`) from the C runtime, so you must add `-lm` when linking or get "undefined reference to `sqrt`" errors. Windows/MSVC bundles them, so no separate flag is needed.
+
+
+# 2.4 <math.h> — Usage Patterns
+How do you detect that a math call failed?	Check for special results with `isnan`/`isinf`, or set `errno = 0` before the call and inspect it afterward (domain errors set `EDOM`, range/overflow set `ERANGE`). For example `log(-1)` yields NaN and sets `EDOM`.
+Why should you never compare floats with `==`?	Rounding makes many values inexact (`0.1 + 0.2 != 0.3`), so exact equality usually fails unexpectedly. Compare within a tolerance: `fabs(a - b) < epsilon`, using a relative epsilon for large magnitudes.
+Why can repeated `float` operations lose precision?	`float` has ~7 significant digits, so accumulating many operations (e.g. summing a long series) magnifies rounding error. Using `double` (~15 digits) or compensated summation (Kahan) preserves accuracy in long computations.
+
+
+# 2.5 <ctype.h> — Functions
+What do `isalpha`, `isdigit`, and `isalnum` test?	Whether a character is a letter, a decimal digit, or alphanumeric (letter or digit), respectively, returning nonzero for true. They classify by the current locale's rules for the C/"POSIX" locale by default.
+What does `isspace` consider whitespace?	Space, form feed `\f`, newline `\n`, carriage return `\r`, horizontal tab `\t`, and vertical tab `\v`. It is the standard test for skipping whitespace while parsing text.
+What do `isupper` and `islower` check?	Whether a character is an uppercase or lowercase letter, respectively. They are locale-sensitive, and like all `<ctype.h>` functions require the argument to be representable as `unsigned char` or `EOF`.
+What do `toupper` and `tolower` do to non-letters?	They convert a lowercase letter to uppercase (`toupper`) or vice versa (`tolower`), and return any other character unchanged. Behavior can shift under a non-C locale.
+What do `isprint`, `ispunct`, and `iscntrl` classify?	`isprint` is any printable character including space; `ispunct` is a printable non-alphanumeric, non-space (punctuation/symbols); `iscntrl` is a control character (e.g. `\n`, `\t`, DEL). Useful for sanitizing or displaying input.
+What does `isxdigit` test?	Whether a character is a hexadecimal digit: `0`–`9`, `a`–`f`, or `A`–`F`. Handy when parsing hex numbers or escape sequences.
+What does `isgraph` test?	Whether a character has a visible glyph — printable and not a space. It is `isprint` minus the space character, i.e. any character that actually marks the page.
+
+
+# 2.5 <ctype.h> — Usage Patterns
+Why must you cast to `unsigned char` before calling `isdigit`/`toupper`/etc.?	These functions are defined only for values representable as `unsigned char` or `EOF`. On platforms where plain `char` is signed, passing a byte ≥ 0x80 gives a negative value — undefined behavior. Use `isdigit((unsigned char)c)`.
+How does locale affect `<ctype.h>` functions?	Their classification/conversion can change under `setlocale` (e.g. which characters count as letters or how case maps in different alphabets). By default programs run in the C locale; call `setlocale(LC_ALL, "")` to honor the environment.
+
+
+# 2.6 <time.h> — Functions
+What does `time` return?	`time(NULL)` returns the current calendar time as a `time_t` (typically seconds since the Unix epoch, 1970-01-01 UTC), or `(time_t)-1` on failure. It is the starting point for most date/time computation.
+What does `difftime` compute?	`difftime(end, start)` returns the difference between two `time_t` values as a `double` number of seconds, portably handling whatever representation `time_t` uses. Prefer it over subtracting `time_t` values directly.
+What does `clock` measure?	`clock()` returns approximate processor time used by the program, in units of `CLOCKS_PER_SEC`; divide the difference of two readings by `CLOCKS_PER_SEC` for CPU seconds. It measures CPU time, not wall-clock time (use `time`/`clock_gettime` for elapsed real time).
+What do `localtime`, `gmtime`, and their `_r` variants do?	They convert a `time_t` to a broken-down `struct tm`: `localtime` in local time (with timezone/DST), `gmtime` in UTC. The plain versions use shared static storage (not thread-safe); the `_r` variants write into a caller-supplied struct.
+What does `mktime` do?	`mktime(&tm)` converts a broken-down local `struct tm` back to a `time_t`, normalizing out-of-range fields (e.g. day 32 becomes the next month) and filling in `tm_wday`/`tm_yday`. It interprets the struct as local time.
+What does `strftime` do?	`strftime(buf, size, format, &tm)` formats a `struct tm` into a string using specifiers like `%Y-%m-%d %H:%M:%S`, bounded by `size` and locale-aware. It is the safe, flexible way to render dates/times as text.
+Why avoid `asctime` and `ctime`?	They format time into a fixed shared static buffer, are non-reentrant, and are deprecated; crafted `struct tm` fields can even overflow their internal buffer. Use `strftime` (bounded, flexible) instead.
+What does `timespec_get` provide?	`timespec_get(&ts, TIME_UTC)` (C11) fills a `struct timespec` with seconds and nanoseconds, giving higher resolution than `time`. It is the standard C way to get sub-second timestamps (POSIX offers `clock_gettime`).
+
+
+# 2.6 <time.h> — Usage Patterns
+Why prefer `localtime_r`/`gmtime_r` in threaded code?	The non-`_r` versions return a pointer to a single shared static `struct tm`, so concurrent or even sequential nested calls overwrite each other's result. The reentrant `_r` variants write into your own struct, avoiding the data race.
+Why not trust `asctime`/`ctime` with attacker-influenced `struct tm`?	Their classic implementations format into a fixed-size internal buffer assuming reasonable field ranges; out-of-range year/day values can overflow it — historically a real vulnerability. Use `strftime` with an explicit buffer size instead.
+
+
+# 2.7 <errno.h> & <assert.h>
+What is `errno`, and when is it valid?	`errno` is a thread-local integer that failing library functions set to an error code. It is only meaningful immediately after a call documented to set it *fails*; it is not cleared on success. Read it right after detecting failure, before another call overwrites it.
+Name some common `errno` codes.	`EINVAL` (invalid argument), `ENOMEM` (out of memory), `ENOENT` (no such file), `EACCES` (permission denied), `ERANGE` (result out of range), `EOVERFLOW`, `EEXIST` (already exists), `EAGAIN` (try again). Translate them with `strerror`/`perror`.
+What does `strerror` do (and its thread-safety caveat)?	`strerror(errnum)` returns a human-readable message for an `errno` value. It may use a shared static buffer, so it is not thread-safe; use `strerror_r` in multithreaded code.
+What does `perror` do?	`perror("prefix")` prints your prefix plus the message for the current `errno` to `stderr`. Call it right after a failing call so `errno` still reflects that failure.
+What does `assert(expr)` do, and when is it disabled?	`assert(expr)` aborts with a diagnostic (file, line, expression) if `expr` is false, catching programmer-bug invariants during development. Defining `NDEBUG` before `<assert.h>` compiles all `assert`s out — so they must not carry side effects or security checks.
+What is the difference between `assert` and `static_assert`?	`assert` is a runtime check (stripped by `NDEBUG`). `static_assert(cond, "msg")` / `_Static_assert` is checked at compile time and fails the build if false, with zero runtime cost — ideal for verifying type sizes and struct layouts.
+
+
+# 2.7 Usage Patterns
+Why must you not use `assert` for input validation in release builds?	`assert` is removed entirely when `NDEBUG` is defined (typical release builds), so any validation or security check inside it silently vanishes. Validate untrusted input with real `if` checks that remain in the shipped binary.
+Why check the function's failure indicator before reading `errno`?	Many functions do not reset `errno` to 0 on success, so a stale value from an earlier failure can mislead you. Confirm the call actually failed (via its return value), then inspect `errno`; if a call can validly return -1, set `errno = 0` beforehand.
+
+
+# 2.8 <stddef.h>
+What is `size_t`, and why use it for sizes/indices?	`size_t` is the unsigned type returned by `sizeof` and used throughout the library for sizes and counts; it can represent the size of any object. Using it consistently for lengths/indices avoids signed/unsigned mismatch bugs and warnings.
+What is `ptrdiff_t` for?	It is the signed integer type produced by subtracting two pointers into the same array — large enough to hold the result on the platform. Use it for pointer differences and array-index deltas that can be negative.
+What is `NULL`?	The null pointer constant from `<stddef.h>` — a value guaranteed not to point to any object, used to initialize pointers and signal "no result"/failure from functions returning pointers. Dereferencing it is undefined behavior.
+What does `offsetof(type, member)` give, and where is it used?	The byte offset of `member` within `type`. It powers the "container_of" idiom (recovering the enclosing struct from a member pointer), binary serialization, and hardware register-map layouts.
+What is `max_align_t`?	A type whose alignment is at least as strict as every scalar type's — the "maximum fundamental alignment". Allocators (like `malloc`) return memory suitably aligned for any type, i.e. `alignof(max_align_t)`.
+
+
+# 2.8 Usage Patterns
+Why use `size_t` consistently for lengths and indices?	Because the library uses it everywhere and it is unsigned and wide enough for any object size; mixing it with `int` invites signed/unsigned comparison bugs (e.g. `i < strlen(s)` with a signed `i`) and truncation on large sizes.
+What are practical uses of `offsetof`?	Serializing/deserializing structs field-by-field, implementing intrusive containers via `container_of`, and mapping hardware registers by offset — anywhere you need a member's position within a struct without an instance.
+
+
+# 2.9 <stdint.h> & <inttypes.h>
+What do the exact-width types like `int32_t`/`uint8_t` guarantee?	Exactly the stated width (8/16/32/64 bits) with the stated signedness, on any platform that provides them. Use them for file formats, network protocols, hardware registers, and bit manipulation where representation must be portable.
+What are `intptr_t` and `uintptr_t` for?	Integer types wide enough to hold a pointer value without loss, so you can convert a pointer to an integer and back portably (e.g. for tagging or alignment math). Plain `int`/`long` may be too narrow on 64-bit platforms.
+What is `ssize_t`?	A POSIX signed counterpart to `size_t`, used by functions like `read`/`write` that return a byte count or -1 on error. It can represent "-1" plus the full positive size range, unlike unsigned `size_t`.
+What are `int_least*_t` and `int_fast*_t`?	`int_leastN_t` is the smallest type with at least N bits (space-efficient); `int_fastN_t` is the fastest type with at least N bits (speed-efficient). Use them when you need a minimum width but exact width isn't required.
+What are the range-constant macros like `INT8_MAX`/`UINT32_MAX`/`SIZE_MAX`?	Compile-time limits for the fixed-width and standard integer types (`INT8_MIN`, `UINT32_MAX`, `SIZE_MAX`, etc.). Use them for portable bounds and overflow checks instead of hardcoding magic numbers.
+What are the `PRI`/`SCN` macros in `<inttypes.h>`?	Format-string fragments for fixed-width types: `printf("%" PRId32, x)` prints an `int32_t`, `PRIu64`/`PRIx64` handle `uint64_t`, and `SCNd32` is for `scanf`. They expand to the correct length modifier per platform, avoiding format/type mismatch UB.
+
+
+# 2.9 Usage Patterns
+How do you use `SIZE_MAX` to prevent an allocation overflow?	Before `malloc(n * sizeof(*p))`, check `if (n > SIZE_MAX / sizeof(*p)) { /* would overflow */ }`. This catches the multiplication wrapping `size_t` to a small value that would under-allocate. `calloc` performs this check internally.
+Why prefer fixed-width types for on-disk/network formats?	Because the exact byte layout must match on all machines; `int`/`long` vary in width and signedness by platform, but `int32_t`/`uint16_t` are unambiguous. Combined with byte-order conversion, they make serialized data portable.

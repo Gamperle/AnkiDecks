@@ -1,0 +1,94 @@
+# C Standard Library Usage — Variadics, Signals, Limits & Concurrency
+# Format: Front[TAB]Back
+# Part 3 of 4 (split from c_stdlib_usage.txt): sections 2.10-2.16 - <stdarg.h>, <signal.h>, <setjmp.h>, <stdbool.h>/<limits.h>/<float.h>, <threads.h>/<pthread.h>, specialized/platform headers, secure coding alternatives.
+
+# 2.10 <stdarg.h>
+What is a `va_list`?	An opaque type holding the iteration state over a variadic function's `...` arguments. You initialize it with `va_start`, read arguments with `va_arg`, and release it with `va_end`.
+What does `va_start(ap, last)` do?	Initializes the `va_list ap` to point at the first variadic argument; `last` must be the last *named* parameter before the `...`. Call it before any `va_arg`.
+What does `va_arg(ap, type)` do?	Returns the next variadic argument, interpreting it as `type`, and advances the `va_list`. You must request the promoted type (e.g. `int` for a char, `double` for a float) and you must know the count/types from a format string or count parameter.
+What is `va_copy(dst, src)` for?	It clones a `va_list` so you can traverse the arguments twice (e.g. one pass to measure, one to format). Each copy needs its own `va_end`. Reusing a `va_list` after `va_arg` without copying gives undefined results.
+What does `va_end(ap)` do?	Performs any cleanup needed to finish using the `va_list`, and must be called before the variadic function returns (once per `va_start`/`va_copy`). Omitting it is undefined behavior on some ABIs.
+
+
+# 2.10 Usage Patterns
+How do you forward variadic arguments to `vprintf`/`vsnprintf`?	Capture them in a `va_list` and pass it to the `v*` variant: `void logf(const char *fmt, ...){ va_list ap; va_start(ap, fmt); vfprintf(stderr, fmt, ap); va_end(ap); }`. The `v*` functions exist precisely to accept a `va_list`.
+Why can't a variadic function know its argument count/types by itself?	The language passes no metadata about the `...` arguments, so the function must be told: via a format string (like `printf`), an explicit count parameter, or a sentinel terminator value. Reading more/other-typed args than were passed is undefined behavior.
+What type must `va_arg` request for a `char` or `float` argument?	The promoted type — `int` for any integer narrower than `int` (including `char`/`short`), and `double` for `float` — because default argument promotions apply to variadic arguments. `va_arg(ap, char)` or `va_arg(ap, float)` is UB.
+
+
+# 2.11 <signal.h>
+What does `signal` register?	`signal(signum, handler)` sets the action for a signal to `SIG_DFL` (default), `SIG_IGN` (ignore), or a function pointer handler. Its cross-platform semantics are weak (handler reset, masking), so prefer `sigaction` for robust code.
+What does `raise` do?	`raise(sig)` sends signal `sig` to the current process (thread), synchronously invoking its handler. It is used to trigger signals programmatically, e.g. `raise(SIGABRT)`.
+Name common signals and their meanings.	`SIGINT` (Ctrl-C interrupt), `SIGTERM` (polite termination request), `SIGSEGV` (invalid memory access), `SIGFPE` (arithmetic error like divide-by-zero), `SIGABRT` (from `abort`), `SIGHUP` (hangup), `SIGCHLD` (child stopped/exited); `SIGKILL` cannot be caught or ignored.
+What is `sig_atomic_t`, and why `volatile`?	`sig_atomic_t` is the only type guaranteed to be read/written atomically with respect to signals. Flags shared between a handler and main code should be `volatile sig_atomic_t` — `volatile` so the compiler re-reads it, atomic so the handler can't be seen mid-update.
+What are async-signal-safe functions?	Only a small POSIX-defined set of functions (e.g. `write`, `_exit`, `signal`) may be safely called inside a signal handler; others (`printf`, `malloc`, most of libc) may be interrupted mid-operation, so calling them in a handler is undefined behavior/deadlock-prone.
+Why prefer `sigaction` over `signal`?	`sigaction` gives portable, explicit control: which signals are blocked during the handler, whether interrupted syscalls auto-restart (`SA_RESTART`), and reliable persistent (not one-shot) handling — avoiding `signal`'s historically inconsistent behavior.
+What do `sigprocmask`, `sigemptyset`, and `sigaddset` do?	They manipulate the process's signal mask (the set of currently blocked signals): `sigemptyset`/`sigaddset` build a signal set, and `sigprocmask` installs it to block/unblock signals — used to protect critical sections from being interrupted.
+
+
+# 2.12 <setjmp.h>
+What does `setjmp` do?	`setjmp(env)` saves the current execution context (stack pointer, registers, program counter) into `env` and returns 0 on this initial call. A later `longjmp` makes it appear to return again with a nonzero value.
+What does `longjmp` do?	`longjmp(env, val)` restores the context saved by `setjmp`, transferring control back to that point, which then "returns" `val` (or 1 if `val` is 0). Execution never continues past the `longjmp` call itself.
+What is the classic use case for `setjmp`/`longjmp`?	Non-local error recovery: unwind out of deeply nested calls back to a recovery point in one jump, without manually propagating an error code through every intermediate return. It approximates exceptions in C.
+What is the `setjmp`/`longjmp` local-variable pitfall?	Non-`volatile` locals modified between `setjmp` and the `longjmp` back may hold indeterminate values afterward (the compiler could have kept them in registers). Declare locals you rely on after the jump as `volatile`.
+
+
+# 2.13 <stdbool.h>, <limits.h>, <float.h>
+What does `<stdbool.h>` provide?	The `bool` type plus `true`/`false` macros (aliases for `_Bool`, 1, 0). Since C23 these are proper keywords and the header is unnecessary. Using `bool` for logical flags documents intent better than `int`.
+What key limits does `<limits.h>` define?	Ranges of the integer types and `CHAR_BIT` (bits per byte, usually 8): `INT_MIN`/`INT_MAX`, `UINT_MAX`, `LONG_MAX`, `CHAR_MIN`/`CHAR_MAX`. Note the signedness of plain `char` is implementation-defined, reflected in `CHAR_MIN`.
+What does `<float.h>` define?	Floating-point characteristics: `FLT_EPSILON`/`DBL_EPSILON` (smallest distinguishable step near 1.0), `FLT_MAX`/`DBL_MIN`, `FLT_RADIX` (usually 2), and precision/exponent limits. Use them for tolerance-based comparisons and overflow/underflow reasoning.
+
+
+# 2.13 Usage Patterns
+How do the `<limits.h>` macros help write portable overflow checks?	They let you check before the operation instead of after: `if (a > 0 && b > INT_MAX - a) overflow();` uses `INT_MAX` rather than a magic number, staying correct across platforms with different int widths.
+How do you use `*_EPSILON` for float comparison?	Compare within a tolerance scaled to the magnitude: `fabs(a - b) <= DBL_EPSILON * fmax(fabs(a), fabs(b))` for a relative check, or a fixed epsilon for values near a known scale — never `a == b` directly.
+
+
+# 2.14 Concurrency: <threads.h> & <pthread.h>
+What does C11 `<threads.h>` provide?	Portable threading: `thrd_create`/`thrd_join` for threads, `mtx_t` with `mtx_lock`/`mtx_unlock` for mutexes, `cnd_t` condition variables, `thread_local` storage, and `call_once` for one-time initialization. It is the standard (if not universally implemented) threading API.
+What does POSIX `<pthread.h>` provide?	The widely-used Unix threading API: `pthread_create`/`pthread_join`, `pthread_mutex_t` mutexes, `pthread_cond_t` condition variables, `pthread_once` one-time init, and `pthread_rwlock_t` reader-writer locks. Link with `-pthread`.
+What does `<stdatomic.h>` offer for concurrency?	Atomic types and operations — `atomic_int`, `atomic_load`/`atomic_store`, `atomic_fetch_add`, `atomic_compare_exchange` — each taking an optional memory-order argument. They provide race-free lock-free access to shared scalars without a mutex.
+
+
+# 2.14 Usage Patterns
+How do you correctly protect shared state with a mutex?	Lock before every access (reads included) and unlock after, keeping the critical section small: `mtx_lock(&m); shared++; mtx_unlock(&m);`. Every thread must use the same mutex for that data; an unsynchronized access elsewhere is still a data race (UB).
+Why must a condition-variable wait use a predicate loop?	Because of spurious wakeups (a wait can return with no signal) and stolen wakeups (another thread changes the state first). Re-test in a loop: `while (!ready) cnd_wait(&cv, &m);`. An `if` would wrongly proceed on a false wakeup.
+When is an atomic preferable to a full mutex?	For simple shared scalars — counters, flags, single-word state — an atomic (`atomic_fetch_add`, `atomic_load`/`store`) is lock-free and cheaper than a mutex. Use a mutex when you must update several fields together while preserving an invariant.
+Why avoid calling unknown callbacks while holding a lock?	The callback might block, run for a long time, or re-enter code that tries to take the same lock — causing deadlock or priority issues. Establish a consistent lock ordering and release locks before invoking caller-supplied callbacks.
+
+
+# 2.15 Specialized & Platform Headers
+What does `<complex.h>` provide?	Complex arithmetic: the `double complex` (and float/long double) types, the imaginary unit `I`, and functions like `creal`/`cimag` (real/imag parts) and `cabs` (magnitude). It lets C do native complex-number math.
+What does `<fenv.h>` control?	The floating-point environment: exception status flags (`FE_DIVBYZERO`, `FE_OVERFLOW`, `FE_INVALID`, `FE_INEXACT`) you can test/clear, and the rounding mode via `fesetround`/`fegetround`. Used in careful numerical code and reproducibility work.
+What does `<locale.h>` do?	`setlocale(LC_ALL, "")` switches the program from the C locale to the environment's locale, affecting number/date formatting, currency (`localeconv`), string collation, and `<ctype.h>` classification. It governs locale-dependent behavior across the library.
+What does `<uchar.h>` provide?	The `char16_t` and `char32_t` types (UTF-16/UTF-32 code units) and conversion functions (`mbrtoc16`/`c32rtomb`, etc.) for translating between multibyte and these Unicode encodings.
+What do `<wchar.h>` and `<wctype.h>` provide?	Wide-character counterparts of the string and ctype libraries: `wchar_t` strings with `wcslen`/`wcscpy`/`fwprintf`, and wide classification like `iswalpha`/`iswspace`. They support locales whose characters don't fit in a single `char`.
+What does POSIX `<unistd.h>` provide?	Core Unix syscall wrappers: `fork`/`exec*` (processes), `read`/`write`/`close`/`lseek` (low-level I/O), `pipe`, `dup`/`dup2` (fd plumbing), `getuid`/`geteuid` and `setuid`/`seteuid` (credentials), and `access` (permission checks). It is the heart of POSIX systems programming.
+What does `<fcntl.h>`'s `open` add over `fopen`, and what do its flags mean?	`open(path, flags, mode)` returns a raw file descriptor with fine control: `O_RDONLY`/`O_WRONLY`/`O_RDWR`, `O_CREAT` (create), `O_EXCL` (fail if exists — race-free creation), `O_APPEND`, and `O_CLOEXEC` (close on exec). It underlies the buffered `FILE*` layer.
+What does `<sys/stat.h>` provide?	File metadata and permissions: `stat`/`fstat`/`lstat` fill a `struct stat` (size, mode, times, owner), the mode bit macros (`S_ISDIR`, `S_IRUSR`, …), plus `mkdir` and `umask` (the default-permission mask for new files).
+What networking calls do `<sys/socket.h>` and friends provide?	The Berkeley sockets API: `socket`, `bind`, `listen`, `accept`, `connect`, and `send`/`recv`, plus byte-order helpers `htons`/`htonl`/`ntohs`/`ntohl` from `<arpa/inet.h>`. They implement TCP/UDP network communication.
+What does `<dlfcn.h>` do?	Runtime dynamic loading: `dlopen` loads a shared library by name, `dlsym` looks up a symbol (function/variable) address in it, and `dlclose` unloads it. It enables plugins and lazy loading; `dlerror` reports failures.
+What is the difference between real, effective, and saved UID?	The real UID is who launched the process; the effective UID (EUID) governs permission checks; the saved UID lets a setuid program drop and later regain privilege. Reap children with `wait`/`waitpid`; a setuid-root binary should drop to the real UID before risky work.
+
+
+# 2.15 Usage Patterns
+How do you create a file race-free with `O_CREAT | O_EXCL`?	`open(path, O_CREAT | O_EXCL | O_WRONLY, 0600)` atomically creates the file and fails if it already exists, so an attacker cannot pre-create or symlink it between check and creation. For temp files, `mkstemp` does this with a unique name.
+Why use `fork`+`exec*` instead of `system()`?	`fork` duplicates the process and `execv(path, argv)` replaces the child with a new program, passing arguments as a vector with no shell involved — so shell metacharacters in the arguments cannot inject commands. `system()` runs a shell and is injection-prone.
+Why convert integers with `htons`/`htonl` before sending over a socket?	Machines differ in byte order; network byte order is big-endian. Convert host-to-network before sending (`htons`/`htonl`) and network-to-host after receiving (`ntohs`/`ntohl`) so both endpoints agree regardless of architecture.
+Why always check the return values of privilege and file syscalls?	Calls like `setuid`, `open`, `chdir`, and `chown` can fail silently (returning -1) — e.g. `setuid` failing means privileges were *not* dropped, leaving code running as root. Unchecked failures here are a classic root cause of real security vulnerabilities.
+
+
+# 2.16 Secure Coding — Safer Alternatives
+Why was `gets` removed from the C standard?	It reads a line with no bounds check, so any input longer than the buffer overflows it — an unconditional vulnerability. Deprecated in C99 and removed in C11. Use `fgets(buf, sizeof buf, stdin)`, which takes a size limit.
+When should you prefer `snprintf` over `sprintf`/`strcpy`/`strcat`?	Whenever a fixed-size buffer meets untrusted or variable-length input. `snprintf(buf, sizeof buf, "%s%d", s, n)` caps the write and null-terminates, whereas `sprintf`/`strcpy`/`strcat` have no bound and overflow. It is the general-purpose safe formatting/copy tool.
+How do `strlcpy`/`strlcat` improve on `strncpy`/`strncat`?	They take the full destination buffer size and always null-terminate, returning the length needed so you can detect truncation. `strncpy` may leave the result unterminated and `strncat`'s size argument is easy to misuse. (They are BSD/POSIX, not in every libc.)
+Why doesn't `strncpy` guarantee null-termination?	If the source is `n` or more characters, `strncpy(dst, src, n)` copies exactly `n` bytes and writes no terminator, leaving `dst` unterminated. Always terminate manually: `strncpy(dst, src, n-1); dst[n-1] = '\0';`.
+What are the C11 Annex K bounds-checked functions, and their caveat?	Optional `_s` variants like `strcpy_s`, `sprintf_s`, `memcpy_s` that take destination sizes and fail loudly on overflow. The caveat: Annex K is optional and unevenly implemented (glibc omits it), so know they exist but don't assume they're available.
+How do you securely erase a secret from memory?	Use `explicit_bzero` (BSD/glibc), `memset_s` (C11 Annex K), or `SecureZeroMemory` (Windows) — these are guaranteed not to be optimized away, unlike a plain `memset(key, 0, n)` before `free`, which the compiler may delete as a dead store.
+Why isn't `memcmp`/`strcmp` safe for comparing secrets?	They typically return at the first differing byte, so their timing reveals how many leading bytes matched — an attacker can recover a password/MAC/token byte-by-byte. Use a constant-time comparison that always inspects every byte.
+Why are `rand()`/`srand()` unsuitable for security?	They are predictable pseudo-random generators (often seeded from the time), so their output can be reproduced or guessed — fatal for session IDs, keys, and nonces. Use a CSPRNG: `getrandom`, `/dev/urandom`, `arc4random`, or a platform crypto API.
+Why avoid `system()`/`popen()` with untrusted data?	Both invoke a shell, so metacharacters in the data run arbitrary commands (injection). Prefer `fork`+`exec*` with an argument array, which passes arguments literally with no shell parsing. If you must build a command, rigorously validate/escape the inputs.
+Why prefer `mkstemp` over `tmpnam`/`tmpfile` naming?	`tmpnam` only produces a predictable name, leaving a TOCTOU window for a symlink/pre-creation attack. `mkstemp` atomically creates and opens a uniquely-named file with safe permissions, eliminating the race.
+How does canonicalizing paths with `realpath` help security?	`realpath` resolves `..`, symlinks, and redundant separators to an absolute canonical path, which you can then verify stays within an allowed base directory — defeating `../` path-traversal that would otherwise escape a sandbox.
+Why check every `malloc`, size-arithmetic, and privilege-change result?	Treating these as "can't fail" is a recurring root cause of real CVEs: an unchecked `malloc` NULL leads to a crash/UAF, unchecked size arithmetic overflows to an undersized buffer, and an unchecked `setuid` leaves privileges undropped. Validate each.
+Name useful compiler hardening flags for C.	`-D_FORTIFY_SOURCE=2` (compile-time buffer checks), `-fstack-protector-strong` (stack canaries), `-Wformat -Wformat-security` (catch format-string bugs), and `-Wall -Wextra`. Add `-fPIE -pie`, `-Wl,-z,relro,-z,now`, and `-fsanitize=address,undefined` in testing/CI.

@@ -1,0 +1,51 @@
+# C Spot the Bug — Control Flow, Macros, Resources & Concurrency
+# Format: Front[TAB]Back
+# Part 2 of 3 (split from c_spot_the_bug.txt): sections 3.6-3.10 - control flow bugs, operator & precedence bugs, preprocessor & macro bugs, resource & file handling bugs, concurrency & signal bugs.
+
+# 3.6 Control Flow Bugs
+Spot the bug: a `switch` with work in `case 1:` and no `break` before `case 2:`	Unintended fall-through: after `case 1` execution continues into `case 2`'s body. Fix: add `break;` at the end of each case (or annotate deliberate fall-through with `[[fallthrough]]`).
+Spot the bug: `if (x > 0); { do_thing(); }`	Stray semicolon: `if (x > 0);` has an empty body, so the following block runs unconditionally. Fix: remove the `;` — `if (x > 0) { do_thing(); }`.
+Spot the bug: `if (x = 0) ...`	Assignment in a condition: `x = 0` assigns 0 (and is false), so the branch never runs and `x` is clobbered. Fix: use `==` for comparison — `if (x == 0)`; compilers warn with `-Wall`.
+Spot the bug: `char c; while ((c = fgetc(fp)) != EOF) ...`	`EOF` truncation: storing `fgetc`'s result in a `char` loses the ability to distinguish `EOF` (−1) from byte `0xFF`, so the loop may never end or end early. Fix: use an `int` to hold the result.
+Spot the bug: nested loops each declaring `int i` in the inner block	Shadowing: the inner `int i` hides the outer loop's `i`, so updates don't reach the outer counter and it misbehaves. Fix: use distinct names (`i`, `j`) or don't redeclare.
+Spot the bug: `do { if (skip) continue; work(); } while (cond);`	Surprising `continue`: in a `do-while`, `continue` jumps to the condition test at the bottom, not the top — so `work()` is skipped but the loop still re-evaluates `cond`. Fix: understand it re-tests the condition; restructure with a flag/`if` if you meant otherwise.
+Spot the bug: `if (a) if (b) x(); else y();` — which `if` owns the `else`?	Dangling `else`: `else` binds to the nearest unmatched `if` (the `if (b)`), regardless of indentation, so `y()` runs when `a` is true and `b` is false. Fix: use explicit braces to make the intended pairing clear.
+
+
+# 3.7 Operator & Precedence Bugs
+Spot the bug: `if (flags & MASK == 0)`	Precedence: `==` binds tighter than `&`, so this is `flags & (MASK == 0)`, not the intended `(flags & MASK) == 0`. Fix: parenthesize — `(flags & MASK) == 0`.
+Spot the bug: `x = a == b;` when a comparison result wasn't intended	Assignment-vs-equality confusion: this assigns the boolean `(a == b)` to `x`. If you meant to test equality, it's `if (x == (a == b))` or similar; if you meant `x = a = b`, that's different. Fix: write what you mean and enable `-Wall` to catch suspicious assignments.
+Spot the bug: `int y = cond ? a : b + 1;`	Ternary precedence: `?:` is lower than `+`, so this parses as `cond ? a : (b + 1)`, not `(cond ? a : b) + 1`. Fix: add parentheses to force the intended grouping.
+Spot the bug: relying on `x + 1 << 2` meaning `x + (1 << 2)`	Shift precedence: `<<` is *lower* than `+`, so it is `(x + 1) << 2`, not `x + (1 << 2)`. Fix: parenthesize the intended grouping rather than trusting memory of the precedence table.
+Spot the bug: `*p++` when you meant to increment the value	Increment/dereference order: `*p++` increments the pointer and yields the old `*p`; the pointee is unchanged. Fix: to increment the pointed-to value use `(*p)++`.
+Spot the bug: `if (a & b)` where a logical test was intended	Bitwise-for-logical swap: `&` does a bitwise AND (no short-circuit, different result) where `&&` was meant. Fix: use `&&`/`||` for logical conditions; reserve `&`/`|` for bit manipulation.
+
+
+# 3.8 Preprocessor & Macro Bugs
+Spot the bug: `#define SQUARE(x) x*x` used as `SQUARE(a+1)`	No parentheses: expands to `a+1*a+1` = `a + a + 1`, not `(a+1)²`. Fix: `#define SQUARE(x) ((x)*(x))` — parenthesize each parameter and the whole expansion.
+Spot the bug: `#define MAX(a,b) ((a)>(b)?(a):(b))` used as `MAX(i++, j++)`	Double evaluation: the winning argument is evaluated twice, so `i`/`j` increments more than intended. Fix: use an inline function (each argument evaluated once) or a statement-expression with temporaries.
+Spot the bug: a header with type definitions but no include guard, included twice	Redefinition errors: the types get processed twice in one translation unit. Fix: wrap it in `#ifndef HDR_H / #define HDR_H / ... / #endif` or use `#pragma once`.
+Spot the bug: `#define max(a,b) ...` in a file that also includes `<sys/param.h>`	Macro name collision: `<sys/param.h>` may also define `max`, causing a redefinition warning/error or subtly different behavior. Fix: use a unique/prefixed name (`MYLIB_MAX`) or `#undef` before redefining.
+Spot the bug: `#define BOOL int` then comparing a `BOOL` with `true`/`false`	`#define` used as a type: it inconsistently mixes with `<stdbool.h>`'s real `bool`/`true`/`false`, and gives no type safety. Fix: include `<stdbool.h>` and use `bool` rather than a macro alias.
+Spot the bug: a multi-line macro whose next-to-last line is missing a trailing `\`	Missing continuation: without the backslash the macro ends early, so the remaining lines are stray code — a syntax error or silent misbehavior. Fix: end every line of a multi-line macro except the last with `\`.
+Spot the bug: `#define INIT() a = 0;` used in `if (x) INIT(); else foo();`	Semicolon in the macro body: the macro's `;` plus the statement's `;` leaves a stray empty statement, so `else` fails to attach to the `if`. Fix: wrap multi-statement macros in `do { ... } while (0)` (no trailing semicolon).
+
+
+# 3.9 Resource & File Handling Bugs
+Spot the bug: `fp = fopen(...); if (error) return; fclose(fp);`	Leak on the error path: the early `return` skips `fclose`, leaking the descriptor. Fix: close before returning on every path, or `goto cleanup;` that closes `fp` once.
+Spot the bug: `fclose(fp);` after buffered writes, return value ignored	`fclose` can fail while flushing (e.g. disk full), silently losing data/errors. Fix: check `if (fclose(fp) != 0) handle_error();`, especially for files you wrote.
+Spot the bug: `tmpnam(name); fp = fopen(name, "w");`	TOCTOU race: between generating the predictable name and opening it, an attacker can create/symlink that path. Fix: use `mkstemp`, which atomically creates and opens a unique file, or `open` with `O_CREAT | O_EXCL`.
+Spot the bug: `fgets(buf, n, fp); process(buf);` in a loop, return value ignored	Ignoring `fgets`'s result: on EOF/error it returns `NULL` and leaves `buf` with stale contents, so the loop processes old data. Fix: drive the loop by the return — `while (fgets(buf, n, fp)) process(buf);`.
+Spot the bug: `fopen("data.bin", "r")` then `fread` of binary data on Windows	Text-mode on binary data: on Windows `"r"` translates `\r\n`↔`\n` and may stop at a `0x1A` byte, corrupting binary reads. Fix: open with `"rb"` for binary files.
+Spot the bug: `sprintf(cmd, "rm %s", userfile); system(cmd);`	Command injection: shell metacharacters in `userfile` (e.g. `"; rm -rf ~"`) run arbitrary commands. Fix: avoid the shell — `fork`+`execv("/bin/rm", (char*[]){"rm", userfile, NULL})` — and validate the input.
+Spot the bug: opening fds before `fork`/`exec` without `O_CLOEXEC`	Fd leak across `exec`: descriptors the child shouldn't have stay open in the new program, leaking resources/handles (a security concern for privileged fds). Fix: open with `O_CLOEXEC` (or set `FD_CLOEXEC` via `fcntl`) so they close on `exec`.
+
+
+# 3.10 Concurrency & Signal Bugs
+Spot the bug: `int done = 0;` set in a signal handler, `while (!done) {}` in main	Missing volatile/atomicity: the compiler may cache `done` in a register and never see the handler's update, or the access may not be atomic. Fix: declare `volatile sig_atomic_t done;`.
+Spot the bug: calling `printf` inside a signal handler	Not async-signal-safe: if the signal interrupts another `printf`/`malloc`, internal locks/state are inconsistent → UB or deadlock. Fix: set a flag in the handler and print from the main loop, or use only async-signal-safe calls like `write`.
+Spot the bug: a non-`volatile` local changed between `setjmp` and `longjmp`	`setjmp` clobbering: such a local may hold an indeterminate value after the jump back, because the compiler could have kept it in a register. Fix: mark locals relied on after the jump as `volatile`.
+Spot the bug: two threads doing `global = compute();` with no synchronization	Data race on a shared global: concurrent unsynchronized writes are undefined behavior and can tear/lose values. Fix: guard access with a mutex, or make the variable `_Atomic`.
+Spot the bug: two threads both executing `counter++`	Data race on a non-atomic counter: `counter++` is a read-modify-write, not atomic, so increments are lost. Fix: guard with a mutex or make `counter` an `atomic_int` and use `atomic_fetch_add`.
+Spot the bug: thread A locks `m1` then `m2`; thread B locks `m2` then `m1`	Deadlock from inconsistent lock ordering: each holds one lock and waits for the other. Fix: define a global lock-ordering rule so all threads always acquire `m1` before `m2`.
+Spot the bug: `if (!ready) cond_wait(&cv, &m);`	Missing predicate loop: a spurious or stolen wakeup lets execution proceed with `ready` still false. Fix: re-test in a loop — `while (!ready) cond_wait(&cv, &m);`.
