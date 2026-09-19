@@ -12,11 +12,41 @@ Front (question or term)[TAB]Back (answer or definition)
 
 ## Available Decks
 
-| File | Description |
-|------|-------------|
-| `linux_beginner.txt` | Shell basics, filesystem, permissions, users, package management, processes |
-| `linux_intermediate.txt` | Systemd, networking, storage, scripting, containers, monitoring, security hardening |
-| `linux_pro.txt` | Kernel internals, namespaces/cgroups, performance tuning, eBPF, boot process, custom kernels |
+Each tier was originally one file (89-116 cards); each has been split into one file per subtopic so a single topic can be studied as a self-contained deck. No card content changed, only how it's grouped into files.
+
+### Beginner
+
+| File | Topic |
+|------|-------|
+| `linux_beginner_1_shell_command_line_basics.txt` | Shell & Command Line Basics |
+| `linux_beginner_2_filesystem_navigation.txt` | Filesystem & Navigation |
+| `linux_beginner_3_users_groups_permissions.txt` | Users, Groups & Permissions |
+| `linux_beginner_4_package_management.txt` | Package Management |
+| `linux_beginner_5_processes_job_control.txt` | Processes & Job Control |
+| `linux_beginner_6_basic_networking.txt` | Basic Networking |
+
+### Intermediate
+
+| File | Topic |
+|------|-------|
+| `linux_intermediate_7_systemd_service_management.txt` | Systemd & Service Management |
+| `linux_intermediate_8_networking_firewalls.txt` | Networking & Firewalls |
+| `linux_intermediate_9_storage_filesystems.txt` | Storage & Filesystems |
+| `linux_intermediate_10_shell_scripting.txt` | Shell Scripting |
+| `linux_intermediate_11_containers_virtualization.txt` | Containers & Virtualization |
+| `linux_intermediate_12_monitoring_logging.txt` | Monitoring & Logging |
+| `linux_intermediate_13_security_hardening.txt` | Security Hardening |
+
+### Pro
+
+| File | Topic |
+|------|-------|
+| `linux_pro_14_kernel_fundamentals.txt` | Kernel Fundamentals |
+| `linux_pro_15_namespaces_cgroups.txt` | Namespaces & Cgroups |
+| `linux_pro_16_performance_tuning.txt` | Performance Tuning |
+| `linux_pro_17_ebpf_observability.txt` | eBPF & Observability |
+| `linux_pro_18_boot_process_init.txt` | Boot Process & Init |
+| `linux_pro_19_custom_kernels_modules.txt` | Custom Kernels & Modules |
 
 ---
 

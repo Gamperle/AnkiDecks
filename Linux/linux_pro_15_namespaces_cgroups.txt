@@ -1,0 +1,19 @@
+# Linux Pro — Namespaces & Cgroups
+# Format: Front[TAB]Back
+# Split from linux_pro.txt (Section 15: Namespaces & Cgroups).
+
+What are Linux namespaces?	Kernel features that isolate and partition system resources. Each namespace type provides a separate view: PID, network, mount, UTS (hostname), IPC, user, cgroup, and time namespaces. Foundation of containers.
+What does the PID namespace do?	Provides an isolated process ID space. A process has PID 1 inside its PID namespace (acting as init) while having a different PID in the parent namespace. Processes can't see or signal processes in other PID namespaces.
+What does the network namespace do?	Provides an isolated networking stack: its own interfaces, routing tables, iptables rules, and sockets. veth (virtual Ethernet) pairs connect network namespaces. Each Docker container gets its own network namespace.
+What does the mount namespace do?	Provides an isolated set of mount points. A process in a mount namespace can mount/unmount filesystems without affecting other namespaces. Container filesystems are implemented via mount namespaces.
+What is the UTS namespace?	Isolates the hostname and domain name. Each UTS namespace can have its own hostname — containers appear to have independent hostnames.
+What does the user namespace do?	Maps UIDs/GIDs between the namespace and the host. A process can be UID 0 (root) inside the namespace while being an unprivileged user outside. Enables rootless containers.
+How do you create a namespace?	unshare(1) command: unshare --pid --fork --mount-proc bash creates a new PID namespace. Programmatically: clone() with CLONE_NEWPID, CLONE_NEWNET, etc.
+How do you enter an existing namespace?	nsenter -t <PID> --pid --net --mount — enters the namespaces of the process with the given PID. Used to debug running containers.
+What is the difference between cgroups v1 and v2?	v1: multiple independent hierarchies, one controller per hierarchy, complex interaction rules. v2: single unified hierarchy, simpler resource management, better pressure stall information (PSI), improved writeback control.
+What is a cgroup controller?	A kernel subsystem that manages a specific resource type within a cgroup. Key controllers: cpu (CPU time), memory (RAM limits), io (block I/O), pids (process count limit), cpuset (CPU/memory node pinning).
+How does the memory cgroup controller work?	Sets memory limits via memory.max (hard limit — triggers OOM killer), memory.high (throttling point), memory.low (best-effort protection). memory.swap.max limits swap usage. memory.current shows current usage.
+What is memory.max in cgroup v2?	The hard memory limit. If a cgroup exceeds this value, the OOM killer selects and kills a process within the cgroup. Set to "max" for no limit.
+How does the CPU cgroup controller work?	cpu.max sets a bandwidth limit: "quota period" (e.g., "100000 100000" = 100% of one CPU). cpu.weight (1-10000, default 100) sets proportional sharing when CPUs are contended.
+How does systemd integrate with cgroups?	Each systemd service runs in its own cgroup scope/slice. Resource controls are set in unit files: MemoryMax=, CPUQuota=, IOWeight=, TasksMax=. systemd uses cgroup v2 by default on modern distributions.
+What are systemd slices?	A hierarchical grouping of cgroups in systemd. Default slices: system.slice (services), user.slice (user sessions), machine.slice (VMs/containers). Custom slices can be created for resource partitioning.

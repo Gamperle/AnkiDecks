@@ -1,0 +1,35 @@
+# Linux Beginner — Filesystem & Navigation
+# Format: Front[TAB]Back
+# Split from linux_beginner.txt (Section 2: Filesystem & Navigation).
+
+What is the Filesystem Hierarchy Standard (FHS)?	A standard defining the directory structure and layout of Linux systems. It specifies where files should be placed (e.g., /bin for binaries, /etc for config).
+What is the / directory in Linux?	The root directory — the top of the filesystem hierarchy. All other directories are subdirectories of /.
+What is /bin used for?	Essential user command binaries needed for single-user mode and booting (e.g., ls, cp, cat). Often symlinked to /usr/bin on modern systems.
+What is /etc used for?	System-wide configuration files (e.g., /etc/fstab, /etc/hostname, /etc/passwd). "etc" originally stood for "et cetera."
+What is /home used for?	Contains the personal home directories for regular users. Each user gets a directory like /home/username.
+What is /var used for?	Variable data that changes during system operation — logs (/var/log), mail, spool files, temporary data.
+What is /tmp used for?	Temporary files that may be deleted on reboot. World-writable with the sticky bit set. Some systems use tmpfs (RAM-based).
+What is /usr used for?	Secondary hierarchy for read-only user data. Contains /usr/bin (user programs), /usr/lib (libraries), /usr/share (shared data).
+What is /opt used for?	Optional add-on application software packages — typically third-party software installed outside the standard package manager.
+What is /proc?	A virtual filesystem providing process and kernel information as files. /proc/cpuinfo, /proc/meminfo, /proc/PID/ are common entries. Exists only in RAM.
+What is /sys?	A virtual filesystem exposing kernel objects (devices, drivers, kernel features) in a structured hierarchy. Used for device and kernel parameter management.
+What is /dev?	Contains device files (nodes) representing hardware and virtual devices. Examples: /dev/sda (disk), /dev/null, /dev/zero, /dev/random.
+What does cd do?	Changes the current working directory. cd / goes to root, cd ~ goes to home, cd - goes back to the previous directory.
+What does pwd do?	Prints the current (present) working directory as an absolute path.
+What do ls -l and ls -a show?	ls -l shows detailed listing (permissions, owner, size, date). ls -a shows hidden files (names starting with .).
+What is the difference between a hard link and a symbolic (soft) link?	A hard link is another name for the same inode — both entries are equal. A soft link (symlink) is a pointer to a pathname; it breaks if the target is deleted.
+How do you create a symbolic link?	ln -s target linkname — creates a symlink. Without -s, ln creates a hard link.
+What does the file command do?	Determines a file's type by inspecting its content (magic bytes), not its extension. Example: file photo.jpg → "JPEG image data".
+What does cat do?	Concatenates and prints file contents to stdout. Example: cat file.txt. For large files, use less instead.
+What is the difference between less and more?	less allows forward and backward navigation through a file. more only supports forward scrolling (and is the older tool).
+What does head do?	Prints the first n lines of a file (default 10). Example: head -n 20 file.txt shows the first 20 lines.
+What does tail do? What does tail -f do?	tail prints the last n lines (default 10). tail -f follows a file, printing new lines as they are appended — useful for monitoring logs.
+What does wc do?	Word count — displays the number of lines (-l), words (-w), and bytes/characters (-c/-m) in a file.
+What does find do?	Searches for files in a directory tree. Example: find /home -name "*.txt" -type f finds all .txt files under /home.
+What is the difference between find and locate?	find searches the actual filesystem in real time (slower but current). locate uses a pre-built database (fast but may be outdated; updated by updatedb).
+What does grep do?	Searches text for lines matching a pattern (regex). Example: grep -r "TODO" src/ — recursively searches for "TODO" in src/.
+What does sed do?	Stream editor — processes text line by line with commands. Common use: sed 's/old/new/g' file — substitutes all occurrences of "old" with "new."
+What does awk do?	A pattern-scanning and text-processing language. Common use: awk '{print $1, $3}' file — prints the 1st and 3rd fields of each line.
+What does cut do?	Extracts sections (fields or characters) from each line. Example: cut -d':' -f1 /etc/passwd extracts usernames.
+What does sort do? What about uniq?	sort orders lines alphabetically or numerically (-n). uniq removes adjacent duplicate lines (often piped after sort).
+What does xargs do?	Reads items from stdin and executes a command with those items as arguments. Example: find . -name "*.log" | xargs rm — deletes found files.

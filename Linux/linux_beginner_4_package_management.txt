@@ -1,0 +1,15 @@
+# Linux Beginner — Package Management
+# Format: Front[TAB]Back
+# Split from linux_beginner.txt (Section 4: Package Management).
+
+What is a package manager?	A tool to install, update, remove, and manage software packages and their dependencies. Examples: apt (Debian), dnf (Fedora), pacman (Arch).
+What is the difference between apt and dpkg?	dpkg is the low-level tool that installs/removes individual .deb packages. apt is the high-level tool that resolves dependencies, downloads from repositories, and calls dpkg.
+How do you update the package list and upgrade all packages on Debian/Ubuntu?	sudo apt update (refresh package list) && sudo apt upgrade (install available upgrades).
+How do you install a package with apt?	sudo apt install <package>. Add -y to skip confirmation prompts.
+How do you remove a package with apt?	sudo apt remove <package> (keep config files) or sudo apt purge <package> (remove config files too).
+What is the difference between dnf and yum?	dnf is the successor to yum (used in Fedora/RHEL 8+). It's faster, handles dependencies better, and supports modules. The yum command is often aliased to dnf.
+What does rpm do?	Low-level package manager for RPM-based distros. rpm -i installs, rpm -e erases, rpm -q queries. Does NOT resolve dependencies.
+What is pacman?	The package manager for Arch Linux. pacman -S installs, pacman -Syu updates the system, pacman -R removes packages.
+What is the difference between snap, flatpak, and AppImage?	snap: Canonical's sandboxed universal packages (auto-updates). flatpak: desktop-focused sandboxed apps (Flathub). AppImage: single-file portable executables (no installation).
+What does building from source typically involve?	Download source → ./configure (check dependencies) → make (compile) → sudo make install (install to /usr/local). May require build-essential or equivalent.
+How do you verify the authenticity of a package?	Package managers verify GPG signatures against repository signing keys. You import keys with apt-key add (deprecated, use /etc/apt/trusted.gpg.d/) or rpm --import.

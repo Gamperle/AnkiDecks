@@ -1,0 +1,19 @@
+# Linux Intermediate — Networking & Firewalls
+# Format: Front[TAB]Back
+# Split from linux_intermediate.txt (Section 8: Networking & Firewalls).
+
+What is NetworkManager?	A daemon that manages network connections dynamically, commonly used on desktop systems. Controlled via nmcli (CLI) or nmtui (TUI).
+What is systemd-networkd?	A systemd component for network configuration, often used on servers and containers. Configured via .network files in /etc/systemd/network/.
+What is netplan?	A YAML-based network configuration abstraction (Ubuntu). Generates configuration for either NetworkManager or systemd-networkd as the backend renderer.
+What are iptables tables and chains?	Tables: filter (default, packet filtering), nat (address translation), mangle (packet modification). Chains: INPUT (incoming), OUTPUT (outgoing), FORWARD (routed). Rules are evaluated top-to-bottom.
+How do you add an iptables rule to allow SSH?	iptables -A INPUT -p tcp --dport 22 -j ACCEPT — appends a rule to the INPUT chain allowing TCP traffic on port 22.
+What are iptables targets?	ACCEPT (allow packet), DROP (silently discard), REJECT (discard and send error back), LOG (log and continue processing), MASQUERADE (NAT for dynamic IPs).
+What is nftables?	The successor to iptables, providing a unified framework for packet filtering, NAT, and classification. Uses the nft command with a cleaner syntax and better performance.
+What is ufw?	Uncomplicated Firewall — a simplified frontend for iptables/nftables on Ubuntu. Example: ufw allow 22/tcp, ufw enable, ufw status.
+What is firewalld?	A dynamic firewall manager (RHEL/Fedora/CentOS) using zones. Zones define trust levels for network connections. Managed with firewall-cmd.
+What is NAT (Network Address Translation)?	Translates private IP addresses to a public IP (and vice versa) at a router/gateway. SNAT changes the source, DNAT changes the destination. Masquerading is SNAT with a dynamic source IP.
+How do you capture packets with tcpdump?	tcpdump -i eth0 -n port 80 — captures packets on interface eth0 for port 80. -w file.pcap saves to a file for analysis in Wireshark.
+What does nmap do?	Network scanner for host discovery and port scanning. nmap -sV host scans open ports and detects service versions. Use responsibly — scanning without permission may be illegal.
+What is WireGuard?	A modern, fast VPN protocol built into the Linux kernel. Uses simple key pairs, minimal configuration, and UDP-based encrypted tunnels. Faster than OpenVPN with less overhead.
+What is the difference between WireGuard and OpenVPN?	WireGuard: kernel-space, UDP-only, simpler config, faster, newer. OpenVPN: user-space, supports TCP/UDP, more mature, more configuration options, wider corporate adoption.
+What is systemd-resolved?	A systemd service providing DNS resolution, caching, and DNSSEC validation. Configured via /etc/systemd/resolved.conf. resolvectl shows current DNS settings.

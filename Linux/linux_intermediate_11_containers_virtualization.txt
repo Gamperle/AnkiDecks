@@ -1,0 +1,16 @@
+# Linux Intermediate — Containers & Virtualization
+# Format: Front[TAB]Back
+# Split from linux_intermediate.txt (Section 11: Containers & Virtualization).
+
+What is the key difference between containers and virtual machines?	VMs virtualize hardware and run a full OS with its own kernel. Containers share the host kernel and isolate processes using namespaces and cgroups — they're lighter and start faster.
+What is a Docker image?	A read-only template containing the application, its dependencies, and filesystem. Images are built from a Dockerfile and stored in layers. Containers are running instances of images.
+What is a Dockerfile?	A text file with instructions to build a Docker image. Key instructions: FROM (base image), RUN (execute commands), COPY/ADD (add files), CMD/ENTRYPOINT (default command), EXPOSE (ports).
+What does docker run do?	Creates and starts a container from an image. Example: docker run -d -p 8080:80 --name web nginx — runs nginx in background (-d), maps port 8080→80, names it "web."
+What Docker networking modes exist?	bridge (default, isolated network with NAT), host (shares host network stack — no isolation), none (no networking), overlay (multi-host networking for Swarm/clusters).
+What is the difference between a Docker volume and a bind mount?	Volumes are managed by Docker and stored in /var/lib/docker/volumes/ — portable and recommended. Bind mounts map a host directory directly — useful for development but tightly coupled to the host.
+What is Docker Compose?	A tool for defining and running multi-container applications using a docker-compose.yml file. Defines services, networks, and volumes in one YAML file. Start with docker compose up.
+What is Podman?	A daemonless OCI-compatible container engine. Unlike Docker, it doesn't require a root daemon. Commands are mostly Docker-compatible (podman run, podman build). Supports rootless containers natively.
+What is the OCI (Open Container Initiative)?	A set of open standards for container formats and runtimes. OCI Image Spec defines image format. OCI Runtime Spec defines container execution (reference implementation: runc).
+What is KVM?	Kernel-based Virtual Machine — a Linux kernel module that turns Linux into a type-1 hypervisor. Uses hardware virtualization (Intel VT-x/AMD-V). QEMU provides device emulation on top of KVM.
+What is libvirt?	A toolkit providing a unified API for managing KVM, QEMU, Xen, and other hypervisors. virsh is its CLI, virt-manager is its GUI.
+What is systemd-nspawn?	A lightweight container tool built into systemd. Spawns a container from a directory or disk image. Simpler than Docker — good for testing OS images and lightweight isolation.

@@ -1,0 +1,20 @@
+# Linux Beginner — Processes & Job Control
+# Format: Front[TAB]Back
+# Split from linux_beginner.txt (Section 5: Processes & Job Control).
+
+What is a process in Linux?	A running instance of a program. Each process has a unique PID, a parent process (PPID), its own memory space, and a state.
+What are the common process states?	R (Running/Runnable), S (Interruptible Sleep), D (Uninterruptible Sleep — usually I/O wait), Z (Zombie — terminated but not reaped), T (Stopped).
+What does ps aux do?	Lists all running processes with user, PID, CPU%, MEM%, start time, and command. -e or -A also shows all processes.
+What is top? How does htop differ?	top shows real-time process statistics (CPU, memory, load). htop adds color, mouse support, tree view, and easier process management.
+How do you send a signal to a process?	kill <PID> sends SIGTERM (15) by default. kill -9 <PID> sends SIGKILL (force kill). kill -HUP <PID> sends SIGHUP (reload config).
+What is the difference between SIGTERM and SIGKILL?	SIGTERM (15) asks a process to terminate gracefully (it can be caught/ignored). SIGKILL (9) forcefully terminates a process immediately (cannot be caught or ignored).
+What does SIGHUP do?	Historically: "hang up" — terminal disconnected. Many daemons interpret SIGHUP as a signal to reload their configuration files without restarting.
+What does & do at the end of a command?	Runs the command in the background, returning control to the shell immediately. The shell prints the job number and PID.
+How do you bring a background job to the foreground?	fg %n — where n is the job number from the jobs command. fg alone brings the most recent background job.
+What does Ctrl+Z do?	Sends SIGTSTP to the foreground process, suspending (stopping) it. Resume with fg (foreground) or bg (background).
+What is a zombie process?	A process that has finished execution but whose parent hasn't called wait() to read its exit status. It occupies a PID but uses no resources. Cleaned up when the parent reads the status or when the parent dies and init reaps it.
+What does nohup do?	Runs a command immune to SIGHUP — the process continues running after the terminal is closed. Output goes to nohup.out by default.
+What is the difference between nohup, disown, and screen/tmux?	nohup prevents SIGHUP from terminating the process. disown removes a running job from the shell's job table. screen/tmux create persistent terminal sessions that survive disconnection.
+What is /proc/PID/status?	A virtual file showing the status of a process: name, PID, state, memory usage, UID/GID, threads, etc.
+What does /proc/cpuinfo contain?	Information about the CPU(s): model name, speed, cache size, number of cores, flags (instruction set features like sse, avx).
+What does /proc/meminfo contain?	System memory information: MemTotal, MemFree, MemAvailable, Buffers, Cached, SwapTotal, SwapFree, and more.

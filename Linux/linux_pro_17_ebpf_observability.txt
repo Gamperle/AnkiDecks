@@ -1,0 +1,15 @@
+# Linux Pro — eBPF & Observability
+# Format: Front[TAB]Back
+# Split from linux_pro.txt (Section 17: eBPF & Observability).
+
+What is eBPF?	Extended Berkeley Packet Filter — a technology allowing sandboxed programs to run inside the Linux kernel without modifying kernel source or loading kernel modules. Used for networking, observability, security, and tracing.
+How does the eBPF verifier work?	Before loading, the kernel verifier checks every eBPF program for safety: bounded loops (no infinite loops), valid memory access (no out-of-bounds reads), no unreachable code, and limited program size. This guarantees kernel stability.
+What types of eBPF programs exist?	kprobe/kretprobe (kernel function tracing), tracepoint (stable kernel trace points), uprobe (user space function tracing), XDP (network packet processing), cgroup (resource control), socket (socket filtering), perf_event, and more.
+What are eBPF maps?	Shared data structures for communication between eBPF programs and user space: hash maps, arrays, ring buffers, LRU hash, per-CPU arrays, stack traces. Maps persist across eBPF program invocations.
+What is BCC (BPF Compiler Collection)?	A toolkit for creating eBPF-based tracing and networking programs. Provides Python/Lua front-ends and many ready-made tools: execsnoop (trace exec calls), biolatency (block I/O latency), tcplife (TCP connection lifetimes), opensnoop (trace open calls).
+What is bpftrace?	A high-level tracing language for eBPF. Supports one-liners and scripts. Example: bpftrace -e 'tracepoint:syscalls:sys_enter_openat { printf("%s %s\n", comm, str(args->filename)); }' — traces file opens.
+What is XDP (eXpress Data Path)?	An eBPF hook that runs at the earliest point in the network receive path (NIC driver level). Allows high-performance programmable packet processing (drop, redirect, modify) before the kernel network stack processes the packet.
+What are the XDP return actions?	XDP_PASS (pass to normal network stack), XDP_DROP (drop the packet — useful for DDoS mitigation), XDP_TX (transmit back out the same NIC), XDP_REDIRECT (redirect to another NIC or CPU), XDP_ABORTED (error/drop + trace).
+How is eBPF used for security?	Seccomp-BPF: filters system calls. Cilium: eBPF-based Kubernetes networking and security policies. Falco: runtime security monitoring. eBPF programs can enforce policies, detect anomalies, and trace security events in real time.
+What is BTF (BPF Type Format)?	A metadata format embedded in the kernel describing data structure layouts. Enables CO-RE (Compile Once, Run Everywhere) — eBPF programs compiled on one kernel version can run on another without recompilation by adapting struct offsets at load time.
+What is CO-RE (Compile Once, Run Everywhere)?	A technique using BTF and libbpf to make eBPF programs portable across kernel versions. The BPF loader relocates struct field accesses based on the running kernel's BTF, eliminating the need to compile eBPF programs on each target machine.

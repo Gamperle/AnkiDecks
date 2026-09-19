@@ -1,0 +1,17 @@
+# Linux Beginner — Basic Networking
+# Format: Front[TAB]Back
+# Split from linux_beginner.txt (Section 6: Basic Networking).
+
+How do you view IP addresses assigned to interfaces?	ip addr show (or ip a) — shows all interfaces with their IP addresses, MAC addresses, and status. Replaces the deprecated ifconfig.
+How do you view the routing table?	ip route show (or ip r) — displays the kernel routing table with destinations, gateways, and interface assignments.
+What is /etc/hosts?	A local file mapping hostnames to IP addresses, consulted before DNS. Example: 127.0.0.1 localhost.
+What is /etc/resolv.conf?	Configures DNS resolvers. Contains nameserver entries specifying DNS server IPs used for name resolution.
+What does dig do?	DNS lookup utility. dig example.com queries the A record. dig example.com MX queries mail exchangers. Shows detailed DNS response information.
+What does ping do?	Sends ICMP Echo Request packets to a host and measures round-trip time. Used to test network connectivity and latency.
+What does traceroute do?	Traces the route packets take to a destination by sending packets with increasing TTL values. Reveals each hop (router) along the path.
+What does ss do?	Displays socket statistics — listening ports, established connections, protocol info. Replaces the deprecated netstat. Example: ss -tlnp shows TCP listening ports with process names.
+How do you download a file from the command line?	curl -O <url> or wget <url>. curl is more versatile (supports more protocols, can send POST requests). wget is simpler for recursive downloads.
+What is SSH?	Secure Shell — a protocol for encrypted remote login and command execution over an insecure network. Uses port 22 by default.
+How do you generate an SSH key pair?	ssh-keygen -t ed25519 (or -t rsa -b 4096). Creates a private key (~/.ssh/id_ed25519) and public key (~/.ssh/id_ed25519.pub).
+What does ssh-copy-id do?	Copies your public key to a remote server's ~/.ssh/authorized_keys file, enabling passwordless SSH login.
+What is ~/.ssh/config used for?	Stores SSH client configuration: hostnames, usernames, ports, identity files, and proxy settings for easy connection shortcuts. Example: Host myserver → ssh myserver.

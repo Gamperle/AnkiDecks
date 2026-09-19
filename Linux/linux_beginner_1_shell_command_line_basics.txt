@@ -1,0 +1,31 @@
+# Linux Beginner — Shell & Command Line Basics
+# Format: Front[TAB]Back
+# Split from linux_beginner.txt (Section 1: Shell & Command Line Basics).
+
+What is a shell in Linux?	A command-line interpreter that processes user commands and communicates with the kernel. Common shells include bash, zsh, and sh.
+What is bash?	Bourne Again Shell — the default shell on most Linux distributions. It extends the original Bourne shell (sh) with features like command history, tab completion, and arrays.
+What is zsh?	Z Shell — an extended shell with features like better tab completion, spelling correction, and plugin support (e.g., Oh My Zsh). Default on macOS since Catalina.
+What is the difference between sh and bash?	sh (Bourne Shell) is the original POSIX-compliant shell with minimal features. bash is a superset of sh with arrays, brace expansion, [[ ]] tests, and other extensions.
+How is a Linux command structured?	command [options] [arguments] — e.g., ls -la /home. Options modify behavior (short: -l, long: --long), arguments specify targets.
+What is the difference between an absolute and a relative path?	Absolute paths start from / (root), e.g., /home/user/file. Relative paths start from the current directory, e.g., ./file or ../dir.
+What do . and .. represent in a path?	. (dot) = current directory. .. (double dot) = parent directory.
+What does ~ represent in a path?	The current user's home directory, e.g., ~ expands to /home/username.
+How do you view a command's manual page?	man <command> — displays the full manual. Sections are numbered (1=user commands, 5=file formats, 8=admin commands).
+What does --help do?	Most commands support --help to print a short usage summary with available options and syntax.
+What does the ; operator do between commands?	Runs commands sequentially regardless of success or failure. Example: cmd1 ; cmd2 — cmd2 runs even if cmd1 fails.
+What does && do between commands?	Runs the second command only if the first succeeds (exit code 0). Example: make && make install.
+What does || do between commands?	Runs the second command only if the first fails (non-zero exit code). Example: test -f file.txt || echo "Not found".
+What is a pipe (|) in Linux?	Connects stdout of one command to stdin of the next. Example: ls -l | grep ".txt" — filters ls output for .txt files.
+What does > do in shell redirection?	Redirects stdout to a file, overwriting the file. Example: echo "hello" > file.txt.
+What does >> do in shell redirection?	Appends stdout to a file instead of overwriting. Example: echo "line2" >> file.txt.
+What does 2> do in shell redirection?	Redirects stderr (file descriptor 2) to a file. Example: cmd 2> errors.log.
+What does &> do in shell redirection?	Redirects both stdout and stderr to a file. Example: cmd &> all_output.log.
+What is $PATH?	An environment variable listing directories the shell searches (left to right) to find executable commands, separated by colons. Example: /usr/local/bin:/usr/bin:/bin.
+What is $HOME?	Environment variable containing the path to the current user's home directory, e.g., /home/username.
+What does the export command do?	Makes a variable available to child processes. Without export, the variable is only available in the current shell session.
+What is the difference between single quotes and double quotes in bash?	Single quotes preserve all characters literally. Double quotes allow variable expansion ($VAR) and command substitution ($(cmd)) but preserve spaces and most special characters.
+What does the backslash (\) do in the shell?	Escapes the next character, removing its special meaning. Example: echo \$HOME prints $HOME literally.
+What is globbing in the shell?	Pattern matching for filenames. * = any characters, ? = one character, [abc] = one of a/b/c, {a,b} = brace expansion for a or b.
+How do you search your command history?	Press Ctrl+R to start reverse incremental search. Type part of the command and press Ctrl+R again to find older matches. history command lists all history.
+What does !! do in bash?	Repeats the last command. Useful as sudo !! to run the previous command with sudo.
+What does !n do in bash?	Runs command number n from history. Use the history command to see command numbers.

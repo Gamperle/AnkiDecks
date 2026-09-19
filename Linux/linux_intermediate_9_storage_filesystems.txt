@@ -1,0 +1,22 @@
+# Linux Intermediate — Storage & Filesystems
+# Format: Front[TAB]Back
+# Split from linux_intermediate.txt (Section 9: Storage & Filesystems).
+
+What does lsblk show?	Lists all block devices (disks, partitions) in a tree format with their name, size, type, and mount point.
+What is the difference between MBR and GPT?	MBR: legacy partitioning, max 2TB disk, max 4 primary partitions. GPT: modern (UEFI), supports disks >2TB, up to 128 partitions, includes a protective MBR for backward compatibility.
+What tools are used for partitioning?	fdisk (interactive, MBR and GPT), gdisk (GPT-only), parted (scriptable, supports both, can resize). All modify the partition table on a disk.
+What is ext4?	The default Linux filesystem for many distributions. Journaling filesystem supporting up to 1 EiB volumes. Mature, stable, good general-purpose performance.
+What is XFS?	A high-performance 64-bit journaling filesystem. Excellent for large files and parallel I/O. Default on RHEL. Can be grown but not shrunk online.
+What is Btrfs?	B-tree filesystem with advanced features: copy-on-write, snapshots, built-in RAID, compression, checksumming, online defragmentation. Default on openSUSE and Fedora Workstation.
+What is ZFS?	An advanced filesystem with integrated volume management, checksumming, compression, deduplication, and snapshots. Not in mainline Linux kernel due to CDDL license — available via OpenZFS module.
+How do you mount a filesystem?	mount /dev/sda1 /mnt — mounts the partition at /mnt. Options: -t for type, -o for options (ro, noexec, nosuid). Unmount with umount /mnt.
+What is /etc/fstab?	Filesystem table defining permanent mounts. Each line: device UUID/path, mount point, filesystem type, options, dump, pass. Applied at boot and with mount -a.
+Why use UUID instead of device paths in fstab?	Device names (e.g., /dev/sda1) can change when disks are added or reordered. UUIDs are unique identifiers that persist regardless of device ordering.
+What is LVM?	Logical Volume Manager — adds an abstraction layer between physical disks and filesystems. Allows flexible resizing, snapshots, and spanning across multiple disks.
+What are PV, VG, and LV in LVM?	PV (Physical Volume): actual disk/partition. VG (Volume Group): pool of one or more PVs. LV (Logical Volume): a virtual partition carved from a VG, formatted with a filesystem.
+How do you extend an LVM logical volume?	lvextend -L +10G /dev/vg0/lv0 (add 10GB) → then resize the filesystem: resize2fs /dev/vg0/lv0 (ext4) or xfs_growfs /mnt (XFS).
+What RAID levels are commonly used?	RAID 0 (striping, no redundancy), RAID 1 (mirroring), RAID 5 (striping + 1 parity disk), RAID 6 (striping + 2 parity disks), RAID 10 (mirror + stripe).
+What does mdadm do?	Manages Linux software RAID arrays. mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/sd[ab]1 creates a RAID 1 mirror.
+What is the difference between a swap partition and a swap file?	A swap partition is a dedicated partition for virtual memory. A swap file is a regular file on an existing filesystem used for swap. Both serve the same purpose — swap files are easier to resize.
+What does the swappiness value control?	vm.swappiness (0–200, default 60) controls how aggressively the kernel moves pages from RAM to swap. Lower = prefer keeping data in RAM. 0 doesn't disable swap — it minimizes swapping.
+What does smartctl do?	Monitors disk health via S.M.A.R.T. attributes. smartctl -a /dev/sda shows all attributes. smartctl -t short /dev/sda runs a short self-test.

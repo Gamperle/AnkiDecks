@@ -1,0 +1,17 @@
+# Linux Intermediate — Systemd & Service Management
+# Format: Front[TAB]Back
+# Split from linux_intermediate.txt (Section 7: Systemd & Service Management).
+
+What is systemd?	The init system and service manager used by most modern Linux distributions. It manages services, handles boot sequence, mounts, logging, and more, using unit files.
+What is a systemd unit?	The basic object systemd manages. Types include .service (daemons), .timer (scheduled tasks), .socket (socket activation), .mount, .target (groups of units), .path, and .device.
+What does systemctl start <service> do?	Starts a service immediately. Example: systemctl start nginx. Does not persist across reboots — use enable for that.
+What does systemctl enable <service> do?	Creates symlinks so the service starts automatically at boot. It does NOT start the service immediately — combine with --now to start and enable.
+What does systemctl status <service> show?	Shows whether the service is active/inactive/failed, its PID, memory usage, recent log entries, and the loaded unit file path.
+What does systemctl daemon-reload do?	Tells systemd to re-read all unit files after you've modified or added one. Required before changes take effect.
+What are the three main sections of a systemd unit file?	[Unit] — description and dependencies (After=, Requires=, Wants=). [Service] — how to start/stop the service (ExecStart=, Type=). [Install] — where to enable it (WantedBy=).
+What are the systemd service types?	simple (default, process stays in foreground), forking (traditional daemon — process forks and parent exits), oneshot (runs once and exits), notify (signals readiness to systemd), idle (waits for other jobs).
+What is journalctl?	The journal log viewer for systemd. Queries structured logs. Examples: journalctl -u nginx (by unit), journalctl --since "1 hour ago" (by time), journalctl -p err (by priority).
+How do systemd timers work as a cron replacement?	A .timer unit fires a matching .service unit at scheduled intervals. Use OnCalendar= for calendar-based scheduling or OnBootSec=/OnUnitActiveSec= for monotonic timers. List active timers with systemctl list-timers.
+What is socket activation in systemd?	systemd listens on a socket and starts the service only when a connection arrives. Saves resources — the service isn't running until needed. Defined in .socket units with ListenStream=.
+What does systemd-analyze blame do?	Shows how long each unit took to start during boot, sorted by time. Helps identify slow services affecting boot performance.
+What does systemd-analyze critical-chain do?	Shows the chain of units that determined the boot time, highlighting the critical path — the sequence of blocking dependencies.

@@ -1,0 +1,16 @@
+# Linux Intermediate — Monitoring & Logging
+# Format: Front[TAB]Back
+# Split from linux_intermediate.txt (Section 12: Monitoring & Logging).
+
+Where are system logs typically stored?	/var/log/ — common files: syslog or messages (general), auth.log or secure (authentication), kern.log (kernel), dmesg (boot/kernel ring buffer).
+What is the syslog protocol?	A standard for log message transport (RFC 5424). Messages have facility (kern, mail, auth, etc.) and severity (emerg, alert, crit, err, warning, notice, info, debug).
+What is the difference between rsyslog and syslog-ng?	Both are syslog implementations. rsyslog is the default on RHEL/Debian, supports high-performance filtering and output modules. syslog-ng offers a more flexible configuration language and better structured logging support.
+What does logrotate do?	Rotates, compresses, and removes old log files to prevent disk space exhaustion. Configured in /etc/logrotate.conf and /etc/logrotate.d/. Supports size-based and time-based rotation.
+What does vmstat show?	Reports virtual memory, CPU, I/O, and system statistics. vmstat 1 updates every second. Key columns: r (runnable processes), b (blocked), si/so (swap in/out), us/sy/id/wa (CPU breakdown).
+What does sar do?	System Activity Reporter — collects and reports system activity (CPU, memory, disk, network) over time. Part of the sysstat package. sar -u (CPU), sar -r (memory), sar -d (disk).
+What does free -h show?	Displays memory usage: total, used, free, shared, buff/cache, available. The "available" column estimates how much memory is available for new applications (including reclaimable cache).
+How do you interpret Linux load average?	Three numbers representing average system load over 1, 5, and 15 minutes. Load = number of runnable + uninterruptible processes. On a 4-core system, load 4.0 means full utilization.
+What does iostat show?	Reports CPU and disk I/O statistics. iostat -x shows extended stats: %util (device utilization), await (average I/O latency), r/s and w/s (reads/writes per second).
+What does iotop do?	Shows per-process I/O usage in real time — which processes are reading/writing the most. Requires root. Similar to top but for disk I/O.
+What do iftop and nethogs show?	iftop shows bandwidth usage per connection in real time (like top for networks). nethogs groups bandwidth by process — useful for finding which process is consuming bandwidth.
+What is dmesg?	Prints the kernel ring buffer — messages from the kernel including hardware detection, driver loading, and errors. dmesg -T shows timestamps in human-readable format.

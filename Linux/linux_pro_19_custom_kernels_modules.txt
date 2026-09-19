@@ -1,0 +1,18 @@
+# Linux Pro — Custom Kernels & Modules
+# Format: Front[TAB]Back
+# Split from linux_pro.txt (Section 19: Custom Kernels & Modules).
+
+How do you configure the Linux kernel before building?	make menuconfig (ncurses TUI), make xconfig (Qt GUI), or edit .config directly. Each option (CONFIG_*) can be set to y (built-in), m (module), or n (disabled).
+How do you build and install a kernel from source?	make -j$(nproc) (compile), make modules_install (install modules to /lib/modules/), make install (copy kernel to /boot/, update bootloader). Then update-grub or grub-mkconfig.
+What is a kernel module (.ko)?	A loadable piece of kernel code (device driver, filesystem, network protocol) that can be inserted and removed at runtime without rebooting. Stored in /lib/modules/$(uname -r)/.
+What does modprobe do?	Loads a kernel module and its dependencies (resolved by depmod). modprobe -r unloads. Preferred over insmod (which doesn't handle dependencies) and rmmod.
+What does lsmod show?	Lists currently loaded kernel modules with their size and which modules depend on them (Used by column).
+What is DKMS?	Dynamic Kernel Module Support — automatically recompiles out-of-tree kernel modules when a new kernel is installed. Used by NVIDIA drivers, VirtualBox, and ZFS. Ensures modules survive kernel upgrades.
+What is the structure of a basic kernel module?	A C file with: #include <linux/module.h>, a module_init(init_func) and module_exit(exit_func) registration, and MODULE_LICENSE("GPL"). The init function runs on load, exit on unload.
+How do you create a /proc entry from a kernel module?	Use proc_create("name", permissions, NULL, &proc_fops) where proc_fops is a struct proc_ops with .proc_read and .proc_write handlers. Removed with remove_proc_entry().
+What are major and minor device numbers?	Major number identifies the driver (e.g., 8 for sd). Minor number identifies the specific device instance (e.g., sda=0, sda1=1). Visible with ls -l /dev/. register_chrdev() registers a major number for a character driver.
+What are the file_operations for a character device driver?	A struct containing function pointers: .open, .release (close), .read, .write, .ioctl, .mmap, etc. These functions are called when userspace performs the corresponding operations on the device file.
+What is printk?	The kernel's logging function (similar to printf). Uses log levels: KERN_EMERG, KERN_ERR, KERN_WARNING, KERN_INFO, KERN_DEBUG. Output visible via dmesg. dmesg -w follows new messages.
+What is ftrace?	The kernel's built-in tracing framework. Available at /sys/kernel/debug/tracing/. Tracers include function (trace all function calls), function_graph (with call depth), and event tracing. Lower overhead than kprobes.
+What is kgdb?	A kernel debugger allowing GDB to debug a running kernel over a serial or network connection. Enables setting breakpoints, inspecting memory, and stepping through kernel code. Useful for driver development.
+What is the crash utility?	A tool for analyzing kernel crash dumps (kdump/vmcore) and live systems. Provides GDB-like commands: bt (backtrace), ps (processes), vm (virtual memory), files (open files). Essential for post-mortem kernel debugging.

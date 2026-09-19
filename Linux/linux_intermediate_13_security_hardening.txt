@@ -1,0 +1,16 @@
+# Linux Intermediate — Security Hardening
+# Format: Front[TAB]Back
+# Split from linux_intermediate.txt (Section 13: Security Hardening).
+
+How do you harden SSH?	Disable root login (PermitRootLogin no), use key-only authentication (PasswordAuthentication no), change the default port, limit users (AllowUsers), use fail2ban to block brute-force attempts.
+What is fail2ban?	A daemon that scans log files for failed authentication attempts and bans offending IPs by adding firewall rules. Configurable jails define which services to protect and ban thresholds.
+What is SELinux?	Security-Enhanced Linux — a mandatory access control (MAC) system. Enforces policies that restrict what processes can access, regardless of traditional Unix permissions. Modes: enforcing, permissive, disabled.
+What are SELinux contexts?	Labels applied to files, processes, and ports in the format user:role:type:level. The type field is most important — policies define which process types can access which file types.
+What does audit2why do?	Analyzes SELinux AVC denial messages from the audit log and explains why the access was denied, often suggesting boolean changes or policy fixes.
+What is AppArmor?	A Linux security module that restricts program capabilities using per-program profiles. Simpler than SELinux — profiles are path-based rather than label-based. Modes: enforce, complain (log only).
+What is AIDE?	Advanced Intrusion Detection Environment — a file integrity checker. Creates a baseline database of file attributes (hash, permissions, size) and reports changes on subsequent scans.
+What is auditd?	The Linux audit daemon that logs system calls and security events. Rules defined in /etc/audit/audit.rules. Query logs with ausearch and generate reports with aureport.
+What are PAM modules?	Pluggable Authentication Modules — a framework for authentication services. Configured in /etc/pam.d/. Modules are stacked: pam_unix (passwords), pam_ldap (LDAP), pam_faillock (lockout), etc.
+What is LUKS?	Linux Unified Key Setup — the standard for disk encryption on Linux. Uses dm-crypt as the backend. cryptsetup luksFormat /dev/sdX encrypts a partition. Multiple key slots are supported.
+What are Linux capabilities?	Fine-grained privileges replacing the all-or-nothing root model. Instead of giving a process full root, assign specific capabilities like CAP_NET_BIND_SERVICE (bind low ports) or CAP_SYS_PTRACE (trace processes).
+What is seccomp?	Secure Computing Mode — restricts which system calls a process can make. Used by containers (Docker) and browsers (Chrome) to reduce attack surface. seccomp-bpf allows custom filters using BPF programs.

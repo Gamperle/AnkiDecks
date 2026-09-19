@@ -1,0 +1,21 @@
+# Linux Beginner — Users, Groups & Permissions
+# Format: Front[TAB]Back
+# Split from linux_beginner.txt (Section 3: Users, Groups & Permissions).
+
+What information does /etc/passwd contain?	One line per user: username:x:UID:GID:comment:home_dir:shell. The x means the password hash is stored in /etc/shadow.
+What is /etc/shadow?	Contains hashed user passwords and password aging information. Readable only by root for security.
+How do you add a new user?	useradd username (low-level) or adduser username (interactive, Debian-based). Creates a user entry, home directory (with -m), and sets default shell.
+How do you change a user's password?	passwd username (root can change any user's password). Users can run passwd without arguments to change their own.
+How do you delete a user?	userdel username — removes the user. Add -r to also delete their home directory and mail spool.
+What is a group in Linux?	A collection of users sharing file access permissions. Every user has a primary group (in /etc/passwd) and can belong to supplementary groups (in /etc/group).
+How do you add a user to a supplementary group?	usermod -aG groupname username — the -a flag appends (without it, the user is removed from other supplementary groups).
+How do Linux file permissions work?	Three permission types (read=4, write=2, execute=1) for three categories: owner, group, others. Displayed as rwxrwxrwx.
+What does chmod 755 mean?	Sets permissions to rwxr-xr-x — owner has read/write/execute, group and others have read/execute only.
+What is the difference between chmod symbolic and octal mode?	Symbolic: chmod u+x file (add execute for user). Octal: chmod 755 file (set all at once numerically).
+What does chown do?	Changes file ownership. Example: chown user:group file.txt — sets owner to user and group to group.
+What is the setuid bit?	When set on an executable, it runs with the file owner's permissions instead of the caller's. Example: /usr/bin/passwd has setuid so users can change their own password.
+What is the setgid bit?	On a file: executes with the group's permissions. On a directory: new files inherit the directory's group instead of the creator's primary group.
+What is the sticky bit?	When set on a directory, only the file's owner (or root) can delete or rename files inside it. /tmp has the sticky bit set.
+What is umask?	A mask that determines default permissions for newly created files and directories. Example: umask 022 means new files get 644 and directories get 755.
+What does sudo do?	Executes a command as another user (default: root). Configured in /etc/sudoers. Safer than logging in as root because it logs commands and limits scope.
+What is /etc/sudoers and visudo?	/etc/sudoers defines who can run sudo and what commands they may execute. visudo edits it safely with syntax checking.
